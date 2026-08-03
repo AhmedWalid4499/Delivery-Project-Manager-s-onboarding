@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Palo Alto Networks — OB Network KB</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+.page-subnav{position:sticky;top:61px;z-index:100;background:#fff;border-bottom:1px solid #EBEBEB;padding:0 32px;display:flex;gap:0;overflow-x:auto;scrollbar-width:none;}
+.page-subnav::-webkit-scrollbar{display:none;}
+.page-subnav a{padding:12px 18px;font-size:13px;font-weight:600;color:var(--gray-mid);text-decoration:none;white-space:nowrap;border-bottom:2px solid transparent;transition:all 0.15s;}
+.page-subnav a:hover,.page-subnav a.active{color:var(--palo-orange);border-bottom-color:var(--palo-orange);}
+.device-detail{background:#fff;border:1px solid #E8E8E8;border-radius:16px;overflow:hidden;margin-bottom:32px;box-shadow:0 2px 16px rgba(0,0,0,0.05);}
+.device-detail-header{background:linear-gradient(135deg,#2D1208 0%,#4A1E0C 100%);padding:22px 28px;display:flex;align-items:center;gap:18px;}
+.device-detail-badge{background:var(--palo-orange);color:#fff;font-size:11px;font-weight:700;padding:4px 10px;border-radius:6px;letter-spacing:0.5px;flex-shrink:0;}
+.device-detail-title{font-size:22px;font-weight:700;color:#fff;}
+.device-detail-subtitle{font-size:13px;color:rgba(255,255,255,0.6);margin-top:2px;}
+.device-detail-body{padding:24px 28px;}
+.device-detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+@media(max-width:700px){.device-detail-grid{grid-template-columns:1fr;}}
+.device-desc-block p{font-size:14px;color:#444;line-height:1.75;margin-bottom:16px;}
+.spec-table{width:100%;border-collapse:collapse;font-size:13px;}
+.spec-table tr{border-bottom:1px solid #F0F0F0;}
+.spec-table tr:last-child{border:none;}
+.spec-table td{padding:8px 4px;vertical-align:top;}
+.spec-table td:first-child{color:var(--gray-mid);width:42%;font-size:12px;padding-right:10px;}
+.spec-table td:last-child{font-weight:600;color:var(--gray-dark);}
+.port-diagram-wrap{background:#111;border-radius:12px;padding:18px 20px;}
+.port-diagram-title{font-family:var(--mono);font-size:10px;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:1px;margin-bottom:14px;}
+.port-face{background:#1E1E1E;border-radius:8px;padding:14px 16px;border:1px solid rgba(255,255,255,0.06);margin-bottom:10px;}
+.port-face-label{font-family:var(--mono);font-size:9px;color:rgba(255,255,255,0.25);margin-bottom:10px;letter-spacing:0.5px;}
+.port-row-g{display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin-bottom:6px;}
+.port-row-g:last-child{margin-bottom:0;}
+.p{display:inline-flex;flex-direction:column;align-items:center;gap:3px;cursor:default;}
+.p-body{border-radius:3px;border:1.5px solid;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:7px;font-weight:600;transition:transform 0.12s;}
+.p-body:hover{transform:scale(1.15);}
+.p-label{font-family:var(--mono);font-size:7px;color:rgba(255,255,255,0.3);}
+.p-rj45 .p-body{width:26px;height:20px;}
+.p-sfp .p-body{width:34px;height:16px;}
+.p-qsfp .p-body{width:42px;height:18px;}
+.p-con .p-body{width:26px;height:18px;}
+.p-usb .p-body{width:20px;height:16px;}
+.p-pwr .p-body{width:22px;height:22px;border-radius:50%!important;}
+.c-eth{border-color:#4A9EFF!important;color:#4A9EFF!important;background:rgba(74,158,255,0.08)!important;}
+.c-sfp{border-color:#FF8C42!important;color:#FF8C42!important;background:rgba(255,140,66,0.08)!important;}
+.c-sfp28{border-color:#FFD700!important;color:#FFD700!important;background:rgba(255,215,0,0.08)!important;}
+.c-qsfp{border-color:#DA70D6!important;color:#DA70D6!important;background:rgba(218,112,214,0.08)!important;}
+.c-mgmt{border-color:#00CC6A!important;color:#00CC6A!important;background:rgba(0,204,106,0.08)!important;}
+.c-con{border-color:#B388FF!important;color:#B388FF!important;background:rgba(179,136,255,0.08)!important;}
+.c-usb{border-color:#999!important;color:#999!important;background:rgba(153,153,153,0.08)!important;}
+.c-ha{border-color:#FF4D6A!important;color:#FF4D6A!important;background:rgba(255,77,106,0.08)!important;}
+.c-psu{border-color:#78C800!important;color:#78C800!important;background:rgba(120,200,0,0.1)!important;}
+.c-wan{border-color:#F5A623!important;color:#F5A623!important;background:rgba(245,166,35,0.08)!important;}
+.port-divider{width:1px;height:24px;background:rgba(255,255,255,0.08);margin:0 4px;flex-shrink:0;}
+.port-group-label{font-family:var(--mono);font-size:8px;color:rgba(255,255,255,0.2);margin-right:4px;align-self:center;}
+.port-legend-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px;}
+.port-legend-item{display:flex;align-items:center;gap:5px;font-size:10px;color:rgba(255,255,255,0.4);font-family:var(--mono);}
+.port-legend-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0;}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <a href="index.html" class="topnav-brand"><div class="topnav-logo">OB</div><div class="topnav-brand-text">Orange <span>Business</span></div></a>
+  <div class="topnav-links">
+    <a href="index.html" class="nav-link">Home</a>
+    <a href="lan-wan-basics.html" class="nav-link">LAN / WAN</a>
+    <a href="ip-routing.html" class="nav-link">IP Routing</a>
+    <a href="switching.html" class="nav-link">Switching</a>
+    <a href="wireless.html" class="nav-link">Wireless</a>
+    <a href="firewalls.html" class="nav-link">Firewalls</a>
+    <a href="zscaler.html" class="nav-link">Zscaler</a>
+    <a href="devices.html"        class="nav-link active" id="nav-devices">Devices</a>
+    <a href="glossary.html" class="nav-link">Glossary</a>
+  </div>
+  <div class="topnav-badge">New Hire Guide</div>
+</nav>
+
+<div class="page-subnav">
+  <a href="#pa-entry">Entry (PA-220 / PA-400)</a>
+  <a href="#pa-mid">Mid-Range (PA-3200)</a>
+  <a href="#pa-high">High-End (PA-5200)</a>
+  <a href="#pa-dc">Data Center (PA-7000)</a>
+  <a href="#pa-mgmt">Panorama</a>
+  <a href="#pa-cloud">Cloud (Prisma)</a>
+</div>
+
+<div class="breadcrumb"><a href="index.html">Home</a><span>/</span> Palo Alto Networks</div>
+
+<div class="page-hero palo-hero">
+  <div class="hero-content">
+    <div class="hero-tag" style="background:rgba(250,90,40,0.2);border-color:rgba(250,90,40,0.4);color:#FFA07A;">🔶 Vendor Guide</div>
+    <h1><span class="palo">Palo Alto</span> Networks</h1>
+    <p class="hero-sub">PA-Series NGFWs from desktop to hyperscale data center, Panorama management, and Prisma cloud security.</p>
+  </div>
+</div>
+
+<div class="content-wide">
+
+<div class="alert palo" style="margin-bottom:40px;">
+  <span class="alert-icon">ℹ️</span>
+  <p><strong>PAN-OS essentials:</strong> All devices run PAN-OS. Key concepts: <strong>Zones</strong> (group interfaces — untrust, trust, DMZ), <strong>Security Policy</strong> (zone-to-zone rules using App-ID), <strong>Commit</strong> (changes sit in candidate config until you commit — nothing takes effect until then). CLI entry: <code>ssh admin@x.x.x.x</code>. GUI: <code>https://mgmt-ip</code>. Certification: PCNSA (associate) → PCNSE (engineer).</p>
+</div>
+
+<!-- ENTRY -->
+<div id="pa-entry" class="section">
+  <div class="section-header"><h2>Entry Level — Desktop NGFWs</h2><div class="divider palo"></div></div>
+
+  <div class="device-detail">
+    <div class="device-detail-header">
+      <span class="device-detail-badge">NGFW</span>
+      <div><div class="device-detail-title">PA-220</div><div class="device-detail-subtitle">Desktop NGFW — small branch, retail, home office</div></div>
+    </div>
+    <div class="device-detail-body">
+      <div class="device-detail-grid">
+        <div class="device-desc-block">
+          <p>The PA-220 is the entry-level Palo Alto NGFW. It is a small desktop unit typically mounted on a wall or placed on a shelf. Despite its size it runs the same full PAN-OS as the PA-7000 — all App-ID, URL filtering, WildFire sandboxing, and GlobalProtect features are available. E1/1 is typically the <em>untrust</em> (internet) zone; E1/2–E1/8 are assigned to <em>trust</em> (LAN) or <em>DMZ</em> zones. The out-of-band management port (MGT) is on a separate network for secure access.</p>
+          <table class="spec-table">
+            <tr><td>Ports</td><td>8× GE RJ45 + 2× GE SFP</td></tr>
+            <tr><td>NGFW throughput</td><td>500 Mbps App-ID</td></tr>
+            <tr><td>Threat Prevention</td><td>200 Mbps with IPS + AV</td></tr>
+            <tr><td>SSL Inspection</td><td>100 Mbps</td></tr>
+            <tr><td>VPN</td><td>IPSec IKEv2 + GlobalProtect SSL</td></tr>
+            <tr><td>Max sessions</td><td>64,000 concurrent</td></tr>
+            <tr><td>HA</td><td>Active/passive (HA1 via MGT, HA2 via data port)</td></tr>
+            <tr><td>Management</td><td>WebUI, CLI (SSH), Panorama</td></tr>
+          </table>
+        </div>
+        <div class="port-diagram-wrap">
+          <div class="port-diagram-title">Front Panel — Desktop</div>
+          <div class="port-face">
+            <div class="port-face-label">8× GE RJ45 data + 2× SFP + OOB Management</div>
+            <div class="port-row-g">
+              <div class="p p-rj45"><div class="p-body c-wan">E1/1</div></div>
+              <div class="p p-rj45"><div class="p-body c-eth">E1/2</div></div>
+              <div class="p p-rj45"><div class="p-body c-eth">E1/3</div></div>
+              <div class="p p-rj45"><div class="p-body c-eth">E1/4</div></div>
+              <div class="p p-rj45"><div class="p-body c-eth">E1/5</div></div>
+              <div class="p p-rj45"><div class="p-body c-eth">E1/6</div></div>
+              <div class="p p-rj45"><div class="p-body c-eth">E1/7</div></div>
+              <div class="p p-rj45"><div class="p-body c-eth">E1/8</div></div>
+              <div class="port-divider"></div>
+              <div class="p p-sfp"><div class="p-body c-sfp">SFP1</div></div>
+              <div class="p p-sfp"><div class="p-body c-sfp">SFP2</div></div>
+              <div class="port-divider"></div>
+              <div class="p p-con"><div class="p-body c-mgmt">MGT</div></div>
+              <div class="p p-con"><div class="p-body c-con">CON</div></div>
+              <div class="p p-usb"><div class="p-body c-usb">USB</div></div>
+            </div>
+          </div>
+          <div class="port-legend-row">
+            <div class="port-legend-item"><div class="port-legend-dot" style="background:#F5A623;"></div>E1/1 = Untrust (WAN)</div>
+            <div class="port-legend-item"><div class="port-legend-dot" style="background:#4A9EFF;"></div>E1/2–8 = Trust / DMZ</div>
+            <div class="port-legend-item"><div class="port-legend-dot" style="background:#FF8C42;"></div>SFP optional</div>
+            <div class="port-legend-item"><div class="port-legend-dot" style="background:#00CC6A;"></div>OOB management</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="device-detail">
+    <div class="device-detail-header">
+      <span class="device-detail-badge">NGFW</span>
+      <div><div class="device-detail-title">PA-415 / PA-445 / PA-450</div><div class="device-detail-subtitle">PA-400 Series — 1U rack desktop NGFWs for mid-size branches</div></div>
+    </div>
+    <div class="device-detail-body">
+      <div class="device-detail-grid">
+        <div class="device-desc-block">
+          <p>The PA-400 series replaces the older PA-220 for larger branch offices. The PA-415 is the entry model; the PA-450 is the top of the series with hardware SSL decryption acceleration and dedicated HA ports. All models fit in a rack with optional rack-mount kit. The PA-450 adds two dedicated HA ports (HA1 + HA2) for active/passive or active/active clustering without consuming data ports.</p>
+          <table class="spec-table">
+            <tr><td>PA-415 NGFW</td><td>1.7 Gbps App-ID</td></tr>
+            <tr><td>PA-445 NGFW</td><td>2.5 Gbps App-ID</td></tr>
+            <tr><td>PA-450 NGFW</td><td>3.8 Gbps App-ID</td></tr>
+            <tr><td>PA-450 SSL</td><td>1 Gbps SSL inspection (hardware)</td></tr>
+            <tr><td>HA (PA-450)</td><td>Dedicated HA1 + HA2 ports</td></tr>
+            <tr><td>Ports (PA-450)</td><td>8× GE + 2× SFP + 2× HA</td></tr>
+            <tr><td>Max sessions (PA-450)</td><td>200,000</td></tr>
+          </table>
+        </div>
+        <div class="port-diagram-wrap">
+          <div class="port-diagram-title">PA-450 Front Panel</div>
+          <div class="port-face">
+            <div class="port-face-label">8× GE + 2× SFP + 2× HA + OOB</div>
+            <div class="port-row-g">
+              <div class="p p-rj45"><div class="p-body c-wan">E1/1</div></div>
+              <div class="p p-rj45"><div class="p-body c-wan">E1/2</div></div>
+              <div class="p p-rj45"><div class="p-body c-eth">E1/3</div></div>
+              <div class="p p-rj45"><div class="p-body c-eth">E1/4</div></div>
+              <div class="p p-rj45"><div class="p-body c-eth">E1/5</div></div>
+              <div class="p p-rj45"><div class="p-body c-eth">E1/6</div></div>
+              <div class="p p-rj45"><div class="p-body c-eth">E1/7</div></div>
+              <div class="p p-rj45"><div class="p-body c-eth">E1/8</div></div>
+              <div class="port-divider"></div>
+              <div class="p p-sfp"><div class="p-body c-sfp">SFP1</div></div>
+              <div class="p p-sfp"><div class="p-body c-sfp">SFP2</div></div>
+              <div class="port-divider"></div>
+              <div class="p p-rj45"><div class="p-body c-ha">HA1</div></div>
+              <div class="p p-rj45"><div class="p-body c-ha">HA2</div></div>
+              <div class="port-divider"></div>
+              <div class="p p-con"><div class="p-body c-mgmt">MGT</div></div>
+              <div class="p p-con"><div class="p-body c-con">CON</div></div>
+            </div>
+          </div>
+          <div class="port-legend-row">
+            <div class="port-legend-item"><div class="port-legend-dot" style="background:#F5A623;"></div>Untrust (WAN)</div>
+            <div class="port-legend-item"><div class="port-legend-dot" style="background:#4A9EFF;"></div>Trust / DMZ</div>
+            <div class="port-legend-item"><div class="port-legend-dot" style="background:#FF4D6A;"></div>Dedicated HA</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MID -->
+<div id="pa-mid" class="section">
+  <div class="section-header"><h2>Mid-Range — PA-3200 Series</h2><div class="divider palo"></div></div>
+
+  <div class="device-detail">
+    <div class="device-detail-header">
+      <span class="device-detail-badge">NGFW — 1U RACK</span>
+      <div><div class="device-detail-title">PA-3220 / PA-3250 / PA-3260</div><div class="device-detail-subtitle">Enterprise perimeter and data center edge NGFWs</div></div>
+    </div>
+    <div class="device-detail-body">
+      <div class="device-detail-grid">
+        <div class="device-desc-block">
+          <p>The PA-3200 series is for enterprise perimeters, internet edge, and data center edge deployments. Each model uses Palo Alto's custom ASICs — <strong>separate processors</strong> handle firewall sessions, threat prevention, and SSL decryption independently, so enabling all features simultaneously does not degrade throughput the way it does on competitors. The PA-3260 also supports VSYS (virtual systems) for hosting multiple firewall contexts on one physical device.</p>
+          <table class="spec-table">
+            <tr><td>PA-3220 NGFW</td><td>4.2 Gbps App-ID</td></tr>
+            <tr><td>PA-3250 NGFW</td><td>5.4 Gbps App-ID</td></tr>
+            <tr><td>PA-3260 NGFW</td><td>7.2 Gbps App-ID</td></tr>
+            <tr><td>Threat Prevention</td><td>PA-3260: 4.1 Gbps</td></tr>
+            <tr><td>SSL Inspection</td><td>PA-3260: 3.7 Gbps</td></tr>
+            <tr><td>Ports</td><td>8× GE + 4× SFP + 2× SFP+ (10G) + 2× HA</td></tr>
+            <tr><td>Virtual Systems</td><td>PA-3260: up to 25 VSYS</td></tr>
+            <tr><td>HA</td><td>Active/active or active/passive</td></tr>
+          </table>
+        </div>
+        <div class="port-diagram-wrap">
+          <div class="port-diagram-title">PA-3260 Front Panel — 1U Rack</div>
+          <div class="port-face">
+            <div class="port-face-label">8× GE + 4× SFP + 2× 10G SFP+ + HA + OOB</div>
+            <div class="port-row-g">
+              <div class="p p-rj45"><div class="p-body c-wan">E1/1</div></div>
+              <div class="p p-rj45"><div class="p-body c-wan">E1/2</div></div>
+              <div class="p p-rj45"><div class="p-body c-eth">E1/3</div></div>
+              <div class="p p-rj45"><div class="p-body c-eth">E1/4</div></div>
+              <div class="p p-rj45"><div class="p-body c-eth">E1/5</div></div>
+              <div class="p p-rj45"><div class="p-body c-eth">E1/6</div></div>
+              <div class="p p-rj45"><div class="p-body c-eth">E1/7</div></div>
+              <div class="p p-rj45"><div class="p-body c-eth">E1/8</div></div>
+            </div>
+            <div class="port-row-g">
+              <div class="p p-sfp"><div class="p-body c-sfp">SFP1</div></div>
+              <div class="p p-sfp"><div class="p-body c-sfp">SFP2</div></div>
+              <div class="p p-sfp"><div class="p-body c-sfp">SFP3</div></div>
+              <div class="p p-sfp"><div class="p-body c-sfp">SFP4</div></div>
+              <div class="port-divider"></div>
+              <div class="p p-sfp"><div class="p-body c-sfp28">10G-1</div></div>
+              <div class="p p-sfp"><div class="p-body c-sfp28">10G-2</div></div>
+              <div class="port-divider"></div>
+              <div class="p p-rj45"><div class="p-body c-ha">HA1</div></div>
+              <div class="p p-rj45"><div class="p-body c-ha">HA2</div></div>
+              <div class="port-divider"></div>
+              <div class="p p-con"><div class="p-body c-mgmt">MGT</div></div>
+              <div class="p p-con"><div class="p-body c-con">CON</div></div>
+            </div>
+          </div>
+          <div class="port-legend-row">
+            <div class="port-legend-item"><div class="port-legend-dot" style="background:#F5A623;"></div>Untrust</div>
+            <div class="port-legend-item"><div class="port-legend-dot" style="background:#4A9EFF;"></div>Trust / DMZ</div>
+            <div class="port-legend-item"><div class="port-legend-dot" style="background:#FF8C42;"></div>1G SFP</div>
+            <div class="port-legend-item"><div class="port-legend-dot" style="background:#FFD700;"></div>10G SFP+</div>
+            <div class="port-legend-item"><div class="port-legend-dot" style="background:#FF4D6A;"></div>HA</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HIGH END -->
+<div id="pa-high" class="section">
+  <div class="section-header"><h2>High-End — PA-5200 Series</h2><div class="divider palo"></div></div>
+
+  <div class="device-detail">
+    <div class="device-detail-header">
+      <span class="device-detail-badge">NGFW — HIGH END</span>
+      <div><div class="device-detail-title">PA-5220 / PA-5250 / PA-5260</div><div class="device-detail-subtitle">Large enterprise and service provider NGFWs — 20–72 Gbps</div></div>
+    </div>
+    <div class="device-detail-body">
+      <div class="device-detail-grid">
+        <div class="device-desc-block">
+          <p>The PA-5200 series is for large enterprise internet edges, large campus perimeters, and service providers. The PA-5260 at the top of the range delivers 72 Gbps App-ID throughput. All models have <strong>NPC (Network Processing Cards)</strong> — modular interface cards that add interface density without replacing the chassis. Supports up to 225 VSYS for service provider multi-tenancy. Panorama is essentially required at this scale.</p>
+          <table class="spec-table">
+            <tr><td>PA-5220 NGFW</td><td>20 Gbps App-ID</td></tr>
+            <tr><td>PA-5250 NGFW</td><td>34 Gbps App-ID</td></tr>
+            <tr><td>PA-5260 NGFW</td><td>72 Gbps App-ID</td></tr>
+            <tr><td>Built-in ports</td><td>4× 100G QSFP28 + 8× 10G SFP+ + 12× GE</td></tr>
+            <tr><td>NPC slots</td><td>2 expansion slots for additional interface cards</td></tr>
+            <tr><td>VSYS (PA-5260)</td><td>Up to 225 virtual systems</td></tr>
+            <tr><td>HA</td><td>Active/active + active/passive</td></tr>
+            <tr><td>Form factor</td><td>2U rack (PA-5260)</td></tr>
+          </table>
+        </div>
+        <div class="port-diagram-wrap">
+          <div class="port-diagram-title">PA-5260 Front Panel — 2U Rack</div>
+          <div class="port-face">
+            <div class="port-face-label">Built-in 100G + 10G + GE interfaces</div>
+            <div class="port-row-g">
+              <div class="p p-qsfp"><div class="p-body c-qsfp">C1</div></div>
+              <div class="p p-qsfp"><div class="p-body c-qsfp">C2</div></div>
+              <div class="p p-qsfp"><div class="p-body c-qsfp">C3</div></div>
+              <div class="p p-qsfp"><div class="p-body c-qsfp">C4</div></div>
+              <div class="port-divider"></div>
+              <div class="p p-sfp"><div class="p-body c-sfp28">10G-1</div></div>
+              <div class="p p-sfp"><div class="p-body c-sfp28">10G-2</div></div>
+              <div class="p p-sfp"><div class="p-body c-sfp28">10G-3</div></div>
+              <div class="p p-sfp"><div class="p-body c-sfp28">10G-4</div></div>
+              <div class="p p-sfp"><div class="p-body c-sfp28">10G-5</div></div>
+              <div class="p p-sfp"><div class="p-body c-sfp28">10G-6</div></div>
+              <div class="p p-sfp"><div class="p-body c-sfp28">10G-7</div></div>
+              <div class="p p-sfp"><div class="p-body c-sfp28">10G-8</div></div>
+            </div>
+            <div class="port-row-g">
+              <div class="p p-rj45"><div class="p-body c-eth">GE1</div></div>
+              <div class="p p-rj45"><div class="p-body c-eth">GE2</div></div>
+              <div class="p p-rj45"><div class="p-body c-eth">GE3</div></div>
+              <div class="p p-rj45"><div class="p-body c-eth">GE4</div></div>
+              <div class="p p-rj45"><div class="p-body c-eth">GE5</div></div>
+              <div class="p p-rj45"><div class="p-body c-eth">GE6</div></div>
+              <div class="p p-rj45"><div class="p-body c-eth">GE7</div></div>
+              <div class="p p-rj45"><div class="p-body c-eth">GE8</div></div>
+              <div class="p p-rj45"><div class="p-body c-eth">GE9</div></div>
+              <div class="p p-rj45"><div class="p-body c-eth">GE10</div></div>
+              <div class="p p-rj45"><div class="p-body c-eth">GE11</div></div>
+              <div class="p p-rj45"><div class="p-body c-eth">GE12</div></div>
+              <div class="port-divider"></div>
+              <div class="p p-rj45"><div class="p-body c-ha">HA1</div></div>
+              <div class="p p-rj45"><div class="p-body c-ha">HA2</div></div>
+              <div class="port-divider"></div>
+              <div class="p p-con"><div class="p-body c-mgmt">MGT</div></div>
+              <div class="p p-con"><div class="p-body c-con">CON</div></div>
+            </div>
+          </div>
+          <div class="port-face">
+            <div class="port-face-label">NPC Expansion Slot 1 &amp; 2 (modular interface cards)</div>
+            <div class="port-row-g">
+              <div class="p p-sfp" style="width:80px;"><div class="p-body c-sfp28" style="width:76px;font-size:8px;">NPC Slot 1</div></div>
+              <div class="p p-sfp" style="width:80px;"><div class="p-body c-sfp28" style="width:76px;font-size:8px;">NPC Slot 2</div></div>
+            </div>
+          </div>
+          <div class="port-legend-row">
+            <div class="port-legend-item"><div class="port-legend-dot" style="background:#DA70D6;"></div>100G QSFP28</div>
+            <div class="port-legend-item"><div class="port-legend-dot" style="background:#FFD700;"></div>10G SFP+</div>
+            <div class="port-legend-item"><div class="port-legend-dot" style="background:#4A9EFF;"></div>1G GE</div>
+            <div class="port-legend-item"><div class="port-legend-dot" style="background:#FF4D6A;"></div>HA</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DATA CENTER -->
+<div id="pa-dc" class="section">
+  <div class="section-header"><h2>Data Center — PA-7000 Series</h2><div class="divider palo"></div></div>
+
+  <div class="device-detail">
+    <div class="device-detail-header">
+      <span class="device-detail-badge">NGFW — CHASSIS</span>
+      <div><div class="device-detail-title">PA-7050 / PA-7080</div><div class="device-detail-subtitle">Modular chassis NGFWs — hyperscale data center and service provider</div></div>
+    </div>
+    <div class="device-detail-body">
+      <div class="device-detail-grid">
+        <div class="device-desc-block">
+          <p>The PA-7000 is a fully modular chassis firewall. The chassis holds <strong>Line Cards (LPC)</strong> for interfaces and <strong>Switch Management Cards (SMC)</strong> for the control plane. The PA-7050 has 5 slots; the PA-7080 has 8 slots. Each slot can hold a different line card — mix and match 100G, 40G, and 10G cards as needed. Used by large enterprises with 100G data center interconnects, major internet service providers, and large cloud providers. Panorama is mandatory — managing a PA-7000 via direct GUI is not practical at scale.</p>
+          <table class="spec-table">
+            <tr><td>PA-7050 throughput</td><td>Up to 120 Gbps App-ID (fully loaded)</td></tr>
+            <tr><td>PA-7080 throughput</td><td>Up to 256 Gbps App-ID (fully loaded)</td></tr>
+            <tr><td>PA-7050 slots</td><td>5 line card slots + 2 SMC slots</td></tr>
+            <tr><td>PA-7080 slots</td><td>8 line card slots + 2 SMC slots</td></tr>
+            <tr><td>Line cards</td><td>LPC-A (100G QSFP28), LPC-B (40G QSFP+), LPC-C (10G SFP+)</td></tr>
+            <tr><td>VSYS</td><td>Up to 1,020 virtual systems</td></tr>
+            <tr><td>Power</td><td>Redundant hot-swap PSUs (AC and DC options)</td></tr>
+            <tr><td>Management</td><td>Panorama required for practical management</td></tr>
+          </table>
+        </div>
+        <div class="port-diagram-wrap">
+          <div class="port-diagram-title">PA-7050 Chassis — Front View (5 line card slots)</div>
+          <div class="port-face">
+            <div class="port-face-label">SMC (Switch Management Cards) — top slots</div>
+            <div class="port-row-g">
+              <div class="p p-sfp" style="width:80px;"><div class="p-body c-mgmt" style="width:76px;">SMC-A</div></div>
+              <div class="p p-sfp" style="width:80px;"><div class="p-body c-mgmt" style="width:76px;">SMC-B</div></div>
+            </div>
+          </div>
+          <div class="port-face">
+            <div class="port-face-label">Line Card slots 1–5 (100G LPC-A shown)</div>
+            <div class="port-row-g">
+              <span class="port-group-label">Slot 1</span>
+              <div class="p p-qsfp"><div class="p-body c-qsfp">C1</div></div>
+              <div class="p p-qsfp"><div class="p-body c-qsfp">C2</div></div>
+              <div class="p p-qsfp"><div class="p-body c-qsfp">C3</div></div>
+              <div class="p p-qsfp"><div class="p-body c-qsfp">C4</div></div>
+              <div class="p p-qsfp"><div class="p-body c-qsfp">C5</div></div>
+              <div class="p p-qsfp"><div class="p-body c-qsfp">C6</div></div>
+            </div>
+            <div class="port-row-g">
+              <span class="port-group-label">Slot 2</span>
+              <div class="p p-qsfp"><div class="p-body c-qsfp">C1</div></div>
+              <div class="p p-qsfp"><div class="p-body c-qsfp">C2</div></div>
+              <div class="p p-qsfp"><div class="p-body c-qsfp">C3</div></div>
+              <div class="p p-qsfp"><div class="p-body c-qsfp">C4</div></div>
+              <div class="p p-qsfp"><div class="p-body c-qsfp">C5</div></div>
+              <div class="p p-qsfp"><div class="p-body c-qsfp">C6</div></div>
+            </div>
+            <div class="port-row-g">
+              <span class="port-group-label">3-5</span>
+              <div class="p p-sfp" style="width:80px;"><div class="p-body c-sfp28" style="width:76px;font-size:8px;">LPC Slot 3</div></div>
+              <div class="p p-sfp" style="width:80px;"><div class="p-body c-sfp28" style="width:76px;font-size:8px;">LPC Slot 4</div></div>
+              <div class="p p-sfp" style="width:80px;"><div class="p-body c-sfp28" style="width:76px;font-size:8px;">LPC Slot 5</div></div>
+            </div>
+          </div>
+          <div class="port-legend-row">
+            <div class="port-legend-item"><div class="port-legend-dot" style="background:#DA70D6;"></div>100G QSFP28 (LPC-A)</div>
+            <div class="port-legend-item"><div class="port-legend-dot" style="background:#00CC6A;"></div>SMC (management plane)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PANORAMA -->
+<div id="pa-mgmt" class="section">
+  <div class="section-header"><h2>Panorama — Centralised Management</h2><div class="divider palo"></div></div>
+
+  <div class="device-detail">
+    <div class="device-detail-header">
+      <span class="device-detail-badge">MANAGEMENT</span>
+      <div><div class="device-detail-title">Panorama M-200 / M-500 / M-700</div><div class="device-detail-subtitle">Central management server for all PA firewalls</div></div>
+    </div>
+    <div class="device-detail-body">
+      <div class="device-detail-grid">
+        <div class="device-desc-block">
+          <p>Panorama is the single pane of glass for all Palo Alto firewalls. You define <strong>Device Groups</strong> (e.g. "All branches", "Data center edge") and push policy packages to hundreds of firewalls simultaneously. <strong>Templates</strong> handle shared network config (zones, IP addresses, routing). The M-700 is the latest and most powerful, supporting 96 TB log storage. Also available as a VM (Panorama-VM on ESXi, KVM, AWS, Azure, GCP).</p>
+          <table class="spec-table">
+            <tr><td>M-200</td><td>Manages up to 1,000 devices, 24 TB storage</td></tr>
+            <tr><td>M-500</td><td>Manages up to 5,000 devices, 48 TB storage</td></tr>
+            <tr><td>M-700</td><td>Manages up to 10,000 devices, 96 TB storage</td></tr>
+            <tr><td>Panorama-VM</td><td>Available on ESXi, KVM, AWS, Azure, GCP</td></tr>
+            <tr><td>Device Groups</td><td>Shared policy pushed to groups of firewalls</td></tr>
+            <tr><td>Templates</td><td>Shared network config (zones, routing, IPs)</td></tr>
+            <tr><td>Log aggregation</td><td>Centralised logs from all firewalls</td></tr>
+          </table>
+        </div>
+        <div class="port-diagram-wrap">
+          <div class="port-diagram-title">M-500 Front Panel — 1U Rack</div>
+          <div class="port-face">
+            <div class="port-face-label">Management + Data interfaces</div>
+            <div class="port-row-g">
+              <div class="p p-rj45"><div class="p-body c-eth">GE1</div></div>
+              <div class="p p-rj45"><div class="p-body c-eth">GE2</div></div>
+              <div class="port-divider"></div>
+              <div class="p p-con"><div class="p-body c-mgmt">MGT</div></div>
+              <div class="p p-con"><div class="p-body c-con">CON</div></div>
+              <div class="p p-usb"><div class="p-body c-usb">USB</div></div>
+            </div>
+          </div>
+          <div class="port-legend-row">
+            <div class="port-legend-item"><div class="port-legend-dot" style="background:#4A9EFF;"></div>Log collector / network connectivity</div>
+            <div class="port-legend-item"><div class="port-legend-dot" style="background:#00CC6A;"></div>OOB management</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CLOUD -->
+<div id="pa-cloud" class="section">
+  <div class="section-header"><h2>Cloud Security — Prisma</h2><div class="divider palo"></div></div>
+  <div class="alert palo">
+    <span class="alert-icon">☁️</span>
+    <p><strong>Palo Alto does not make APs or physical switches.</strong> Their wireless and LAN strategy is cloud-based. <strong>Prisma Access</strong> secures users on any WiFi or internet connection by routing traffic through Palo Alto cloud PoPs for inspection — regardless of which physical AP they're connected to. <strong>Prisma SD-WAN</strong> (formerly CloudGenix) provides SD-WAN with Palo Alto security integrated. For AP hardware at PA customers, Cisco or Fortinet APs are typically deployed alongside the PA firewalls.</p>
+  </div>
+  <div class="grid-2">
+    <div class="card" style="border-top:3px solid var(--palo-orange);">
+      <div class="card-icon" style="background:var(--palo-pale);">🌐</div>
+      <h3 style="color:var(--palo-orange);">Prisma Access</h3>
+      <p>Cloud-delivered SASE platform. Every user — whether in the office, home, or travelling — tunnels through Prisma Access for internet security (ZIA equivalent) and private app access (ZPA equivalent). Managed from Panorama or Prisma Cloud portal. 150+ PoP locations globally.</p>
+    </div>
+    <div class="card" style="border-top:3px solid var(--palo-orange);">
+      <div class="card-icon" style="background:var(--palo-pale);">🔀</div>
+      <h3 style="color:var(--palo-orange);">Prisma SD-WAN</h3>
+      <p>Intelligent WAN with integrated Palo Alto security. Branch appliances (ION series) connect to cloud PoPs for centrally-managed WAN optimisation and security — an alternative to deploying separate SD-WAN + firewall hardware at each branch.</p>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<footer class="footer"><p>Orange <span>Business</span> — Network Knowledge Base &nbsp;·&nbsp; <a href="index.html" style="color:rgba(255,255,255,0.4);">Home</a></p></footer>
+<script src="shared.js"></script>
+<script>
+(function(){
+  var sections=['pa-entry','pa-mid','pa-high','pa-dc','pa-mgmt','pa-cloud'];
+  var links=document.querySelectorAll('.page-subnav a');
+  window.addEventListener('scroll',function(){
+    var pos=window.scrollY+120,current=sections[0];
+    sections.forEach(function(id){var el=document.getElementById(id);if(el&&el.offsetTop<=pos)current=id;});
+    links.forEach(function(a){a.classList.toggle('active',a.getAttribute('href')==='#'+current);});
+  });
+})();
+</script>
+</body>
+</html>

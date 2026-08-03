@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wireless — OB Network KB</title>
+<link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<nav class="topnav">
+  <a href="index.html" class="topnav-brand">
+    <div class="topnav-logo">OB</div>
+    <div class="topnav-brand-text">Orange <span>Business</span></div>
+  </a>
+  <div class="topnav-links">
+    <a href="index.html"          class="nav-link" id="nav-index">Home</a>
+    <a href="lan-wan-basics.html" class="nav-link" id="nav-lan">LAN / WAN</a>
+    <a href="ip-routing.html"     class="nav-link" id="nav-ip">IP Routing</a>
+    <a href="switching.html"      class="nav-link" id="nav-sw">Switching</a>
+    <a href="wireless.html"       class="nav-link active" id="nav-wifi">Wireless</a>
+    <a href="firewalls.html"      class="nav-link" id="nav-fw">Firewalls</a>
+    <a href="zscaler.html"        class="nav-link" id="nav-zs">Zscaler</a>
+    <a href="devices.html"        class="nav-link" id="nav-devices">Devices</a>
+    <a href="glossary.html"       class="nav-link" id="nav-gl">Glossary</a>
+  </div>
+  <div class="topnav-badge">New Hire Guide</div>
+</nav>
+
+<div class="breadcrumb">
+  <a href="index.html">Home</a><span>/</span> Wireless
+</div>
+
+<div class="page-hero dark">
+  <div class="hero-content">
+    <div class="hero-tag">📡 WiFi</div>
+    <h1>Wireless <span>Networks</span></h1>
+    <p class="hero-sub">Access Points, Wireless LAN Controllers, WiFi standards, roaming, SSIDs, and enterprise wireless architecture across Cisco, Palo Alto, and Fortinet.</p>
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- WIFI STANDARDS -->
+  <div class="section">
+    <div class="section-header">
+      <h2>WiFi Standards — 802.11</h2>
+      <div class="divider"></div>
+      <p>Each generation of WiFi improves speed, capacity, and efficiency. Enterprise environments typically require at least WiFi 6 (802.11ax) on new deployments.</p>
+    </div>
+    <table class="data-table">
+      <thead>
+        <tr><th>Standard</th><th>Marketing Name</th><th>Band</th><th>Max Speed</th><th>Key Feature</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>802.11a</td><td>WiFi 2</td><td>5 GHz</td><td>54 Mbps</td><td>First 5 GHz standard</td></tr>
+        <tr><td>802.11g</td><td>WiFi 3</td><td>2.4 GHz</td><td>54 Mbps</td><td>Widespread consumer adoption</td></tr>
+        <tr><td>802.11n</td><td>WiFi 4</td><td>2.4 / 5 GHz</td><td>600 Mbps</td><td>MIMO introduced</td></tr>
+        <tr><td>802.11ac</td><td>WiFi 5</td><td>5 GHz</td><td>3.5 Gbps</td><td>MU-MIMO, beamforming</td></tr>
+        <tr><td>802.11ax</td><td>WiFi 6 / 6E</td><td>2.4 / 5 / 6 GHz</td><td>9.6 Gbps</td><td>OFDMA, BSS Coloring, TWT</td></tr>
+        <tr><td>802.11be</td><td>WiFi 7</td><td>2.4 / 5 / 6 GHz</td><td>46 Gbps</td><td>Multi-Link Operation (MLO)</td></tr>
+      </tbody>
+    </table>
+    <div class="alert orange">
+      <span class="alert-icon">💡</span>
+      <p><strong>WiFi 6E</strong> adds the 6 GHz band — a clean, uncongested spectrum with no legacy devices. Ideal for high-density environments (offices, conference rooms). WiFi 6E APs are now the standard recommendation on new deployments.</p>
+    </div>
+  </div>
+
+  <!-- ENTERPRISE WIRELESS ARCHITECTURE -->
+  <div class="section">
+    <div class="section-header">
+      <h2>Enterprise Wireless Architecture</h2>
+      <div class="divider"></div>
+    </div>
+
+    <div class="diagram-box">
+      <svg viewBox="0 0 700 240" xmlns="http://www.w3.org/2000/svg" style="font-family:'Sora',sans-serif;">
+        <!-- Cloud / Internet -->
+        <ellipse cx="350" cy="30" rx="90" ry="22" fill="#FFF0E6" stroke="#FF6200" stroke-width="1.5" stroke-dasharray="5,2"/>
+        <text x="350" y="34" text-anchor="middle" font-size="11" font-weight="600" fill="#CC4E00">Internet / Cloud Mgmt</text>
+        <line x1="350" y1="52" x2="350" y2="75" stroke="#FF6200" stroke-width="1.5"/>
+
+        <!-- WLC / Controller -->
+        <rect x="255" y="75" width="190" height="36" rx="8" fill="#1BA0D7"/>
+        <text x="350" y="98" text-anchor="middle" font-size="12" font-weight="600" fill="white">WLC / Cloud Controller</text>
+        <line x1="350" y1="111" x2="350" y2="130" stroke="#aaa" stroke-width="1.5"/>
+
+        <!-- Core Switch -->
+        <rect x="275" y="130" width="150" height="30" rx="6" fill="#FF6200"/>
+        <text x="350" y="149" text-anchor="middle" font-size="11" font-weight="600" fill="white">Core Switch (PoE)</text>
+
+        <!-- APs -->
+        <line x1="310" y1="160" x2="160" y2="195" stroke="#aaa" stroke-width="1.5"/>
+        <line x1="330" y1="160" x2="280" y2="195" stroke="#aaa" stroke-width="1.5"/>
+        <line x1="370" y1="160" x2="420" y2="195" stroke="#aaa" stroke-width="1.5"/>
+        <line x1="390" y1="160" x2="540" y2="195" stroke="#aaa" stroke-width="1.5"/>
+
+        <rect x="110" y="195" width="100" height="30" rx="6" fill="#E8F6FD" stroke="#1BA0D7" stroke-width="1.5"/>
+        <text x="160" y="214" text-anchor="middle" font-size="10" font-weight="600" fill="#1BA0D7">AP — Floor 1</text>
+        <rect x="230" y="195" width="100" height="30" rx="6" fill="#E8F6FD" stroke="#1BA0D7" stroke-width="1.5"/>
+        <text x="280" y="214" text-anchor="middle" font-size="10" font-weight="600" fill="#1BA0D7">AP — Floor 2</text>
+        <rect x="370" y="195" width="100" height="30" rx="6" fill="#E8F6FD" stroke="#1BA0D7" stroke-width="1.5"/>
+        <text x="420" y="214" text-anchor="middle" font-size="10" font-weight="600" fill="#1BA0D7">AP — Floor 3</text>
+        <rect x="490" y="195" width="100" height="30" rx="6" fill="#E8F6FD" stroke="#1BA0D7" stroke-width="1.5"/>
+        <text x="540" y="214" text-anchor="middle" font-size="10" font-weight="600" fill="#1BA0D7">AP — Lobby</text>
+
+        <!-- CAPWAP label -->
+        <text x="200" y="175" font-size="9" fill="#888" text-anchor="middle">CAPWAP tunnel</text>
+        <text x="500" y="175" font-size="9" fill="#888" text-anchor="middle">PoE uplink</text>
+      </svg>
+      <p class="diagram-caption">Centralized CAPWAP architecture: all APs tunnel traffic to the WLC for policy enforcement</p>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <h3>Centralized (CAPWAP)</h3>
+        <p>APs tunnel all client traffic back to the <strong>WLC (Wireless LAN Controller)</strong> using CAPWAP (Control and Provisioning of Wireless Access Points). The WLC enforces all security policies, applies QoS, and manages roaming. Best for environments where all APs are near the WLC. Used by Cisco WLC, Fortinet FortiWLC.</p>
+      </div>
+      <div class="card">
+        <h3>FlexConnect / Local Mode</h3>
+        <p>In <strong>FlexConnect</strong> (Cisco), APs can switch traffic locally at the branch even if the WAN link to the WLC goes down. Only management traffic tunnels to the WLC. Critical for branch offices — clients stay connected during WAN outages.</p>
+      </div>
+      <div class="card">
+        <h3>Cloud-Managed</h3>
+        <p>Modern APs (Cisco Catalyst Center, Fortinet FortiCloud, Palo Alto Prisma Access) are managed from the cloud. No on-premises WLC hardware needed. Configuration, firmware updates, and monitoring happen through a cloud portal. Ideal for distributed multi-site deployments.</p>
+      </div>
+      <div class="card">
+        <h3>PoE — Powering APs</h3>
+        <p>Enterprise APs get both data and power from the Ethernet cable — <strong>PoE (802.3af)</strong> provides 15W, <strong>PoE+ (802.3at)</strong> provides 30W, and <strong>PoE++ (802.3bt)</strong> provides 60–90W. WiFi 6E APs typically require PoE+ or PoE++. The switch must have a PoE budget large enough to power all connected APs.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SSIDS AND VLANS -->
+  <div class="section">
+    <div class="section-header">
+      <h2>SSIDs, VLANs &amp; Security</h2>
+      <div class="divider"></div>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <h3>SSID to VLAN Mapping</h3>
+        <p>Each SSID (WiFi network name) maps to a VLAN. This is how an AP can broadcast both "Corp-WiFi" and "Guest-WiFi" simultaneously — each on a different VLAN, keeping traffic separated.</p>
+        <div class="code-block" style="margin-top:12px;margin-bottom:0;">
+          <pre><span class="cmt">Corp-WiFi  → VLAN 10 (192.168.10.0/24)</span>
+<span class="cmt">IoT-Devices → VLAN 40 (10.10.40.0/24)</span>
+<span class="cmt">Guest-WiFi  → VLAN 20 (192.168.20.0/24)</span>
+<span class="cmt">                ↓</span>
+<span class="cmt">Each tunneled to WLC or bridged locally</span></pre>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Authentication Methods</h3>
+        <ul class="spec-list">
+          <li><div class="spec-dot"></div><span><strong>WPA3-Personal:</strong> Pre-shared key, SAE handshake (replaces PSK)</span></li>
+          <li><div class="spec-dot"></div><span><strong>WPA3-Enterprise:</strong> 802.1X + RADIUS — each user authenticates individually</span></li>
+          <li><div class="spec-dot"></div><span><strong>802.1X / EAP:</strong> Corporate standard — authenticates via Active Directory/LDAP</span></li>
+          <li><div class="spec-dot"></div><span><strong>Captive Portal:</strong> For guest WiFi — redirect to a web login page</span></li>
+          <li><div class="spec-dot"></div><span><strong>MAB (MAC Auth Bypass):</strong> For devices that can't do 802.1X (IoT)</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROAMING -->
+  <div class="section">
+    <div class="section-header">
+      <h2>Roaming</h2>
+      <div class="divider"></div>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <h3>Layer 2 Roaming</h3>
+        <p>Client moves between APs in the same VLAN/subnet. The WLC updates the MAC address table. The client keeps its IP address — seamless for voice and video. Fast handoff using <strong>802.11r (Fast BSS Transition)</strong>.</p>
+      </div>
+      <div class="card">
+        <h3>Layer 3 Roaming</h3>
+        <p>Client moves between APs in different VLANs/subnets. The WLC creates a mobility tunnel to anchor the session — the client's original IP is preserved. More complex but allows roaming across buildings with different subnets.</p>
+      </div>
+      <div class="card">
+        <h3>802.11r — Fast Roaming</h3>
+        <p>Fast BSS Transition pre-authenticates the client at neighboring APs before it moves. Dramatically reduces roaming handoff time from ~100ms to ~20ms — critical for voice calls and video that break above 50ms disruption.</p>
+      </div>
+      <div class="card">
+        <h3>802.11k / 802.11v</h3>
+        <p><strong>802.11k</strong> lets APs report neighbor lists to clients — clients know which AP to roam to next. <strong>802.11v</strong> lets the network steer clients to less-congested APs (BSS Transition Management). Together they enable <strong>Band Steering</strong> (pushing 5 GHz-capable clients off 2.4 GHz).</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- VENDOR WIRELESS -->
+  <div class="section">
+    <div class="section-header">
+      <h2>Vendor Wireless Solutions</h2>
+      <div class="divider"></div>
+    </div>
+    <div class="vendor-nav">
+      <button class="vendor-btn cisco active" onclick="showVendor('wifi-cisco', this)">🔵 Cisco</button>
+      <button class="vendor-btn palo"         onclick="showVendor('wifi-palo', this)">🔶 Palo Alto</button>
+      <button class="vendor-btn fort"         onclick="showVendor('wifi-fort', this)">🔴 Fortinet</button>
+    </div>
+
+    <!-- Cisco Wireless -->
+    <div id="vendor-wifi-cisco" class="vendor-panel active">
+      <div class="alert blue">
+        <span class="alert-icon">🔵</span>
+        <p><strong>Cisco Wireless:</strong> Cisco offers two product lines — <strong>Catalyst</strong> (enterprise, CW9162/9164/9166 series) and legacy <strong>Aironet</strong>. Controllers: hardware WLC (3504, 5520) or the software-based <strong>Cisco Catalyst Center</strong> (cloud) and embedded WLC on Catalyst 9000 switches.</p>
+      </div>
+      <div class="grid-auto">
+        <div class="device-card">
+          <div class="device-card-head">
+            <span class="badge badge-cisco">ACCESS POINT</span>
+            <span class="device-card-name">Catalyst CW9166I</span>
+          </div>
+          <div class="device-card-body">
+            <div class="port-diagram">
+              <div class="port-diagram-label">Rear Connectors</div>
+              <div class="port-row">
+                <div class="port poe" title="PoE+ Uplink">PoE+</div>
+                <div class="port eth" title="2.5G Ethernet">2.5G</div>
+                <div class="port console">CON</div>
+                <div class="port usb">USB</div>
+              </div>
+              <div class="port-legend">
+                <div class="legend-item"><div class="legend-dot" style="background:#00E5CC;"></div>PoE+ power + data</div>
+                <div class="legend-item"><div class="legend-dot" style="background:#4A9EFF;"></div>2.5G uplink</div>
+              </div>
+            </div>
+            <p class="device-desc">Flagship WiFi 6E tri-band AP. Supports 2.4 GHz, 5 GHz, and 6 GHz simultaneously. IoT radio for BLE/Zigbee built in.</p>
+            <ul class="spec-list">
+              <li><div class="spec-dot"></div><span>WiFi 6E (802.11ax) tri-band</span></li>
+              <li><div class="spec-dot"></div><span>Up to 7.7 Gbps aggregate throughput</span></li>
+              <li><div class="spec-dot"></div><span>Requires PoE++ (802.3bt) for full performance</span></li>
+              <li><div class="spec-dot"></div><span>Integrated IoT radio (BLE 5.0 + Zigbee)</span></li>
+              <li><div class="spec-dot"></div><span>Managed via Catalyst Center or cloud</span></li>
+            </ul>
+          </div>
+        </div>
+        <div class="device-card">
+          <div class="device-card-head">
+            <span class="badge badge-cisco">WLC</span>
+            <span class="device-card-name">Cisco 9800-L</span>
+          </div>
+          <div class="device-card-body">
+            <div class="port-diagram">
+              <div class="port-diagram-label">Front Panel</div>
+              <div class="port-row">
+                <div class="port eth" title="LAN Port 1">GE1</div>
+                <div class="port eth">GE2</div>
+                <div class="port sfp">SFP1</div>
+                <div class="port sfp">SFP2</div>
+                <div class="port mgmt">Mg</div>
+                <div class="port console">CON</div>
+                <div class="port usb">USB</div>
+              </div>
+            </div>
+            <p class="device-desc">Branch/mid-market Wireless LAN Controller running IOS-XE. Manages up to 250 APs and 5,000 clients. Also available as virtual (9800-CL) or embedded in Catalyst 9300.</p>
+            <ul class="spec-list">
+              <li><div class="spec-dot"></div><span>Manages up to 250 APs / 5,000 clients</span></li>
+              <li><div class="spec-dot"></div><span>Supports FlexConnect, local switching</span></li>
+              <li><div class="spec-dot"></div><span>HA SSO — sub-second failover to standby WLC</span></li>
+              <li><div class="spec-dot"></div><span>CAPWAP control plane + data plane</span></li>
+              <li><div class="spec-dot"></div><span>Cisco DNA integration for analytics</span></li>
+            </ul>
+          </div>
+        </div>
+        <div class="device-card">
+          <div class="device-card-head">
+            <span class="badge badge-cisco">WLC</span>
+            <span class="device-card-name">Cisco 9800-40</span>
+          </div>
+          <div class="device-card-body">
+            <div class="port-diagram">
+              <div class="port-diagram-label">Front Panel — 1U Rack</div>
+              <div class="port-row">
+                <div class="port eth">GE1</div>
+                <div class="port eth">GE2</div>
+                <div class="port sfp">10G-1</div>
+                <div class="port sfp">10G-2</div>
+                <div class="port sfp">10G-3</div>
+                <div class="port sfp">10G-4</div>
+                <div class="port mgmt">Mg</div>
+                <div class="port console">CON</div>
+              </div>
+            </div>
+            <p class="device-desc">Enterprise-grade WLC for large campus deployments. Scales to 2,000 APs and 32,000 clients. Rack-mounted with redundant power supply.</p>
+            <ul class="spec-list">
+              <li><div class="spec-dot"></div><span>Up to 2,000 APs / 32,000 clients</span></li>
+              <li><div class="spec-dot"></div><span>4x 10G SFP+ uplinks</span></li>
+              <li><div class="spec-dot"></div><span>Redundant hot-swappable power supply</span></li>
+              <li><div class="spec-dot"></div><span>N+1 / SSO high availability</span></li>
+              <li><div class="spec-dot"></div><span>Cisco TrustSec SGT support</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Palo Alto Wireless -->
+    <div id="vendor-wifi-palo" class="vendor-panel">
+      <div class="alert palo">
+        <span class="alert-icon">🔶</span>
+        <p><strong>Palo Alto Wireless:</strong> Palo Alto Networks does not manufacture APs or WLCs. Instead, they integrate wireless security through <strong>Prisma Access</strong> (cloud-delivered security for WiFi users) and <strong>IoT Security</strong> for identifying wireless IoT devices seen through NGFWs. On-premises WiFi is typically Cisco or Fortinet, with a PA firewall at the edge enforcing App-ID policy for WiFi traffic.</p>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-icon" style="background:var(--palo-pale);">☁️</div>
+          <h3>Prisma Access — Wireless Security</h3>
+          <p>When employees connect to WiFi (corporate or otherwise), Prisma Access creates a secure tunnel from their device to a cloud-based security stack. All traffic is inspected by Palo Alto's App-ID, URL filtering, and threat prevention — regardless of which physical WiFi network they're on.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon" style="background:var(--palo-pale);">🔍</div>
+          <h3>IoT Security for Wireless Devices</h3>
+          <p>PA firewalls use machine learning to identify wireless IoT devices (cameras, sensors, printers) that connect to the network — even if they can't authenticate via 802.1X. Profiles are applied automatically to control what those devices can access.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Fortinet Wireless -->
+    <div id="vendor-wifi-fort" class="vendor-panel">
+      <div class="alert fort">
+        <span class="alert-icon">🔴</span>
+        <p><strong>Fortinet Wireless:</strong> Fortinet offers a full wireless stack — <strong>FortiAP</strong> access points managed by a <strong>FortiGate firewall</strong> (acting as built-in WLC) or a dedicated <strong>FortiWLC</strong> appliance. FortiAPs integrate directly into the Security Fabric, allowing the FortiGate to apply UTM policies to wireless traffic.</p>
+      </div>
+      <div class="grid-auto">
+        <div class="device-card">
+          <div class="device-card-head">
+            <span class="badge badge-fort">ACCESS POINT</span>
+            <span class="device-card-name">FortiAP 431F</span>
+          </div>
+          <div class="device-card-body">
+            <div class="port-diagram">
+              <div class="port-diagram-label">Rear Panel</div>
+              <div class="port-row">
+                <div class="port poe" title="PoE++ Uplink">PoE++</div>
+                <div class="port eth">GE1</div>
+                <div class="port eth">GE2</div>
+                <div class="port console">CON</div>
+              </div>
+            </div>
+            <p class="device-desc">Tri-band WiFi 6 AP. Managed via FortiGate or FortiManager. Part of the Fortinet Security Fabric — wireless traffic is inspected by FortiGate NGFW policies.</p>
+            <ul class="spec-list">
+              <li><div class="spec-dot"></div><span>WiFi 6 (802.11ax) tri-band</span></li>
+              <li><div class="spec-dot"></div><span>4x4 MU-MIMO on 5 GHz, 4x4 on 2.4 GHz</span></li>
+              <li><div class="spec-dot"></div><span>Up to 3.95 Gbps aggregate</span></li>
+              <li><div class="spec-dot"></div><span>Managed directly from FortiGate via FortiLink</span></li>
+              <li><div class="spec-dot"></div><span>FortiGuard WIDS (wireless intrusion detection)</span></li>
+            </ul>
+          </div>
+        </div>
+        <div class="device-card">
+          <div class="device-card-head">
+            <span class="badge badge-fort">ACCESS POINT</span>
+            <span class="device-card-name">FortiAP 234F</span>
+          </div>
+          <div class="device-card-body">
+            <div class="port-diagram">
+              <div class="port-diagram-label">Rear Panel</div>
+              <div class="port-row">
+                <div class="port poe">PoE+</div>
+                <div class="port eth">GE1</div>
+                <div class="port console">CON</div>
+                <div class="port usb">USB</div>
+              </div>
+            </div>
+            <p class="device-desc">Indoor dual-band AP for standard office use. Compact ceiling-mount design. Cost-effective for general coverage areas.</p>
+            <ul class="spec-list">
+              <li><div class="spec-dot"></div><span>WiFi 6 dual-band (2.4 + 5 GHz)</span></li>
+              <li><div class="spec-dot"></div><span>2x2 MU-MIMO</span></li>
+              <li><div class="spec-dot"></div><span>Up to 1.73 Gbps aggregate</span></li>
+              <li><div class="spec-dot"></div><span>PoE+ powered (802.3at)</span></li>
+              <li><div class="spec-dot"></div><span>IoT BLE scanning (optional)</span></li>
+            </ul>
+          </div>
+        </div>
+        <div class="device-card">
+          <div class="device-card-head">
+            <span class="badge badge-fort">WLC</span>
+            <span class="device-card-name">FortiWLC 50D</span>
+          </div>
+          <div class="device-card-body">
+            <div class="port-diagram">
+              <div class="port-diagram-label">Front Panel</div>
+              <div class="port-row">
+                <div class="port eth">GE1</div>
+                <div class="port eth">GE2</div>
+                <div class="port mgmt">MGMT</div>
+                <div class="port console">CON</div>
+                <div class="port usb">USB</div>
+              </div>
+            </div>
+            <p class="device-desc">Dedicated Fortinet Wireless LAN Controller for high-density or multi-site deployments. Manages FortiAPs independently of the FortiGate. Supports seamless Layer 3 roaming.</p>
+            <ul class="spec-list">
+              <li><div class="spec-dot"></div><span>Manages up to 50 FortiAPs</span></li>
+              <li><div class="spec-dot"></div><span>Supports 802.11r/k/v fast roaming</span></li>
+              <li><div class="spec-dot"></div><span>Centralized CAPWAP + local bridging</span></li>
+              <li><div class="spec-dot"></div><span>High availability pair support</span></li>
+              <li><div class="spec-dot"></div><span>FortiManager integration for multi-site</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══════════════════════════════════════════
+     OPTION 43 — FULL EXPLANATION + LIVE CALCULATOR
+══════════════════════════════════════════ -->
+<div class="content">
+<div class="section">
+  <div class="section-header">
+    <h2>DHCP Option 43 — WLC Discovery</h2>
+    <div class="divider"></div>
+    <p>Option 43 is how a Cisco AP finds its Wireless LAN Controller automatically when it powers on — with no manual configuration on the AP itself.</p>
+  </div>
+
+<style>
+/* ── Option 43 styles ── */
+.o43-concept-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 32px;
+}
+@media(max-width:700px){ .o43-concept-grid { grid-template-columns: 1fr; } }
+
+.o43-concept-card {
+  background: #fff; border: 1px solid #EBEBEB; border-radius: 14px; padding: 22px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+}
+.o43-concept-card h4 {
+  font-size: 14px; font-weight: 700; margin-bottom: 10px; color: var(--gray-dark);
+  display: flex; align-items: center; gap: 9px;
+}
+.o43-concept-card p, .o43-concept-card li {
+  font-size: 13px; color: #555; line-height: 1.75;
+}
+.o43-concept-card ul { padding-left: 16px; }
+.o43-concept-card li { margin-bottom: 4px; }
+
+/* Discovery flow steps */
+.o43-flow {
+  background: #0D1117; border-radius: 14px; padding: 28px 24px;
+  margin-bottom: 32px;
+}
+.o43-flow-title {
+  font-size: 11px; font-weight: 700; letter-spacing: 1.2px;
+  text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 22px;
+}
+.o43-steps { display: flex; flex-direction: column; gap: 0; }
+.o43-step {
+  display: flex; gap: 16px; align-items: flex-start;
+  padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.o43-step:last-child { border-bottom: none; }
+.o43-step-num {
+  width: 30px; height: 30px; border-radius: 8px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700; font-family: var(--mono);
+}
+.o43-step-body {}
+.o43-step-action {
+  font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 4px;
+}
+.o43-step-detail {
+  font-size: 12px; color: rgba(255,255,255,0.5); line-height: 1.6;
+  font-family: var(--mono);
+}
+.o43-step-detail code {
+  background: rgba(255,255,255,0.08); padding: 1px 6px; border-radius: 4px;
+  font-size: 11px;
+}
+
+/* Encoding explainer */
+.o43-encoding {
+  background: #fff; border: 1px solid #EBEBEB; border-radius: 14px;
+  overflow: hidden; margin-bottom: 32px;
+}
+.o43-encoding-header {
+  background: linear-gradient(135deg, #0D1117 0%, #1A2744 100%);
+  padding: 20px 24px;
+  font-size: 14px; font-weight: 700; color: #fff;
+  display: flex; align-items: center; gap: 10px;
+}
+.o43-encoding-body { padding: 24px; }
+.o43-encoding-body p { font-size: 14px; color: #444; line-height: 1.75; margin-bottom: 18px; }
+
+.o43-byte-breakdown {
+  display: flex; align-items: stretch; gap: 0;
+  background: #0D1117; border-radius: 10px; overflow: hidden;
+  margin-bottom: 16px; flex-wrap: wrap;
+}
+.o43-byte {
+  flex: 1; min-width: 0; padding: 14px 10px; text-align: center;
+  border-right: 1px solid rgba(255,255,255,0.08);
+  display: flex; flex-direction: column; gap: 6px;
+}
+.o43-byte:last-child { border-right: none; }
+.o43-byte-hex {
+  font-family: var(--mono); font-size: 15px; font-weight: 700;
+}
+.o43-byte-label {
+  font-size: 9px; text-transform: uppercase; letter-spacing: 0.5px;
+  color: rgba(255,255,255,0.3);
+}
+.o43-byte-meaning {
+  font-size: 10px; color: rgba(255,255,255,0.5);
+}
+.o43-byte-type    { background: rgba(255,140,66,0.15); }
+.o43-byte-type    .o43-byte-hex { color: #FF8C42; }
+.o43-byte-len     { background: rgba(74,158,255,0.12); }
+.o43-byte-len     .o43-byte-hex { color: #5BB8FF; }
+.o43-byte-ip      { background: rgba(0,229,204,0.10); }
+.o43-byte-ip      .o43-byte-hex { color: #00E5CC; }
+.o43-byte-ip2     { background: rgba(0,229,204,0.06); }
+.o43-byte-ip2     .o43-byte-hex { color: #00C4AD; }
+
+.o43-byte-desc {
+  font-size: 12px; color: #555; line-height: 1.7;
+}
+
+/* The calculator */
+.o43-calc {
+  background: #fff; border: 2px solid var(--cisco-blue);
+  border-radius: 16px; overflow: hidden;
+  box-shadow: 0 4px 30px rgba(27,160,215,0.12);
+}
+.o43-calc-header {
+  background: linear-gradient(135deg, #0A2040 0%, #0D4070 100%);
+  padding: 22px 28px; display: flex; align-items: center; gap: 16px;
+}
+.o43-calc-header-icon {
+  width: 44px; height: 44px; border-radius: 12px;
+  background: rgba(27,160,215,0.25);
+  display: flex; align-items: center; justify-content: center; font-size: 20px;
+}
+.o43-calc-header-text {}
+.o43-calc-title { font-size: 18px; font-weight: 700; color: #fff; }
+.o43-calc-subtitle { font-size: 13px; color: rgba(255,255,255,0.5); margin-top: 2px; }
+
+.o43-calc-body { padding: 28px; }
+
+/* Vendor tabs */
+.o43-vendor-tabs { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
+.o43-vendor-tab {
+  padding: 8px 18px; border-radius: 8px; cursor: pointer;
+  font-size: 13px; font-weight: 600; border: 2px solid #E0E0E0;
+  background: #fff; color: #888; transition: all 0.15s;
+  user-select: none;
+}
+.o43-vendor-tab:hover { border-color: var(--cisco-blue); color: var(--cisco-blue); }
+.o43-vendor-tab.active { background: var(--cisco-blue); border-color: var(--cisco-blue); color: #fff; }
+.o43-vendor-tab.tab-ruckus-zd.active  { background: #E8680A; border-color: #E8680A; }
+.o43-vendor-tab.tab-ruckus-scg.active { background: #C0460A; border-color: #C0460A; }
+.o43-vendor-tab.tab-fortinet.active   { background: var(--fort-red); border-color: var(--fort-red); }
+
+/* IP input area */
+.o43-input-group { margin-bottom: 20px; }
+.o43-input-label {
+  font-size: 12px; font-weight: 700; color: var(--gray-mid);
+  text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;
+}
+.o43-ip-input {
+  width: 100%; box-sizing: border-box;
+  background: #F4F6F8; border: 2px solid #E0E0E0;
+  border-radius: 10px; padding: 14px 16px;
+  font-family: var(--mono); font-size: 14px; color: #1A1A1A;
+  resize: vertical; min-height: 90px;
+  transition: border-color 0.15s;
+  outline: none;
+}
+.o43-ip-input:focus { border-color: var(--cisco-blue); background: #fff; }
+.o43-ip-hint {
+  font-size: 11px; color: var(--gray-mid); margin-top: 6px;
+}
+
+/* Generate button */
+.o43-generate-btn {
+  width: 100%; padding: 14px;
+  background: var(--cisco-blue); color: #fff;
+  border: none; border-radius: 10px; cursor: pointer;
+  font-size: 14px; font-weight: 700; letter-spacing: 0.3px;
+  transition: background 0.15s, transform 0.1s;
+  margin-bottom: 24px;
+}
+.o43-generate-btn:hover  { background: #0A7BB5; }
+.o43-generate-btn:active { transform: scale(0.98); }
+
+/* Results */
+.o43-result-block { display: none; }
+.o43-result-block.visible { display: block; }
+
+.o43-result-section { margin-bottom: 22px; }
+.o43-result-label {
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--gray-mid); margin-bottom: 8px;
+  display: flex; align-items: center; gap: 6px;
+}
+.o43-result-box {
+  background: #0D1117; border-radius: 10px; padding: 16px 18px;
+  position: relative;
+}
+.o43-result-value {
+  font-family: var(--mono); font-size: 13px; color: #00E5CC;
+  word-break: break-all; line-height: 1.7;
+}
+.o43-copy-btn {
+  position: absolute; top: 10px; right: 10px;
+  background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 6px; padding: 4px 10px;
+  font-size: 11px; color: rgba(255,255,255,0.5); cursor: pointer;
+  transition: all 0.15s; font-family: var(--mono);
+}
+.o43-copy-btn:hover { background: rgba(255,255,255,0.15); color: #fff; }
+
+/* Byte-annotated result */
+.o43-annotated { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.o43-ann-byte {
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+}
+.o43-ann-hex {
+  font-family: var(--mono); font-size: 13px; font-weight: 700;
+  padding: 5px 7px; border-radius: 5px; min-width: 28px; text-align: center;
+}
+.o43-ann-lbl {
+  font-size: 8px; color: rgba(255,255,255,0.3); font-family: var(--mono);
+  text-align: center; max-width: 40px; line-height: 1.2;
+}
+.ann-type { background: rgba(255,140,66,0.2); color: #FF8C42; }
+.ann-len  { background: rgba(74,158,255,0.2);  color: #5BB8FF; }
+.ann-ip   { background: rgba(0,229,204,0.15);  color: #00E5CC; }
+.ann-sep  { width: 2px; height: 28px; background: rgba(255,255,255,0.08); align-self: center; border-radius: 1px; }
+
+/* IOS CLI output */
+.o43-cli-output {
+  font-family: var(--mono); font-size: 12px; color: #78C800;
+  line-height: 1.8; word-break: break-all;
+}
+.o43-cli-comment { color: rgba(255,255,255,0.3); }
+.o43-cli-cmd     { color: #fff; }
+.o43-cli-val     { color: #FFD700; }
+
+/* Error state */
+.o43-error {
+  background: rgba(220,60,60,0.1); border: 1px solid rgba(220,60,60,0.3);
+  border-radius: 8px; padding: 12px 16px;
+  font-size: 13px; color: #CC2200;
+  display: none;
+}
+.o43-error.visible { display: block; }
+
+/* DHCP scope tips */
+.o43-scope-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 24px;
+}
+@media(max-width:600px){ .o43-scope-grid { grid-template-columns: 1fr; } }
+.o43-scope-card {
+  background: #F8F9FA; border-radius: 10px; padding: 16px;
+  border: 1px solid #E8E8E8;
+}
+.o43-scope-card-title {
+  font-size: 12px; font-weight: 700; color: var(--gray-dark); margin-bottom: 10px;
+  display: flex; align-items: center; gap: 6px;
+}
+.o43-scope-card pre {
+  font-family: var(--mono); font-size: 11px; color: #1A1A1A;
+  background: #1A1A1A; color: #78C800;
+  border-radius: 6px; padding: 12px; line-height: 1.7;
+  overflow-x: auto; margin: 0;
+  white-space: pre;
+}
+</style>
+
+<!-- WHAT IS OPTION 43 -->
+<div class="o43-concept-grid">
+  <div class="o43-concept-card">
+    <h4>🤔 What is DHCP Option 43?</h4>
+    <p>When a Cisco AP boots up for the first time, it has no configuration at all — it doesn't know the IP address of its Wireless LAN Controller (WLC). It needs to find the WLC before it can do anything. DHCP Option 43 is the mechanism that solves this problem.</p>
+    <p style="margin-top:10px;">Option 43 is a <strong>vendor-specific field</strong> inside the DHCP reply that your DHCP server sends to the AP. The AP reads this field, extracts the WLC IP address from it, and then contacts the WLC to register. The AP is fully operational in under a minute — no one ever has to touch it individually.</p>
+  </div>
+  <div class="o43-concept-card">
+    <h4>🔑 Why Can't You Just Type an IP?</h4>
+    <p>Cisco APs are designed for zero-touch deployment at scale. In an enterprise with 500 APs across 20 floors, you cannot physically configure each AP one by one. Instead:</p>
+    <ul>
+      <li>The AP arrives from the warehouse, is mounted on the ceiling, and is plugged into a PoE switch.</li>
+      <li>It powers on, sends a DHCP request, and receives its IP <strong>plus the WLC address via Option 43</strong>.</li>
+      <li>It contacts the WLC, downloads its config, and starts broadcasting WiFi — all within 60 seconds.</li>
+    </ul>
+    <p style="margin-top:8px;">This is how large enterprise WiFi deployments are actually done.</p>
+  </div>
+  <div class="o43-concept-card">
+    <h4>🔍 AP Discovery Order — Option 43 Is Not Alone</h4>
+    <p>Cisco APs actually try multiple methods to find the WLC. Option 43 is the most reliable, but the AP will also try:</p>
+    <ul>
+      <li><strong>1. DHCP Option 43</strong> — the recommended method (covered on this page)</li>
+      <li><strong>2. DNS lookup</strong> — resolves <code>CISCO-CAPWAP-CONTROLLER.domain</code></li>
+      <li><strong>3. Broadcast</strong> — local subnet broadcast (only works if WLC is on the same subnet)</li>
+      <li><strong>4. Previously joined WLC</strong> — remembers the last WLC from flash memory</li>
+      <li><strong>5. Catalyst Center PnP</strong> — if Catalyst Center is configured</li>
+    </ul>
+    <p style="margin-top:8px;">Option 43 is used first if present, which is why it is the standard enterprise method.</p>
+  </div>
+  <div class="o43-concept-card">
+    <h4>📡 What Happens After Option 43?</h4>
+    <p>Once the AP has the WLC IP from Option 43, it:</p>
+    <ul>
+      <li>Opens a <strong>CAPWAP tunnel</strong> (UDP port 5246/5247) to the WLC</li>
+      <li>Authenticates via X.509 certificate (mutual authentication)</li>
+      <li>Downloads its software image from the WLC (if versions don't match, the AP auto-upgrades)</li>
+      <li>Receives its full configuration: SSIDs, VLANs, radio settings, QoS policies</li>
+      <li>Starts broadcasting WiFi — fully operational</li>
+    </ul>
+    <p style="margin-top:8px;">The WLC remains the AP's "brain" — the AP forwards all client traffic back through the CAPWAP tunnel.</p>
+  </div>
+</div>
+
+<!-- HOW OPTION 43 IS ENCODED -->
+<div class="o43-encoding">
+  <div class="o43-encoding-header">
+    🔬 How Option 43 Is Encoded — Cisco Format
+  </div>
+  <div class="o43-encoding-body">
+    <p>You cannot just put the IP address as plain text into Option 43. It must be encoded as a specific sequence of hexadecimal bytes. The Cisco format for Option 43 uses a <strong>sub-option structure</strong> inside the DHCP option field. Here is exactly how it works:</p>
+
+    <!-- One IP example: 192.168.1.100 -->
+    <div style="margin-bottom:12px;font-size:12px;font-weight:700;color:var(--gray-mid);text-transform:uppercase;letter-spacing:0.5px;">Example: WLC at 192.168.1.100</div>
+    <div class="o43-byte-breakdown">
+      <div class="o43-byte o43-byte-type">
+        <div class="o43-byte-hex">F1</div>
+        <div class="o43-byte-label">Sub-type</div>
+        <div class="o43-byte-meaning">Always 0xF1 for Cisco</div>
+      </div>
+      <div class="o43-byte o43-byte-len">
+        <div class="o43-byte-hex">04</div>
+        <div class="o43-byte-label">Length</div>
+        <div class="o43-byte-meaning">4 bytes (1 IP × 4)</div>
+      </div>
+      <div class="o43-byte o43-byte-ip">
+        <div class="o43-byte-hex">C0</div>
+        <div class="o43-byte-label">Octet 1</div>
+        <div class="o43-byte-meaning">192 = 0xC0</div>
+      </div>
+      <div class="o43-byte o43-byte-ip">
+        <div class="o43-byte-hex">A8</div>
+        <div class="o43-byte-label">Octet 2</div>
+        <div class="o43-byte-meaning">168 = 0xA8</div>
+      </div>
+      <div class="o43-byte o43-byte-ip">
+        <div class="o43-byte-hex">01</div>
+        <div class="o43-byte-label">Octet 3</div>
+        <div class="o43-byte-meaning">1 = 0x01</div>
+      </div>
+      <div class="o43-byte o43-byte-ip">
+        <div class="o43-byte-hex">64</div>
+        <div class="o43-byte-label">Octet 4</div>
+        <div class="o43-byte-meaning">100 = 0x64</div>
+      </div>
+    </div>
+    <div style="font-size:12px;color:#555;margin-bottom:24px;line-height:1.7;">
+      → Full hex string to enter in DHCP server: <strong style="font-family:var(--mono);color:var(--cisco-blue);">f1:04:c0:a8:01:64</strong>
+      <br>Two WLCs (HA pair): length becomes <code style="font-family:var(--mono);">08</code> (2 × 4 bytes), then both IPs follow in sequence.
+    </div>
+
+    <p style="font-size:13px;color:#444;">The <strong style="color:#FF8C42;">sub-type byte F1</strong> is Cisco's vendor-specific code that tells the AP "this Option 43 payload is a list of WLC IP addresses." The <strong style="color:#5BB8FF;">length byte</strong> is simply the total number of IP octets that follow (number of WLC IPs × 4). Then each IP address follows, one octet per byte, in decimal-to-hex conversion. For two WLCs, both sets of 4 bytes are concatenated after the single length byte.</p>
+  </div>
+</div>
+
+<!-- DISCOVERY FLOW -->
+<div class="o43-flow">
+  <div class="o43-flow-title">AP Boot &amp; WLC Discovery — Full Sequence</div>
+  <div class="o43-steps">
+    <div class="o43-step">
+      <div class="o43-step-num" style="background:rgba(255,140,66,0.2);color:#FF8C42;">1</div>
+      <div class="o43-step-body">
+        <div class="o43-step-action">AP powers on — sends DHCP Discover broadcast</div>
+        <div class="o43-step-detail">AP has no IP, no WLC address. Broadcasts <code>DHCPDISCOVER</code> on the access VLAN. Source: <code>0.0.0.0</code> → Destination: <code>255.255.255.255</code></div>
+      </div>
+    </div>
+    <div class="o43-step">
+      <div class="o43-step-num" style="background:rgba(74,158,255,0.2);color:#5BB8FF;">2</div>
+      <div class="o43-step-body">
+        <div class="o43-step-action">DHCP server responds with DHCP Offer including Option 43</div>
+        <div class="o43-step-detail">Server replies with <code>DHCPOFFER</code> containing: IP address, subnet mask, gateway, DNS — <strong>and Option 43 with the WLC IP in hex</strong>: <code>option 43 hex f1:04:0a:00:01:0a</code></div>
+      </div>
+    </div>
+    <div class="o43-step">
+      <div class="o43-step-num" style="background:rgba(0,229,204,0.2);color:#00E5CC;">3</div>
+      <div class="o43-step-body">
+        <div class="o43-step-action">AP extracts WLC IP from Option 43, sends CAPWAP Discovery Request</div>
+        <div class="o43-step-detail">AP reads <code>0xF1</code> sub-type → extracts WLC IP(s) → sends <code>CAPWAP Discovery Request</code> (UDP/5246) to each WLC IP</div>
+      </div>
+    </div>
+    <div class="o43-step">
+      <div class="o43-step-num" style="background:rgba(120,200,0,0.2);color:#78C800;">4</div>
+      <div class="o43-step-body">
+        <div class="o43-step-action">WLC replies with CAPWAP Discovery Response → DTLS handshake</div>
+        <div class="o43-step-detail">WLC sends <code>Discovery Response</code> → AP and WLC perform <code>DTLS</code> certificate exchange → encrypted CAPWAP control tunnel established</div>
+      </div>
+    </div>
+    <div class="o43-step">
+      <div class="o43-step-num" style="background:rgba(218,112,214,0.2);color:#DA70D6;">5</div>
+      <div class="o43-step-body">
+        <div class="o43-step-action">AP joins WLC — downloads image + config, starts broadcasting WiFi</div>
+        <div class="o43-step-detail">AP downloads IOS/AireOS image (if version mismatch), receives SSID configs, radio channels, QoS → <code>AP Joined</code> state → WiFi operational. Total time from power-on: ~60 seconds</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════
+     LIVE CALCULATOR
+═══════════════════════ -->
+<div class="o43-calc">
+  <div class="o43-calc-header">
+    <div class="o43-calc-header-icon">⚙️</div>
+    <div class="o43-calc-header-text">
+      <div class="o43-calc-title">Option 43 Generator</div>
+      <div class="o43-calc-subtitle">Enter your WLC IP address(es) — get the hex string to paste into your DHCP server</div>
+    </div>
+  </div>
+
+  <div class="o43-calc-body">
+
+    <!-- Vendor selector -->
+    <div style="margin-bottom:18px;">
+      <div class="o43-input-label">Controller Type</div>
+      <div class="o43-vendor-tabs">
+        <div class="o43-vendor-tab active"          onclick="o43SetVendor('cisco')"      id="otab-cisco">🔵 Cisco WLC / 9800</div>
+        <div class="o43-vendor-tab tab-ruckus-zd"   onclick="o43SetVendor('ruckus-zd')"  id="otab-ruckus-zd">🟠 Ruckus ZoneDirector</div>
+        <div class="o43-vendor-tab tab-ruckus-scg"  onclick="o43SetVendor('ruckus-scg')" id="otab-ruckus-scg">🟤 Ruckus SmartZone</div>
+        <div class="o43-vendor-tab tab-fortinet"    onclick="o43SetVendor('fortinet')"   id="otab-fortinet">🔴 Fortinet FortiGate</div>
+      </div>
+    </div>
+
+    <!-- Vendor context banner -->
+    <div id="o43-vendor-info" style="background:#F0F7FF;border:1px solid #C0DEFF;border-radius:8px;padding:12px 16px;font-size:12px;color:#0D4070;margin-bottom:20px;line-height:1.6;"></div>
+
+    <!-- IP input -->
+    <div class="o43-input-group">
+      <div class="o43-input-label">WLC / Controller IP Address(es)</div>
+      <textarea class="o43-ip-input" id="o43-ip-input"
+        placeholder="10.0.1.10&#10;10.0.1.11&#10;&#10;(or comma/space separated)"></textarea>
+      <div class="o43-ip-hint">Separate multiple IPs with space, comma, semicolon, or newline. Enter both IPs for an HA pair.</div>
+    </div>
+
+    <div class="o43-error" id="o43-error"></div>
+
+    <button class="o43-generate-btn" onclick="o43Generate()" id="o43-btn">⚙️ Generate Option 43</button>
+
+    <!-- Results -->
+    <div class="o43-result-block" id="o43-results">
+
+      <!-- Hex string -->
+      <div class="o43-result-section">
+        <div class="o43-result-label">📋 Hex String <span style="font-weight:400;text-transform:none;letter-spacing:0;color:#aaa;">(paste this into your DHCP server)</span></div>
+        <div class="o43-result-box">
+          <div class="o43-result-value" id="o43-hex-out"></div>
+          <button class="o43-copy-btn" onclick="o43Copy('o43-hex-out', this)">copy</button>
+        </div>
+      </div>
+
+      <!-- Annotated breakdown -->
+      <div class="o43-result-section">
+        <div class="o43-result-label">🔬 Byte-by-Byte Breakdown</div>
+        <div class="o43-result-box">
+          <div id="o43-annotated" class="o43-annotated"></div>
+        </div>
+      </div>
+
+      <!-- CLI snippets -->
+      <div id="o43-cli-section" class="o43-result-section">
+        <div class="o43-result-label">💻 DHCP Server Config Snippets</div>
+        <div class="o43-scope-grid" id="o43-cli-grid"></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- WHERE TO CONFIGURE IN DHCP -->
+<div class="alert orange" style="margin-top:28px;">
+  <span class="alert-icon">💡</span>
+  <p><strong>Important:</strong> Option 43 is configured on the DHCP server in the scope (pool) that serves the AP management VLAN — not the client VLAN. If your APs are on VLAN 10 and your users are on VLAN 20, only the DHCP scope for VLAN 10 needs Option 43. Clients never need it.</p>
+</div>
+
+</div><!-- /section -->
+</div><!-- /content -->
+
+<script>
+(function(){
+
+/* ───────────────────────────────────────────
+   VENDOR DEFINITIONS
+─────────────────────────────────────────── */
+var VENDORS = {
+  'cisco': {
+    label: 'Cisco WLC / Catalyst 9800',
+    info: '<strong>Cisco format:</strong> Sub-type byte <code>0xF1</code> + length byte (number of IPs × 4) + each IP as 4 hex bytes. Works for all Cisco WLC models: 3504, 5520, 8540, Catalyst 9800-L/40/80, and 9800-CL virtual.',
+    subtype: 0xF1,
+    encode: function(ips) {
+      var bytes = [0xF1, ips.length * 4];
+      ips.forEach(function(ip){ ipToBytes(ip).forEach(function(b){ bytes.push(b); }); });
+      return bytes;
+    }
+  },
+  'ruckus-zd': {
+    label: 'Ruckus ZoneDirector',
+    info: '<strong>Ruckus ZoneDirector format:</strong> Sub-type <code>0x03</code> + length + IPs. Used for ZoneDirector on-premises controllers (ZD1200, ZD3000, ZD5000).',
+    subtype: 0x03,
+    encode: function(ips) {
+      var bytes = [0x03, ips.length * 4];
+      ips.forEach(function(ip){ ipToBytes(ip).forEach(function(b){ bytes.push(b); }); });
+      return bytes;
+    }
+  },
+  'ruckus-scg': {
+    label: 'Ruckus SmartZone / vSZ',
+    info: '<strong>Ruckus SmartZone format:</strong> Sub-type <code>0x06</code> + length + IPs. Used for SmartZone 100/300/Virtual SmartZone (vSZ) controllers.',
+    subtype: 0x06,
+    encode: function(ips) {
+      var bytes = [0x06, ips.length * 4];
+      ips.forEach(function(ip){ ipToBytes(ip).forEach(function(b){ bytes.push(b); }); });
+      return bytes;
+    }
+  },
+  'fortinet': {
+    label: 'Fortinet FortiGate (FortiAP)',
+    info: '<strong>Fortinet FortiAP format:</strong> FortiAP uses sub-type <code>0x01</code> for the primary AC (Access Controller / FortiGate) IP. The FortiGate acts as the wireless controller via FortiLink — this Option 43 directs FortiAP to it.',
+    subtype: 0x01,
+    encode: function(ips) {
+      var bytes = [0x01, ips.length * 4];
+      ips.forEach(function(ip){ ipToBytes(ip).forEach(function(b){ bytes.push(b); }); });
+      return bytes;
+    }
+  }
+};
+
+var currentVendor = 'cisco';
+
+/* ───────────────────────────────────────────
+   HELPERS
+─────────────────────────────────────────── */
+function ipToBytes(ip) {
+  return ip.split('.').map(function(o){ return parseInt(o,10); });
+}
+
+function byteToHex(b) {
+  return ('0' + b.toString(16).toUpperCase()).slice(-2);
+}
+
+function bytesToHexStr(bytes) {
+  return bytes.map(byteToHex).join(':');
+}
+
+function validateIP(ip) {
+  var parts = ip.trim().split('.');
+  if (parts.length !== 4) return false;
+  return parts.every(function(p){
+    var n = parseInt(p, 10);
+    return !isNaN(n) && n >= 0 && n <= 255 && String(n) === p.trim();
+  });
+}
+
+function parseIPs(raw) {
+  return raw.split(/[\s,;:\n]+/)
+            .map(function(s){ return s.trim(); })
+            .filter(function(s){ return s.length > 0; });
+}
+
+/* ───────────────────────────────────────────
+   VENDOR SWITCH
+─────────────────────────────────────────── */
+window.o43SetVendor = function(v) {
+  currentVendor = v;
+  document.querySelectorAll('.o43-vendor-tab').forEach(function(t){ t.classList.remove('active'); });
+  document.getElementById('otab-' + v).classList.add('active');
+  document.getElementById('o43-vendor-info').innerHTML = VENDORS[v].info;
+  // Update button colour
+  var btn = document.getElementById('o43-btn');
+  var colours = { cisco:'var(--cisco-blue)', 'ruckus-zd':'#E8680A', 'ruckus-scg':'#C0460A', fortinet:'var(--fort-red)' };
+  btn.style.background = colours[v] || 'var(--cisco-blue)';
+  // Clear results
+  document.getElementById('o43-results').classList.remove('visible');
+  document.getElementById('o43-error').classList.remove('visible');
+};
+
+/* ───────────────────────────────────────────
+   GENERATE
+─────────────────────────────────────────── */
+window.o43Generate = function() {
+  var raw    = document.getElementById('o43-ip-input').value;
+  var errEl  = document.getElementById('o43-error');
+  var resEl  = document.getElementById('o43-results');
+  errEl.classList.remove('visible');
+  resEl.classList.remove('visible');
+
+  var ipList = parseIPs(raw);
+
+  if (ipList.length === 0) {
+    errEl.textContent = 'Please enter at least one IP address.';
+    errEl.classList.add('visible'); return;
+  }
+
+  var badIPs = ipList.filter(function(ip){ return !validateIP(ip); });
+  if (badIPs.length > 0) {
+    errEl.textContent = 'Invalid IP address(es): ' + badIPs.join(', ');
+    errEl.classList.add('visible'); return;
+  }
+
+  if (ipList.length > 8) {
+    errEl.textContent = 'Maximum 8 WLC IPs supported.';
+    errEl.classList.add('visible'); return;
+  }
+
+  var vendor = VENDORS[currentVendor];
+  var bytes  = vendor.encode(ipList);
+  var hexStr = bytesToHexStr(bytes);
+
+  // ── Hex string output
+  document.getElementById('o43-hex-out').textContent = hexStr;
+
+  // ── Annotated breakdown
+  var annEl = document.getElementById('o43-annotated');
+  annEl.innerHTML = '';
+
+  // Sub-type byte
+  annEl.appendChild(makeAnnByte(byteToHex(bytes[0]), 'sub-type\n' + '0x' + byteToHex(bytes[0]), 'ann-type'));
+  // Length byte
+  annEl.appendChild(makeAnnByte(byteToHex(bytes[1]), 'length\n' + bytes[1] + ' bytes', 'ann-len'));
+
+  // IPs
+  for (var i = 0; i < ipList.length; i++) {
+    var sep = document.createElement('div');
+    sep.className = 'ann-sep';
+    annEl.appendChild(sep);
+    var ipBytes = ipToBytes(ipList[i]);
+    var ipParts = ipList[i].split('.');
+    for (var j = 0; j < 4; j++) {
+      annEl.appendChild(makeAnnByte(byteToHex(ipBytes[j]), ipParts[j] + '\n= 0x' + byteToHex(ipBytes[j]), 'ann-ip'));
+    }
+  }
+
+  // ── CLI snippets
+  var cliGrid = document.getElementById('o43-cli-grid');
+  cliGrid.innerHTML = '';
+  cliGrid.appendChild(makeCliCard('🖥️ Cisco IOS DHCP Server',
+    buildIosCli(hexStr, ipList)));
+  cliGrid.appendChild(makeCliCard('🪟 Windows DHCP Server (PowerShell)',
+    buildWinCli(hexStr)));
+  cliGrid.appendChild(makeCliCard('🐧 Linux ISC DHCP (dhcpd.conf)',
+    buildLinuxCli(hexStr)));
+  cliGrid.appendChild(makeCliCard('📦 Cisco IOS — Scope definition tip',
+    buildIosScopeTip(ipList)));
+
+  resEl.classList.add('visible');
+  resEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+};
+
+/* ───────────────────────────────────────────
+   ANNOTATED BYTE BUILDER
+─────────────────────────────────────────── */
+function makeAnnByte(hex, lbl, cls) {
+  var wrap = document.createElement('div');
+  wrap.className = 'o43-ann-byte';
+  var h = document.createElement('div');
+  h.className = 'o43-ann-hex ' + cls;
+  h.textContent = hex;
+  var l = document.createElement('div');
+  l.className = 'o43-ann-lbl';
+  l.style.whiteSpace = 'pre';
+  l.textContent = lbl;
+  wrap.appendChild(h); wrap.appendChild(l);
+  return wrap;
+}
+
+/* ───────────────────────────────────────────
+   CLI BUILDERS
+─────────────────────────────────────────── */
+function buildIosCli(hexStr, ips) {
+  var hex = hexStr.replace(/:/g, '.');
+  return '! In your DHCP pool for the AP VLAN:\n' +
+         'ip dhcp pool AP-VLAN\n' +
+         ' network 10.x.x.0 255.255.255.0\n' +
+         ' default-router 10.x.x.1\n' +
+         ' dns-server 8.8.8.8\n' +
+         ' option 43 hex ' + hex;
+}
+
+function buildWinCli(hexStr) {
+  var hex = hexStr.replace(/:/g, '');
+  return '# In PowerShell (run as Administrator):\nSet-DhcpServerv4OptionValue `\n  -ScopeId <AP_scope_IP> `\n  -OptionId 43 `\n  -Value ([byte[]]@(' +
+    hexStr.split(':').map(function(h){ return '0x'+h; }).join(',') + '))';
+}
+
+function buildLinuxCli(hexStr) {
+  var hex = hexStr.replace(/:/g, ':');
+  return '# In dhcpd.conf, inside the subnet block\n# for your AP VLAN:\nsubnet 10.x.x.0 netmask 255.255.255.0 {\n  range 10.x.x.10 10.x.x.100;\n  option routers 10.x.x.1;\n  option vendor-encapsulated-options ' + hex + ';\n}';
+}
+
+function buildIosScopeTip(ips) {
+  return '! Quick note:\n! Option 43 goes on the DHCP scope\n! that serves your AP management VLAN\n! NOT on the client/user VLAN scope.\n!\n! If APs are on VLAN 10 scope:\n!   -> Add option 43 HERE\n! User VLAN 20 scope:\n!   -> No option 43 needed';
+}
+
+function makeCliCard(title, code) {
+  var card = document.createElement('div');
+  card.className = 'o43-scope-card';
+  card.innerHTML = '<div class="o43-scope-card-title">' + title + '</div>' +
+                   '<pre>' + escHtml(code) + '</pre>';
+  return card;
+}
+
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+/* ───────────────────────────────────────────
+   COPY BUTTON
+─────────────────────────────────────────── */
+window.o43Copy = function(elId, btn) {
+  var text = document.getElementById(elId).textContent;
+  navigator.clipboard.writeText(text).then(function(){
+    btn.textContent = 'copied!';
+    setTimeout(function(){ btn.textContent = 'copy'; }, 2000);
+  });
+};
+
+/* ───────────────────────────────────────────
+   INIT
+─────────────────────────────────────────── */
+o43SetVendor('cisco');
+
+// Allow Enter key to trigger generation
+document.getElementById('o43-ip-input').addEventListener('keydown', function(e){
+  if (e.ctrlKey && e.key === 'Enter') o43Generate();
+});
+
+})();
+</script>
+
+<footer class="footer">
+  <p>Orange <span>Business</span> — Network Knowledge Base &nbsp;·&nbsp; <a href="index.html" style="color:rgba(255,255,255,0.4);">Home</a></p>
+</footer>
+<script src="shared.js"></script>
+</body>
+</html>

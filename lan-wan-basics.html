@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LAN &amp; WAN Basics — OB Network KB</title>
+<link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<nav class="topnav">
+  <a href="index.html" class="topnav-brand">
+    <div class="topnav-logo">OB</div>
+    <div class="topnav-brand-text">Orange <span>Business</span></div>
+  </a>
+  <div class="topnav-links">
+    <a href="index.html"          class="nav-link" id="nav-index">Home</a>
+    <a href="lan-wan-basics.html" class="nav-link active" id="nav-lan">LAN / WAN</a>
+    <a href="ip-routing.html"     class="nav-link" id="nav-ip">IP Routing</a>
+    <a href="switching.html"      class="nav-link" id="nav-sw">Switching</a>
+    <a href="wireless.html"       class="nav-link" id="nav-wifi">Wireless</a>
+    <a href="firewalls.html"      class="nav-link" id="nav-fw">Firewalls</a>
+    <a href="zscaler.html"        class="nav-link" id="nav-zs">Zscaler</a>
+    <a href="devices.html"        class="nav-link" id="nav-devices">Devices</a>
+    <a href="glossary.html"       class="nav-link" id="nav-gl">Glossary</a>
+  </div>
+  <div class="topnav-badge">New Hire Guide</div>
+</nav>
+
+<div class="breadcrumb">
+  <a href="index.html">Home</a><span>/</span> LAN &amp; WAN Basics
+</div>
+
+<div class="page-hero dark">
+  <div class="hero-content">
+    <div class="hero-tag">🌐 Foundation</div>
+    <h1>LAN &amp; <span>WAN</span> Basics</h1>
+    <p class="hero-sub">Understand how networks are structured, how data travels, and what each device's role is — from a single office to a global enterprise.</p>
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- WHAT IS A NETWORK -->
+  <div class="section">
+    <div class="section-header">
+      <h2>What is a Network?</h2>
+      <div class="divider"></div>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-icon" style="background:#EAF3FF;">🏢</div>
+        <h3>LAN — Local Area Network</h3>
+        <p>A LAN covers a single building, floor, or campus. All devices are under your control, connected by switches and access points. Speeds are fast — 1 Gbps to 100 Gbps. Examples: an office floor, a data center, a university campus.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:var(--orange-pale);">🌍</div>
+        <h3>WAN — Wide Area Network</h3>
+        <p>A WAN connects multiple LANs across cities, countries, or continents. It uses leased lines, MPLS circuits, or the internet. Orange Business manages WAN services — this is a core part of our business. The internet itself is the world's largest WAN.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:var(--green-pale);">🏙️</div>
+        <h3>MAN — Metropolitan Area Network</h3>
+        <p>A MAN spans a city or metropolitan area — larger than a LAN but smaller than a WAN. Often used to connect multiple offices in the same city over fibre. Sometimes called a campus WAN.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:var(--purple-pale);">☁️</div>
+        <h3>Cloud / SD-WAN</h3>
+        <p>Modern enterprises extend their networks into cloud providers (AWS, Azure, GCP). SD-WAN intelligently routes traffic across multiple WAN links. Orange Business provides managed SD-WAN services to enterprise customers.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOPOLOGY DIAGRAM -->
+  <div class="section">
+    <div class="section-header">
+      <h2>Network Topology</h2>
+      <div class="divider"></div>
+      <p>How two office LANs connect across a WAN, with firewalls at each edge.</p>
+    </div>
+    <div class="diagram-box">
+      <svg viewBox="0 0 840 320" xmlns="http://www.w3.org/2000/svg" style="font-family:'Sora',sans-serif;">
+        <!-- WAN Cloud -->
+        <ellipse cx="420" cy="160" rx="95" ry="58" fill="#FFF0E6" stroke="#FF6200" stroke-width="2" stroke-dasharray="6,3"/>
+        <text x="420" y="154" text-anchor="middle" font-size="13" font-weight="600" fill="#CC4E00">INTERNET</text>
+        <text x="420" y="172" text-anchor="middle" font-size="11" fill="#FF8C42">WAN / MPLS</text>
+
+        <!-- Left LAN -->
+        <rect x="15" y="80" width="250" height="180" rx="12" fill="#F5F5F5" stroke="#DCDCDC" stroke-width="1.5"/>
+        <text x="140" y="102" text-anchor="middle" font-size="12" font-weight="600" fill="#3D3D3D">Site A — LAN</text>
+        <!-- Firewall A -->
+        <rect x="95" y="112" width="90" height="30" rx="6" fill="#EE3124"/>
+        <text x="140" y="131" text-anchor="middle" font-size="11" font-weight="600" fill="white">Firewall</text>
+        <!-- Router A -->
+        <rect x="95" y="155" width="90" height="28" rx="6" fill="#1BA0D7"/>
+        <text x="140" y="173" text-anchor="middle" font-size="11" font-weight="600" fill="white">Router</text>
+        <!-- Switch A -->
+        <rect x="95" y="196" width="90" height="26" rx="6" fill="#FF6200"/>
+        <text x="140" y="213" text-anchor="middle" font-size="11" font-weight="600" fill="white">Switch</text>
+        <!-- End devices A -->
+        <rect x="22" y="238" width="46" height="20" rx="4" fill="#E8E8E8" stroke="#C8C8C8"/>
+        <text x="45" y="252" text-anchor="middle" font-size="9" fill="#555">PC</text>
+        <rect x="75" y="238" width="46" height="20" rx="4" fill="#E8E8E8" stroke="#C8C8C8"/>
+        <text x="98" y="252" text-anchor="middle" font-size="9" fill="#555">Server</text>
+        <rect x="130" y="238" width="46" height="20" rx="4" fill="#E8E8E8" stroke="#C8C8C8"/>
+        <text x="153" y="252" text-anchor="middle" font-size="9" fill="#555">AP</text>
+        <rect x="186" y="238" width="46" height="20" rx="4" fill="#E8E8E8" stroke="#C8C8C8"/>
+        <text x="209" y="252" text-anchor="middle" font-size="9" fill="#555">Phone</text>
+        <!-- Lines A -->
+        <line x1="140" y1="142" x2="140" y2="155" stroke="#aaa" stroke-width="1.5"/>
+        <line x1="140" y1="183" x2="140" y2="196" stroke="#aaa" stroke-width="1.5"/>
+        <line x1="140" y1="222" x2="45" y2="238" stroke="#aaa" stroke-width="1.2"/>
+        <line x1="140" y1="222" x2="98" y2="238" stroke="#aaa" stroke-width="1.2"/>
+        <line x1="140" y1="222" x2="153" y2="238" stroke="#aaa" stroke-width="1.2"/>
+        <line x1="140" y1="222" x2="209" y2="238" stroke="#aaa" stroke-width="1.2"/>
+
+        <!-- WAN lines -->
+        <line x1="185" y1="127" x2="328" y2="150" stroke="#FF6200" stroke-width="2" stroke-dasharray="5,3"/>
+        <text x="260" y="130" text-anchor="middle" font-size="10" fill="#FF8C42">WAN Link</text>
+        <line x1="655" y1="127" x2="513" y2="150" stroke="#FF6200" stroke-width="2" stroke-dasharray="5,3"/>
+
+        <!-- Right LAN -->
+        <rect x="575" y="80" width="250" height="180" rx="12" fill="#F5F5F5" stroke="#DCDCDC" stroke-width="1.5"/>
+        <text x="700" y="102" text-anchor="middle" font-size="12" font-weight="600" fill="#3D3D3D">Site B — LAN</text>
+        <rect x="655" y="112" width="90" height="30" rx="6" fill="#EE3124"/>
+        <text x="700" y="131" text-anchor="middle" font-size="11" font-weight="600" fill="white">Firewall</text>
+        <rect x="655" y="155" width="90" height="28" rx="6" fill="#1BA0D7"/>
+        <text x="700" y="173" text-anchor="middle" font-size="11" font-weight="600" fill="white">Router</text>
+        <rect x="655" y="196" width="90" height="26" rx="6" fill="#FF6200"/>
+        <text x="700" y="213" text-anchor="middle" font-size="11" font-weight="600" fill="white">Switch</text>
+        <rect x="582" y="238" width="46" height="20" rx="4" fill="#E8E8E8" stroke="#C8C8C8"/>
+        <text x="605" y="252" text-anchor="middle" font-size="9" fill="#555">PC</text>
+        <rect x="635" y="238" width="46" height="20" rx="4" fill="#E8E8E8" stroke="#C8C8C8"/>
+        <text x="658" y="252" text-anchor="middle" font-size="9" fill="#555">Laptop</text>
+        <rect x="690" y="238" width="46" height="20" rx="4" fill="#E8E8E8" stroke="#C8C8C8"/>
+        <text x="713" y="252" text-anchor="middle" font-size="9" fill="#555">AP</text>
+        <rect x="746" y="238" width="46" height="20" rx="4" fill="#E8E8E8" stroke="#C8C8C8"/>
+        <text x="769" y="252" text-anchor="middle" font-size="9" fill="#555">Phone</text>
+        <line x1="700" y1="142" x2="700" y2="155" stroke="#aaa" stroke-width="1.5"/>
+        <line x1="700" y1="183" x2="700" y2="196" stroke="#aaa" stroke-width="1.5"/>
+        <line x1="700" y1="222" x2="605" y2="238" stroke="#aaa" stroke-width="1.2"/>
+        <line x1="700" y1="222" x2="658" y2="238" stroke="#aaa" stroke-width="1.2"/>
+        <line x1="700" y1="222" x2="713" y2="238" stroke="#aaa" stroke-width="1.2"/>
+        <line x1="700" y1="222" x2="769" y2="238" stroke="#aaa" stroke-width="1.2"/>
+
+        <!-- Legend -->
+        <rect x="15" y="280" width="10" height="8" rx="2" fill="#EE3124"/>
+        <text x="30" y="289" font-size="10" fill="#787878">Firewall</text>
+        <rect x="90" y="280" width="10" height="8" rx="2" fill="#1BA0D7"/>
+        <text x="105" y="289" font-size="10" fill="#787878">Router</text>
+        <rect x="165" y="280" width="10" height="8" rx="2" fill="#FF6200"/>
+        <text x="180" y="289" font-size="10" fill="#787878">Switch</text>
+        <line x1="240" y1="284" x2="258" y2="284" stroke="#FF6200" stroke-width="2" stroke-dasharray="4,2"/>
+        <text x="263" y="289" font-size="10" fill="#787878">WAN Link</text>
+      </svg>
+      <p class="diagram-caption">Two enterprise sites connected via WAN — each with firewall, router, switch, and end devices</p>
+    </div>
+  </div>
+
+  <!-- KEY DEVICES -->
+  <div class="section">
+    <div class="section-header">
+      <h2>Key Network Devices</h2>
+      <div class="divider"></div>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-icon" style="background:#EAF3FF;">🔀</div>
+        <h3>Router</h3>
+        <p>Connects different networks and routes traffic between them using IP addresses. Every packet going from your LAN to the internet passes through a router. Operates at <strong>Layer 3</strong>. Runs routing protocols like OSPF and BGP. See <a href="ip-routing.html">IP Routing →</a></p>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:#F0F0FF;">🔌</div>
+        <h3>Switch</h3>
+        <p>Connects devices within the same LAN using MAC addresses. Learns which device is on which port and forwards traffic only where needed. Operates at <strong>Layer 2</strong>. Supports VLANs to logically segment traffic. See <a href="switching.html">Switching →</a></p>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:var(--fort-pale);">🛡️</div>
+        <h3>Firewall</h3>
+        <p>Guards the network perimeter, permitting or blocking traffic based on security policy. Modern Next-Generation Firewalls (NGFW) inspect application-layer traffic, not just ports and IPs. See <a href="firewalls.html">Firewalls →</a></p>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:var(--green-pale);">📡</div>
+        <h3>Access Point (AP)</h3>
+        <p>Broadcasts a WiFi signal so wireless devices can join the network. In enterprise environments, APs are centrally managed by a Wireless LAN Controller (WLC) or cloud system. See <a href="wireless.html">Wireless →</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- OSI MODEL — INTERACTIVE -->
+  <div class="section">
+    <div class="section-header">
+      <h2>The OSI Model — Interactive</h2>
+      <div class="divider"></div>
+      <p>The OSI model describes how data travels through a network in 7 layers. <strong>Click any layer</strong> to expand it and understand exactly what happens there.</p>
+    </div>
+
+    <style>
+      /* ── OSI INTERACTIVE STYLES ── */
+      .osi-wrap {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+        align-items: start;
+      }
+      @media (max-width: 760px) { .osi-wrap { grid-template-columns: 1fr; } }
+
+      /* Stack of layers */
+      .osi-stack { display: flex; flex-direction: column; gap: 5px; }
+
+      .osi-layer {
+        border-radius: 10px;
+        cursor: pointer;
+        transition: transform 0.15s, box-shadow 0.15s;
+        overflow: hidden;
+        border: 2px solid transparent;
+        user-select: none;
+      }
+      .osi-layer:hover  { transform: translateX(4px); }
+      .osi-layer.active { border-color: currentColor; box-shadow: 0 4px 20px rgba(0,0,0,0.15); transform: translateX(6px); }
+
+      .osi-layer-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 13px 16px;
+      }
+      .osi-layer-num {
+        width: 32px; height: 32px; border-radius: 8px;
+        display: flex; align-items: center; justify-content: center;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 14px; font-weight: 700;
+        flex-shrink: 0;
+      }
+      .osi-layer-name {
+        font-size: 14px; font-weight: 700;
+        min-width: 90px; flex-shrink: 0;
+      }
+      .osi-layer-hint {
+        font-size: 11px; opacity: 0.7;
+        white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      }
+      .osi-layer-arrow {
+        margin-left: auto; font-size: 11px; opacity: 0.5;
+        transition: transform 0.2s;
+        flex-shrink: 0;
+      }
+      .osi-layer.active .osi-layer-arrow { transform: rotate(90deg); opacity: 1; }
+
+      /* Detail panel on the right */
+      .osi-detail {
+        position: sticky;
+        top: 80px;
+        background: #1A1A1A;
+        border-radius: 14px;
+        padding: 28px;
+        min-height: 300px;
+        transition: all 0.25s;
+      }
+      .osi-detail-placeholder {
+        display: flex; flex-direction: column;
+        align-items: center; justify-content: center;
+        height: 260px; text-align: center;
+      }
+      .osi-detail-placeholder .big-icon { font-size: 44px; margin-bottom: 12px; opacity: 0.3; }
+      .osi-detail-placeholder p { color: rgba(255,255,255,0.25); font-size: 13px; }
+
+      .osi-detail-content { display: none; }
+      .osi-detail-content.visible { display: block; }
+
+      .osi-detail-header {
+        display: flex; align-items: center; gap: 14px; margin-bottom: 18px;
+      }
+      .osi-detail-badge {
+        width: 48px; height: 48px; border-radius: 12px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 22px; flex-shrink: 0;
+      }
+      .osi-detail-num {
+        font-size: 11px; font-weight: 700; letter-spacing: 1px;
+        text-transform: uppercase; margin-bottom: 3px;
+      }
+      .osi-detail-title { font-size: 20px; font-weight: 700; color: #fff; }
+
+      .osi-detail-desc {
+        font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.7);
+        margin-bottom: 18px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 18px;
+      }
+
+      .osi-detail-examples { margin-bottom: 16px; }
+      .osi-detail-examples-label {
+        font-size: 10px; font-weight: 700; letter-spacing: 1px;
+        text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 8px;
+      }
+      .osi-chips-row { display: flex; flex-wrap: wrap; gap: 7px; }
+      .osi-chip {
+        padding: 5px 11px; border-radius: 6px;
+        font-size: 11px; font-weight: 600;
+        font-family: 'JetBrains Mono', monospace;
+        border: 1px solid; white-space: nowrap;
+      }
+
+      .osi-devices-label {
+        font-size: 10px; font-weight: 700; letter-spacing: 1px;
+        text-transform: uppercase; color: rgba(255,255,255,0.3);
+        margin-top: 14px; margin-bottom: 8px;
+      }
+      .osi-device-chip {
+        display: inline-flex; align-items: center; gap: 6px;
+        padding: 5px 10px; border-radius: 6px;
+        background: rgba(255,255,255,0.07);
+        font-size: 11px; color: rgba(255,255,255,0.6);
+        margin-right: 6px; margin-bottom: 6px;
+      }
+
+      /* Animated packet demo */
+      .osi-packet-demo {
+        margin-top: 16px;
+        background: rgba(255,255,255,0.04);
+        border-radius: 8px; padding: 12px 14px;
+        font-size: 12px;
+      }
+      .osi-packet-demo-label {
+        font-size: 10px; font-weight: 700; letter-spacing: 1px;
+        text-transform: uppercase; color: rgba(255,255,255,0.25); margin-bottom: 8px;
+      }
+      .osi-packet-track {
+        display: flex; align-items: center; gap: 0;
+        position: relative; height: 28px;
+      }
+      .osi-packet-seg {
+        flex: 1; height: 20px; border-radius: 3px;
+        margin: 0 2px; opacity: 0.25;
+        transition: opacity 0.3s;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 9px; font-weight: 700; color: rgba(255,255,255,0.6);
+      }
+      .osi-packet-seg.lit { opacity: 1; }
+
+      /* Layer colour themes */
+      .osi-l7 { background: rgba(255, 98,  0, 0.18); color: #FF8C42; }
+      .osi-l7 .osi-layer-num { background: rgba(255,98,0,0.2); color: #FF8C42; }
+      .osi-l7.active { color: #FF8C42; }
+
+      .osi-l6 { background: rgba(255,140, 80, 0.14); color: #FFB347; }
+      .osi-l6 .osi-layer-num { background: rgba(255,140,80,0.2); color: #FFB347; }
+      .osi-l6.active { color: #FFB347; }
+
+      .osi-l5 { background: rgba(255,200, 40, 0.12); color: #FFD700; }
+      .osi-l5 .osi-layer-num { background: rgba(255,200,40,0.2); color: #FFD700; }
+      .osi-l5.active { color: #FFD700; }
+
+      .osi-l4 { background: rgba(74, 158,255, 0.14); color: #5BB8FF; }
+      .osi-l4 .osi-layer-num { background: rgba(74,158,255,0.2); color: #5BB8FF; }
+      .osi-l4.active { color: #5BB8FF; }
+
+      .osi-l3 { background: rgba( 0, 200,150, 0.13); color: #00C896; }
+      .osi-l3 .osi-layer-num { background: rgba(0,200,150,0.2); color: #00C896; }
+      .osi-l3.active { color: #00C896; }
+
+      .osi-l2 { background: rgba(150, 80,255, 0.14); color: #B388FF; }
+      .osi-l2 .osi-layer-num { background: rgba(150,80,255,0.2); color: #B388FF; }
+      .osi-l2.active { color: #B388FF; }
+
+      .osi-l1 { background: rgba(220, 80, 80, 0.13); color: #FF7A7A; }
+      .osi-l1 .osi-layer-num { background: rgba(220,80,80,0.2); color: #FF7A7A; }
+      .osi-l1.active { color: #FF7A7A; }
+    </style>
+
+    <div class="osi-wrap">
+
+      <!-- LEFT: Layer stack -->
+      <div class="osi-stack" id="osi-stack">
+
+        <div class="osi-layer osi-l7" onclick="osiSelect(7)" id="osi-layer-7">
+          <div class="osi-layer-row">
+            <div class="osi-layer-num">7</div>
+            <div class="osi-layer-name">Application</div>
+            <div class="osi-layer-hint">HTTP · DNS · FTP · SMTP</div>
+            <div class="osi-layer-arrow">▶</div>
+          </div>
+        </div>
+
+        <div class="osi-layer osi-l6" onclick="osiSelect(6)" id="osi-layer-6">
+          <div class="osi-layer-row">
+            <div class="osi-layer-num">6</div>
+            <div class="osi-layer-name">Presentation</div>
+            <div class="osi-layer-hint">TLS · SSL · Encryption</div>
+            <div class="osi-layer-arrow">▶</div>
+          </div>
+        </div>
+
+        <div class="osi-layer osi-l5" onclick="osiSelect(5)" id="osi-layer-5">
+          <div class="osi-layer-row">
+            <div class="osi-layer-num">5</div>
+            <div class="osi-layer-name">Session</div>
+            <div class="osi-layer-hint">Sessions · Tokens · Auth</div>
+            <div class="osi-layer-arrow">▶</div>
+          </div>
+        </div>
+
+        <div class="osi-layer osi-l4" onclick="osiSelect(4)" id="osi-layer-4">
+          <div class="osi-layer-row">
+            <div class="osi-layer-num">4</div>
+            <div class="osi-layer-name">Transport</div>
+            <div class="osi-layer-hint">TCP · UDP · Port numbers</div>
+            <div class="osi-layer-arrow">▶</div>
+          </div>
+        </div>
+
+        <div class="osi-layer osi-l3" onclick="osiSelect(3)" id="osi-layer-3">
+          <div class="osi-layer-row">
+            <div class="osi-layer-num">3</div>
+            <div class="osi-layer-name">Network</div>
+            <div class="osi-layer-hint">IP · Routing · Subnets</div>
+            <div class="osi-layer-arrow">▶</div>
+          </div>
+        </div>
+
+        <div class="osi-layer osi-l2" onclick="osiSelect(2)" id="osi-layer-2">
+          <div class="osi-layer-row">
+            <div class="osi-layer-num">2</div>
+            <div class="osi-layer-name">Data Link</div>
+            <div class="osi-layer-hint">MAC · Ethernet · VLANs</div>
+            <div class="osi-layer-arrow">▶</div>
+          </div>
+        </div>
+
+        <div class="osi-layer osi-l1" onclick="osiSelect(1)" id="osi-layer-1">
+          <div class="osi-layer-row">
+            <div class="osi-layer-num">1</div>
+            <div class="osi-layer-name">Physical</div>
+            <div class="osi-layer-hint">Cables · Fibre · Signals</div>
+            <div class="osi-layer-arrow">▶</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT: Detail panel -->
+      <div class="osi-detail" id="osi-detail">
+
+        <!-- Placeholder when nothing selected -->
+        <div class="osi-detail-placeholder" id="osi-placeholder">
+          <div class="big-icon">🔍</div>
+          <p>Click any layer on the left<br>to see a full explanation</p>
+        </div>
+
+        <!-- Layer 7 -->
+        <div class="osi-detail-content" id="osi-content-7">
+          <div class="osi-detail-header">
+            <div class="osi-detail-badge" style="background:rgba(255,98,0,0.2);">💻</div>
+            <div>
+              <div class="osi-detail-num" style="color:#FF8C42;">Layer 7</div>
+              <div class="osi-detail-title">Application</div>
+            </div>
+          </div>
+          <div class="osi-detail-desc">This is the layer <strong style="color:#FF8C42;">you interact with directly</strong>. When you open Chrome and go to a website, your browser is a Layer 7 application. When your email client sends a message, it uses Layer 7 protocols. This layer defines <em>what</em> the data means — not how it travels.</div>
+          <div class="osi-detail-examples">
+            <div class="osi-detail-examples-label">Protocols at this layer</div>
+            <div class="osi-chips-row">
+              <span class="osi-chip" style="color:#FF8C42;border-color:rgba(255,98,0,0.3);background:rgba(255,98,0,0.1);">HTTP/HTTPS</span>
+              <span class="osi-chip" style="color:#FF8C42;border-color:rgba(255,98,0,0.3);background:rgba(255,98,0,0.1);">DNS</span>
+              <span class="osi-chip" style="color:#FF8C42;border-color:rgba(255,98,0,0.3);background:rgba(255,98,0,0.1);">FTP</span>
+              <span class="osi-chip" style="color:#FF8C42;border-color:rgba(255,98,0,0.3);background:rgba(255,98,0,0.1);">SMTP</span>
+              <span class="osi-chip" style="color:#FF8C42;border-color:rgba(255,98,0,0.3);background:rgba(255,98,0,0.1);">SSH</span>
+              <span class="osi-chip" style="color:#FF8C42;border-color:rgba(255,98,0,0.3);background:rgba(255,98,0,0.1);">SNMP</span>
+            </div>
+          </div>
+          <div class="osi-devices-label">Where you see this</div>
+          <span class="osi-device-chip">🌐 Web browsers</span>
+          <span class="osi-device-chip">📧 Email clients</span>
+          <span class="osi-device-chip">🔥 NGFW App-ID</span>
+          <div class="osi-packet-demo">
+            <div class="osi-packet-demo-label">Data at this layer is called a "Message"</div>
+            <div class="osi-packet-track">
+              <div class="osi-packet-seg lit" style="background:#FF8C42;color:#fff;">DATA</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Layer 6 -->
+        <div class="osi-detail-content" id="osi-content-6">
+          <div class="osi-detail-header">
+            <div class="osi-detail-badge" style="background:rgba(255,140,80,0.2);">🔐</div>
+            <div>
+              <div class="osi-detail-num" style="color:#FFB347;">Layer 6</div>
+              <div class="osi-detail-title">Presentation</div>
+            </div>
+          </div>
+          <div class="osi-detail-desc">This layer is the <strong style="color:#FFB347;">translator and encryptor</strong>. It converts data into a format the application can understand, handles compression, and manages encryption/decryption. When you visit an HTTPS site, TLS encryption happens at Layer 6 — your data is scrambled before it leaves Layer 5 and unscrambled when it arrives.</div>
+          <div class="osi-detail-examples">
+            <div class="osi-detail-examples-label">Protocols &amp; formats</div>
+            <div class="osi-chips-row">
+              <span class="osi-chip" style="color:#FFB347;border-color:rgba(255,140,80,0.3);background:rgba(255,140,80,0.1);">TLS 1.3</span>
+              <span class="osi-chip" style="color:#FFB347;border-color:rgba(255,140,80,0.3);background:rgba(255,140,80,0.1);">SSL</span>
+              <span class="osi-chip" style="color:#FFB347;border-color:rgba(255,140,80,0.3);background:rgba(255,140,80,0.1);">JPEG / PNG</span>
+              <span class="osi-chip" style="color:#FFB347;border-color:rgba(255,140,80,0.3);background:rgba(255,140,80,0.1);">GZIP</span>
+              <span class="osi-chip" style="color:#FFB347;border-color:rgba(255,140,80,0.3);background:rgba(255,140,80,0.1);">ASCII / UTF-8</span>
+            </div>
+          </div>
+          <div class="osi-devices-label">Where you see this</div>
+          <span class="osi-device-chip">🔒 HTTPS handshake</span>
+          <span class="osi-device-chip">🛡️ SSL Inspection (NGFW)</span>
+          <div class="osi-packet-demo">
+            <div class="osi-packet-demo-label">Data at this layer is "encrypted &amp; formatted"</div>
+            <div class="osi-packet-track">
+              <div class="osi-packet-seg lit" style="background:#FFB347;color:#fff;">🔒 DATA</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Layer 5 -->
+        <div class="osi-detail-content" id="osi-content-5">
+          <div class="osi-detail-header">
+            <div class="osi-detail-badge" style="background:rgba(255,200,40,0.2);">🤝</div>
+            <div>
+              <div class="osi-detail-num" style="color:#FFD700;">Layer 5</div>
+              <div class="osi-detail-title">Session</div>
+            </div>
+          </div>
+          <div class="osi-detail-desc">The Session layer <strong style="color:#FFD700;">opens, manages, and closes conversations</strong> between two applications. Think of it as the "phone call manager" — it dials the call, keeps it alive while you're talking, and hangs up when you're done. When you log into a website and your session stays open while you browse multiple pages, that's Layer 5 at work.</div>
+          <div class="osi-detail-examples">
+            <div class="osi-detail-examples-label">Examples</div>
+            <div class="osi-chips-row">
+              <span class="osi-chip" style="color:#FFD700;border-color:rgba(255,200,40,0.3);background:rgba(255,200,40,0.1);">NetBIOS</span>
+              <span class="osi-chip" style="color:#FFD700;border-color:rgba(255,200,40,0.3);background:rgba(255,200,40,0.1);">RPC</span>
+              <span class="osi-chip" style="color:#FFD700;border-color:rgba(255,200,40,0.3);background:rgba(255,200,40,0.1);">Session cookies</span>
+              <span class="osi-chip" style="color:#FFD700;border-color:rgba(255,200,40,0.3);background:rgba(255,200,40,0.1);">Auth tokens</span>
+            </div>
+          </div>
+          <div class="osi-devices-label">Where you see this</div>
+          <span class="osi-device-chip">🌍 Web login sessions</span>
+          <span class="osi-device-chip">📞 VoIP call setup</span>
+        </div>
+
+        <!-- Layer 4 -->
+        <div class="osi-detail-content" id="osi-content-4">
+          <div class="osi-detail-header">
+            <div class="osi-detail-badge" style="background:rgba(74,158,255,0.2);">🚚</div>
+            <div>
+              <div class="osi-detail-num" style="color:#5BB8FF;">Layer 4</div>
+              <div class="osi-detail-title">Transport</div>
+            </div>
+          </div>
+          <div class="osi-detail-desc">Transport handles <strong style="color:#5BB8FF;">end-to-end delivery</strong> between two applications. It breaks large data into segments, numbers them, and reassembles at the destination. Two options: <strong style="color:#5BB8FF;">TCP</strong> (confirms every segment arrived — reliable, used for web/email) or <strong style="color:#5BB8FF;">UDP</strong> (fires and forgets — fast, used for video calls and gaming). Port numbers live here.</div>
+          <div class="osi-detail-examples">
+            <div class="osi-detail-examples-label">Protocols &amp; port examples</div>
+            <div class="osi-chips-row">
+              <span class="osi-chip" style="color:#5BB8FF;border-color:rgba(74,158,255,0.3);background:rgba(74,158,255,0.1);">TCP</span>
+              <span class="osi-chip" style="color:#5BB8FF;border-color:rgba(74,158,255,0.3);background:rgba(74,158,255,0.1);">UDP</span>
+              <span class="osi-chip" style="color:#5BB8FF;border-color:rgba(74,158,255,0.3);background:rgba(74,158,255,0.1);">Port 443 = HTTPS</span>
+              <span class="osi-chip" style="color:#5BB8FF;border-color:rgba(74,158,255,0.3);background:rgba(74,158,255,0.1);">Port 80 = HTTP</span>
+              <span class="osi-chip" style="color:#5BB8FF;border-color:rgba(74,158,255,0.3);background:rgba(74,158,255,0.1);">Port 22 = SSH</span>
+              <span class="osi-chip" style="color:#5BB8FF;border-color:rgba(74,158,255,0.3);background:rgba(74,158,255,0.1);">Port 53 = DNS</span>
+            </div>
+          </div>
+          <div class="osi-devices-label">Devices at this layer</div>
+          <span class="osi-device-chip">🛡️ Firewalls (port filtering)</span>
+          <span class="osi-device-chip">⚖️ Load balancers</span>
+          <div class="osi-packet-demo">
+            <div class="osi-packet-demo-label">Data unit = Segment (TCP) or Datagram (UDP)</div>
+            <div class="osi-packet-track">
+              <div class="osi-packet-seg lit" style="background:#5BB8FF;color:#1A1A1A;font-size:8px;">TCP HDR</div>
+              <div class="osi-packet-seg lit" style="background:rgba(74,158,255,0.4);">DATA</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Layer 3 -->
+        <div class="osi-detail-content" id="osi-content-3">
+          <div class="osi-detail-header">
+            <div class="osi-detail-badge" style="background:rgba(0,200,150,0.2);">🗺️</div>
+            <div>
+              <div class="osi-detail-num" style="color:#00C896;">Layer 3</div>
+              <div class="osi-detail-title">Network</div>
+            </div>
+          </div>
+          <div class="osi-detail-desc">The Network layer handles <strong style="color:#00C896;">logical addressing and routing</strong> — getting packets from one network to another across the globe. Every device has an IP address at this layer. Routers read Layer 3 headers to decide: "which direction does this packet need to go next?" This is the layer that makes the internet possible.</div>
+          <div class="osi-detail-examples">
+            <div class="osi-detail-examples-label">Protocols at this layer</div>
+            <div class="osi-chips-row">
+              <span class="osi-chip" style="color:#00C896;border-color:rgba(0,200,150,0.3);background:rgba(0,200,150,0.1);">IPv4</span>
+              <span class="osi-chip" style="color:#00C896;border-color:rgba(0,200,150,0.3);background:rgba(0,200,150,0.1);">IPv6</span>
+              <span class="osi-chip" style="color:#00C896;border-color:rgba(0,200,150,0.3);background:rgba(0,200,150,0.1);">OSPF</span>
+              <span class="osi-chip" style="color:#00C896;border-color:rgba(0,200,150,0.3);background:rgba(0,200,150,0.1);">BGP</span>
+              <span class="osi-chip" style="color:#00C896;border-color:rgba(0,200,150,0.3);background:rgba(0,200,150,0.1);">ICMP (ping)</span>
+              <span class="osi-chip" style="color:#00C896;border-color:rgba(0,200,150,0.3);background:rgba(0,200,150,0.1);">NAT</span>
+            </div>
+          </div>
+          <div class="osi-devices-label">Devices at this layer</div>
+          <span class="osi-device-chip">🔀 Routers</span>
+          <span class="osi-device-chip">🛡️ Firewalls</span>
+          <span class="osi-device-chip">🔌 Layer 3 Switches</span>
+          <div class="osi-packet-demo">
+            <div class="osi-packet-demo-label">Data unit = Packet</div>
+            <div class="osi-packet-track">
+              <div class="osi-packet-seg lit" style="background:#00C896;color:#1A1A1A;font-size:8px;">IP HDR</div>
+              <div class="osi-packet-seg" style="background:#5BB8FF;opacity:0.4;font-size:8px;">TCP</div>
+              <div class="osi-packet-seg" style="background:rgba(255,255,255,0.15);font-size:8px;">DATA</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Layer 2 -->
+        <div class="osi-detail-content" id="osi-content-2">
+          <div class="osi-detail-header">
+            <div class="osi-detail-badge" style="background:rgba(150,80,255,0.2);">🔌</div>
+            <div>
+              <div class="osi-detail-num" style="color:#B388FF;">Layer 2</div>
+              <div class="osi-detail-title">Data Link</div>
+            </div>
+          </div>
+          <div class="osi-detail-desc">Data Link handles <strong style="color:#B388FF;">node-to-node delivery within the same network</strong>. It uses <strong style="color:#B388FF;">MAC addresses</strong> — a unique hardware ID burned into every network card. Switches read MAC addresses to forward frames to the right port. This layer also detects transmission errors and manages VLANs.</div>
+          <div class="osi-detail-examples">
+            <div class="osi-detail-examples-label">Protocols at this layer</div>
+            <div class="osi-chips-row">
+              <span class="osi-chip" style="color:#B388FF;border-color:rgba(150,80,255,0.3);background:rgba(150,80,255,0.1);">Ethernet (802.3)</span>
+              <span class="osi-chip" style="color:#B388FF;border-color:rgba(150,80,255,0.3);background:rgba(150,80,255,0.1);">WiFi (802.11)</span>
+              <span class="osi-chip" style="color:#B388FF;border-color:rgba(150,80,255,0.3);background:rgba(150,80,255,0.1);">VLANs (802.1Q)</span>
+              <span class="osi-chip" style="color:#B388FF;border-color:rgba(150,80,255,0.3);background:rgba(150,80,255,0.1);">ARP</span>
+              <span class="osi-chip" style="color:#B388FF;border-color:rgba(150,80,255,0.3);background:rgba(150,80,255,0.1);">STP</span>
+            </div>
+          </div>
+          <div class="osi-devices-label">Devices at this layer</div>
+          <span class="osi-device-chip">🔌 Switches</span>
+          <span class="osi-device-chip">📡 Access Points</span>
+          <span class="osi-device-chip">🌉 Bridges</span>
+          <div class="osi-packet-demo">
+            <div class="osi-packet-demo-label">Data unit = Frame</div>
+            <div class="osi-packet-track">
+              <div class="osi-packet-seg lit" style="background:#B388FF;color:#1A1A1A;font-size:8px;">MAC HDR</div>
+              <div class="osi-packet-seg" style="background:#00C896;opacity:0.4;font-size:8px;">IP</div>
+              <div class="osi-packet-seg" style="background:#5BB8FF;opacity:0.3;font-size:8px;">TCP</div>
+              <div class="osi-packet-seg" style="background:rgba(255,255,255,0.1);font-size:8px;">DATA</div>
+              <div class="osi-packet-seg lit" style="background:rgba(179,136,255,0.5);font-size:8px;">FCS</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Layer 1 -->
+        <div class="osi-detail-content" id="osi-content-1">
+          <div class="osi-detail-header">
+            <div class="osi-detail-badge" style="background:rgba(220,80,80,0.2);">⚡</div>
+            <div>
+              <div class="osi-detail-num" style="color:#FF7A7A;">Layer 1</div>
+              <div class="osi-detail-title">Physical</div>
+            </div>
+          </div>
+          <div class="osi-detail-desc">The Physical layer is the <strong style="color:#FF7A7A;">actual hardware and transmission medium</strong>. It converts binary data (1s and 0s) into electrical signals, light pulses, or radio waves, and vice versa. There are no addresses or protocols here — just raw signals. If a cable is unplugged or a fibre is broken, the problem is at Layer 1.</div>
+          <div class="osi-detail-examples">
+            <div class="osi-detail-examples-label">Examples at this layer</div>
+            <div class="osi-chips-row">
+              <span class="osi-chip" style="color:#FF7A7A;border-color:rgba(220,80,80,0.3);background:rgba(220,80,80,0.1);">Cat6 / Cat6A cable</span>
+              <span class="osi-chip" style="color:#FF7A7A;border-color:rgba(220,80,80,0.3);background:rgba(220,80,80,0.1);">Fibre optic</span>
+              <span class="osi-chip" style="color:#FF7A7A;border-color:rgba(220,80,80,0.3);background:rgba(220,80,80,0.1);">Radio (WiFi)</span>
+              <span class="osi-chip" style="color:#FF7A7A;border-color:rgba(220,80,80,0.3);background:rgba(220,80,80,0.1);">SFP transceivers</span>
+              <span class="osi-chip" style="color:#FF7A7A;border-color:rgba(220,80,80,0.3);background:rgba(220,80,80,0.1);">RJ45 connectors</span>
+            </div>
+          </div>
+          <div class="osi-devices-label">Devices at this layer</div>
+          <span class="osi-device-chip">🔌 Network cables</span>
+          <span class="osi-device-chip">💡 Fibre transceivers</span>
+          <span class="osi-device-chip">📶 Antennas</span>
+          <span class="osi-device-chip">🔁 Hubs / Repeaters</span>
+          <div class="osi-packet-demo">
+            <div class="osi-packet-demo-label">Data unit = Bits (1s and 0s)</div>
+            <div class="osi-packet-track">
+              <div class="osi-packet-seg lit" style="background:#FF7A7A;color:#1A1A1A;font-size:9px;letter-spacing:1px;flex:2;">1 0 1 1 0 0 1 0 1 1</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Memory trick -->
+    <div class="alert orange" style="margin-top:24px;">
+      <span class="alert-icon">💡</span>
+      <p><strong>Memory trick:</strong> <em>"All People Seem To Need Data Processing"</em> — Application · Presentation · Session · Transport · Network · Data Link · Physical (layers 7 → 1).</p>
+    </div>
+
+    <script>
+    (function() {
+      var current = null;
+
+      window.osiSelect = function(n) {
+        // Deactivate previous
+        if (current !== null) {
+          var prevLayer = document.getElementById('osi-layer-' + current);
+          var prevContent = document.getElementById('osi-content-' + current);
+          if (prevLayer)   prevLayer.classList.remove('active');
+          if (prevContent) prevContent.classList.remove('visible');
+        }
+
+        // If clicking the same layer, just deselect
+        if (current === n) {
+          current = null;
+          document.getElementById('osi-placeholder').style.display = 'flex';
+          return;
+        }
+
+        current = n;
+
+        // Activate new
+        var layer   = document.getElementById('osi-layer-'   + n);
+        var content = document.getElementById('osi-content-' + n);
+        var placeholder = document.getElementById('osi-placeholder');
+
+        if (layer)   layer.classList.add('active');
+        if (content) { content.classList.add('visible'); }
+        if (placeholder) placeholder.style.display = 'none';
+
+        // Scroll detail panel into view on mobile
+        if (window.innerWidth < 760) {
+          var detail = document.getElementById('osi-detail');
+          if (detail) detail.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      };
+
+      // Auto-select layer 7 on load so it's not empty
+      window.addEventListener('load', function() {
+        osiSelect(7);
+      });
+    })();
+    </script>
+
+  </div>
+
+  <!-- NEXT STEPS -->
+  <div class="section">
+    <div class="section-header">
+      <h2>What to learn next</h2>
+      <div class="divider"></div>
+    </div>
+    <div class="grid-3">
+      <a href="ip-routing.html" class="card" style="text-decoration:none;">
+        <div class="card-icon" style="background:var(--orange-pale);">🗺️</div>
+        <h3>IP Routing</h3>
+        <p>Learn how routers decide where to send packets using routing tables, protocols, and subnetting.</p>
+        <span class="card-link">Continue →</span>
+      </a>
+      <a href="switching.html" class="card" style="text-decoration:none;">
+        <div class="card-icon" style="background:#F0F0FF;">🔌</div>
+        <h3>Switching &amp; VLANs</h3>
+        <p>Dive into how switches work, how VLANs segment traffic, and how to stack switches.</p>
+        <span class="card-link">Continue →</span>
+      </a>
+      <a href="cisco.html" class="card" style="text-decoration:none;">
+        <div class="card-icon" style="background:var(--cisco-pale);">🔵</div>
+        <h3>Cisco Devices</h3>
+        <p>See the actual hardware: Catalyst switches, ISR routers, ASA firewalls, Aironet APs.</p>
+        <span class="card-link">Continue →</span>
+      </a>
+    </div>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <p>Orange <span>Business</span> — Network Knowledge Base &nbsp;·&nbsp; <a href="index.html" style="color:rgba(255,255,255,0.4);">Home</a></p>
+</footer>
+<script src="shared.js"></script>
+</body>
+</html>

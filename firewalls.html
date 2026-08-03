@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Firewalls &amp; Security — OB Network KB</title>
+<link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<nav class="topnav">
+  <a href="index.html" class="topnav-brand">
+    <div class="topnav-logo">OB</div>
+    <div class="topnav-brand-text">Orange <span>Business</span></div>
+  </a>
+  <div class="topnav-links">
+    <a href="index.html"          class="nav-link" id="nav-index">Home</a>
+    <a href="lan-wan-basics.html" class="nav-link" id="nav-lan">LAN / WAN</a>
+    <a href="ip-routing.html"     class="nav-link" id="nav-ip">IP Routing</a>
+    <a href="switching.html"      class="nav-link" id="nav-sw">Switching</a>
+    <a href="wireless.html"       class="nav-link" id="nav-wifi">Wireless</a>
+    <a href="firewalls.html"      class="nav-link active" id="nav-fw">Firewalls</a>
+    <a href="zscaler.html"        class="nav-link" id="nav-zs">Zscaler</a>
+    <a href="devices.html"        class="nav-link" id="nav-devices">Devices</a>
+    <a href="glossary.html"       class="nav-link" id="nav-gl">Glossary</a>
+  </div>
+  <div class="topnav-badge">New Hire Guide</div>
+</nav>
+
+<div class="breadcrumb">
+  <a href="index.html">Home</a><span>/</span> Firewalls &amp; Security
+</div>
+
+<div class="page-hero dark">
+  <div class="hero-content">
+    <div class="hero-tag">🛡️ Security</div>
+    <h1>Firewalls &amp; <span>Network Security</span></h1>
+    <p class="hero-sub">Next-generation firewalls, security zones, NAT, IPSec VPN, SSL inspection, IPS, and how Cisco, Palo Alto, and Fortinet approach network security.</p>
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- FIREWALL TYPES -->
+  <div class="section">
+    <div class="section-header">
+      <h2>Types of Firewalls</h2>
+      <div class="divider"></div>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-icon" style="background:var(--gray-faint);">📋</div>
+        <h3>Packet Filter (Stateless)</h3>
+        <p>The simplest form — inspects each packet independently based on source/destination IP and port. No concept of "sessions". An ACL on a Cisco router is a stateless packet filter. Rarely used alone in modern networks.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:var(--cisco-pale);">🔄</div>
+        <h3>Stateful Firewall</h3>
+        <p>Tracks the <strong>state</strong> of network connections (TCP sessions, UDP flows). Knows which packets belong to an established, allowed session. Returns traffic is automatically permitted without an explicit rule. This is what Cisco ASA and most classic firewalls do.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:var(--palo-pale);">🔬</div>
+        <h3>NGFW — Next-Generation Firewall</h3>
+        <p>Stateful + deep packet inspection at Layer 7. Can identify applications (e.g. YouTube, Teams, Dropbox) regardless of port. Includes IPS, URL filtering, malware sandboxing, and SSL/TLS decryption. All three vendors (Cisco FTD, Palo Alto, Fortinet) sell NGFWs.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:var(--purple-pale);">☁️</div>
+        <h3>Cloud / SASE Firewall</h3>
+        <p><strong>SASE (Secure Access Service Edge)</strong> delivers firewall-as-a-service from the cloud. Traffic from users and branches is tunneled to a cloud POP where policies are enforced. Examples: Palo Alto Prisma Access, Fortinet SASE, Cisco Umbrella.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ZONES -->
+  <div class="section">
+    <div class="section-header">
+      <h2>Security Zones</h2>
+      <div class="divider"></div>
+      <p>Modern NGFWs group interfaces into zones. Security policy is written between zones — not between individual interfaces.</p>
+    </div>
+    <div class="diagram-box">
+      <svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg" style="font-family:'Sora',sans-serif;">
+        <!-- Untrust -->
+        <rect x="20" y="20" width="160" height="160" rx="10" fill="#FFF0EF" stroke="#EE3124" stroke-width="1.5"/>
+        <text x="100" y="45" text-anchor="middle" font-size="11" font-weight="700" fill="#EE3124">UNTRUST</text>
+        <text x="100" y="62" text-anchor="middle" font-size="10" fill="#888">Internet / WAN</text>
+        <rect x="45" y="80" width="110" height="24" rx="5" fill="#EE3124"/>
+        <text x="100" y="96" text-anchor="middle" font-size="10" fill="white">GE1/1 (WAN port)</text>
+        <text x="100" y="130" text-anchor="middle" font-size="10" fill="#888">All inbound blocked</text>
+        <text x="100" y="145" text-anchor="middle" font-size="10" fill="#888">by default</text>
+
+        <!-- Firewall -->
+        <rect x="270" y="60" width="160" height="80" rx="8" fill="#1A1A1A"/>
+        <text x="350" y="95" text-anchor="middle" font-size="12" font-weight="600" fill="white">NGFW</text>
+        <text x="350" y="112" text-anchor="middle" font-size="10" fill="rgba(255,255,255,0.5)">Policy Enforcement</text>
+        <line x1="180" y1="100" x2="270" y2="100" stroke="#EE3124" stroke-width="2"/>
+        <line x1="430" y1="100" x2="520" y2="70" stroke="#00A86B" stroke-width="2"/>
+        <line x1="430" y1="100" x2="520" y2="130" stroke="#1BA0D7" stroke-width="2"/>
+
+        <!-- Trust -->
+        <rect x="520" y="20" width="160" height="80" rx="10" fill="#E6F7F1" stroke="#00A86B" stroke-width="1.5"/>
+        <text x="600" y="42" text-anchor="middle" font-size="11" font-weight="700" fill="#00A86B">TRUST</text>
+        <text x="600" y="58" text-anchor="middle" font-size="10" fill="#888">Internal LAN</text>
+        <rect x="545" y="65" width="110" height="24" rx="5" fill="#00A86B"/>
+        <text x="600" y="81" text-anchor="middle" font-size="10" fill="white">GE1/2 (LAN)</text>
+
+        <!-- DMZ -->
+        <rect x="520" y="115" width="160" height="80" rx="10" fill="#E8F6FD" stroke="#1BA0D7" stroke-width="1.5"/>
+        <text x="600" y="137" text-anchor="middle" font-size="11" font-weight="700" fill="#1BA0D7">DMZ</text>
+        <text x="600" y="153" text-anchor="middle" font-size="10" fill="#888">Public-facing servers</text>
+        <rect x="545" y="160" width="110" height="24" rx="5" fill="#1BA0D7"/>
+        <text x="600" y="176" text-anchor="middle" font-size="10" fill="white">GE1/3 (DMZ)</text>
+
+        <!-- Labels -->
+        <text x="220" y="95" text-anchor="middle" font-size="9" fill="#EE3124">deny all →</text>
+        <text x="472" y="85" text-anchor="middle" font-size="9" fill="#00A86B">permit →</text>
+        <text x="472" y="130" text-anchor="middle" font-size="9" fill="#1BA0D7">limited →</text>
+      </svg>
+      <p class="diagram-caption">Three-zone model: untrust (internet), trust (LAN), DMZ (servers). Policy controls inter-zone traffic.</p>
+    </div>
+
+    <div class="alert orange">
+      <span class="alert-icon">💡</span>
+      <p><strong>DMZ (Demilitarized Zone):</strong> A buffer zone between untrust and trust. Place public-facing servers (web, mail, VPN gateway) here. Even if a DMZ server is compromised, the attacker still can't reach the internal LAN without crossing another firewall policy.</p>
+    </div>
+  </div>
+
+  <!-- SECURITY POLICY -->
+  <div class="section">
+    <div class="section-header">
+      <h2>Security Policy / Rules</h2>
+      <div class="divider"></div>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <h3>Rule Structure</h3>
+        <p>A firewall rule matches on: <strong>Source zone + Source IP → Destination zone + Destination IP + Application/Port</strong>. If matched, the action is Permit, Deny, or Drop. Rules are evaluated top-to-bottom — first match wins.</p>
+        <div class="code-block" style="margin-top:12px;margin-bottom:0;">
+          <pre><span class="cmt">Example policy (Palo Alto style):</span>
+<span class="kw">Name:</span> <span class="val">Allow-Corp-Web</span>
+<span class="kw">From:</span> trust → <span class="kw">To:</span> untrust
+<span class="kw">Source:</span> 192.168.10.0/24
+<span class="kw">Dest:</span> any
+<span class="kw">App:</span> web-browsing, ssl
+<span class="kw">Action:</span> <span class="val">allow</span> + log</pre>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Implicit Deny</h3>
+        <p>All firewalls have an implicit "deny all" at the bottom of the policy. If no rule matches, traffic is blocked. This is intentional — you must explicitly permit what you want to allow. Always log the deny rule so you can troubleshoot blocked traffic.</p>
+        <div class="alert orange" style="margin-top:12px;margin-bottom:0;">
+          <span class="alert-icon">⚠️</span>
+          <p>Never put an <strong>allow any any</strong> rule in production. It defeats the purpose of a firewall. Always be as specific as possible with source, destination, and application.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VPN -->
+  <div class="section">
+    <div class="section-header">
+      <h2>VPN — Virtual Private Network</h2>
+      <div class="divider"></div>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-icon" style="background:var(--purple-pale);">🔒</div>
+        <h3>Site-to-Site IPSec VPN</h3>
+        <p>Connects two branch offices securely over the internet. Both firewalls negotiate an <strong>IKE (Internet Key Exchange)</strong> phase to agree on encryption parameters, then establish an <strong>IPSec tunnel</strong> that encrypts all traffic between the sites.</p>
+        <ul class="spec-list" style="margin-top:10px;">
+          <li><div class="spec-dot"></div><span>IKEv2 is the modern standard (faster, more secure)</span></li>
+          <li><div class="spec-dot"></div><span>AES-256 + SHA-256 — recommended encryption</span></li>
+          <li><div class="spec-dot"></div><span>Pre-shared key or certificate-based auth</span></li>
+          <li><div class="spec-dot"></div><span>Dead Peer Detection (DPD) for tunnel health</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:var(--green-pale);">👤</div>
+        <h3>Remote Access VPN (SSL/IPSec)</h3>
+        <p>Allows remote workers to securely connect to the corporate network. Client installs a VPN agent on their laptop.</p>
+        <ul class="spec-list" style="margin-top:10px;">
+          <li><div class="spec-dot"></div><span>Cisco AnyConnect / Secure Client — SSL + IPSec</span></li>
+          <li><div class="spec-dot"></div><span>Palo Alto GlobalProtect — SSL + IPSec</span></li>
+          <li><div class="spec-dot"></div><span>Fortinet FortiClient — SSL + IPSec</span></li>
+          <li><div class="spec-dot"></div><span>Split tunneling: only corporate traffic through VPN</span></li>
+          <li><div class="spec-dot"></div><span>MFA required — RADIUS/LDAP + TOTP</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- IPS / THREAT PREVENTION -->
+  <div class="section">
+    <div class="section-header">
+      <h2>IPS &amp; Threat Prevention</h2>
+      <div class="divider"></div>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <h3>IPS — Intrusion Prevention System</h3>
+        <p>IPS inspects traffic in real time against a database of known attack signatures. When a match is detected (e.g. a known exploit against Apache), the IPS can <strong>drop the packet, reset the connection, or alert</strong>. Signatures are updated by threat intelligence feeds (Cisco Talos, Palo Alto Unit 42, FortiGuard Labs).</p>
+      </div>
+      <div class="card">
+        <h3>SSL/TLS Inspection</h3>
+        <p>~90% of internet traffic is now HTTPS. Without SSL inspection, the firewall can't see what's inside. The firewall <strong>acts as a man-in-the-middle</strong>: decrypts the traffic, inspects it, re-encrypts it. Requires deploying the firewall's CA certificate to client devices (via GPO/MDM).</p>
+      </div>
+      <div class="card">
+        <h3>URL Filtering</h3>
+        <p>Blocks or monitors web traffic based on category (malware sites, adult content, social media, gambling). Fortinet uses FortiGuard categories; Palo Alto uses PAN-DB; Cisco uses Talos URL categories. Policy can log, block, or require authentication to override.</p>
+      </div>
+      <div class="card">
+        <h3>Sandboxing</h3>
+        <p>Unknown files (email attachments, downloads) are sent to a sandbox environment to be executed and observed. If the file exhibits malicious behavior, it's blocked and a new signature is created. Palo Alto = WildFire; Fortinet = FortiSandbox; Cisco = Threat Grid.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <p>Orange <span>Business</span> — Network Knowledge Base &nbsp;·&nbsp; <a href="index.html" style="color:rgba(255,255,255,0.4);">Home</a></p>
+</footer>
+<script src="shared.js"></script>
+</body>
+</html>

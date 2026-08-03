@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Device Guides — OB Network KB</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+/* ── VENDOR SUMMARY CARDS ── */
+.vendor-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; margin-bottom:8px; }
+@media(max-width:860px){ .vendor-grid{ grid-template-columns:1fr; } }
+
+.vendor-sum {
+  border-radius:16px; overflow:hidden; background:#fff;
+  border:1px solid #E8E8E8; box-shadow:0 2px 16px rgba(0,0,0,0.05);
+  display:flex; flex-direction:column;
+  transition:transform 0.2s, box-shadow 0.2s;
+}
+.vendor-sum:hover { transform:translateY(-4px); box-shadow:0 16px 44px rgba(0,0,0,0.14); }
+
+.vendor-sum-head { padding:24px 24px 20px; display:flex; align-items:center; gap:14px; }
+.vendor-sum-head .vs-icon { font-size:34px; line-height:1; }
+.vendor-sum-head .vs-name { font-size:21px; font-weight:800; color:#fff; }
+.vendor-sum-head .vs-tag  { font-size:11px; font-weight:700; letter-spacing:1px;
+  text-transform:uppercase; color:rgba(255,255,255,0.7); margin-bottom:3px; }
+
+.vendor-sum.cisco .vendor-sum-head { background:linear-gradient(135deg,#0A1F2D 0%,#0D3347 100%); }
+.vendor-sum.palo  .vendor-sum-head { background:linear-gradient(135deg,#2D1208 0%,#4A1E0C 100%); }
+.vendor-sum.fort  .vendor-sum-head { background:linear-gradient(135deg,#2D0A0A 0%,#3D1010 100%); }
+
+.vendor-sum-body { padding:20px 24px 24px; display:flex; flex-direction:column; flex:1; }
+.vendor-sum-body > p { font-size:13.5px; color:#555; line-height:1.65; margin-bottom:16px; }
+
+.vs-section-label { font-size:11px; font-weight:700; text-transform:uppercase;
+  letter-spacing:0.6px; color:#999; margin-bottom:8px; }
+
+.vs-chips { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:18px; }
+.vs-chip { font-size:11.5px; font-weight:600; padding:4px 10px; border-radius:6px; border:1.5px solid; }
+.vendor-sum.cisco .vs-chip { color:var(--cisco-blue);  border-color:#BDE3F5; background:var(--cisco-pale); }
+.vendor-sum.palo  .vs-chip { color:var(--palo-orange); border-color:#F8C9BB; background:var(--palo-pale); }
+.vendor-sum.fort  .vs-chip { color:var(--fort-red);    border-color:#F5C0BC; background:var(--fort-pale); }
+
+.vs-facts { list-style:none; margin:0 0 20px; }
+.vs-facts li { font-size:12.5px; color:var(--gray-dark); padding:6px 0;
+  border-bottom:1px solid #F2F2F2; display:flex; gap:8px; line-height:1.5; }
+.vs-facts li:last-child { border-bottom:none; }
+.vs-facts li b { color:#888; font-weight:600; min-width:74px; flex-shrink:0; }
+
+.vs-cta { margin-top:auto; display:block; text-align:center;
+  font-size:14px; font-weight:700; padding:12px 18px; border-radius:9px;
+  color:#fff !important; text-decoration:none !important; transition:filter 0.15s; }
+.vs-cta:hover { filter:brightness(1.1); text-decoration:none !important; }
+.vendor-sum.cisco .vs-cta { background:var(--cisco-blue); }
+.vendor-sum.palo  .vs-cta { background:var(--palo-orange); }
+.vendor-sum.fort  .vs-cta { background:var(--fort-red); }
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <a href="index.html" class="topnav-brand">
+    <div class="topnav-logo">OB</div>
+    <div class="topnav-brand-text">Orange <span>Business</span></div>
+  </a>
+  <div class="topnav-links">
+    <a href="index.html"          class="nav-link" id="nav-index">Home</a>
+    <a href="lan-wan-basics.html" class="nav-link" id="nav-lan">LAN / WAN</a>
+    <a href="ip-routing.html"     class="nav-link" id="nav-ip">IP Routing</a>
+    <a href="switching.html"      class="nav-link" id="nav-sw">Switching</a>
+    <a href="wireless.html"       class="nav-link" id="nav-wifi">Wireless</a>
+    <a href="firewalls.html"      class="nav-link" id="nav-fw">Firewalls</a>
+    <a href="zscaler.html"        class="nav-link" id="nav-zs">Zscaler</a>
+    <a href="devices.html"        class="nav-link active" id="nav-devices">Devices</a>
+    <a href="glossary.html"       class="nav-link" id="nav-gl">Glossary</a>
+  </div>
+  <div class="topnav-badge">New Hire Guide</div>
+</nav>
+
+<div class="breadcrumb"><a href="index.html">Home</a><span>/</span> Devices</div>
+
+<div class="page-hero dark">
+  <div class="hero-content">
+    <div class="hero-tag">🧩 Vendor Hardware</div>
+    <h1>Device <span>Guides</span></h1>
+    <p class="hero-sub">The three vendors you'll meet most at Orange Business — Cisco, Palo Alto Networks, and Fortinet. Get the quick picture below, then dive into the full hardware reference for each.</p>
+  </div>
+</div>
+
+<div class="content-wide">
+
+  <!-- INTRO -->
+  <div class="alert orange" style="margin-bottom:40px;">
+    <span class="alert-icon">💡</span>
+    <p><strong>How to use this page:</strong> Each card summarises what a vendor builds, the key platform concepts, and the certification path. When you're working a specific customer environment, open that vendor's full guide for detailed port diagrams and per-model specs.</p>
+  </div>
+
+  <!-- VENDOR SUMMARY CARDS -->
+  <div class="section" style="margin-bottom:40px;">
+    <div class="section-header">
+      <h2>The Three Vendors at a Glance</h2>
+      <div class="divider"></div>
+      <p>Pick a vendor to open its full device guide.</p>
+    </div>
+
+    <div class="vendor-grid">
+
+      <!-- CISCO -->
+      <div class="vendor-sum cisco">
+        <div class="vendor-sum-head">
+          <span class="vs-icon">🔵</span>
+          <div>
+            <div class="vs-tag">Vendor Guide</div>
+            <div class="vs-name">Cisco</div>
+          </div>
+        </div>
+        <div class="vendor-sum-body">
+          <p>The broadest portfolio — campus switching, routing, security, and wireless under one roof. The default for most enterprise LAN environments.</p>
+          <div class="vs-section-label">Covers</div>
+          <div class="vs-chips">
+            <span class="vs-chip">Catalyst Switches</span>
+            <span class="vs-chip">ISR/ASR Routers</span>
+            <span class="vs-chip">ASA / FTD Firewalls</span>
+            <span class="vs-chip">Catalyst APs</span>
+            <span class="vs-chip">WLCs</span>
+            <span class="vs-chip">Catalyst Center</span>
+            <span class="vs-chip">Meraki</span>
+          </div>
+          <ul class="vs-facts">
+            <li><b>OS</b><span>IOS-XE (campus), NX-OS, FTD</span></li>
+            <li><b>Manage</b><span>Catalyst Center (DNAC), CLI, Meraki Dashboard</span></li>
+            <li><b>Certs</b><span>CCNA → CCNP → CCIE</span></li>
+          </ul>
+          <a href="cisco.html" class="vs-cta">View Cisco devices →</a>
+        </div>
+      </div>
+
+      <!-- PALO ALTO -->
+      <div class="vendor-sum palo">
+        <div class="vendor-sum-head">
+          <span class="vs-icon">🔶</span>
+          <div>
+            <div class="vs-tag">Vendor Guide</div>
+            <div class="vs-name">Palo Alto</div>
+          </div>
+        </div>
+        <div class="vendor-sum-body">
+          <p>Security specialist. PA-Series next-gen firewalls from desktop branch units up to hyperscale data-centre chassis, plus cloud security.</p>
+          <div class="vs-section-label">Covers</div>
+          <div class="vs-chips">
+            <span class="vs-chip">PA-Series NGFW</span>
+            <span class="vs-chip">Panorama</span>
+            <span class="vs-chip">Prisma Cloud</span>
+            <span class="vs-chip">GlobalProtect VPN</span>
+          </div>
+          <ul class="vs-facts">
+            <li><b>OS</b><span>PAN-OS (App-ID, zones, commit model)</span></li>
+            <li><b>Manage</b><span>Panorama, WebUI, CLI</span></li>
+            <li><b>Certs</b><span>PCNSA → PCNSE</span></li>
+          </ul>
+          <a href="paloalto.html" class="vs-cta">View Palo Alto devices →</a>
+        </div>
+      </div>
+
+      <!-- FORTINET -->
+      <div class="vendor-sum fort">
+        <div class="vendor-sum-head">
+          <span class="vs-icon">🔴</span>
+          <div>
+            <div class="vs-tag">Vendor Guide</div>
+            <div class="vs-name">Fortinet</div>
+          </div>
+        </div>
+        <div class="vendor-sum-body">
+          <p>The integrated "Security Fabric" — FortiGate firewalls act as the controller for FortiSwitch and FortiAP, so the whole stack is managed as one.</p>
+          <div class="vs-section-label">Covers</div>
+          <div class="vs-chips">
+            <span class="vs-chip">FortiGate NGFW</span>
+            <span class="vs-chip">FortiSwitch</span>
+            <span class="vs-chip">FortiAP</span>
+            <span class="vs-chip">FortiWLC</span>
+            <span class="vs-chip">FortiManager</span>
+            <span class="vs-chip">FortiAnalyzer</span>
+          </div>
+          <ul class="vs-facts">
+            <li><b>OS</b><span>FortiOS (FortiLink, NP/CP ASICs)</span></li>
+            <li><b>Manage</b><span>FortiManager, FortiAnalyzer, WebUI</span></li>
+            <li><b>Certs</b><span>NSE 1–4 → NSE 7/8</span></li>
+          </ul>
+          <a href="fortinet.html" class="vs-cta">View Fortinet devices →</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- COMPARISON TABLE -->
+  <div class="section">
+    <div class="section-header">
+      <h2>Side-by-Side Comparison</h2>
+      <div class="divider"></div>
+      <p>The same building blocks, named differently by each vendor.</p>
+    </div>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Area</th>
+          <th class="c">🔵 Cisco</th>
+          <th class="p">🔶 Palo Alto</th>
+          <th class="f">🔴 Fortinet</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Firewall / NGFW</td>
+          <td>ASA / Firepower (FTD)</td>
+          <td>PA-Series NGFW</td>
+          <td>FortiGate</td>
+        </tr>
+        <tr>
+          <td>Operating system</td>
+          <td>IOS-XE / NX-OS / FTD</td>
+          <td>PAN-OS</td>
+          <td>FortiOS</td>
+        </tr>
+        <tr>
+          <td>Switching</td>
+          <td>Catalyst</td>
+          <td>—</td>
+          <td>FortiSwitch</td>
+        </tr>
+        <tr>
+          <td>Wireless</td>
+          <td>Catalyst APs + WLC</td>
+          <td>—</td>
+          <td>FortiAP + FortiWLC</td>
+        </tr>
+        <tr>
+          <td>Central management</td>
+          <td>Catalyst Center (DNAC)</td>
+          <td>Panorama</td>
+          <td>FortiManager + FortiAnalyzer</td>
+        </tr>
+        <tr>
+          <td>Remote-access VPN</td>
+          <td>AnyConnect / Secure Client</td>
+          <td>GlobalProtect</td>
+          <td>FortiClient</td>
+        </tr>
+        <tr>
+          <td>Cloud / SASE</td>
+          <td>Umbrella</td>
+          <td>Prisma Access</td>
+          <td>Fortinet SASE</td>
+        </tr>
+        <tr>
+          <td>Threat intelligence</td>
+          <td>Talos</td>
+          <td>Unit 42 / WildFire</td>
+          <td>FortiGuard Labs</td>
+        </tr>
+        <tr>
+          <td>Certification path</td>
+          <td>CCNA → CCNP → CCIE</td>
+          <td>PCNSA → PCNSE</td>
+          <td>NSE 1–4 → NSE 7/8</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="alert blue">
+      <span class="alert-icon">ℹ️</span>
+      <p>Looking for vendor-neutral concepts first? See <a href="firewalls.html">Firewalls &amp; Security</a> for how zones, NAT, VPN, and IPS work across all platforms, then come back here for the hardware specifics.</p>
+    </div>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <p>Orange <span>Business</span> — Network Knowledge Base &nbsp;·&nbsp; <a href="index.html" style="color:rgba(255,255,255,0.4);">Home</a></p>
+</footer>
+<script src="shared.js"></script>
+</body>
+</html>

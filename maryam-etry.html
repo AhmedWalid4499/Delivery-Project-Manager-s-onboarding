@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maryam Etry — OB Network KB</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+.mgr-hero { padding:48px 32px 44px; position:relative; overflow:hidden; }
+.mgr-hero::before { content:''; position:absolute; top:-80px; right:-80px; width:380px; height:380px;
+  border-radius:50%; background:radial-gradient(circle, rgba(255,255,255,0.10) 0%, transparent 70%); }
+.mgr-hero .hero-content { max-width:1100px; margin:0 auto; position:relative; display:flex; align-items:center; gap:22px; }
+.mgr-bigavatar { width:74px; height:74px; border-radius:50%; flex-shrink:0; display:flex;
+  align-items:center; justify-content:center; font-weight:700; font-size:26px; color:#fff;
+  border:2px solid rgba(255,255,255,0.4); }
+.mgr-hero .m-cluster { display:inline-block; font-size:11px; font-weight:700; letter-spacing:1px;
+  text-transform:uppercase; padding:4px 12px; border-radius:20px; margin-bottom:10px;
+  background:rgba(255,255,255,0.16); border:1px solid rgba(255,255,255,0.3); color:#fff; }
+.mgr-hero h1 { font-size:clamp(26px,4vw,38px); font-weight:800; color:#fff; line-height:1.15; }
+.mgr-hero .m-title { font-size:15px; color:rgba(255,255,255,0.7); margin:6px 0 12px; font-weight:300; }
+.mgr-hero .m-email { display:inline-flex; align-items:center; gap:7px; font-size:13px; font-weight:600;
+  color:#fff !important; text-decoration:none !important; background:rgba(255,255,255,0.14);
+  border:1px solid rgba(255,255,255,0.28); padding:7px 14px; border-radius:8px; }
+.mgr-hero .m-email:hover { background:rgba(255,255,255,0.26); }
+@media(max-width:560px){ .mgr-hero .hero-content{ flex-direction:column; align-items:flex-start; gap:16px; } }
+
+.emp-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+@media(max-width:760px){ .emp-grid{ grid-template-columns:1fr; } }
+.emp-card { display:flex; align-items:center; gap:14px; background:#fff; border:1px solid #ECECEC;
+  border-left:3px solid var(--c); border-radius:12px; padding:13px 16px;
+  transition:transform .16s, box-shadow .16s; }
+.emp-card:hover { transform:translateY(-2px); box-shadow:0 8px 22px rgba(0,0,0,0.10); }
+.emp-avatar { width:44px; height:44px; border-radius:50%; background:var(--c); color:#fff;
+  font-weight:700; font-size:14px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.emp-info { flex:1; min-width:0; }
+.emp-name { font-size:14px; font-weight:700; color:var(--black); line-height:1.3; }
+.emp-email { font-size:12px; color:#777 !important; text-decoration:none !important; word-break:break-all; }
+.emp-email:hover { color:var(--c) !important; text-decoration:underline !important; }
+.emp-role { flex-shrink:0; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px;
+  padding:4px 9px; border-radius:20px; background:var(--cpale); color:var(--c); white-space:nowrap; }
+.emp-card.sme { background:linear-gradient(180deg, var(--cpale) 0%, #fff 60%); border-left-width:4px; }
+.emp-card.sme .emp-role { background:var(--black); color:#fff; }
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <a href="index.html" class="topnav-brand">
+    <div class="topnav-logo">OB</div>
+    <div class="topnav-brand-text">Orange <span>Business</span></div>
+  </a>
+  <div class="topnav-links">
+    <a href="index.html"          class="nav-link" id="nav-index">Home</a>
+    <a href="lan-wan-basics.html" class="nav-link" id="nav-lan">LAN / WAN</a>
+    <a href="ip-routing.html"     class="nav-link" id="nav-ip">IP Routing</a>
+    <a href="switching.html"      class="nav-link" id="nav-sw">Switching</a>
+    <a href="wireless.html"       class="nav-link" id="nav-wifi">Wireless</a>
+    <a href="firewalls.html"      class="nav-link" id="nav-fw">Firewalls</a>
+    <a href="zscaler.html"        class="nav-link" id="nav-zs">Zscaler</a>
+    <a href="devices.html"        class="nav-link" id="nav-devices">Devices</a>
+    <a href="glossary.html"       class="nav-link" id="nav-gl">Glossary</a>
+  </div>
+  <div class="topnav-badge">New Hire Guide</div>
+</nav>
+
+<div class="breadcrumb">
+  <a href="index.html">Home</a><span>/</span>
+  <a href="index.html#team">Team</a><span>/</span> Maryam Etry
+</div>
+
+<div class="mgr-hero" style="background:linear-gradient(135deg,#2D1208 0%,#4A1E0C 70%);">
+  <div class="hero-content">
+    <div class="mgr-bigavatar" style="background:#FA5A28;">ME</div>
+    <div>
+      <span class="m-cluster">Benelux cluster</span>
+      <h1>Maryam Etry</h1>
+      <p class="m-title">Europe DPMs Manager, BENELUX</p>
+      <a class="m-email" href="mailto:Maryam.Etry@orange.com">✉&nbsp; Maryam.Etry@orange.com</a>
+    </div>
+  </div>
+</div>
+
+<div class="content-wide" style="--c:#FA5A28; --cpale:#FFF1EE;">
+
+  <div class="section-header" style="margin-bottom:22px;">
+    <h2>Benelux Team</h2>
+    <div class="divider " style="background:#FA5A28;"></div>
+    <p>14 team members — Delivery Project Managers, including 1 Subject Matter Expert.</p>
+  </div>
+
+  <div class="emp-grid">
+      <div class="emp-card">
+        <div class="emp-avatar">AD</div>
+        <div class="emp-info">
+          <div class="emp-name">Ahmed Danish</div>
+          <a class="emp-email" href="mailto:ahmed.danish.ext@orange.com">ahmed.danish.ext@orange.com</a>
+        </div>
+        <span class="emp-role">DPM</span>
+      </div>
+      <div class="emp-card sme">
+        <div class="emp-avatar">AH</div>
+        <div class="emp-info">
+          <div class="emp-name">Ahmed Hweedy</div>
+          <a class="emp-email" href="mailto:ahmed.hweedy.ext@orange.com">ahmed.hweedy.ext@orange.com</a>
+        </div>
+        <span class="emp-role">DPM / SME</span>
+      </div>
+      <div class="emp-card">
+        <div class="emp-avatar">AR</div>
+        <div class="emp-info">
+          <div class="emp-name">Ahmed Raslan</div>
+          <a class="emp-email" href="mailto:ahmed1.raslan.ext@orange.com">ahmed1.raslan.ext@orange.com</a>
+        </div>
+        <span class="emp-role">DPM</span>
+      </div>
+      <div class="emp-card">
+        <div class="emp-avatar">AM</div>
+        <div class="emp-info">
+          <div class="emp-name">Amr Mokhtar</div>
+          <a class="emp-email" href="mailto:amr.mokhtar@orange.com">amr.mokhtar@orange.com</a>
+        </div>
+        <span class="emp-role">DPM</span>
+      </div>
+      <div class="emp-card">
+        <div class="emp-avatar">GA</div>
+        <div class="emp-info">
+          <div class="emp-name">Ghadir Allam</div>
+          <a class="emp-email" href="mailto:ghadir.allam.ext@orange.com">ghadir.allam.ext@orange.com</a>
+        </div>
+        <span class="emp-role">DPM</span>
+      </div>
+      <div class="emp-card">
+        <div class="emp-avatar">HS</div>
+        <div class="emp-info">
+          <div class="emp-name">Hussein Shehada</div>
+          <a class="emp-email" href="mailto:hussein.shehada@orange.com">hussein.shehada@orange.com</a>
+        </div>
+        <span class="emp-role">DPM</span>
+      </div>
+      <div class="emp-card">
+        <div class="emp-avatar">KH</div>
+        <div class="emp-info">
+          <div class="emp-name">Karim Hendy</div>
+          <a class="emp-email" href="mailto:karim.hendy@orange.com">karim.hendy@orange.com</a>
+        </div>
+        <span class="emp-role">DPM</span>
+      </div>
+      <div class="emp-card">
+        <div class="emp-avatar">MO</div>
+        <div class="emp-info">
+          <div class="emp-name">Marah Osman</div>
+          <a class="emp-email" href="mailto:marah.osman@orange.com">marah.osman@orange.com</a>
+        </div>
+        <span class="emp-role">DPM</span>
+      </div>
+      <div class="emp-card">
+        <div class="emp-avatar">NA</div>
+        <div class="emp-info">
+          <div class="emp-name">Nadiaa Ali</div>
+          <a class="emp-email" href="mailto:nadia.ali.ext@orange.com">nadia.ali.ext@orange.com</a>
+        </div>
+        <span class="emp-role">DPM</span>
+      </div>
+      <div class="emp-card">
+        <div class="emp-avatar">NA</div>
+        <div class="emp-info">
+          <div class="emp-name">Nasreen Ahmad</div>
+          <a class="emp-email" href="mailto:nasreen.ahmad@orange.com">nasreen.ahmad@orange.com</a>
+        </div>
+        <span class="emp-role">DPM</span>
+      </div>
+      <div class="emp-card">
+        <div class="emp-avatar">RK</div>
+        <div class="emp-info">
+          <div class="emp-name">Rabab Khattab</div>
+          <a class="emp-email" href="mailto:rabab.khattab.ext@orange.com">rabab.khattab.ext@orange.com</a>
+        </div>
+        <span class="emp-role">DPM</span>
+      </div>
+      <div class="emp-card">
+        <div class="emp-avatar">YA</div>
+        <div class="emp-info">
+          <div class="emp-name">Yara Abouleila</div>
+          <a class="emp-email" href="mailto:yara.abouleila@orange.com">yara.abouleila@orange.com</a>
+        </div>
+        <span class="emp-role">DPM</span>
+      </div>
+      <div class="emp-card">
+        <div class="emp-avatar">YZ</div>
+        <div class="emp-info">
+          <div class="emp-name">Yara Zaki</div>
+          <a class="emp-email" href="mailto:yara.zaki.ext@orange.com">yara.zaki.ext@orange.com</a>
+        </div>
+        <span class="emp-role">DPM</span>
+      </div>
+      <div class="emp-card">
+        <div class="emp-avatar">ZS</div>
+        <div class="emp-info">
+          <div class="emp-name">Zeina Saafan</div>
+          <a class="emp-email" href="mailto:zeina.saafan.ext@orange.com">zeina.saafan.ext@orange.com</a>
+        </div>
+        <span class="emp-role">DPM</span>
+      </div>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <p>Orange <span>Business</span> — Network Knowledge Base &nbsp;·&nbsp;
+  <a href="index.html" style="color:rgba(255,255,255,0.4);">Home</a> &nbsp;·&nbsp;
+  <a href="index.html#team" style="color:rgba(255,255,255,0.4);">Team</a></p>
+</footer>
+<script src="shared.js"></script>
+</body>
+</html>

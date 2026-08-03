@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AP Migration Process — OB Process Guide</title>
+<link rel="stylesheet" href="shared.css">
+
+<style>
+:root{--ob-orange:#FF6200;--ord:#D97706;--pre:#1B6CA8;--dur:#0E8A4A;--post:#7C3AED;--ord-p:#FEF3E2;--pre-p:#EEF5FF;--dur-p:#EDFAF4;--post-p:#F4EEFF;}
+.proc-hero{background:linear-gradient(135deg,#0D1B2A 0%,#1A3350 60%,#0D1B2A 100%);padding:52px 40px 44px;text-align:center;}
+.proc-hero-tag{display:inline-block;background:rgba(255,98,0,0.25);border:1px solid rgba(255,98,0,0.5);color:#FFAA66;font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;padding:5px 14px;border-radius:20px;margin-bottom:16px;}
+.proc-hero h1{font-size:36px;font-weight:800;color:#fff;margin-bottom:12px;}
+.proc-hero h1 span{color:var(--ob-orange);}
+.proc-hero p{font-size:15px;color:rgba(255,255,255,0.6);max-width:640px;margin:0 auto;}
+.proc-content{max-width:1100px;margin:0 auto;padding:36px 28px 60px;}
+@media(max-width:600px){.proc-content{padding:20px 14px 40px;}}
+
+/* intro box */
+.migration-intro{background:#fff;border:1px solid #E0E0E0;border-radius:16px;padding:28px 32px;margin-bottom:36px;box-shadow:0 2px 16px rgba(0,0,0,0.05);}
+.migration-intro h3{font-size:18px;font-weight:800;color:#1A1A1A;margin-bottom:14px;display:flex;align-items:center;gap:10px;}
+.migration-intro p{font-size:14px;color:#444;line-height:1.8;margin-bottom:12px;}
+.migration-intro p:last-child{margin-bottom:0;}
+.migration-intro-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:20px;}
+@media(max-width:640px){.migration-intro-grid{grid-template-columns:1fr;}}
+.mig-card{border-radius:12px;padding:18px 20px;border:1px solid;}
+.mig-card-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;display:flex;align-items:center;gap:7px;}
+.mig-card p{font-size:13px;color:#555;line-height:1.7;margin:0;}
+
+/* role note */
+.role-note{background:#FFF8F0;border:1px solid #F5D9B0;border-radius:12px;padding:14px 18px;margin-bottom:32px;font-size:12.5px;color:#7A5A20;line-height:1.7;}
+.role-note strong{color:#C05A00;}
+
+/* summary grid */
+.summary-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:32px;}
+@media(max-width:700px){.summary-grid{grid-template-columns:1fr;}}
+.summary-card{border-radius:12px;padding:18px 20px;border:1px solid;}
+.summary-card-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.summary-chip{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;padding:4px 10px;border-radius:6px;margin:3px;border:1.5px solid;}
+
+/* phase pipeline */
+.phase-pipeline{display:flex;align-items:stretch;gap:0;margin-bottom:36px;flex-wrap:wrap;}
+.pp-step{flex:1;min-width:150px;position:relative;padding:16px 18px;border-radius:12px;border:1px solid;margin-right:26px;margin-bottom:12px;}
+.pp-step:last-child{margin-right:0;}
+.pp-step::after{content:'→';position:absolute;right:-20px;top:50%;transform:translateY(-50%);font-size:18px;color:#CBD5E1;font-weight:700;}
+.pp-step:last-child::after{display:none;}
+.pp-phase{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:5px;}
+.pp-title{font-size:14px;font-weight:800;color:#1A1A1A;margin-bottom:4px;}
+.pp-meta{font-size:11px;color:#888;}
+@media(max-width:760px){.pp-step::after{content:'↓';right:50%;top:auto;bottom:-20px;transform:translateX(50%);}.pp-step{margin-right:0;}}
+
+/* step list phases */
+.phase-block{border-radius:14px;overflow:hidden;border:1px solid #E0E0E0;margin-bottom:28px;box-shadow:0 3px 18px rgba(0,0,0,0.06);}
+.phase-header{display:flex;align-items:center;gap:14px;padding:16px 24px;border-bottom:1px solid rgba(255,255,255,0.1);}
+.phase-badge{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:4px 12px;border-radius:20px;flex-shrink:0;background:rgba(255,255,255,0.2);color:#fff;}
+.phase-title{font-size:18px;font-weight:800;color:#fff;}
+.phase-count{font-size:12px;margin-left:auto;opacity:0.75;flex-shrink:0;color:#fff;}
+.phase-ord .phase-header{background:var(--ord);}
+.phase-pre .phase-header{background:var(--pre);}
+.phase-dur .phase-header{background:var(--dur);}
+.phase-post .phase-header{background:var(--post);}
+.phase-body{padding:0 0 6px;}
+.step-card{display:flex;align-items:stretch;border-bottom:1px solid #F2F2F2;transition:background 0.12s;}
+.step-card:last-child{border-bottom:none;}
+.step-card:hover{background:#FAFBFF;}
+.step-num{width:44px!important;height:auto!important;border-radius:0!important;background:transparent!important;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:monospace;font-size:12px;font-weight:700;padding:14px 0;color:inherit;}
+.phase-ord .step-num{color:var(--ord);background:rgba(217,119,6,0.07);}
+.phase-pre .step-num{color:var(--pre);background:rgba(27,108,168,0.06);}
+.phase-dur .step-num{color:var(--dur);background:rgba(14,138,74,0.06);}
+.phase-post .step-num{color:var(--post);background:rgba(124,58,237,0.06);}
+.step-body{flex:1;padding:13px 18px;}
+.step-action{font-size:14px;font-weight:600;color:#1A1A1A;line-height:1.4;margin-bottom:3px;}
+.step-note{font-size:12px;color:#888;line-height:1.5;}
+.step-team{display:inline-block;font-size:10.5px;color:#94A3B8;font-weight:600;margin-top:4px;}
+.step-tools{padding:10px 14px 10px 0;display:flex;flex-wrap:wrap;gap:5px;align-items:center;justify-content:flex-end;max-width:190px;flex-shrink:0;}
+.tool-tag{font-size:11px;font-weight:700;padding:3px 8px;border-radius:5px;white-space:nowrap;border:1.5px solid;}
+.tt-snow{color:#007AC9;border-color:#A0D4F5;background:#EEF8FF;}
+.tt-machx{color:#C05A00;border-color:#F5C99A;background:#FFF4EA;}
+.tt-dnac{color:#0A6BB5;border-color:#9DD0F5;background:#EEF6FF;}
+.tt-gold{color:#8A6800;border-color:#F0D87A;background:#FFFBEA;}
+.tt-salto{color:#5A0090;border-color:#D4A6F5;background:#F8F0FF;}
+.tt-flip{color:#006B4F;border-color:#8FE0C5;background:#EDFAF5;}
+.tt-sp{color:#1A4E8A;border-color:#A0C4F5;background:#EEF3FF;}
+.tt-auto{color:#0A7A4A;border-color:#8FE0C5;background:#EDFAF8;font-style:italic;}
+
+/* milestone row */
+.step-milestone{display:flex;align-items:center;gap:10px;padding:11px 18px 11px 12px;background:#FbFbFb;border-top:1px dashed #E0E0E0;font-size:12px;font-weight:700;color:#64748B;}
+.step-milestone .ms-flag{font-size:14px;}
+</style>
+
+</head>
+<body>
+<nav class="topnav">
+  <a href="index.html" class="topnav-brand"><div class="topnav-logo">OB</div><div class="topnav-brand-text">Orange <span>Business</span></div></a>
+  <div class="topnav-links">
+    <a href="index.html" class="nav-link">Home</a>
+    <a href="lan-wan-basics.html" class="nav-link">LAN / WAN</a>
+    <a href="ip-routing.html" class="nav-link">IP Routing</a>
+    <a href="switching.html" class="nav-link">Switching</a>
+    <a href="wireless.html" class="nav-link">Wireless</a>
+    <a href="firewalls.html" class="nav-link">Firewalls</a>
+    <a href="zscaler.html" class="nav-link">Zscaler</a>
+    <a href="devices.html"        class="nav-link" id="nav-devices">Devices</a>
+    <a href="glossary.html" class="nav-link">Glossary</a>
+  </div>
+  <div class="topnav-badge">New Hire Guide</div>
+</nav>
+<div class="breadcrumb">
+  <a href="index.html">Home</a><span>/</span>
+  <a href="lan-process.html">LAN Process</a><span>/</span>
+  AP Migration Process
+</div>
+<div class="proc-hero">
+  <div class="proc-hero-tag">📡 LAN Process — Wireless</div>
+  <h1>AP <span>Migration</span> Process</h1>
+  <p>Orange Business — Delivery Project Manager end-to-end process guide. Built from the MLAN (AP) project plan.</p>
+</div>
+<div class="proc-content">
+<div class="migration-intro">
+  <h3>📡 What is an AP Migration?</h3>
+  <p>An <strong>AP (Access Point) migration</strong> is the process of replacing old wireless access points at a customer site with new Cisco Catalyst APs managed by a Wireless LAN Controller (WLC). As the DPM, your job is not to do the technical work yourself — your job is to <strong>coordinate all the people and steps that need to happen in the right order</strong> so the customer's WiFi stays working and the project closes cleanly.</p>
+  <p>The AP flavour of the LAN process has one defining trait: <strong>the customer mounts the APs themselves</strong> and the VPO stages them remotely — so there is no Field Engineer on site and only <strong>one MACHX raise</strong>. The one thing that must never be skipped is verifying <strong>DHCP Option 43</strong>.</p>
+  <div class="migration-intro-grid">
+    <div class="mig-card" style="background:#EEF5FF;border-color:#BDD6F5;">
+      <div class="mig-card-title" style="color:#1B6CA8;">🤔 Why does it need a process?</div>
+      <p>Multiple teams are involved — the ODM and Orange supply chain (ordering &amp; logistics), the Solution Consultant (runbook &amp; LLD), the VPO who stages the APs, the customer who mounts them, and the DHCP / change teams. If any step is missed or done out of order (like forgetting Option 43), the APs won't connect to the WLC and the migration fails.</p>
+    </div>
+    <div class="mig-card" style="background:#EDFAF4;border-color:#9FE0C3;">
+      <div class="mig-card-title" style="color:#0E8A4A;">✅ What does success look like?</div>
+      <p>All new APs are online and broadcasting every customer SSID. The customer has confirmed every service works. CMDB and DNAC are updated, the GOLD and SALTO orders are closed, and the HOTO document (with runbook and LLD) is uploaded to SharePoint and signed off with the HOTO Manager.</p>
+    </div>
+    <div class="mig-card" style="background:#FFF4EA;border-color:#F5C99A;">
+      <div class="mig-card-title" style="color:#C05A00;">⚠️ The most common failure point</div>
+      <p><strong>Option 43 not configured on the DHCP server.</strong> When an AP boots up it asks DHCP "where is my WLC?" — Option 43 holds the answer. If it's missing, the AP gets an IP address but never finds the WLC and sits there doing nothing. Always verify this before migration day, and raise an Option 43 request if it isn't set.</p>
+    </div>
+    <div class="mig-card" style="background:#FEF3E2;border-color:#F5D9B0;">
+      <div class="mig-card-title" style="color:#D97706;">🗓️ The four phases</div>
+      <p><strong>Ordering</strong> (GOLD/SALTO orders, EDD, warehouse) → <strong>Pre-Migration</strong> (staging, Option 43, MACHX, UAT doc, change request) → <strong>During Migration</strong> (cutover &amp; UAT) → <strong>Post-Migration</strong> (notifications, CMDB/DNAC, close orders, HOTO). Ordering + Pre-Migration typically run 3–5 weeks; the cutover itself is usually a few hours to a day.</p>
+    </div>
+  </div>
+</div>
+
+<div class="role-note">
+  <strong>Who's who:</strong> <strong>DPM</strong> = you (Delivery Project Manager) · <strong>VPO</strong> = the operations engineer who stages and migrates the devices · <strong>SC</strong> = Solution Consultant (runbook + LLD) · <strong>ODM</strong> = Order Delivery Manager · <strong>PM</strong> = Project Manager · <strong>HOTO</strong> = Hand-Over-To-Operations.
+</div>
+
+<div class="summary-grid">
+  <div class="summary-card" style="background:#F8F9FA;border-color:#E0E0E0;">
+    <div class="summary-card-title" style="color:#1A1A1A;">📊 At a Glance</div>
+    <span class="summary-chip" style="color:#D97706;border-color:#F5D9B0;background:#FEF3E2;">📋 36 Steps</span>
+    <span class="summary-chip" style="color:#1B6CA8;border-color:#BDD6F5;background:#EEF5FF;">🔢 4 Phases</span>
+    <span class="summary-chip" style="color:#7C3AED;border-color:#D4BAFF;background:#F4EEFF;">🔧 6 Tools</span>
+    <span class="summary-chip" style="color:#0E8A4A;border-color:#9FE0C3;background:#EDFAF4;">1️⃣ One MACHX raise</span>
+  </div>
+  <div class="summary-card" style="background:#EEF5FF;border-color:#BDD6F5;">
+    <div class="summary-card-title" style="color:#1B6CA8;">🛠️ Tools</div>
+    <span class="summary-chip" style="color:#8A6800;border-color:#F0D87A;background:#FFFBEA;">🏆 GOLD</span>
+    <span class="summary-chip" style="color:#5A0090;border-color:#D4A6F5;background:#F8F0FF;">🔑 SALTO</span>
+    <span class="summary-chip" style="color:#007AC9;border-color:#A0D4F5;background:#EEF8FF;">❄️ ServiceNow</span>
+    <span class="summary-chip" style="color:#C05A00;border-color:#F5C99A;background:#FFF4EA;">🔧 MACHX</span>
+    <span class="summary-chip" style="color:#0A6BB5;border-color:#9DD0F5;background:#EEF6FF;">🧠 DNAC</span>
+    <span class="summary-chip" style="color:#1A4E8A;border-color:#A0C4F5;background:#EEF3FF;">📁 SharePoint</span>
+  </div>
+  <div class="summary-card" style="background:#FAFAFA;border-color:#E0E0E0;">
+    <div class="summary-card-title" style="color:#444;">👥 Teams</div>
+    <span class="summary-chip" style="color:#444;border-color:#CCC;background:#F5F5F5;">👤 Customer</span>
+    <span class="summary-chip" style="color:#444;border-color:#CCC;background:#F5F5F5;">👤 VPO</span>
+    <span class="summary-chip" style="color:#444;border-color:#CCC;background:#F5F5F5;">👤 SC</span>
+    <span class="summary-chip" style="color:#444;border-color:#CCC;background:#F5F5F5;">👤 ODM / Supply Chain</span>
+    <span class="summary-chip" style="color:#444;border-color:#CCC;background:#F5F5F5;">👤 DHCP / Change</span>
+    <span class="summary-chip" style="color:#444;border-color:#CCC;background:#F5F5F5;">👤 HOTO Manager</span>
+  </div>
+</div>
+
+<!-- PHASE PIPELINE -->
+<div class="phase-pipeline">
+  <div class="pp-step" style="background:#FEF3E2;border-color:#F5D9B0;">
+    <div class="pp-phase" style="color:#D97706;">🟠 Phase 1</div>
+    <div class="pp-title">Ordering</div>
+    <div class="pp-meta">10 steps · GOLD &amp; SALTO, EDD, warehouse</div>
+  </div>
+  <div class="pp-step" style="background:#EEF5FF;border-color:#BDD6F5;">
+    <div class="pp-phase" style="color:#1B6CA8;">🔵 Phase 2</div>
+    <div class="pp-title">Pre-Migration</div>
+    <div class="pp-meta">14 steps · staging, Option 43, MACHX</div>
+  </div>
+  <div class="pp-step" style="background:#EDFAF4;border-color:#9FE0C3;">
+    <div class="pp-phase" style="color:#0E8A4A;">🟢 Phase 3</div>
+    <div class="pp-title">During Migration</div>
+    <div class="pp-meta">5 steps · cutover &amp; UAT</div>
+  </div>
+  <div class="pp-step" style="background:#F4EEFF;border-color:#D4BAFF;">
+    <div class="pp-phase" style="color:#7C3AED;">🟣 Phase 4</div>
+    <div class="pp-title">Post-Migration</div>
+    <div class="pp-meta">7 steps · close &amp; HOTO</div>
+  </div>
+</div>
+
+<h2 style="font-size:20px;font-weight:800;color:#1A1A1A;margin-bottom:20px;padding-top:8px;">📋 Full Step-by-Step Checklist</h2>
+
+<!-- PHASE 1 : ORDERING -->
+<div class="phase-block phase-ord">
+  <div class="phase-header">
+    <span class="phase-badge">🟠 Phase 1</span>
+    <span class="phase-title">Ordering</span>
+    <span class="phase-count">10 steps</span>
+  </div>
+  <div class="phase-body">
+    <div class="step-card">
+      <div class="step-num">01</div>
+      <div class="step-body"><div class="step-action">Make sure the GOLD order is created with the right scope</div><span class="step-team">DPM · Project Manager</span></div>
+      <div class="step-tools"><span class="tool-tag tt-gold">🏆 GOLD</span></div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">02</div>
+      <div class="step-body"><div class="step-action">Make sure the SALTO order is created correctly, matching the GOLD order scope</div><span class="step-team">DPM · Project Manager</span></div>
+      <div class="step-tools"><span class="tool-tag tt-salto">🔑 SALTO</span></div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">03</div>
+      <div class="step-body"><div class="step-action">Assign the GOLD order to yourself</div><span class="step-team">DPM</span></div>
+      <div class="step-tools"><span class="tool-tag tt-gold">🏆 GOLD</span></div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">04</div>
+      <div class="step-body"><div class="step-action">Contact supply chain for ordering progress</div><span class="step-team">DPM · ODM · Supply Chain</span></div>
+      <div class="step-tools"></div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">05</div>
+      <div class="step-body"><div class="step-action">Get an EDD (Estimated Date of Delivery)</div><span class="step-team">DPM · ODM</span></div>
+      <div class="step-tools"></div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">06</div>
+      <div class="step-body"><div class="step-action">Confirm the devices have successfully arrived at the warehouse</div><span class="step-team">DPM · ODM · Supply Chain</span></div>
+      <div class="step-tools"></div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">07</div>
+      <div class="step-body"><div class="step-action">Confirm with the consultant that the runbook + LLD are being prepared for the site</div><span class="step-team">DPM · Solution Consultant · Supply Chain</span></div>
+      <div class="step-tools"></div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">08</div>
+      <div class="step-body"><div class="step-action">Check whether the devices are to be staged in the warehouse or at the customer site</div><span class="step-team">DPM · Project Manager</span></div>
+      <div class="step-tools"></div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">09</div>
+      <div class="step-body"><div class="step-action">Stage the devices at the warehouse if needed (send FE to site)</div><span class="step-team">DPM · ODM · Project Manager</span></div>
+      <div class="step-tools"></div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">10</div>
+      <div class="step-body"><div class="step-action">Raise a shipping alert for the devices to the customer site</div><span class="step-team">DPM · ODM · Supply Chain</span></div>
+      <div class="step-tools"></div>
+    </div>
+    <div class="step-milestone"><span class="ms-flag">🏁</span> Milestone — Finish Phase 1 (Ordering)</div>
+  </div>
+</div>
+
+<!-- PHASE 2 : PRE-MIGRATION -->
+<div class="phase-block phase-pre">
+  <div class="phase-header">
+    <span class="phase-badge">🔵 Phase 2</span>
+    <span class="phase-title">Pre-Migration</span>
+    <span class="phase-count">14 steps</span>
+  </div>
+  <div class="phase-body">
+    <div class="step-card">
+      <div class="step-num">01</div>
+      <div class="step-body"><div class="step-action">Confirm with supply chain that the order has arrived at the customer site</div><span class="step-team">DPM · Supply Chain</span></div>
+      <div class="step-tools"></div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">02</div>
+      <div class="step-body"><div class="step-action">Send to the customer and confirm receipt with them</div><span class="step-team">DPM</span></div>
+      <div class="step-tools"></div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">03</div>
+      <div class="step-body"><div class="step-action">Confirm with the SC that the runbook is prepared</div><span class="step-team">DPM · Solution Consultant</span></div>
+      <div class="step-tools"></div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">04</div>
+      <div class="step-body"><div class="step-action">Set up a call with the customer — align on a possible migration date and explain that the customer will be the one mounting the APs</div><span class="step-team">DPM · PM · Solution Consultant · VPO</span></div>
+      <div class="step-tools"></div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">05</div>
+      <div class="step-body"><div class="step-action">Send the customer to connect the APs to the switch</div><span class="step-team">DPM</span></div>
+      <div class="step-tools"></div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">06</div>
+      <div class="step-body"><div class="step-action">Send to the VPOs to stage the APs</div><span class="step-team">DPM · VPO</span></div>
+      <div class="step-tools"></div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">07</div>
+      <div class="step-body"><div class="step-action">Send the customer the UAT Test document</div><span class="step-team">DPM</span></div>
+      <div class="step-tools"></div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">08</div>
+      <div class="step-body"><div class="step-action">Get confirmation from the customer on the migration date (by email)</div><span class="step-team">DPM</span></div>
+      <div class="step-tools"></div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">09</div>
+      <div class="step-body"><div class="step-action">Raise a change request on SNOW (ServiceNow)</div><span class="step-team">DPM</span></div>
+      <div class="step-tools"><span class="tool-tag tt-snow">❄️ ServiceNow</span></div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">10</div>
+      <div class="step-body"><div class="step-action">Check that Option 43 is configured</div><div class="step-note">⚠️ Critical — the AP cannot find the WLC without it. Verify on the DHCP scope for the AP VLAN.</div><span class="step-team">DPM · DHCP Team</span></div>
+      <div class="step-tools"></div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">11</div>
+      <div class="step-body"><div class="step-action">Raise an Option 43 request if needed</div><span class="step-team">DPM · DHCP Team · Change Manager</span></div>
+      <div class="step-tools"></div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">12</div>
+      <div class="step-body"><div class="step-action">Raise MACHX for the VPOs</div><div class="step-note">The single MACHX raise for the AP process (covers staging &amp; migration).</div><span class="step-team">DPM</span></div>
+      <div class="step-tools"><span class="tool-tag tt-machx">🔧 MACHX</span></div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">13</div>
+      <div class="step-body"><div class="step-action">Get the answered UAT document back from the customer</div><span class="step-team">DPM</span></div>
+      <div class="step-tools"></div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">14</div>
+      <div class="step-body"><div class="step-action">Send migration invitations to the customer and VPO (PM and SC as optional on all migrations)</div><span class="step-team">DPM · PM · Solution Consultant · VPO</span></div>
+      <div class="step-tools"></div>
+    </div>
+    <div class="step-milestone"><span class="ms-flag">🏁</span> Milestone — Finish Phase 2 (Pre-Migration)</div>
+  </div>
+</div>
+
+<!-- PHASE 3 : DURING MIGRATION -->
+<div class="phase-block phase-dur">
+  <div class="phase-header">
+    <span class="phase-badge">🟢 Phase 3</span>
+    <span class="phase-title">During Migration</span>
+    <span class="phase-count">5 steps</span>
+  </div>
+  <div class="phase-body">
+    <div class="step-card">
+      <div class="step-num">01</div>
+      <div class="step-body"><div class="step-action">Join the migration call</div><span class="step-team">DPM · VPO</span></div>
+      <div class="step-tools"></div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">02</div>
+      <div class="step-body"><div class="step-action">Keep track of all the APs that are migrated and still pending migration</div><span class="step-team">DPM · VPO</span></div>
+      <div class="step-tools"></div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">03</div>
+      <div class="step-body"><div class="step-action">Ask the customer to do UAT for all SSIDs, and then for all APs</div><span class="step-team">DPM · VPO</span></div>
+      <div class="step-tools"></div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">04</div>
+      <div class="step-body"><div class="step-action">Ask the customer to fully test all services connected to the APs</div><span class="step-team">DPM · VPO</span></div>
+      <div class="step-tools"></div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">05</div>
+      <div class="step-body"><div class="step-action">Get confirmation from the customer that everything is working</div><span class="step-team">DPM · VPO</span></div>
+      <div class="step-tools"></div>
+    </div>
+    <div class="step-milestone"><span class="ms-flag">🏁</span> Milestone — Finish Phase 3 (During Migration)</div>
+  </div>
+</div>
+
+<!-- PHASE 4 : POST-MIGRATION -->
+<div class="phase-block phase-post">
+  <div class="phase-header">
+    <span class="phase-badge">🟣 Phase 4</span>
+    <span class="phase-title">Post-Migration</span>
+    <span class="phase-count">7 steps</span>
+  </div>
+  <div class="phase-body">
+    <div class="step-card">
+      <div class="step-num">01</div>
+      <div class="step-body"><div class="step-action">Send the success notification</div><span class="step-team">DPM</span></div>
+      <div class="step-tools"></div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">02</div>
+      <div class="step-body"><div class="step-action">Send the CMDB update</div><span class="step-team">DPM · CMDB Team</span></div>
+      <div class="step-tools"><span class="tool-tag tt-snow">❄️ ServiceNow</span></div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">03</div>
+      <div class="step-body"><div class="step-action">Send the DNAC update</div><span class="step-team">DPM · VPO</span></div>
+      <div class="step-tools"><span class="tool-tag tt-dnac">🧠 DNAC</span></div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">04</div>
+      <div class="step-body"><div class="step-action">Close the GOLD order</div><span class="step-team">DPM · ODM</span></div>
+      <div class="step-tools"><span class="tool-tag tt-gold">🏆 GOLD</span></div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">05</div>
+      <div class="step-body"><div class="step-action">Close the SALTO order</div><span class="step-team">DPM · ODM</span></div>
+      <div class="step-tools"><span class="tool-tag tt-salto">🔑 SALTO</span></div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">06</div>
+      <div class="step-body"><div class="step-action">Upload the HOTO document and runbook (including LLD) to SharePoint</div><span class="step-team">DPM</span></div>
+      <div class="step-tools"><span class="tool-tag tt-sp">📁 SharePoint</span></div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">07</div>
+      <div class="step-body"><div class="step-action">Send the HOTO document to the HOTO Manager</div><span class="step-team">DPM · HOTO Manager</span></div>
+      <div class="step-tools"></div>
+    </div>
+  </div>
+</div>
+
+<div class="role-note" style="background:#EEF5FF;border-color:#BDD6F5;color:#1A4E7A;margin-top:8px;">
+  🔍 <strong>AP vs WLC/Switch:</strong> the AP process has the customer mount the APs (no Field Engineer), stages remotely via the VPO, requires the <strong>Option 43</strong> check, and uses <strong>one</strong> MACHX raise. See the <a href="process-wlc-switch.html">WLC &amp; Switch process</a> for the infrastructure flow, or the <a href="lan-process.html">LAN Process hub</a> for a side-by-side comparison.
+</div>
+
+</div>
+<footer class="footer">
+  <p>Orange <span>Business</span> — Network Knowledge Base &nbsp;·&nbsp;
+  <a href="lan-process.html" style="color:rgba(255,255,255,0.4);">← LAN Process</a></p>
+</footer>
+<script src="shared.js"></script>
+</body>
+</html>

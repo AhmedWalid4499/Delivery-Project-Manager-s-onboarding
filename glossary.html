@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Glossary — OB Network KB</title>
+<link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<nav class="topnav">
+  <a href="index.html" class="topnav-brand">
+    <div class="topnav-logo">OB</div>
+    <div class="topnav-brand-text">Orange <span>Business</span></div>
+  </a>
+  <div class="topnav-links">
+    <a href="index.html"          class="nav-link" id="nav-index">Home</a>
+    <a href="lan-wan-basics.html" class="nav-link" id="nav-lan">LAN / WAN</a>
+    <a href="ip-routing.html"     class="nav-link" id="nav-ip">IP Routing</a>
+    <a href="switching.html"      class="nav-link" id="nav-sw">Switching</a>
+    <a href="wireless.html"       class="nav-link" id="nav-wifi">Wireless</a>
+    <a href="firewalls.html"      class="nav-link" id="nav-fw">Firewalls</a>
+    <a href="zscaler.html"        class="nav-link" id="nav-zs">Zscaler</a>
+    <a href="devices.html"        class="nav-link" id="nav-devices">Devices</a>
+    <a href="glossary.html"       class="nav-link active" id="nav-gl">Glossary</a>
+  </div>
+  <div class="topnav-badge">New Hire Guide</div>
+</nav>
+
+<div class="breadcrumb">
+  <a href="index.html">Home</a><span>/</span> Glossary
+</div>
+
+<div class="page-hero dark">
+  <div class="hero-content">
+    <div class="hero-tag">📖 Reference</div>
+    <h1>Network <span>Glossary</span></h1>
+    <p class="hero-sub">Plain-English definitions for the networking terms you'll encounter most at Orange Business. Bookmark this page.</p>
+  </div>
+</div>
+
+<!-- SEARCH BAR -->
+<div style="background:var(--gray-faint);border-bottom:1px solid #EBEBEB;padding:20px 32px;">
+  <div style="max-width:960px;margin:0 auto;position:relative;">
+    <span style="position:absolute;left:16px;top:50%;transform:translateY(-50%);font-size:16px;pointer-events:none;">🔍</span>
+    <input
+      id="glossary-search"
+      type="text"
+      placeholder="Search terms and definitions… e.g. OSPF, VPN, firewall"
+      autocomplete="off"
+      style="width:100%;padding:13px 44px 13px 44px;border:1.5px solid #DCDCDC;border-radius:10px;font-family:var(--font);font-size:14px;background:var(--white);outline:none;transition:border-color 0.18s;box-sizing:border-box;"
+      oninput="glossarySearch(this.value)"
+      onfocus="this.style.borderColor='var(--orange)'"
+      onblur="this.style.borderColor='#DCDCDC'"
+    >
+    <button
+      id="search-clear"
+      onclick="clearSearch()"
+      style="display:none;position:absolute;right:12px;top:50%;transform:translateY(-50%);background:var(--gray-light);border:none;border-radius:50%;width:22px;height:22px;cursor:pointer;font-size:12px;color:var(--white);line-height:1;"
+      title="Clear search"
+    >✕</button>
+  </div>
+  <div id="search-count" style="max-width:960px;margin:8px auto 0;font-size:12px;color:var(--gray-mid);min-height:18px;padding:0 4px;"></div>
+</div>
+
+<!-- NO RESULTS -->
+<div id="no-results" style="display:none;text-align:center;padding:56px 32px;">
+  <div style="font-size:40px;margin-bottom:12px;">🔎</div>
+  <p style="font-size:16px;font-weight:600;color:var(--gray-dark);margin-bottom:6px;">No matching terms found</p>
+  <p style="font-size:14px;color:var(--gray-mid);">Try a shorter search or a different keyword</p>
+</div>
+
+<div class="content" id="glossary-content">
+
+  <!-- A -->
+  <div class="section">
+    <div class="section-header"><h2>A</h2><div class="divider"></div></div>
+    <div class="glossary-grid">
+      <div class="glossary-item">
+        <div class="glossary-term">ACL (Access Control List)</div>
+        <div class="glossary-def">A list of permit/deny rules applied to traffic on a router or switch interface. Stateless — each packet evaluated independently.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">AD (Administrative Distance)</div>
+        <div class="glossary-def">A number that tells the router how trustworthy a routing source is. Lower = more preferred. Static=1, OSPF=110, BGP=20.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">AES (Advanced Encryption Standard)</div>
+        <div class="glossary-def">Symmetric encryption algorithm. AES-256 is the standard for IPSec VPN and WPA3 WiFi encryption.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">AP (Access Point)</div>
+        <div class="glossary-def">A device that broadcasts a WiFi signal, allowing wireless clients to connect to the wired network. Enterprise APs are managed by a WLC or cloud controller.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">ARP (Address Resolution Protocol)</div>
+        <div class="glossary-def">Resolves an IP address to a MAC address on the local LAN. A device broadcasts "who has 192.168.1.1?" — the owner replies with its MAC address.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">ASA (Adaptive Security Appliance)</div>
+        <div class="glossary-def">Cisco's legacy stateful firewall platform. Still widely deployed. Being replaced by FTD (Firepower Threat Defense) for NGFW features.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- B -->
+  <div class="section">
+    <div class="section-header"><h2>B</h2><div class="divider"></div></div>
+    <div class="glossary-grid">
+      <div class="glossary-item">
+        <div class="glossary-term">BGP (Border Gateway Protocol)</div>
+        <div class="glossary-def">The routing protocol of the internet. Exchanges routes between autonomous systems (ASes). Used by ISPs and enterprises connecting to multiple carriers.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">BPDU (Bridge Protocol Data Unit)</div>
+        <div class="glossary-def">Messages sent between switches to exchange STP information (bridge ID, root bridge, path cost). BPDU Guard shuts a port if it receives a BPDU unexpectedly.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">Broadcast Domain</div>
+        <div class="glossary-def">The set of devices that receive a broadcast frame. Switches extend broadcast domains; routers (and VLANs) split them.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">BSS Coloring (802.11ax)</div>
+        <div class="glossary-def">A WiFi 6 feature that lets APs identify whether an overlapping signal is from the same network (defer) or a different network (transmit anyway). Reduces unnecessary deferral in dense environments.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- C -->
+  <div class="section">
+    <div class="section-header"><h2>C</h2><div class="divider"></div></div>
+    <div class="glossary-grid">
+      <div class="glossary-item">
+        <div class="glossary-term">CAPWAP</div>
+        <div class="glossary-def">Control and Provisioning of Wireless Access Points. The protocol used between an AP and its WLC — control traffic + optionally data traffic are tunneled to the WLC.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">CIDR (Classless Inter-Domain Routing)</div>
+        <div class="glossary-def">IP addressing notation using prefix length (e.g. /24 instead of 255.255.255.0). Replaced old class-based addressing (Class A/B/C).</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">CoS (Class of Service)</div>
+        <div class="glossary-def">3-bit priority field in an 802.1Q VLAN tag. Used for Layer 2 QoS. Value 5 = voice signaling, 6 = network control. Mapped to DSCP at L3 boundaries.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">CWDM / DWDM</div>
+        <div class="glossary-def">Wavelength division multiplexing — sends multiple optical signals on one fibre at different light wavelengths. Used in long-haul WAN and carrier backbones.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- D -->
+  <div class="section">
+    <div class="section-header"><h2>D</h2><div class="divider"></div></div>
+    <div class="glossary-grid">
+      <div class="glossary-item">
+        <div class="glossary-term">DHCP (Dynamic Host Configuration Protocol)</div>
+        <div class="glossary-def">Automatically assigns IP addresses, subnet mask, default gateway, and DNS to devices. DHCP server is usually the router, firewall, or a Windows server.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">DMZ (Demilitarized Zone)</div>
+        <div class="glossary-def">A network segment between untrust and trust zones, used for public-facing servers. If a DMZ server is compromised, the attacker still cannot reach the internal LAN.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">DNS (Domain Name System)</div>
+        <div class="glossary-def">Translates domain names (google.com) to IP addresses. DNS resolution is the first step in almost every network connection. Port 53 (UDP/TCP).</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">DSCP (Differentiated Services Code Point)</div>
+        <div class="glossary-def">6-bit field in the IPv4/IPv6 header used for QoS marking. EF (46) = voice, AF41 (34) = video, CS0/BE (0) = best effort.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">DUAL (Diffusing Update Algorithm)</div>
+        <div class="glossary-def">The algorithm used by EIGRP. Computes loop-free paths and pre-calculates backup routes (feasible successors) for instant failover without reconvergence.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- E -->
+  <div class="section">
+    <div class="section-header"><h2>E</h2><div class="divider"></div></div>
+    <div class="glossary-grid">
+      <div class="glossary-item">
+        <div class="glossary-term">EIGRP</div>
+        <div class="glossary-def">Enhanced Interior Gateway Routing Protocol. Cisco's proprietary routing protocol using DUAL. Fast convergence via feasible successors. Supports unequal-cost load balancing.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">EtherChannel / LACP</div>
+        <div class="glossary-def">Bundles 2–8 physical links into one logical link for more bandwidth and redundancy. LACP (IEEE 802.3ad) is the open standard; PAgP is Cisco proprietary.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">EVPN (Ethernet VPN)</div>
+        <div class="glossary-def">A BGP-based control plane for VXLAN overlays in data centers. Allows MAC/IP information to be distributed via BGP instead of data-plane learning.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- F -->
+  <div class="section">
+    <div class="section-header"><h2>F</h2><div class="divider"></div></div>
+    <div class="glossary-grid">
+      <div class="glossary-item">
+        <div class="glossary-term">FlexConnect</div>
+        <div class="glossary-def">Cisco wireless mode where APs can switch client traffic locally at the branch, even if the WAN link to the WLC is down. Critical for branch office WiFi continuity.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">FortiLink</div>
+        <div class="glossary-def">Fortinet's proprietary protocol for managing FortiSwitches and FortiAPs from a FortiGate. The FortiGate acts as the controller over a dedicated trunk port.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">FTD (Firepower Threat Defense)</div>
+        <div class="glossary-def">Cisco's unified NGFW software — merges ASA stateful firewall with Firepower IPS/URL/malware inspection into one image. Managed by FMC (Firepower Management Center).</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- G–H -->
+  <div class="section">
+    <div class="section-header"><h2>G – H</h2><div class="divider"></div></div>
+    <div class="glossary-grid">
+      <div class="glossary-item">
+        <div class="glossary-term">GlobalProtect</div>
+        <div class="glossary-def">Palo Alto Networks' remote access VPN client. Uses IPSec/SSL tunnels to connect remote users to a PA firewall acting as a GlobalProtect gateway.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">HA (High Availability)</div>
+        <div class="glossary-def">A pair of devices (firewalls, WLCs, routers) configured to fail over if one fails. Active/passive = one active, one standby. Active/active = both process traffic.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">HSRP / VRRP</div>
+        <div class="glossary-def">First Hop Redundancy Protocols. Two routers share a virtual IP — if the active router fails, the standby takes over instantly. HSRP = Cisco proprietary, VRRP = open standard.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- I -->
+  <div class="section">
+    <div class="section-header"><h2>I</h2><div class="divider"></div></div>
+    <div class="glossary-grid">
+      <div class="glossary-item">
+        <div class="glossary-term">IKE (Internet Key Exchange)</div>
+        <div class="glossary-def">The protocol used to negotiate IPSec VPN parameters (encryption, authentication, keys). IKEv2 is the modern standard — faster and more secure than IKEv1.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">IPSec</div>
+        <div class="glossary-def">A suite of protocols for encrypting and authenticating IP packets. Used for site-to-site VPN tunnels. Runs in Tunnel mode (full packet encryption) for VPNs.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">IPS (Intrusion Prevention System)</div>
+        <div class="glossary-def">Inspects traffic against known attack signatures in real time and can drop malicious packets. Signatures updated by threat intelligence (Talos, Unit 42, FortiGuard).</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">ISR (Integrated Services Router)</div>
+        <div class="glossary-def">Cisco's branch/enterprise router series (ISR 4000, 1000). Modular — NIM slots accept WAN cards (T1, LTE, DSL). Runs IOS-XE with full routing and VPN.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- L -->
+  <div class="section">
+    <div class="section-header"><h2>L</h2><div class="divider"></div></div>
+    <div class="glossary-grid">
+      <div class="glossary-item">
+        <div class="glossary-term">LACP (Link Aggregation Control Protocol)</div>
+        <div class="glossary-def">IEEE 802.3ad standard for bundling multiple physical ports into one logical link (EtherChannel). Negotiates the bundle automatically between two switches.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">LLQ (Low Latency Queuing)</div>
+        <div class="glossary-def">QoS queuing method that gives voice traffic a strict priority queue, always served first. Remaining bandwidth shared fairly among other classes (CBWFQ).</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">LSA (Link State Advertisement)</div>
+        <div class="glossary-def">OSPF messages flooded throughout the network. Each router announces its directly connected links. All routers build a complete topology map from received LSAs.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- M–N -->
+  <div class="section">
+    <div class="section-header"><h2>M – N</h2><div class="divider"></div></div>
+    <div class="glossary-grid">
+      <div class="glossary-item">
+        <div class="glossary-term">MAC Address</div>
+        <div class="glossary-def">A 48-bit hardware address burned into every network interface card (e.g. AA:BB:CC:DD:EE:FF). Switches use MAC addresses to forward frames within a LAN.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">MPLS (Multi-Protocol Label Switching)</div>
+        <div class="glossary-def">A carrier WAN technology that forwards packets using short labels instead of IP lookups. Faster, supports Traffic Engineering and QoS. Orange Business sells MPLS WAN services.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">MU-MIMO</div>
+        <div class="glossary-def">Multi-User Multiple Input Multiple Output. Allows a WiFi AP to transmit to multiple clients simultaneously using spatial streams. WiFi 5 = downlink only; WiFi 6 = both uplink and downlink.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">NAT (Network Address Translation)</div>
+        <div class="glossary-def">Translates private IP addresses to public IPs. PAT (overload) maps many private IPs to one public IP using port numbers. Performed on routers and firewalls.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">NGFW (Next-Generation Firewall)</div>
+        <div class="glossary-def">A firewall with Layer 7 inspection — identifies applications (not just ports), includes IPS, URL filtering, SSL inspection, and sandboxing. Key vendors: Cisco, Palo Alto, Fortinet.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">NX-OS</div>
+        <div class="glossary-def">Cisco's operating system for Nexus data center switches. Different CLI and feature set from IOS-XE. Key commands differ — e.g. "show ip route" vs "show bgp l2vpn evpn".</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- O–P -->
+  <div class="section">
+    <div class="section-header"><h2>O – P</h2><div class="divider"></div></div>
+    <div class="glossary-grid">
+      <div class="glossary-item">
+        <div class="glossary-term">OFDMA</div>
+        <div class="glossary-def">Orthogonal Frequency Division Multiple Access. WiFi 6 feature that subdivides a channel into smaller resource units, allowing simultaneous transmissions to multiple clients — like a cell tower does for mobile data.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">OSI Model</div>
+        <div class="glossary-def">A 7-layer reference model for network communication. Physical (1) → Data Link (2) → Network (3) → Transport (4) → Session (5) → Presentation (6) → Application (7).</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">OSPF (Open Shortest Path First)</div>
+        <div class="glossary-def">The most common enterprise interior routing protocol. Link-state, uses Dijkstra's algorithm. Areas with Area 0 (backbone) required. Fast convergence with BFD.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">PAN-OS</div>
+        <div class="glossary-def">The operating system on all Palo Alto Networks firewalls. Features: App-ID, User-ID, Content-ID. Config is in "candidate" state until committed. Managed via WebUI, CLI, or Panorama.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">PAT (Port Address Translation)</div>
+        <div class="glossary-def">Many-to-one NAT — multiple internal hosts share one public IP, differentiated by source port number. Also called NAT overload or IP masquerade.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">PoE / PoE+ / PoE++</div>
+        <div class="glossary-def">Power over Ethernet standards. 802.3af = 15W, 802.3at (PoE+) = 30W, 802.3bt (PoE++) = 60–90W. Powers APs, IP phones, cameras, and IoT devices over Cat5e/Cat6 cable.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q–R -->
+  <div class="section">
+    <div class="section-header"><h2>Q – R</h2><div class="divider"></div></div>
+    <div class="glossary-grid">
+      <div class="glossary-item">
+        <div class="glossary-term">QoS (Quality of Service)</div>
+        <div class="glossary-def">Prioritizes critical traffic (voice, video) over less important traffic on congested links. Uses DSCP marking, queuing, and scheduling. Critical for VoIP quality.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">RADIUS</div>
+        <div class="glossary-def">Remote Authentication Dial-In User Service. Centralised AAA (Authentication, Authorization, Accounting) server. Used for 802.1X network access control and VPN authentication.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">RFC 1918</div>
+        <div class="glossary-def">The standard defining private IP address ranges: 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16. These are not routed on the public internet — NAT translates them at the edge.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">RSTP (Rapid Spanning Tree Protocol)</div>
+        <div class="glossary-def">IEEE 802.1w. Improved version of STP with sub-second convergence. PVST+ is Cisco's per-VLAN implementation. Now the standard on all modern switches.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S -->
+  <div class="section">
+    <div class="section-header"><h2>S</h2><div class="divider"></div></div>
+    <div class="glossary-grid">
+      <div class="glossary-item">
+        <div class="glossary-term">SASE (Secure Access Service Edge)</div>
+        <div class="glossary-def">Cloud-delivered security combining SD-WAN and security services (NGFW, CASB, ZTNA) from a cloud POP. Palo Alto Prisma Access and Fortinet SASE are leading products.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">SD-WAN</div>
+        <div class="glossary-def">Software-Defined WAN. Intelligently routes traffic across multiple WAN links (MPLS, broadband, LTE) based on application policy and real-time link quality. Core Orange Business offering.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">SFP / SFP+</div>
+        <div class="glossary-def">Small Form-factor Pluggable. Modular transceivers plugged into SFP ports. SFP = 1G, SFP+ = 10G, SFP28 = 25G, QSFP28 = 100G. Support fibre or copper DAC cables.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">SNMP (Simple Network Management Protocol)</div>
+        <div class="glossary-def">Protocol for monitoring and managing network devices. Agents on devices report metrics (CPU, interfaces, traffic) to a management system (NMS). v3 adds encryption and authentication.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">STP (Spanning Tree Protocol)</div>
+        <div class="glossary-def">IEEE 802.1D. Prevents Layer 2 loops in networks with redundant switch paths by blocking redundant ports. Superseded by RSTP for new deployments.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">SVI (Switched Virtual Interface)</div>
+        <div class="glossary-def">A virtual interface on a Layer 3 switch representing a VLAN. Assigned an IP address to route traffic between VLANs at wire speed — no external router needed.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- T–Z -->
+  <div class="section">
+    <div class="section-header"><h2>T – Z</h2><div class="divider"></div></div>
+    <div class="glossary-grid">
+      <div class="glossary-item">
+        <div class="glossary-term">TCP vs UDP</div>
+        <div class="glossary-def">TCP = reliable, ordered, connection-oriented (HTTP, SSH, FTP). UDP = fast, connectionless, no guarantee (DNS, DHCP, VoIP, streaming). Both use port numbers at Layer 4.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">TLS / SSL</div>
+        <div class="glossary-def">Transport Layer Security. Encrypts application data (HTTPS = HTTP + TLS). TLS 1.3 is current standard. NGFWs can decrypt TLS to inspect content — requires a trusted CA cert deployed to clients.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">Trunk Port</div>
+        <div class="glossary-def">A switch port that carries multiple VLANs using 802.1Q tagging. Used between switches, and between switches and routers/firewalls. Native VLAN frames are untagged.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">VLAN (Virtual LAN)</div>
+        <div class="glossary-def">Logically separates a single physical switch into multiple isolated Layer 2 networks. Traffic between VLANs requires a router or Layer 3 switch. Identified by VLAN ID (1–4094).</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">VPN (Virtual Private Network)</div>
+        <div class="glossary-def">Encrypts traffic over a public network to create a private tunnel. Site-to-site VPN = connects two offices; Remote Access VPN = connects individual users to the corporate network.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">VXLAN</div>
+        <div class="glossary-def">Virtual Extensible LAN. Encapsulates Layer 2 frames in UDP packets, allowing VLANs to span across Layer 3 networks. Used in data center overlays (spine-leaf fabric) with EVPN control plane.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">WLC (Wireless LAN Controller)</div>
+        <div class="glossary-def">Centrally manages multiple access points — pushes config, enforces security policies, handles roaming, and aggregates client traffic. Examples: Cisco 9800, Fortinet FortiWLC.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">ZTNA (Zero Trust Network Access)</div>
+        <div class="glossary-def">A security model where no user or device is trusted by default — access is granted per-application after verification of identity, device posture, and context. Replaces traditional VPN in SASE architectures.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <p>Orange <span>Business</span> — Network Knowledge Base &nbsp;·&nbsp; <a href="index.html" style="color:rgba(255,255,255,0.4);">Home</a></p>
+</footer><script>
+function glossarySearch(query) {
+  const q = query.trim().toLowerCase();
+  const items = document.querySelectorAll('.glossary-item');
+  const sections = document.querySelectorAll('#glossary-content .section');
+  const noResults = document.getElementById('no-results');
+  const countEl = document.getElementById('search-count');
+  const clearBtn = document.getElementById('search-clear');
+
+  clearBtn.style.display = q ? 'block' : 'none';
+
+  let totalVisible = 0;
+
+  items.forEach(item => {
+    const term = item.querySelector('.glossary-term').textContent.toLowerCase();
+    const def  = item.querySelector('.glossary-def').textContent.toLowerCase();
+    const match = !q || term.includes(q) || def.includes(q);
+
+    item.style.display = match ? '' : 'none';
+
+    // Highlight matching text
+    if (q && match) {
+      highlight(item.querySelector('.glossary-term'), query.trim());
+      highlight(item.querySelector('.glossary-def'), query.trim());
+    } else {
+      clearHighlight(item.querySelector('.glossary-term'));
+      clearHighlight(item.querySelector('.glossary-def'));
+    }
+
+    if (match) totalVisible++;
+  });
+
+  // Show/hide letter-group sections based on whether any items are visible
+  sections.forEach(section => {
+    const visibleItems = section.querySelectorAll('.glossary-item:not([style*="display: none"])');
+    const hasVisible = [...visibleItems].some(el => el.style.display !== 'none');
+    section.style.display = hasVisible ? '' : 'none';
+  });
+
+  // No results state
+  noResults.style.display = (q && totalVisible === 0) ? 'block' : 'none';
+  document.getElementById('glossary-content').style.display = (q && totalVisible === 0) ? 'none' : '';
+
+  // Count label
+  if (q) {
+    countEl.textContent = totalVisible === 0
+      ? 'No results'
+      : totalVisible === 1
+        ? '1 term found'
+        : `${totalVisible} terms found`;
+  } else {
+    countEl.textContent = '';
+  }
+}
+
+function highlight(el, query) {
+  clearHighlight(el);
+  if (!query) return;
+  const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const regex = new RegExp(`(${escaped})`, 'gi');
+  el.innerHTML = el.textContent.replace(regex,
+    '<mark style="background:#FFE0B2;color:#CC4E00;border-radius:2px;padding:0 1px;">$1</mark>'
+  );
+}
+
+function clearHighlight(el) {
+  el.innerHTML = el.textContent;
+}
+
+function clearSearch() {
+  const input = document.getElementById('glossary-search');
+  input.value = '';
+  glossarySearch('');
+  input.focus();
+}
+</script>
+<script src="shared.js"></script>
+<script src="glossary-data.js"></script>
+</body>
+</html>

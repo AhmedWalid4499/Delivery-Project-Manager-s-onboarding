@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Switching — OB Network KB</title>
+<link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<nav class="topnav">
+  <a href="index.html" class="topnav-brand">
+    <div class="topnav-logo">OB</div>
+    <div class="topnav-brand-text">Orange <span>Business</span></div>
+  </a>
+  <div class="topnav-links">
+    <a href="index.html"          class="nav-link" id="nav-index">Home</a>
+    <a href="lan-wan-basics.html" class="nav-link" id="nav-lan">LAN / WAN</a>
+    <a href="ip-routing.html"     class="nav-link" id="nav-ip">IP Routing</a>
+    <a href="switching.html"      class="nav-link active" id="nav-sw">Switching</a>
+    <a href="wireless.html"       class="nav-link" id="nav-wifi">Wireless</a>
+    <a href="firewalls.html"      class="nav-link" id="nav-fw">Firewalls</a>
+    <a href="zscaler.html"        class="nav-link" id="nav-zs">Zscaler</a>
+    <a href="devices.html"        class="nav-link" id="nav-devices">Devices</a>
+    <a href="glossary.html"       class="nav-link" id="nav-gl">Glossary</a>
+  </div>
+  <div class="topnav-badge">New Hire Guide</div>
+</nav>
+
+<div class="breadcrumb">
+  <a href="index.html">Home</a><span>/</span> Switching
+</div>
+
+<div class="page-hero dark">
+  <div class="hero-content">
+    <div class="hero-tag">🔌 Layer 2</div>
+    <h1>Switching, <span>VLANs</span> &amp; Stacking</h1>
+    <p class="hero-sub">How switches forward traffic, how VLANs segment networks, how STP prevents loops, and how to stack multiple switches into one logical unit.</p>
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- HOW SWITCHES WORK -->
+  <div class="section">
+    <div class="section-header">
+      <h2>How Switches Work</h2>
+      <div class="divider"></div>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-icon" style="background:#F0F0FF;">📋</div>
+        <h3>MAC Address Table</h3>
+        <p>When a frame arrives, the switch records the source MAC address and the port it came from. Next time a frame is destined for that MAC, the switch sends it only to that port — not all ports. This is called <strong>unicast forwarding</strong>.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:var(--orange-pale);">📢</div>
+        <h3>Broadcast Domains</h3>
+        <p>All ports on a switch are in the same broadcast domain by default — a broadcast frame goes to every port. VLANs split the switch into multiple smaller broadcast domains. A router (or Layer 3 switch) is needed to forward traffic between VLANs.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:var(--green-pale);">⚡</div>
+        <h3>Cut-through vs Store-and-Forward</h3>
+        <p><strong>Store-and-forward:</strong> Switch receives entire frame, checks for errors, then forwards. Slower but reliable — used in most enterprise switches.<br><strong>Cut-through:</strong> Forwards as soon as destination MAC is read. Faster but no error checking.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:var(--cisco-pale);">🔢</div>
+        <h3>Layer 3 Switching</h3>
+        <p>A Layer 3 switch (e.g. Cisco Catalyst 9300) can route traffic between VLANs at wire speed using <strong>SVIs (Switched Virtual Interfaces)</strong>. Much faster than sending traffic to a separate router. Almost all enterprise core/distribution switches are L3.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- VLANS -->
+  <div class="section">
+    <div class="section-header">
+      <h2>VLANs — Virtual Local Area Networks</h2>
+      <div class="divider"></div>
+      <p>VLANs logically segment a single physical switch into multiple isolated networks. Traffic in VLAN 10 cannot reach VLAN 20 without going through a router or Layer 3 switch.</p>
+    </div>
+
+    <div class="diagram-box">
+      <svg viewBox="0 0 700 240" xmlns="http://www.w3.org/2000/svg" style="font-family:'Sora',sans-serif;">
+        <!-- Switch -->
+        <rect x="250" y="90" width="200" height="50" rx="8" fill="#FF6200"/>
+        <text x="350" y="120" text-anchor="middle" font-size="13" font-weight="600" fill="white">Core Switch</text>
+
+        <!-- VLAN 10 -->
+        <rect x="20" y="10" width="140" height="64" rx="8" fill="#E8F6FD" stroke="#1BA0D7" stroke-width="1.5"/>
+        <text x="90" y="30" text-anchor="middle" font-size="11" font-weight="600" fill="#1BA0D7">VLAN 10 — IT</text>
+        <text x="90" y="48" text-anchor="middle" font-size="10" fill="#555">192.168.10.0/24</text>
+        <text x="90" y="63" text-anchor="middle" font-size="9" fill="#888">PC · Server · Printer</text>
+
+        <!-- VLAN 20 -->
+        <rect x="20" y="100" width="140" height="64" rx="8" fill="#FFF0EF" stroke="#EE3124" stroke-width="1.5"/>
+        <text x="90" y="120" text-anchor="middle" font-size="11" font-weight="600" fill="#EE3124">VLAN 20 — Guest</text>
+        <text x="90" y="138" text-anchor="middle" font-size="10" fill="#555">192.168.20.0/24</text>
+        <text x="90" y="153" text-anchor="middle" font-size="9" fill="#888">WiFi Clients</text>
+
+        <!-- VLAN 30 -->
+        <rect x="20" y="190" width="140" height="40" rx="8" fill="#E6F7F1" stroke="#00A86B" stroke-width="1.5"/>
+        <text x="90" y="210" text-anchor="middle" font-size="11" font-weight="600" fill="#00A86B">VLAN 30 — Phones</text>
+        <text x="90" y="224" text-anchor="middle" font-size="9" fill="#555">10.10.30.0/24</text>
+
+        <!-- Lines left -->
+        <line x1="160" y1="42" x2="250" y2="105" stroke="#1BA0D7" stroke-width="1.5" stroke-dasharray="4,2"/>
+        <line x1="160" y1="132" x2="250" y2="115" stroke="#EE3124" stroke-width="1.5" stroke-dasharray="4,2"/>
+        <line x1="160" y1="210" x2="250" y2="125" stroke="#00A86B" stroke-width="1.5" stroke-dasharray="4,2"/>
+
+        <!-- Router / L3 -->
+        <rect x="250" y="170" width="200" height="38" rx="8" fill="#1BA0D7"/>
+        <text x="350" y="194" text-anchor="middle" font-size="12" font-weight="600" fill="white">L3 Switch / Router</text>
+        <line x1="350" y1="140" x2="350" y2="170" stroke="#aaa" stroke-width="1.5"/>
+        <text x="366" y="158" font-size="10" fill="#888">inter-VLAN</text>
+
+        <!-- Right side labels -->
+        <rect x="540" y="30" width="140" height="30" rx="6" fill="#F5F5F5" stroke="#DDD"/>
+        <text x="610" y="50" text-anchor="middle" font-size="11" fill="#555">Access Port</text>
+        <line x1="450" y1="105" x2="540" y2="45" stroke="#aaa" stroke-width="1.2" stroke-dasharray="3,2"/>
+        <rect x="540" y="105" width="140" height="30" rx="6" fill="#F5F5F5" stroke="#DDD"/>
+        <text x="610" y="125" text-anchor="middle" font-size="11" fill="#555">Trunk Port (802.1Q)</text>
+        <line x1="450" y1="115" x2="540" y2="120" stroke="#aaa" stroke-width="1.2" stroke-dasharray="3,2"/>
+      </svg>
+      <p class="diagram-caption">Three VLANs on one switch — isolated until L3 switch routes between them</p>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <h3>Access Port</h3>
+        <p>An access port belongs to a single VLAN. The connected device (PC, phone, printer) is unaware of VLANs — it just sees a normal network connection. Frames leaving the switch have no VLAN tag.</p>
+        <div class="code-block" style="margin-top:12px;margin-bottom:0;">
+          <pre><span class="cmt"># Assign port to VLAN 10</span>
+Switch(config-if)# <span class="cmd">switchport mode access</span>
+Switch(config-if)# <span class="kw">switchport access vlan</span> <span class="val">10</span></pre>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Trunk Port</h3>
+        <p>A trunk port carries multiple VLANs simultaneously using <strong>802.1Q tagging</strong>. Used between switches, and between switches and routers/firewalls. Each frame carries a 4-byte VLAN tag with the VLAN ID.</p>
+        <div class="code-block" style="margin-top:12px;margin-bottom:0;">
+          <pre><span class="cmt"># Configure trunk, allow VLANs 10, 20, 30</span>
+Switch(config-if)# <span class="cmd">switchport mode trunk</span>
+Switch(config-if)# <span class="kw">switchport trunk allowed vlan</span> <span class="val">10,20,30</span>
+Switch(config-if)# <span class="kw">switchport trunk native vlan</span> <span class="val">999</span></pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="alert blue">
+      <span class="alert-icon">ℹ️</span>
+      <p><strong>Native VLAN:</strong> On a trunk port, frames for the native VLAN are sent untagged. It's best practice to set the native VLAN to an unused VLAN (e.g. 999) to prevent VLAN hopping attacks.</p>
+    </div>
+  </div>
+
+  <!-- STP -->
+  <div class="section">
+    <div class="section-header">
+      <h2>Spanning Tree Protocol (STP)</h2>
+      <div class="divider"></div>
+      <p>STP prevents Layer 2 loops in networks with redundant switch paths. Without STP, a broadcast storm would bring down the entire network in seconds.</p>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <h3>How STP Works</h3>
+        <div class="steps" style="margin-bottom:0;">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-content"><h4>Root Bridge Election</h4><p>The switch with the lowest Bridge ID (priority + MAC address) becomes the Root Bridge. Default priority is 32768.</p></div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-content"><h4>Root Port Selection</h4><p>Each non-root switch selects one Root Port — the port with the lowest cost path to the Root Bridge.</p></div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-content"><h4>Blocked Ports</h4><p>Redundant links are put into a "blocking" state. They don't forward traffic but can activate if a primary path fails.</p></div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <h3>STP Variants</h3>
+        <table class="data-table" style="margin-bottom:0;">
+          <thead><tr><th>Protocol</th><th>Convergence</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr><td>STP (802.1D)</td><td>30–50 sec</td><td>Original, rarely used now</td></tr>
+            <tr><td>RSTP (802.1w)</td><td>&lt;1 sec</td><td>Rapid convergence, standard</td></tr>
+            <tr><td>PVST+</td><td>&lt;1 sec</td><td>Cisco per-VLAN STP</td></tr>
+            <tr><td>MSTP (802.1s)</td><td>&lt;1 sec</td><td>Maps VLANs to instances</td></tr>
+          </tbody>
+        </table>
+        <div class="code-block" style="margin-top:12px;margin-bottom:0;">
+          <pre><span class="cmt"># Set this switch as Root for VLAN 10</span>
+Switch(config)# <span class="cmd">spanning-tree vlan 10 priority</span> <span class="val">4096</span>
+<span class="cmt"># Or use macro:</span>
+Switch(config)# <span class="kw">spanning-tree vlan 10 root primary</span></pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="alert orange">
+      <span class="alert-icon">⚡</span>
+      <p><strong>PortFast + BPDU Guard:</strong> Enable PortFast on access ports connected to end devices — it skips the 30-second listening/learning delay. Add BPDU Guard to shut down the port if a switch is accidentally connected, preventing a rogue Root Bridge election.</p>
+    </div>
+  </div>
+
+  <!-- SWITCH STACKING -->
+  <div class="section">
+    <div class="section-header">
+      <h2>Switch Stacking</h2>
+      <div class="divider"></div>
+      <p>Stacking connects multiple physical switches into one logical switch — managed as a single unit with a single IP address and single configuration.</p>
+    </div>
+
+    <!-- UPLINK / DOWNLINK EXPLAINER -->
+    <div class="card mb-16" style="border-top:3px solid var(--orange);">
+      <h3 style="margin-bottom:6px;">🔼🔽 Uplinks vs Downlinks — What's the difference?</h3>
+      <p style="font-size:14px;color:var(--gray-mid);margin-bottom:20px;">Before understanding stacking, you need to know these two terms — you'll hear them constantly in networking.</p>
+      <div class="grid-2" style="margin-bottom:0;">
+        <div style="background:var(--cisco-pale);border-radius:var(--radius-sm);padding:18px;border-left:3px solid var(--cisco-blue);">
+          <p style="font-size:13px;font-weight:700;color:var(--cisco-blue);margin-bottom:8px;">🔼 UPLINK</p>
+          <p style="font-size:13px;color:var(--gray-dark);line-height:1.65;">A port that connects <strong>upward</strong> toward the core of the network — toward a distribution switch, core switch, router, or firewall. Uplinks carry <em>aggregated traffic</em> from all the devices below. They are typically faster ports: <strong>10G, 25G, or 100G SFP+</strong> fibre connections, not regular copper 1G ports.</p>
+          <p style="font-size:12px;color:var(--gray-mid);margin-top:8px;">Example: a Catalyst 9300 access switch has 48× 1G PoE ports (downlinks) and 4× 10G SFP+ ports at the top — those 4 SFP+ ports are the uplinks.</p>
+        </div>
+        <div style="background:var(--green-pale);border-radius:var(--radius-sm);padding:18px;border-left:3px solid var(--green);">
+          <p style="font-size:13px;font-weight:700;color:var(--green);margin-bottom:8px;">🔽 DOWNLINK</p>
+          <p style="font-size:13px;color:var(--gray-dark);line-height:1.65;">A port that connects <strong>downward</strong> toward end devices — PCs, phones, printers, access points, and cameras. Downlinks deliver traffic to individual users or devices. They are typically <strong>1G copper RJ45</strong> ports, often with PoE to power devices over the same cable.</p>
+          <p style="font-size:12px;color:var(--gray-mid);margin-top:8px;">Example: those same 48 PoE ports on the 9300 are the downlinks — each one plugs into a PC, an AP, or an IP phone on a desk.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ANIMATED UPLINK/DOWNLINK DIAGRAM -->
+    <div class="diagram-box" style="padding:28px 20px;">
+      <p style="font-size:12px;font-weight:600;color:var(--gray-mid);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:16px;">Live traffic flow animation — watch how data moves between layers</p>
+      <div id="stack-anim" style="position:relative;width:100%;max-width:680px;margin:0 auto;">
+        <svg id="stack-svg" viewBox="0 0 680 420" xmlns="http://www.w3.org/2000/svg" style="width:100%;font-family:'Sora',sans-serif;overflow:visible;">
+          <!-- INTERNET / CORE -->
+          <rect x="240" y="10" width="200" height="38" rx="8" fill="#1A1A1A"/>
+          <text x="340" y="34" text-anchor="middle" font-size="12" font-weight="600" fill="white">Internet / Core Router</text>
+
+          <!-- UPLINK arrow label -->
+          <text x="380" y="72" font-size="10" font-weight="700" fill="#1BA0D7">UPLINK</text>
+          <text x="380" y="84" font-size="9" fill="#888">10G SFP+</text>
+
+          <!-- DISTRIBUTION SWITCH -->
+          <rect x="200" y="90" width="280" height="38" rx="8" fill="#FF6200"/>
+          <text x="340" y="114" text-anchor="middle" font-size="12" font-weight="600" fill="white">Distribution / Core Switch</text>
+
+          <!-- Downlink label left -->
+          <text x="100" y="153" font-size="10" font-weight="700" fill="#00A86B" text-anchor="middle">DOWNLINK</text>
+          <text x="100" y="165" font-size="9" fill="#888" text-anchor="middle">to access layer</text>
+          <!-- Downlink label right -->
+          <text x="580" y="153" font-size="10" font-weight="700" fill="#00A86B" text-anchor="middle">DOWNLINK</text>
+          <text x="580" y="165" font-size="9" fill="#888" text-anchor="middle">to access layer</text>
+
+          <!-- ACCESS SWITCH 1 -->
+          <rect x="40" y="178" width="220" height="36" rx="8" fill="#FF8C42"/>
+          <text x="150" y="200" text-anchor="middle" font-size="11" font-weight="600" fill="white">Access Switch 1 (Stack)</text>
+          <!-- Uplink label from access -->
+          <text x="230" y="168" font-size="9" font-weight="600" fill="#1BA0D7">↑ uplink</text>
+
+          <!-- ACCESS SWITCH 2 -->
+          <rect x="420" y="178" width="220" height="36" rx="8" fill="#FF8C42"/>
+          <text x="530" y="200" text-anchor="middle" font-size="11" font-weight="600" fill="white">Access Switch 2 (Stack)</text>
+          <text x="420" y="168" font-size="9" font-weight="600" fill="#1BA0D7">↑ uplink</text>
+
+          <!-- DOWNLINK labels to end devices -->
+          <text x="150" y="240" text-anchor="middle" font-size="9" font-weight="700" fill="#00A86B">DOWNLINKS (48× 1G PoE)</text>
+          <text x="530" y="240" text-anchor="middle" font-size="9" font-weight="700" fill="#00A86B">DOWNLINKS (48× 1G PoE)</text>
+
+          <!-- END DEVICES left -->
+          <rect x="20"  y="252" width="56" height="24" rx="5" fill="#E8F6FD" stroke="#1BA0D7" stroke-width="1"/>
+          <text x="48"  y="268" text-anchor="middle" font-size="9" fill="#1BA0D7">💻 PC</text>
+          <rect x="84"  y="252" width="56" height="24" rx="5" fill="#E6F7F1" stroke="#00A86B" stroke-width="1"/>
+          <text x="112" y="268" text-anchor="middle" font-size="9" fill="#00A86B">📡 AP</text>
+          <rect x="148" y="252" width="56" height="24" rx="5" fill="#FFF0E6" stroke="#FF6200" stroke-width="1"/>
+          <text x="176" y="268" text-anchor="middle" font-size="9" fill="#FF6200">📞 Phone</text>
+          <rect x="212" y="252" width="56" height="24" rx="5" fill="#F3EEFF" stroke="#7C3AED" stroke-width="1"/>
+          <text x="240" y="268" text-anchor="middle" font-size="9" fill="#7C3AED">📷 Cam</text>
+
+          <!-- END DEVICES right -->
+          <rect x="400" y="252" width="56" height="24" rx="5" fill="#E8F6FD" stroke="#1BA0D7" stroke-width="1"/>
+          <text x="428" y="268" text-anchor="middle" font-size="9" fill="#1BA0D7">💻 PC</text>
+          <rect x="464" y="252" width="56" height="24" rx="5" fill="#E6F7F1" stroke="#00A86B" stroke-width="1"/>
+          <text x="492" y="268" text-anchor="middle" font-size="9" fill="#00A86B">📡 AP</text>
+          <rect x="528" y="252" width="56" height="24" rx="5" fill="#FFF0E6" stroke="#FF6200" stroke-width="1"/>
+          <text x="556" y="268" text-anchor="middle" font-size="9" fill="#FF6200">📞 Phone</text>
+          <rect x="592" y="252" width="56" height="24" rx="5" fill="#F3EEFF" stroke="#7C3AED" stroke-width="1"/>
+          <text x="620" y="268" text-anchor="middle" font-size="9" fill="#7C3AED">📷 Cam</text>
+
+          <!-- Stack cable -->
+          <path d="M 260 196 Q 340 210 420 196" fill="none" stroke="#4A9EFF" stroke-width="2" stroke-dasharray="5,3"/>
+          <text x="340" y="224" text-anchor="middle" font-size="9" fill="#4A9EFF">StackWise cable (internal ring)</text>
+
+          <!-- STATIC LINES: distribution to access -->
+          <line x1="260" y1="128" x2="180" y2="178" stroke="#ddd" stroke-width="1.5"/>
+          <line x1="420" y1="128" x2="500" y2="178" stroke="#ddd" stroke-width="1.5"/>
+          <!-- Static lines: core to distribution -->
+          <line x1="340" y1="48"  x2="340" y2="90"  stroke="#ddd" stroke-width="1.5"/>
+          <!-- Static lines: access to devices -->
+          <line x1="150" y1="214" x2="48"  y2="252" stroke="#ddd" stroke-width="1"/>
+          <line x1="150" y1="214" x2="112" y2="252" stroke="#ddd" stroke-width="1"/>
+          <line x1="150" y1="214" x2="176" y2="252" stroke="#ddd" stroke-width="1"/>
+          <line x1="150" y1="214" x2="240" y2="252" stroke="#ddd" stroke-width="1"/>
+          <line x1="530" y1="214" x2="428" y2="252" stroke="#ddd" stroke-width="1"/>
+          <line x1="530" y1="214" x2="492" y2="252" stroke="#ddd" stroke-width="1"/>
+          <line x1="530" y1="214" x2="556" y2="252" stroke="#ddd" stroke-width="1"/>
+          <line x1="530" y1="214" x2="620" y2="252" stroke="#ddd" stroke-width="1"/>
+
+          <!-- ANIMATED PACKETS - defined as circles, moved by JS -->
+          <circle id="pkt-up1"   r="5" fill="#1BA0D7" opacity="0"/>
+          <circle id="pkt-up2"   r="5" fill="#1BA0D7" opacity="0"/>
+          <circle id="pkt-down1" r="5" fill="#00A86B" opacity="0"/>
+          <circle id="pkt-down2" r="5" fill="#00A86B" opacity="0"/>
+          <circle id="pkt-down3" r="5" fill="#FF6200" opacity="0"/>
+          <circle id="pkt-down4" r="5" fill="#7C3AED" opacity="0"/>
+
+          <!-- LEGEND -->
+          <circle cx="20" cy="310" r="5" fill="#1BA0D7"/>
+          <text x="30" y="315" font-size="10" fill="#555">Uplink traffic (device → internet)</text>
+          <circle cx="20" cy="330" r="5" fill="#00A86B"/>
+          <text x="30" y="335" font-size="10" fill="#555">Downlink traffic (internet → device)</text>
+        </svg>
+      </div>
+
+      <!-- Animation controls -->
+      <div style="display:flex;gap:10px;justify-content:center;margin-top:16px;flex-wrap:wrap;">
+        <button onclick="setAnimMode('uplink')"   id="btn-up"   style="padding:8px 18px;border-radius:8px;border:2px solid #1BA0D7;background:#E8F6FD;color:#1BA0D7;font-family:var(--font);font-size:12px;font-weight:600;cursor:pointer;">🔼 Show Uplink traffic</button>
+        <button onclick="setAnimMode('downlink')" id="btn-down" style="padding:8px 18px;border-radius:8px;border:2px solid #00A86B;background:#E6F7F1;color:#00A86B;font-family:var(--font);font-size:12px;font-weight:600;cursor:pointer;">🔽 Show Downlink traffic</button>
+        <button onclick="setAnimMode('both')"     id="btn-both" style="padding:8px 18px;border-radius:8px;border:2px solid #FF6200;background:#FFF0E6;color:#FF6200;font-family:var(--font);font-size:12px;font-weight:600;cursor:pointer;">⚡ Show Both</button>
+        <button onclick="setAnimMode('off')"      id="btn-off"  style="padding:8px 18px;border-radius:8px;border:2px solid #C8C8C8;background:#F5F5F5;color:#787878;font-family:var(--font);font-size:12px;font-weight:600;cursor:pointer;">⏹ Stop</button>
+      </div>
+      <p id="anim-label" style="text-align:center;font-size:13px;color:var(--gray-mid);margin-top:10px;min-height:20px;"></p>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <h3>Cisco StackWise</h3>
+        <p>Cisco's proprietary stacking technology. Switches connect in a ring using dedicated StackWise cables (not regular Ethernet). Stack bandwidth: <strong>480 Gbps</strong> on StackWise-480 (Catalyst 9300). Up to 8 switches per stack. Master election based on highest priority or longest uptime.</p>
+        <ul class="spec-list" style="margin-top:10px;">
+          <li><div class="spec-dot"></div><span>Single management IP for entire stack</span></li>
+          <li><div class="spec-dot"></div><span>Seamless failover if master switch fails</span></li>
+          <li><div class="spec-dot"></div><span>Add/remove switches without downtime (hot-add)</span></li>
+          <li><div class="spec-dot"></div><span>Cross-stack EtherChannel for uplink redundancy</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>VSS / StackWise Virtual</h3>
+        <p>For high-end Catalyst 9500/9600 switches, <strong>StackWise Virtual</strong> uses standard 10G/25G/100G interfaces as stack links — no proprietary cables needed. Two switches form a virtual switch pair. Used in distribution and core layers.</p>
+        <div class="code-block" style="margin-top:12px;margin-bottom:0;">
+          <pre><span class="cmt"># Set stack member priority</span>
+Switch# <span class="cmd">switch 1 priority</span> <span class="val">15</span>
+Switch# <span class="kw">show switch</span>
+<span class="cmt"># Renumber a stack member</span>
+Switch# <span class="cmd">switch 2 renumber</span> <span class="val">3</span></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  // Packet animation for uplink/downlink diagram
+  // Paths: uplink = device -> access -> distribution -> core
+  //        downlink = core -> distribution -> access -> device
+  (function() {
+    // Key waypoints [x, y]
+    const CORE    = [340, 29];
+    const DIST    = [340, 109];
+    const ACC1    = [150, 196];
+    const ACC2    = [530, 196];
+    const DEV1    = [48,  264]; // PC left
+    const DEV2    = [492, 264]; // AP right
+    const DEV3    = [176, 264]; // Phone left
+    const DEV4    = [620, 264]; // Cam right
+
+    const UPLINK_PATHS = [
+      [DEV1, ACC1, DIST, CORE],
+      [DEV2, ACC2, DIST, CORE],
+    ];
+    const DOWNLINK_PATHS = [
+      [CORE, DIST, ACC1, DEV3],
+      [CORE, DIST, ACC2, DEV4],
+    ];
+
+    let animFrames = {};
+    let mode = 'off';
+
+    function lerp(a, b, t) { return a + (b - a) * t; }
+
+    function animatePacket(pkId, path, duration, delay, onDone) {
+      const el = document.getElementById(pkId);
+      if (!el) return;
+      let startTime = null;
+      let totalDist = 0;
+      const segs = [];
+      for (let i = 0; i < path.length - 1; i++) {
+        const dx = path[i+1][0] - path[i][0];
+        const dy = path[i+1][1] - path[i][1];
+        const d = Math.sqrt(dx*dx + dy*dy);
+        totalDist += d;
+        segs.push(d);
+      }
+
+      setTimeout(() => {
+        el.setAttribute('opacity', '1');
+        function step(ts) {
+          if (!startTime) startTime = ts;
+          const elapsed = ts - startTime;
+          const t = Math.min(elapsed / duration, 1);
+          // Find which segment we're in
+          let dist = t * totalDist;
+          let cumDist = 0;
+          let segIdx = 0;
+          for (let i = 0; i < segs.length; i++) {
+            if (dist <= cumDist + segs[i]) { segIdx = i; break; }
+            cumDist += segs[i];
+            segIdx = i;
+          }
+          const segT = Math.min((dist - cumDist) / segs[segIdx], 1);
+          const x = lerp(path[segIdx][0], path[segIdx+1][0], segT);
+          const y = lerp(path[segIdx][1], path[segIdx+1][1], segT);
+          el.setAttribute('cx', x);
+          el.setAttribute('cy', y);
+          if (t < 1) {
+            animFrames[pkId] = requestAnimationFrame(step);
+          } else {
+            el.setAttribute('opacity', '0');
+            if (onDone) onDone();
+          }
+        }
+        animFrames[pkId] = requestAnimationFrame(step);
+      }, delay);
+    }
+
+    function cancelAll() {
+      Object.values(animFrames).forEach(cancelAnimationFrame);
+      animFrames = {};
+      ['pkt-up1','pkt-up2','pkt-down1','pkt-down2','pkt-down3','pkt-down4'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.setAttribute('opacity', '0');
+      });
+    }
+
+    let loopTimer = null;
+    function runLoop() {
+      cancelAll();
+      clearTimeout(loopTimer);
+      if (mode === 'off') return;
+
+      if (mode === 'uplink' || mode === 'both') {
+        animatePacket('pkt-up1', UPLINK_PATHS[0], 1400, 0, null);
+        animatePacket('pkt-up2', UPLINK_PATHS[1], 1400, 300, null);
+      }
+      if (mode === 'downlink' || mode === 'both') {
+        animatePacket('pkt-down1', DOWNLINK_PATHS[0], 1400, mode === 'both' ? 700 : 0, null);
+        animatePacket('pkt-down2', DOWNLINK_PATHS[1], 1400, mode === 'both' ? 1000 : 300, null);
+      }
+      loopTimer = setTimeout(runLoop, 2200);
+    }
+
+    window.setAnimMode = function(m) {
+      mode = m;
+      const labels = {
+        uplink:   '🔼 Uplink — data travelling from end devices up to the internet (PC sends a request)',
+        downlink: '🔽 Downlink — data travelling from the internet down to end devices (response arrives)',
+        both:     '⚡ Both directions simultaneously — this is normal operation in a live network',
+        off:      ''
+      };
+      const labelEl = document.getElementById('anim-label');
+      if (labelEl) labelEl.textContent = labels[m];
+      runLoop();
+    };
+
+    // Auto-start with both on page load
+    window.addEventListener('load', () => { window.setAnimMode('both'); });
+  })();
+  </script>
+
+  <!-- ETHERCHANNEL -->
+  <div class="section">
+    <div class="section-header">
+      <h2>EtherChannel / LACP — Link Aggregation</h2>
+      <div class="divider"></div>
+    </div>
+    <div class="card mb-16">
+      <p>EtherChannel bundles 2–8 physical links into one logical link for more bandwidth and redundancy. If one link fails, traffic automatically moves to the remaining links with no STP reconvergence. Uses <strong>LACP</strong> (IEEE 802.3ad, open standard) or PAgP (Cisco proprietary).</p>
+      <div class="code-block" style="margin-top:14px;margin-bottom:0;">
+        <pre><span class="cmt"># Configure LACP EtherChannel on two ports</span>
+Switch(config)# <span class="cmd">interface range GigabitEthernet1/0/1 - 2</span>
+Switch(config-if-range)# <span class="kw">channel-group 1 mode active</span>   <span class="cmt"># LACP active</span>
+Switch(config-if-range)# <span class="kw">switchport mode trunk</span>
+Switch(config)# <span class="cmd">interface port-channel 1</span>
+Switch(config-if)# <span class="kw">switchport mode trunk</span></pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- QoS -->
+  <div class="section">
+    <div class="section-header">
+      <h2>QoS — Quality of Service</h2>
+      <div class="divider"></div>
+      <p>QoS prioritizes important traffic (voice calls, video conferencing) over less time-sensitive traffic (file downloads) when a link is congested.</p>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <h3>DSCP Marking</h3>
+        <p>DSCP (Differentiated Services Code Point) is a 6-bit field in the IP header. Traffic is <strong>classified and marked</strong> close to the source (usually at the access switch), then queued based on its DSCP value.</p>
+        <table class="data-table" style="margin-top:10px;font-size:12px;">
+          <thead><tr><th>DSCP Name</th><th>Value</th><th>Use Case</th></tr></thead>
+          <tbody>
+            <tr><td>EF (Expedited Forwarding)</td><td>46</td><td>VoIP RTP media</td></tr>
+            <tr><td>CS3</td><td>24</td><td>VoIP signaling</td></tr>
+            <tr><td>AF41</td><td>34</td><td>Video conferencing</td></tr>
+            <tr><td>AF21</td><td>18</td><td>Business-critical apps</td></tr>
+            <tr><td>BE (Best Effort)</td><td>0</td><td>General internet traffic</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card">
+        <h3>Queuing &amp; Scheduling</h3>
+        <p>When a port is congested, the scheduler decides which packets to send first. Common algorithm: <strong>LLQ (Low Latency Queuing)</strong> — gives voice traffic a strict priority queue, while other classes share remaining bandwidth fairly (CBWFQ).</p>
+        <div class="alert orange" style="margin-top:12px;margin-bottom:0;">
+          <span class="alert-icon">💡</span>
+          <p><strong>802.1p / CoS:</strong> On trunk ports, 802.1Q frames carry a 3-bit Class of Service value. Switches use CoS to prioritize frames at Layer 2, mapped to DSCP at the Layer 3 boundary.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <p>Orange <span>Business</span> — Network Knowledge Base &nbsp;·&nbsp; <a href="index.html" style="color:rgba(255,255,255,0.4);">Home</a></p>
+</footer>
+<script src="shared.js"></script>
+</body>
+</html>

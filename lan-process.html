@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LAN Process — OB Process Guide</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+:root { --ob-orange:#FF6200; }
+
+.proc-hero {
+  background:linear-gradient(135deg,#0D1B2A 0%,#1A3350 60%,#0D1B2A 100%);
+  padding:52px 40px 44px; text-align:center;
+}
+.proc-hero-tag {
+  display:inline-block; background:rgba(255,98,0,0.25);
+  border:1px solid rgba(255,98,0,0.5); color:#FFAA66;
+  font-size:11px; font-weight:700; letter-spacing:1.2px;
+  text-transform:uppercase; padding:5px 14px; border-radius:20px; margin-bottom:16px;
+}
+.proc-hero h1 { font-size:36px; font-weight:800; color:#fff; margin-bottom:12px; }
+.proc-hero h1 span { color:var(--ob-orange); }
+.proc-hero p  { font-size:15px; color:rgba(255,255,255,0.6); max-width:600px; margin:0 auto; }
+
+.proc-content { max-width:860px; margin:0 auto; padding:44px 28px 60px; }
+
+/* process choice cards */
+.process-choice-grid {
+  display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-bottom:40px;
+}
+@media(max-width:620px){ .process-choice-grid { grid-template-columns:1fr; } }
+
+.process-choice-card {
+  border-radius:18px; overflow:hidden; text-decoration:none !important;
+  box-shadow:0 6px 32px rgba(0,0,0,0.10);
+  transition:transform 0.2s, box-shadow 0.2s, outline 0.15s; display:block;
+  color:inherit !important;
+  outline:3px solid transparent;
+}
+.process-choice-card:hover {
+  transform:translateY(-5px);
+  box-shadow:0 18px 50px rgba(0,0,0,0.18);
+  text-decoration:none !important;
+  color:inherit !important;
+}
+.pcc-ap.process-choice-card:hover  { outline-color:rgba(27,108,168,0.5); }
+.pcc-sw.process-choice-card:hover  { outline-color:rgba(14,138,74,0.5); }
+/* suppress any inherited link underline on all children */
+.process-choice-card *,
+.process-choice-card:hover * {
+  text-decoration:none !important;
+}
+/* restore colours for specific elements */
+.pcc-title    { color:#fff !important; }
+.pcc-subtitle { color:rgba(255,255,255,0.65) !important; }
+.pcc-tag      { color:#fff !important; }
+.pcc-body p   { color:#555 !important; }
+/* body highlight on hover — covers the white section */
+.pcc-ap.process-choice-card:hover .pcc-body { background:#E6F1FF; }
+.pcc-sw.process-choice-card:hover .pcc-body { background:#E4F8EF; }
+.process-choice-card:hover .pcc-cta { filter:brightness(1.12); }
+.pcc-header {
+  padding:28px 28px 22px;
+  display:flex; align-items:flex-start; gap:16px;
+}
+.pcc-icon {
+  font-size:42px; line-height:1; flex-shrink:0; margin-top:2px;
+}
+.pcc-tag {
+  font-size:10px; font-weight:700; letter-spacing:1.2px;
+  text-transform:uppercase; padding:3px 10px; border-radius:20px;
+  display:inline-block; margin-bottom:6px; color:#fff;
+  background:rgba(255,255,255,0.2);
+}
+.pcc-title { font-size:22px; font-weight:800; color:#fff; margin-bottom:4px; }
+.pcc-subtitle { font-size:13px; color:rgba(255,255,255,0.65); }
+.pcc-body {
+  background:#fff; padding:20px 28px 24px;
+}
+.pcc-body p { font-size:13px; color:#555; line-height:1.7; margin-bottom:14px; }
+.pcc-stats { display:flex; gap:10px; flex-wrap:wrap; }
+.pcc-stat {
+  font-size:11px; font-weight:700; padding:4px 10px;
+  border-radius:6px; border:1.5px solid;
+}
+.pcc-cta {
+  display:inline-block; margin-top:14px;
+  font-size:13px; font-weight:700; padding:10px 20px;
+  border-radius:8px; color:#fff;
+}
+
+/* AP card — blue */
+.pcc-ap .pcc-header { background:linear-gradient(135deg,#0A2040 0%,#1B6CA8 100%); }
+.pcc-ap .pcc-stat   { color:#1B6CA8; border-color:#BDD6F5; background:#EEF5FF; }
+.pcc-ap .pcc-cta    { background:#1B6CA8; }
+.pcc-ap .pcc-cta:hover { background:#0A4A80; }
+
+/* Switch/WLC card — green */
+.pcc-sw .pcc-header { background:linear-gradient(135deg,#042910 0%,#0E8A4A 100%); }
+.pcc-sw .pcc-stat   { color:#0E8A4A; border-color:#9FE0C3; background:#EDFAF4; }
+.pcc-sw .pcc-cta    { background:#0E8A4A; }
+.pcc-sw .pcc-cta:hover { background:#075C32; }
+
+/* key difference table */
+.diff-table { width:100%; border-collapse:collapse; font-size:13px; }
+.diff-table th {
+  padding:11px 16px; text-align:left; font-size:11px; font-weight:700;
+  text-transform:uppercase; letter-spacing:0.5px;
+}
+.diff-table td { padding:11px 16px; border-top:1px solid #F0F0F0; vertical-align:top; }
+.diff-table tr:nth-child(even) td { background:#FAFAFA; }
+.diff-table td:first-child { color:#888; font-size:12px; width:28%; }
+.diff-table thead { background:#1A1A1A; }
+.diff-table thead th { color:rgba(255,255,255,0.7); }
+.diff-table thead th:nth-child(2) { color:#7DC6FF; }
+.diff-table thead th:nth-child(3) { color:#5DE8AA; }
+.diff-card {
+  border-radius:14px; overflow:hidden; border:1px solid #E0E0E0;
+  box-shadow:0 2px 12px rgba(0,0,0,0.05); margin-bottom:32px;
+}
+
+/* legend */
+.tool-legend { display:flex; flex-wrap:wrap; gap:10px; margin-bottom:32px; }
+.tool-legend-item {
+  display:flex; align-items:center; gap:8px;
+  background:#F8F9FA; border:1px solid #E8E8E8; border-radius:8px;
+  padding:8px 14px; font-size:12px;
+}
+.tool-legend-badge {
+  font-size:11px; font-weight:700; padding:3px 9px;
+  border-radius:5px; border:1.5px solid; white-space:nowrap;
+}
+.tool-legend-desc { color:#666; }
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <a href="index.html" class="topnav-brand">
+    <div class="topnav-logo">OB</div>
+    <div class="topnav-brand-text">Orange <span>Business</span></div>
+  </a>
+  <div class="topnav-links">
+    <a href="index.html"          class="nav-link">Home</a>
+    <a href="lan-wan-basics.html" class="nav-link">LAN / WAN</a>
+    <a href="ip-routing.html"     class="nav-link">IP Routing</a>
+    <a href="switching.html"      class="nav-link">Switching</a>
+    <a href="wireless.html"       class="nav-link">Wireless</a>
+    <a href="firewalls.html"      class="nav-link">Firewalls</a>
+    <a href="zscaler.html"        class="nav-link">Zscaler</a>
+    <a href="devices.html"        class="nav-link" id="nav-devices">Devices</a>
+    <a href="glossary.html"       class="nav-link">Glossary</a>
+  </div>
+  <div class="topnav-badge">New Hire Guide</div>
+</nav>
+
+<div class="breadcrumb"><a href="index.html">Home</a><span>/</span> LAN Process</div>
+
+<div class="proc-hero">
+  <div class="proc-hero-tag">🏢 Orange Business — DPM Process Guide</div>
+  <h1>LAN <span>Process</span></h1>
+  <p>The end-to-end Delivery Project Manager process for LAN migrations at Orange Business. Select the device type you're working on below.</p>
+</div>
+
+<div class="proc-content">
+
+  <!-- CHOOSE A PROCESS -->
+  <div class="process-choice-grid">
+
+    <a href="process-ap.html" class="process-choice-card pcc-ap">
+      <div class="pcc-header">
+        <div class="pcc-icon">📡</div>
+        <div>
+          <div class="pcc-tag">Wireless</div>
+          <div class="pcc-title">AP Process</div>
+          <div class="pcc-subtitle">Access Point deployment &amp; migration</div>
+        </div>
+      </div>
+      <div class="pcc-body">
+        <p>The full DPM process for deploying and migrating Cisco Access Points — from GOLD/SALTO ordering and warehouse staging, through Option 43 checks, VPO staging and customer UAT, to HOTO sign-off.</p>
+        <div class="pcc-stats">
+          <span class="pcc-stat">📋 36 Steps</span>
+          <span class="pcc-stat">🔵 4 Phases</span>
+          <span class="pcc-stat">🛠️ 6 Tools</span>
+        </div>
+        <div class="pcc-cta">View AP Process →</div>
+      </div>
+    </a>
+
+    <a href="process-wlc-switch.html" class="process-choice-card pcc-sw">
+      <div class="pcc-header">
+        <div class="pcc-icon">🔌</div>
+        <div>
+          <div class="pcc-tag">Infrastructure</div>
+          <div class="pcc-title">WLC &amp; Switch Process</div>
+          <div class="pcc-subtitle">Switch and WLC deployment &amp; migration</div>
+        </div>
+      </div>
+      <div class="pcc-body">
+        <p>The full DPM process for deploying and migrating Cisco WLCs and campus switches — including IPs from the TDT, external dry runs, Field Engineer booking via FLIP, a formal staging activity, migration tracking, and post-migration closures.</p>
+        <div class="pcc-stats">
+          <span class="pcc-stat">📋 40 Steps</span>
+          <span class="pcc-stat">🟢 4 Phases</span>
+          <span class="pcc-stat">🛠️ 7 Tools</span>
+        </div>
+        <div class="pcc-cta">View Switch / WLC Process →</div>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- KEY DIFFERENCES -->
+  <div style="margin-bottom:16px;">
+    <h3 style="font-size:16px;font-weight:700;color:#1A1A1A;margin-bottom:6px;">Key Differences Between the Two Processes</h3>
+    <p style="font-size:13px;color:#666;margin-bottom:16px;">Both processes follow the same four phases — <strong>Ordering → Pre-Migration → During Migration → Post-Migration</strong> — but there are important differences a new DPM should know before starting.</p>
+  </div>
+  <div class="diff-card">
+    <table class="diff-table">
+      <thead>
+        <tr>
+          <th>Topic</th>
+          <th>📡 AP Process</th>
+          <th>🔌 Switch / WLC Process</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Phases &amp; steps</td>
+          <td>4 phases · 36 steps · one MACHX raise</td>
+          <td>4 phases · 40 steps · two MACHX raises</td>
+        </tr>
+        <tr>
+          <td>Physical installation</td>
+          <td>Customer mounts the APs themselves — DPM aligns this expectation in a pre-migration call</td>
+          <td>Field Engineer is booked via FLIP — they handle physical hardware on-site</td>
+        </tr>
+        <tr>
+          <td>Staging</td>
+          <td>VPOs stage the APs remotely before the customer connects them</td>
+          <td>Formal staging activity with the VPO; post-staging email sent (daily if multi-day)</td>
+        </tr>
+        <tr>
+          <td>Dry run</td>
+          <td>No separate dry run — the APs are staged remotely by the VPO</td>
+          <td>External dry run with VPO, SC, and customer — 3rd party servers must be checked</td>
+        </tr>
+        <tr>
+          <td>Unique pre-check</td>
+          <td><strong>Option 43 must be verified</strong> — AP cannot find the WLC without it (raise an Option 43 request if missing)</td>
+          <td><strong>IP addresses obtained from the TDT</strong> before staging</td>
+        </tr>
+        <tr>
+          <td>During migration UAT</td>
+          <td>Customer tests all SSIDs first, then tests per-AP</td>
+          <td>Customer tests all services connected to each migrated switch</td>
+        </tr>
+        <tr>
+          <td>Post-migration email</td>
+          <td>Always send success notification</td>
+          <td>Partial migration email if multi-day; success notification on final day</td>
+        </tr>
+        <tr>
+          <td>Tool: FLIP</td>
+          <td>Not used</td>
+          <td>Used to book the Field Engineer</td>
+        </tr>
+        <tr>
+          <td>MACHX raises</td>
+          <td>One raise</td>
+          <td>Two raises (pre-staging + pre-migration)</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- TOOLS LEGEND -->
+  <h3 style="font-size:15px;font-weight:700;color:#1A1A1A;margin-bottom:14px;">🛠️ Tools Reference</h3>
+  <div class="tool-legend">
+    <div class="tool-legend-item">
+      <span class="tool-legend-badge" style="color:#007AC9;border-color:#A0D4F5;background:#EEF8FF;">❄️ ServiceNow</span>
+      <span class="tool-legend-desc">Change requests and CMDB updates</span>
+    </div>
+    <div class="tool-legend-item">
+      <span class="tool-legend-badge" style="color:#C05A00;border-color:#F5C99A;background:#FFF4EA;">🔧 MACHX</span>
+      <span class="tool-legend-desc">Raise and manage TIM work orders</span>
+    </div>
+    <div class="tool-legend-item">
+      <span class="tool-legend-badge" style="color:#0A6BB5;border-color:#9DD0F5;background:#EEF6FF;">🧠 DNAC</span>
+      <span class="tool-legend-desc">Catalyst Center — send DNAC update post-migration</span>
+    </div>
+    <div class="tool-legend-item">
+      <span class="tool-legend-badge" style="color:#8A6800;border-color:#F0D87A;background:#FFFBEA;">🏆 GOLD</span>
+      <span class="tool-legend-desc">Order management — close the GOLD order</span>
+    </div>
+    <div class="tool-legend-item">
+      <span class="tool-legend-badge" style="color:#5A0090;border-color:#D4A6F5;background:#F8F0FF;">🔑 SALTO</span>
+      <span class="tool-legend-desc">Close the Salto order post-migration</span>
+    </div>
+    <div class="tool-legend-item">
+      <span class="tool-legend-badge" style="color:#006B4F;border-color:#8FE0C5;background:#EDFAF5;">📋 FLIP</span>
+      <span class="tool-legend-desc">Book Field Engineers (Switch/WLC only)</span>
+    </div>
+    <div class="tool-legend-item">
+      <span class="tool-legend-badge" style="color:#1A4E8A;border-color:#A0C4F5;background:#EEF3FF;">📁 SharePoint</span>
+      <span class="tool-legend-desc">Upload HOTO document, runbook, and LLD</span>
+    </div>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <p>Orange <span>Business</span> — Network Knowledge Base &nbsp;·&nbsp;
+  <a href="index.html" style="color:rgba(255,255,255,0.4);">Home</a></p>
+</footer>
+<script src="shared.js"></script>
+</body>
+</html>

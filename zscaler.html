@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zscaler — OB Network KB</title>
+<link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<nav class="topnav">
+  <a href="index.html" class="topnav-brand">
+    <div class="topnav-logo">OB</div>
+    <div class="topnav-brand-text">Orange <span>Business</span></div>
+  </a>
+  <div class="topnav-links">
+    <a href="index.html"          class="nav-link" id="nav-index">Home</a>
+    <a href="lan-wan-basics.html" class="nav-link" id="nav-lan">LAN / WAN</a>
+    <a href="ip-routing.html"     class="nav-link" id="nav-ip">IP Routing</a>
+    <a href="switching.html"      class="nav-link" id="nav-sw">Switching</a>
+    <a href="wireless.html"       class="nav-link" id="nav-wifi">Wireless</a>
+    <a href="firewalls.html"      class="nav-link" id="nav-fw">Firewalls</a>
+    <a href="zscaler.html"        class="nav-link active" id="nav-zs">Zscaler</a>
+    <a href="devices.html"        class="nav-link" id="nav-devices">Devices</a>
+    <a href="glossary.html"       class="nav-link" id="nav-gl">Glossary</a>
+  </div>
+  <div class="topnav-badge">New Hire Guide</div>
+</nav>
+
+<div class="breadcrumb">
+  <a href="index.html">Home</a><span>/</span> Zscaler
+</div>
+
+<!-- HERO -->
+<div class="page-hero" style="background:linear-gradient(135deg,#001F4D 0%,#003080 60%,#0050B3 100%);">
+  <div class="hero-content">
+    <div class="hero-tag" style="background:rgba(0,93,170,0.3);border-color:rgba(0,150,255,0.4);color:#7DC3FF;">☁️ Cloud Security</div>
+    <h1 style="color:white;">What is <span style="color:#5BB8FF;">Zscaler?</span></h1>
+    <p class="hero-sub">Zscaler is the world's largest cloud security platform. Instead of routing all your internet traffic through a corporate firewall in a data center, Zscaler inspects it in the cloud — wherever the user is. It's one of the key services Orange Business offers to enterprise customers.</p>
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- THE BIG IDEA -->
+  <div class="section">
+    <div class="section-header">
+      <h2>The Big Idea — In Plain English</h2>
+      <div class="divider" style="background:#005DAA;"></div>
+    </div>
+
+    <div style="display:flex;gap:20px;flex-wrap:wrap;margin-bottom:24px;">
+      <div class="vs-col" style="background:#FFF0EF;border-radius:var(--radius);padding:20px;border:1px solid #FFCDD0;">
+        <h4 style="color:#EE3124;">❌ The Old Way — Hub &amp; Spoke</h4>
+        <p style="font-size:13px;color:var(--gray-mid);line-height:1.65;margin-bottom:10px;">
+          In traditional networks, every branch office sent <em>all</em> internet traffic back through the corporate data center over an MPLS WAN link — even a simple Google search. The data center had the big firewall, so all traffic had to pass through it. This was fine when everyone sat in the office. But it's <strong>slow, expensive, and broken for remote workers and cloud apps.</strong>
+        </p>
+        <div style="font-size:12px;color:#EE3124;font-weight:600;">Problems:</div>
+        <ul style="list-style:none;margin-top:6px;">
+          <li style="font-size:12px;color:var(--gray-mid);padding:3px 0;display:flex;gap:6px;"><span style="color:#EE3124;">✗</span> Remote users bypass the corporate network entirely</li>
+          <li style="font-size:12px;color:var(--gray-mid);padding:3px 0;display:flex;gap:6px;"><span style="color:#EE3124;">✗</span> Cloud apps (Office 365, Salesforce) feel slow — traffic hairpins through DC</li>
+          <li style="font-size:12px;color:var(--gray-mid);padding:3px 0;display:flex;gap:6px;"><span style="color:#EE3124;">✗</span> Expensive MPLS links become bottlenecks</li>
+          <li style="font-size:12px;color:var(--gray-mid);padding:3px 0;display:flex;gap:6px;"><span style="color:#EE3124;">✗</span> One firewall = single point of failure</li>
+        </ul>
+      </div>
+      <div class="vs-col" style="background:#E6F7F1;border-radius:var(--radius);padding:20px;border:1px solid #B2DFDB;">
+        <h4 style="color:#00A86B;">✅ The Zscaler Way — Security in the Cloud</h4>
+        <p style="font-size:13px;color:var(--gray-mid);line-height:1.65;margin-bottom:10px;">
+          With Zscaler, users connect to the nearest Zscaler data center (called a <strong>Point of Presence or PoP</strong>) — like connecting to a WiFi hotspot on the way to the internet. Zscaler inspects the traffic right there, applies all the security policies, and lets legitimate traffic through. <strong>No more hairpinning. No more VPN for basic browsing.</strong>
+        </p>
+        <div style="font-size:12px;color:#00A86B;font-weight:600;">Benefits:</div>
+        <ul style="list-style:none;margin-top:6px;">
+          <li style="font-size:12px;color:var(--gray-mid);padding:3px 0;display:flex;gap:6px;"><span style="color:#00A86B;">✓</span> Same security policies for office, home, and travel users</li>
+          <li style="font-size:12px;color:var(--gray-mid);padding:3px 0;display:flex;gap:6px;"><span style="color:#00A86B;">✓</span> Cloud apps connect directly — no backhauling</li>
+          <li style="font-size:12px;color:var(--gray-mid);padding:3px 0;display:flex;gap:6px;"><span style="color:#00A86B;">✓</span> 150+ PoPs worldwide — users always connect to the nearest one</span></li>
+          <li style="font-size:12px;color:var(--gray-mid);padding:3px 0;display:flex;gap:6px;"><span style="color:#00A86B;">✓</span> No hardware to maintain — fully managed cloud service</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="alert" style="background:#E8F0FA;border-left:3px solid #005DAA;">
+      <span class="alert-icon">☁️</span>
+      <p><strong>Think of Zscaler as a security checkpoint in the cloud.</strong> Every user — whether in the office, at home, or in a café — passes through this checkpoint before reaching the internet or internal apps. The checkpoint travels with the user, not the other way around.</p>
+    </div>
+  </div>
+
+  <!-- HOW IT WORKS STEP BY STEP -->
+  <div class="section">
+    <div class="section-header">
+      <h2>How It Works — Step by Step</h2>
+      <div class="divider" style="background:#005DAA;"></div>
+      <p>Here's exactly what happens when a user opens their browser and types a URL.</p>
+    </div>
+
+    <div class="diagram-box" style="margin-bottom:28px;">
+      <svg viewBox="0 0 720 160" xmlns="http://www.w3.org/2000/svg" style="font-family:'Sora',sans-serif;max-width:100%;">
+        <!-- User -->
+        <rect x="10" y="55" width="100" height="50" rx="8" fill="#E8F0FA" stroke="#005DAA" stroke-width="1.5"/>
+        <text x="60" y="76" text-anchor="middle" font-size="10" font-weight="600" fill="#005DAA">👤 User</text>
+        <text x="60" y="91" text-anchor="middle" font-size="9" fill="#555">Laptop / Phone</text>
+        <text x="60" y="104" text-anchor="middle" font-size="9" fill="#888">Anywhere</text>
+
+        <!-- Arrow 1 -->
+        <line x1="110" y1="80" x2="160" y2="80" stroke="#005DAA" stroke-width="2" marker-end="url(#arr)"/>
+        <text x="135" y="72" text-anchor="middle" font-size="9" fill="#005DAA">tunnel</text>
+
+        <!-- Zscaler Client Connector -->
+        <rect x="160" y="45" width="120" height="70" rx="8" fill="#005DAA"/>
+        <text x="220" y="68" text-anchor="middle" font-size="9" font-weight="600" fill="white">Zscaler Client</text>
+        <text x="220" y="81" text-anchor="middle" font-size="9" font-weight="600" fill="white">Connector</text>
+        <text x="220" y="96" text-anchor="middle" font-size="8" fill="rgba(255,255,255,0.7)">(app on device)</text>
+        <text x="220" y="109" text-anchor="middle" font-size="8" fill="rgba(255,255,255,0.7)">redirects traffic</text>
+
+        <!-- Arrow 2 -->
+        <line x1="280" y1="80" x2="330" y2="80" stroke="#005DAA" stroke-width="2" marker-end="url(#arr)"/>
+        <text x="305" y="72" text-anchor="middle" font-size="9" fill="#005DAA">TLS</text>
+
+        <!-- Zscaler PoP -->
+        <rect x="330" y="35" width="140" height="90" rx="8" fill="#003080"/>
+        <text x="400" y="58" text-anchor="middle" font-size="10" font-weight="700" fill="#5BB8FF">☁️ Zscaler PoP</text>
+        <text x="400" y="74" text-anchor="middle" font-size="8" fill="rgba(255,255,255,0.7)">nearest data center</text>
+        <text x="400" y="88" text-anchor="middle" font-size="8" fill="#7DC3FF">✓ SSL Inspection</text>
+        <text x="400" y="101" text-anchor="middle" font-size="8" fill="#7DC3FF">✓ URL / App filter</text>
+        <text x="400" y="114" text-anchor="middle" font-size="8" fill="#7DC3FF">✓ Threat Prevention</text>
+
+        <!-- Arrow 3a - internet -->
+        <line x1="470" y1="68" x2="530" y2="45" stroke="#00A86B" stroke-width="2" marker-end="url(#arr2)"/>
+        <text x="500" y="45" text-anchor="middle" font-size="9" fill="#00A86B">allowed</text>
+
+        <!-- Arrow 3b - blocked -->
+        <line x1="470" y1="92" x2="530" y2="110" stroke="#EE3124" stroke-width="2"/>
+        <text x="510" y="125" text-anchor="middle" font-size="9" fill="#EE3124">blocked ✗</text>
+
+        <!-- Internet -->
+        <ellipse cx="590" cy="38" rx="70" ry="26" fill="#E6F7F1" stroke="#00A86B" stroke-width="1.5"/>
+        <text x="590" y="33" text-anchor="middle" font-size="10" font-weight="600" fill="#00A86B">Internet</text>
+        <text x="590" y="48" text-anchor="middle" font-size="9" fill="#555">/ Cloud Apps</text>
+
+        <!-- Malware blocked -->
+        <rect x="528" y="100" width="80" height="26" rx="5" fill="#FFF0EF" stroke="#EE3124" stroke-width="1.5"/>
+        <text x="568" y="117" text-anchor="middle" font-size="9" fill="#EE3124">🦠 Malware / Bad site</text>
+
+        <!-- Arrow defs -->
+        <defs>
+          <marker id="arr"  markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#005DAA"/></marker>
+          <marker id="arr2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#00A86B"/></marker>
+        </defs>
+      </svg>
+      <p class="diagram-caption">Every request passes through the Zscaler PoP — allowed or blocked before reaching the internet</p>
+    </div>
+
+    <div>
+      <div class="flow-step">
+        <div class="flow-num">1</div>
+        <div><h4>User opens a browser or app</h4><p>The <strong>Zscaler Client Connector</strong> (a lightweight app installed on the device) automatically intercepts all internet-bound traffic. The user doesn't have to do anything — no manual VPN connection required.</p></div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">2</div>
+        <div><h4>Traffic tunnels to the nearest Zscaler PoP</h4><p>The Client Connector creates an encrypted TLS tunnel to the nearest Zscaler Point of Presence. With 150+ PoPs globally, latency is minimal — the user connects to a PoP in their city or country.</p></div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">3</div>
+        <div><h4>Zscaler inspects the traffic</h4><p>Inside the PoP, Zscaler decrypts the TLS traffic (like an NGFW doing SSL inspection), checks the URL category, identifies the application (App-ID), scans for malware, checks DLP rules, and enforces the customer's security policy — all in milliseconds.</p></div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">4</div>
+        <div><h4>Allowed traffic goes directly to the internet / cloud app</h4><p>If the request is permitted, Zscaler forwards it directly to its destination — Office 365, Salesforce, a website — from the PoP. No backhaul to a corporate data center. The user gets the fastest possible path to the cloud.</p></div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">5</div>
+        <div><h4>Blocked traffic is stopped and the user sees a block page</h4><p>If the site is malicious, violates policy (e.g. gambling, malware C2 server), or contains sensitive data in a download, Zscaler blocks it and shows the user a customisable block page explaining why.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ZS PRODUCT PILLARS -->
+  <div class="section">
+    <div class="section-header">
+      <h2>The Four Zscaler Products You Need to Know</h2>
+      <div class="divider" style="background:#005DAA;"></div>
+      <p>Zscaler bundles its services under the <strong>Zero Trust Exchange</strong> platform. Here are the four you'll encounter most often at Orange Business.</p>
+    </div>
+
+    <style>
+      .zs-pillar {
+        border-radius: 16px;
+        overflow: hidden;
+        border: 1px solid #E8E8E8;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+        transition: transform 0.2s, box-shadow 0.2s;
+      }
+      .zs-pillar:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 32px rgba(0,0,0,0.10);
+      }
+      .zs-pillar-header {
+        padding: 28px 28px 22px;
+        display: flex;
+        align-items: center;
+        gap: 18px;
+      }
+      .zs-pillar-icon {
+        width: 60px; height: 60px;
+        border-radius: 14px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 28px; flex-shrink: 0;
+      }
+      .zs-pillar-title-block { flex: 1; }
+      .zs-pillar-tag {
+        display: inline-block;
+        font-size: 10px; font-weight: 700;
+        letter-spacing: 1.2px; text-transform: uppercase;
+        padding: 3px 10px; border-radius: 20px;
+        margin-bottom: 6px;
+      }
+      .zs-pillar-title {
+        font-size: 22px; font-weight: 700;
+        margin: 0; line-height: 1.2;
+      }
+      .zs-pillar-subtitle {
+        font-size: 13px; margin-top: 3px; opacity: 0.8; font-weight: 500;
+      }
+      .zs-pillar-body {
+        padding: 0 28px 26px;
+      }
+      .zs-pillar-desc {
+        font-size: 14px; line-height: 1.75;
+        color: #444; margin-bottom: 20px;
+        padding-top: 4px;
+      }
+      .zs-chips {
+        display: flex; flex-wrap: wrap; gap: 8px;
+      }
+      .zs-chip {
+        display: inline-flex; align-items: center; gap: 6px;
+        padding: 7px 13px; border-radius: 8px;
+        font-size: 12px; font-weight: 600;
+        border: 1.5px solid;
+      }
+      .zs-chip-dot {
+        width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
+      }
+
+      /* ZIA — blue */
+      .zs-zia .zs-pillar-header { background: linear-gradient(135deg, #003F8A 0%, #005DAA 100%); }
+      .zs-zia .zs-pillar-icon   { background: rgba(255,255,255,0.15); }
+      .zs-zia .zs-pillar-tag    { background: rgba(255,255,255,0.2); color: #fff; }
+      .zs-zia .zs-pillar-title  { color: #fff; }
+      .zs-zia .zs-pillar-subtitle { color: rgba(255,255,255,0.75); }
+      .zs-zia .zs-chip          { background: #EBF3FF; border-color: #B8D4F5; color: #004A9F; }
+      .zs-zia .zs-chip-dot      { background: #005DAA; }
+
+      /* ZPA — green */
+      .zs-zpa .zs-pillar-header { background: linear-gradient(135deg, #007A4D 0%, #00A86B 100%); }
+      .zs-zpa .zs-pillar-icon   { background: rgba(255,255,255,0.15); }
+      .zs-zpa .zs-pillar-tag    { background: rgba(255,255,255,0.2); color: #fff; }
+      .zs-zpa .zs-pillar-title  { color: #fff; }
+      .zs-zpa .zs-pillar-subtitle { color: rgba(255,255,255,0.75); }
+      .zs-zpa .zs-chip          { background: #E6F7F1; border-color: #A8DFC8; color: #006B44; }
+      .zs-zpa .zs-chip-dot      { background: #00A86B; }
+
+      /* ZDX — orange */
+      .zs-zdx .zs-pillar-header { background: linear-gradient(135deg, #CC4E00 0%, #FF6200 100%); }
+      .zs-zdx .zs-pillar-icon   { background: rgba(255,255,255,0.15); }
+      .zs-zdx .zs-pillar-tag    { background: rgba(255,255,255,0.2); color: #fff; }
+      .zs-zdx .zs-pillar-title  { color: #fff; }
+      .zs-zdx .zs-pillar-subtitle { color: rgba(255,255,255,0.75); }
+      .zs-zdx .zs-chip          { background: #FFF0E6; border-color: #FFD0A8; color: #A83D00; }
+      .zs-zdx .zs-chip-dot      { background: #FF6200; }
+
+      /* ZCC — purple */
+      .zs-zcc .zs-pillar-header { background: linear-gradient(135deg, #5B21B6 0%, #7C3AED 100%); }
+      .zs-zcc .zs-pillar-icon   { background: rgba(255,255,255,0.15); }
+      .zs-zcc .zs-pillar-tag    { background: rgba(255,255,255,0.2); color: #fff; }
+      .zs-zcc .zs-pillar-title  { color: #fff; }
+      .zs-zcc .zs-pillar-subtitle { color: rgba(255,255,255,0.75); }
+      .zs-zcc .zs-chip          { background: #F3EEFF; border-color: #D4B8FF; color: #5B21B6; }
+      .zs-zcc .zs-chip-dot      { background: #7C3AED; }
+
+      @media (min-width: 700px) {
+        .zs-pillars-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .zs-pillars-grid .zs-pillar { margin-bottom: 0; }
+      }
+    </style>
+
+    <div class="zs-pillars-grid">
+
+      <!-- ZIA -->
+      <div class="zs-pillar zs-zia">
+        <div class="zs-pillar-header">
+          <div class="zs-pillar-icon">🌐</div>
+          <div class="zs-pillar-title-block">
+            <div class="zs-pillar-tag">Internet Security</div>
+            <div class="zs-pillar-title">ZIA</div>
+            <div class="zs-pillar-subtitle">Zscaler Internet Access</div>
+          </div>
+        </div>
+        <div class="zs-pillar-body">
+          <p class="zs-pillar-desc">Secures every user accessing the <strong>public internet</strong>. This is the core Zscaler product — it replaces the traditional perimeter firewall and web proxy entirely. When a customer says "Zscaler", they almost certainly mean ZIA.</p>
+          <div class="zs-chips">
+            <span class="zs-chip"><span class="zs-chip-dot"></span>SSL / HTTPS Inspection</span>
+            <span class="zs-chip"><span class="zs-chip-dot"></span>URL Filtering (90+ categories)</span>
+            <span class="zs-chip"><span class="zs-chip-dot"></span>Cloud Sandbox</span>
+            <span class="zs-chip"><span class="zs-chip-dot"></span>DNS Security</span>
+            <span class="zs-chip"><span class="zs-chip-dot"></span>DLP</span>
+            <span class="zs-chip"><span class="zs-chip-dot"></span>Bandwidth Control</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ZPA -->
+      <div class="zs-pillar zs-zpa">
+        <div class="zs-pillar-header">
+          <div class="zs-pillar-icon">🔒</div>
+          <div class="zs-pillar-title-block">
+            <div class="zs-pillar-tag">Zero Trust Access</div>
+            <div class="zs-pillar-title">ZPA</div>
+            <div class="zs-pillar-subtitle">Zscaler Private Access</div>
+          </div>
+        </div>
+        <div class="zs-pillar-body">
+          <p class="zs-pillar-desc">Replaces the traditional <strong>VPN</strong> for accessing internal corporate apps. Instead of giving users full network access, ZPA grants access only to the specific app they need — the rest of the network stays invisible.</p>
+          <div class="zs-chips">
+            <span class="zs-chip"><span class="zs-chip-dot"></span>App-level access, not network</span>
+            <span class="zs-chip"><span class="zs-chip-dot"></span>No firewall hole needed</span>
+            <span class="zs-chip"><span class="zs-chip-dot"></span>On-prem + AWS / Azure / GCP</span>
+            <span class="zs-chip"><span class="zs-chip-dot"></span>Azure AD / Okta / SAML</span>
+            <span class="zs-chip"><span class="zs-chip-dot"></span>MFA enforced</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ZDX -->
+      <div class="zs-pillar zs-zdx">
+        <div class="zs-pillar-header">
+          <div class="zs-pillar-icon">📊</div>
+          <div class="zs-pillar-title-block">
+            <div class="zs-pillar-tag">Digital Experience</div>
+            <div class="zs-pillar-title">ZDX</div>
+            <div class="zs-pillar-subtitle">Zscaler Digital Experience</div>
+          </div>
+        </div>
+        <div class="zs-pillar-body">
+          <p class="zs-pillar-desc">Monitors <strong>end-to-end app performance</strong> from the user's device to the server. When a user says "Teams is slow", ZDX pinpoints exactly where the problem is — device, ISP, PoP, or Microsoft's servers.</p>
+          <div class="zs-chips">
+            <span class="zs-chip"><span class="zs-chip-dot"></span>Real-time latency per user</span>
+            <span class="zs-chip"><span class="zs-chip-dot"></span>Device health (CPU / RAM / WiFi)</span>
+            <span class="zs-chip"><span class="zs-chip-dot"></span>Hop-by-hop path analysis</span>
+            <span class="zs-chip"><span class="zs-chip-dot"></span>Teams / Zoom / O365 dashboards</span>
+            <span class="zs-chip"><span class="zs-chip-dot"></span>Degradation alerts</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ZCC -->
+      <div class="zs-pillar zs-zcc">
+        <div class="zs-pillar-header">
+          <div class="zs-pillar-icon">📱</div>
+          <div class="zs-pillar-title-block">
+            <div class="zs-pillar-tag">Device Agent</div>
+            <div class="zs-pillar-title">ZCC</div>
+            <div class="zs-pillar-subtitle">Zscaler Client Connector</div>
+          </div>
+        </div>
+        <div class="zs-pillar-body">
+          <p class="zs-pillar-desc">The <strong>lightweight agent</strong> installed on every device (Windows, Mac, iOS, Android) that silently routes all traffic through Zscaler. Users never interact with it. Without ZCC, ZIA and ZPA won't work on the device.</p>
+          <div class="zs-chips">
+            <span class="zs-chip"><span class="zs-chip-dot"></span>Deploy via Intune / JAMF / GPO</span>
+            <span class="zs-chip"><span class="zs-chip-dot"></span>Always-on, no user action</span>
+            <span class="zs-chip"><span class="zs-chip-dot"></span>Auto selects nearest PoP</span>
+            <span class="zs-chip"><span class="zs-chip-dot"></span>Split tunnelling support</span>
+            <span class="zs-chip"><span class="zs-chip-dot"></span>Feeds data to ZDX</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ZERO TRUST -->
+  <div class="section">
+    <div class="section-header">
+      <h2>Zero Trust — The Philosophy Behind Zscaler</h2>
+      <div class="divider" style="background:#005DAA;"></div>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-icon" style="background:#FFF0EF;">🏰</div>
+        <h3>Old model: "Castle and Moat"</h3>
+        <p>The traditional network assumed that <em>everything inside the corporate network is trustworthy</em>. The firewall was the castle wall — once you got inside (via VPN or physically being in the office), you could reach almost anything. This fails catastrophically when an attacker gets inside — they can move freely across the entire network.</p>
+      </div>
+      <div class="card" style="border-color:rgba(0,93,170,0.3);">
+        <div class="card-icon" style="background:#E8F0FA;">🔍</div>
+        <h3>Zero Trust: "Never trust, always verify"</h3>
+        <p>Zero Trust assumes that <em>no user, device, or network should be trusted by default</em> — even if they're inside the corporate office. Every access request is verified: Who is the user? What device? What app do they need? What time is it? What's their location? Only then is access granted — and only to the specific resource needed, nothing else.</p>
+      </div>
+    </div>
+    <div class="alert" style="background:#E8F0FA;border-left:3px solid #005DAA;">
+      <span class="alert-icon">💡</span>
+      <p><strong>Why this matters for Orange Business:</strong> Many enterprise customers are moving from traditional MPLS + firewall setups to a Zscaler Zero Trust architecture as part of SD-WAN and SASE projects. When you're in a customer meeting and they mention "SASE", "Zero Trust", or "replacing our VPN" — Zscaler ZIA + ZPA is almost always the answer being discussed.</p>
+    </div>
+  </div>
+
+  <!-- ZIA VS VPN vs TRADITIONAL -->
+  <div class="section">
+    <div class="section-header">
+      <h2>VPN vs ZPA — Remote Access Compared</h2>
+      <div class="divider" style="background:#005DAA;"></div>
+      <p>One of the most common customer conversations: why replace VPN with ZPA?</p>
+    </div>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th style="width:20%;">Factor</th>
+          <th style="background:#787878;width:40%;">Traditional VPN</th>
+          <th style="background:#005DAA;width:40%;">Zscaler ZPA</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>What user can reach</td><td>Entire corporate network</td><td>Only the specific app they're authorised for</td></tr>
+        <tr><td>Network exposure</td><td>All internal IPs visible to the user</td><td>Internal network is never exposed — app is hidden</td></tr>
+        <tr><td>Attacker lateral movement</td><td>Attacker can reach everything once connected</td><td>Attacker can only reach the one app — no lateral movement</td></tr>
+        <tr><td>Performance</td><td>Traffic hairpins through corporate DC</td><td>Direct connection from user to app via nearest PoP</td></tr>
+        <tr><td>Hardware required</td><td>VPN concentrator appliance (ASA, FGT, PA)</td><td>Lightweight App Connector (VM) next to the app</td></tr>
+        <tr><td>User experience</td><td>Must manually connect / disconnect</td><td>Transparent — always on, no user action needed</td></tr>
+        <tr><td>Identity integration</td><td>AD / RADIUS only</td><td>Azure AD, Okta, SAML, MFA natively</td></tr>
+        <tr><td>Scales to cloud apps</td><td>Difficult — requires split tunnelling config</td><td>Yes — works identically for on-prem and cloud apps</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- OB USE CASES -->
+  <div class="section">
+    <div class="section-header">
+      <h2>Orange Business + Zscaler — Common Customer Scenarios</h2>
+      <div class="divider" style="background:#005DAA;"></div>
+      <p>These are the real conversations you'll have with customers. Recognise the situation, know the Zscaler answer.</p>
+    </div>
+
+    <style>
+      .scenario-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+      @media(max-width:700px){ .scenario-grid { grid-template-columns: 1fr; } }
+
+      .scenario-card {
+        border-radius: 16px; overflow: hidden;
+        box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+        transition: transform 0.2s, box-shadow 0.2s;
+      }
+      .scenario-card:hover { transform: translateY(-4px); box-shadow: 0 10px 36px rgba(0,0,0,0.13); }
+
+      .scenario-header {
+        padding: 24px 24px 18px;
+        display: flex; align-items: flex-start; gap: 16px;
+      }
+      .scenario-emoji {
+        font-size: 36px; line-height: 1; flex-shrink: 0; margin-top: 2px;
+      }
+      .scenario-header-text {}
+      .scenario-tag {
+        font-size: 10px; font-weight: 700; letter-spacing: 1.2px;
+        text-transform: uppercase; padding: 3px 9px; border-radius: 20px;
+        display: inline-block; margin-bottom: 6px;
+      }
+      .scenario-title {
+        font-size: 16px; font-weight: 700; line-height: 1.3;
+        color: #fff;
+      }
+
+      .scenario-body {
+        background: #fff; padding: 20px 24px 22px;
+      }
+      .scenario-body p {
+        font-size: 13px; line-height: 1.75; color: #444; margin-bottom: 14px;
+      }
+      .scenario-products { display: flex; flex-wrap: wrap; gap: 7px; }
+      .scenario-product-tag {
+        font-size: 11px; font-weight: 700; padding: 4px 11px;
+        border-radius: 6px; border: 1.5px solid;
+      }
+
+      /* Card 1 — blue */
+      .sc-1 .scenario-header { background: linear-gradient(135deg, #003580 0%, #0055CC 100%); }
+      .sc-1 .scenario-tag    { background: rgba(255,255,255,0.2); color: #fff; }
+      .sc-1 .scenario-product-tag { color: #0055CC; border-color: #99BBEE; background: #EEF4FF; }
+
+      /* Card 2 — green */
+      .sc-2 .scenario-header { background: linear-gradient(135deg, #005C35 0%, #00A86B 100%); }
+      .sc-2 .scenario-tag    { background: rgba(255,255,255,0.2); color: #fff; }
+      .sc-2 .scenario-product-tag { color: #007A4D; border-color: #99DDC0; background: #EEFAF5; }
+
+      /* Card 3 — purple */
+      .sc-3 .scenario-header { background: linear-gradient(135deg, #4B1DA0 0%, #7C3AED 100%); }
+      .sc-3 .scenario-tag    { background: rgba(255,255,255,0.2); color: #fff; }
+      .sc-3 .scenario-product-tag { color: #5B21B6; border-color: #C4AAEE; background: #F3EEFF; }
+
+      /* Card 4 — dark teal */
+      .sc-4 .scenario-header { background: linear-gradient(135deg, #0A3D4A 0%, #0E7490 100%); }
+      .sc-4 .scenario-tag    { background: rgba(255,255,255,0.2); color: #fff; }
+      .sc-4 .scenario-product-tag { color: #0E7490; border-color: #88CCDD; background: #EAFAFF; }
+    </style>
+
+    <div class="scenario-grid">
+
+      <div class="scenario-card sc-1">
+        <div class="scenario-header">
+          <div class="scenario-emoji">🏢</div>
+          <div class="scenario-header-text">
+            <div class="scenario-tag">SD-WAN Transformation</div>
+            <div class="scenario-title">Enterprise replacing MPLS with SD-WAN + Zscaler</div>
+          </div>
+        </div>
+        <div class="scenario-body">
+          <p>Customer has 50 branches backhauling all internet traffic via MPLS to a central DC firewall. Orange Business replaces MPLS with broadband + SD-WAN (Cisco Viptela or Fortinet), and adds Zscaler ZIA at each branch. Traffic goes directly to the internet via Zscaler — MPLS costs drop by <strong>60–80%</strong>.</p>
+          <div class="scenario-products">
+            <span class="scenario-product-tag">ZIA</span>
+            <span class="scenario-product-tag">SD-WAN</span>
+            <span class="scenario-product-tag">GRE Tunnel to PoP</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="scenario-card sc-2">
+        <div class="scenario-header">
+          <div class="scenario-emoji">🏠</div>
+          <div class="scenario-header-text">
+            <div class="scenario-tag">Remote Workforce</div>
+            <div class="scenario-title">Securing permanent home workers at scale</div>
+          </div>
+        </div>
+        <div class="scenario-body">
+          <p>After COVID, 30% of employees work from home permanently. Old VPN is slow and overloaded. Orange Business deploys Zscaler ZCC on all laptops — home users get the same security policies as office users, with better performance since they hit a local Zscaler PoP instead of a VPN concentrator.</p>
+          <div class="scenario-products">
+            <span class="scenario-product-tag">ZIA</span>
+            <span class="scenario-product-tag">ZCC Agent</span>
+            <span class="scenario-product-tag">ZPA (replaces VPN)</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="scenario-card sc-3">
+        <div class="scenario-header">
+          <div class="scenario-emoji">☁️</div>
+          <div class="scenario-header-text">
+            <div class="scenario-tag">Cloud Migration</div>
+            <div class="scenario-title">Moving internal apps to Azure / AWS securely</div>
+          </div>
+        </div>
+        <div class="scenario-body">
+          <p>Customer migrating on-prem SAP and internal tools to Azure. Old VPN can't easily secure access to cloud-hosted apps. ZPA App Connectors are deployed in the Azure VNet — users connect via ZPA without any public internet exposure of the app, from anywhere in the world.</p>
+          <div class="scenario-products">
+            <span class="scenario-product-tag">ZPA</span>
+            <span class="scenario-product-tag">App Connector (Azure)</span>
+            <span class="scenario-product-tag">Zero Trust</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="scenario-card sc-4">
+        <div class="scenario-header">
+          <div class="scenario-emoji">🛡️</div>
+          <div class="scenario-header-text">
+            <div class="scenario-tag">Compliance</div>
+            <div class="scenario-title">Meeting GDPR &amp; ISO 27001 requirements</div>
+          </div>
+        </div>
+        <div class="scenario-body">
+          <p>Customer needs to prove all employee internet traffic is logged and inspected for compliance. Zscaler ZIA provides full SSL inspection logs, user-attributed activity reports, and DLP policies that block sensitive data (credit cards, PII) from being uploaded to personal cloud storage.</p>
+          <div class="scenario-products">
+            <span class="scenario-product-tag">ZIA</span>
+            <span class="scenario-product-tag">DLP</span>
+            <span class="scenario-product-tag">SSL Inspection Logs</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- KEY TERMS -->
+  <div class="section">
+    <div class="section-header">
+      <h2>Key Zscaler Terms &amp; Concepts</h2>
+      <div class="divider" style="background:#005DAA;"></div>
+    </div>
+    <div class="glossary-grid">
+      <div class="glossary-item" style="border-left-color:#005DAA;">
+        <div class="glossary-term" style="color:#003080;">PoP (Point of Presence)</div>
+        <div class="glossary-def">A Zscaler data center location where traffic is inspected. Zscaler has 150+ PoPs globally. Users are automatically routed to the closest one for lowest latency.</div>
+      </div>
+      <div class="glossary-item" style="border-left-color:#005DAA;">
+        <div class="glossary-term" style="color:#003080;">ZIA (Zscaler Internet Access)</div>
+        <div class="glossary-def">The cloud-based secure web gateway — inspects all internet traffic. Replaces on-premises proxy, URL filter, and web firewall.</div>
+      </div>
+      <div class="glossary-item" style="border-left-color:#005DAA;">
+        <div class="glossary-term" style="color:#003080;">ZPA (Zscaler Private Access)</div>
+        <div class="glossary-def">Zero Trust remote access to internal apps — replaces traditional VPN. Users access only the apps they're authorised for, never the whole network.</div>
+      </div>
+      <div class="glossary-item" style="border-left-color:#005DAA;">
+        <div class="glossary-term" style="color:#003080;">App Connector</div>
+        <div class="glossary-def">A lightweight VM deployed next to an internal application. It creates an outbound tunnel to Zscaler — no inbound firewall hole needed. Users connect through ZPA → App Connector → App.</div>
+      </div>
+      <div class="glossary-item" style="border-left-color:#005DAA;">
+        <div class="glossary-term" style="color:#003080;">ZCC (Zscaler Client Connector)</div>
+        <div class="glossary-def">The client app installed on user devices. Silently redirects traffic to Zscaler. Replaces the old VPN client. Deployed via Intune, JAMF, or GPO.</div>
+      </div>
+      <div class="glossary-item" style="border-left-color:#005DAA;">
+        <div class="glossary-term" style="color:#003080;">Tenant</div>
+        <div class="glossary-def">A Zscaler tenant is one customer's Zscaler environment. Policies, users, and logs are isolated per tenant. Orange Business manages customer tenants on their behalf.</div>
+      </div>
+      <div class="glossary-item" style="border-left-color:#005DAA;">
+        <div class="glossary-term" style="color:#003080;">GRE / IPSec Tunnel</div>
+        <div class="glossary-def">How branch office traffic reaches Zscaler when ZCC is not used. The SD-WAN router or firewall creates a GRE or IPSec tunnel to the nearest Zscaler PoP — all internet traffic is forwarded into the tunnel.</div>
+      </div>
+      <div class="glossary-item" style="border-left-color:#005DAA;">
+        <div class="glossary-term" style="color:#003080;">Zero Trust Exchange</div>
+        <div class="glossary-def">Zscaler's name for their unified platform — ZIA + ZPA + ZDX + ZCC together. "Connecting users to apps, not to networks."</div>
+      </div>
+      <div class="glossary-item" style="border-left-color:#005DAA;">
+        <div class="glossary-term" style="color:#003080;">DLP (Data Loss Prevention)</div>
+        <div class="glossary-def">Zscaler can scan outbound traffic for sensitive data (credit card numbers, PII, source code) and block uploads to unauthorised destinations like personal Dropbox or Gmail.</div>
+      </div>
+      <div class="glossary-item" style="border-left-color:#005DAA;">
+        <div class="glossary-term" style="color:#003080;">CASB (Cloud Access Security Broker)</div>
+        <div class="glossary-def">Controls and monitors how employees use SaaS apps (Office 365, Slack, Box, Google Workspace). Zscaler CASB can block uploads of sensitive files to personal cloud storage while allowing corporate cloud storage.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OFFICIAL LINK -->
+  <div class="section">
+    <div class="alert" style="background:#E8F0FA;border-left:3px solid #005DAA;">
+      <span class="alert-icon">🔗</span>
+      <p><strong>Learn more:</strong> The official Zscaler learning platform is <a href="https://www.zscaler.com/resources/learning-hub" target="_blank" rel="noopener" style="color:#005DAA;font-weight:600;">zscaler.com/resources/learning-hub ↗</a>. Zscaler also offers free self-paced training at <a href="https://training.zscaler.com" target="_blank" rel="noopener" style="color:#005DAA;font-weight:600;">training.zscaler.com ↗</a> — the Zscaler Certified Cloud Professional (ZCCP) certification is a good starting point for new hires.</p>
+    </div>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <p>Orange <span>Business</span> — Network Knowledge Base &nbsp;·&nbsp; <a href="index.html" style="color:rgba(255,255,255,0.4);">Home</a></p>
+</footer>
+<script src="shared.js"></script>
+</body>
+</html>

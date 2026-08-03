@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IP Routing — OB Network KB</title>
+<link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<nav class="topnav">
+  <a href="index.html" class="topnav-brand">
+    <div class="topnav-logo">OB</div>
+    <div class="topnav-brand-text">Orange <span>Business</span></div>
+  </a>
+  <div class="topnav-links">
+    <a href="index.html"          class="nav-link" id="nav-index">Home</a>
+    <a href="lan-wan-basics.html" class="nav-link" id="nav-lan">LAN / WAN</a>
+    <a href="ip-routing.html"     class="nav-link active" id="nav-ip">IP Routing</a>
+    <a href="switching.html"      class="nav-link" id="nav-sw">Switching</a>
+    <a href="wireless.html"       class="nav-link" id="nav-wifi">Wireless</a>
+    <a href="firewalls.html"      class="nav-link" id="nav-fw">Firewalls</a>
+    <a href="zscaler.html"        class="nav-link" id="nav-zs">Zscaler</a>
+    <a href="devices.html"        class="nav-link" id="nav-devices">Devices</a>
+    <a href="glossary.html"       class="nav-link" id="nav-gl">Glossary</a>
+  </div>
+  <div class="topnav-badge">New Hire Guide</div>
+</nav>
+
+<div class="breadcrumb">
+  <a href="index.html">Home</a><span>/</span> IP Routing
+</div>
+
+<div class="page-hero dark">
+  <div class="hero-content">
+    <div class="hero-tag">🗺️ Layer 3</div>
+    <h1>IP <span>Routing</span></h1>
+    <p class="hero-sub">How routers make forwarding decisions using IP addresses, routing tables, and dynamic protocols like OSPF, BGP, and EIGRP.</p>
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- IP ADDRESSING -->
+  <div class="section">
+    <div class="section-header">
+      <h2>IP Addressing &amp; Subnetting</h2>
+      <div class="divider"></div>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-icon" style="background:var(--orange-pale);">🏷️</div>
+        <h3>IPv4 Address Structure</h3>
+        <p>An IPv4 address is 32 bits written as four octets: <strong>192.168.10.5</strong>. It has two parts: the <strong>network portion</strong> (identifies the subnet) and the <strong>host portion</strong> (identifies the device). The subnet mask defines the split.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:var(--cisco-pale);">📐</div>
+        <h3>Subnet Mask / CIDR</h3>
+        <p>A /24 mask (255.255.255.0) means 24 bits are network, 8 bits are hosts — giving 254 usable addresses. A /30 gives only 2 usable hosts, used for point-to-point links. CIDR notation (e.g. <strong>10.0.1.0/24</strong>) is the modern standard.</p>
+      </div>
+    </div>
+
+    <!-- Subnet Cheat Sheet -->
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>CIDR</th>
+          <th>Subnet Mask</th>
+          <th>Usable Hosts</th>
+          <th>Common Use</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>/30</td><td>255.255.255.252</td><td>2</td><td>Point-to-point WAN links</td></tr>
+        <tr><td>/29</td><td>255.255.255.248</td><td>6</td><td>Small server segments</td></tr>
+        <tr><td>/28</td><td>255.255.255.240</td><td>14</td><td>Small VLANs</td></tr>
+        <tr><td>/27</td><td>255.255.255.224</td><td>30</td><td>Medium VLANs</td></tr>
+        <tr><td>/26</td><td>255.255.255.192</td><td>62</td><td>Branch office LAN</td></tr>
+        <tr><td>/24</td><td>255.255.255.0</td><td>254</td><td>Standard VLAN subnet</td></tr>
+        <tr><td>/23</td><td>255.255.254.0</td><td>510</td><td>Large floor/building</td></tr>
+        <tr><td>/22</td><td>255.255.252.0</td><td>1022</td><td>Campus-wide pool</td></tr>
+        <tr><td>/16</td><td>255.255.0.0</td><td>65,534</td><td>Large enterprise range</td></tr>
+      </tbody>
+    </table>
+
+    <div class="alert orange">
+      <span class="alert-icon">💡</span>
+      <p><strong>Private IP ranges (RFC 1918):</strong> 10.0.0.0/8 · 172.16.0.0/12 · 192.168.0.0/16. These are never routed on the public internet — NAT converts them at the firewall.</p>
+    </div>
+  </div>
+
+  <!-- ROUTING TABLE -->
+  <div class="section">
+    <div class="section-header">
+      <h2>Routing Tables</h2>
+      <div class="divider"></div>
+      <p>Every router maintains a routing table — a list of known networks and where to send traffic for each one.</p>
+    </div>
+    <div class="code-block">
+      <pre><span class="cmt"># Cisco IOS — show ip route</span>
+Router# <span class="cmd">show ip route</span>
+
+Codes: C - connected, S - static, O - OSPF, B - BGP, D - EIGRP
+
+<span class="val">C   192.168.1.0/24</span>  is directly connected, GigabitEthernet0/0
+<span class="val">C   10.0.0.0/30</span>     is directly connected, GigabitEthernet0/1
+<span class="kw">O   10.10.0.0/24</span>   [110/2] via 10.0.0.2, GigabitEthernet0/1   <span class="cmt"># learned via OSPF</span>
+<span class="kw">B   172.16.0.0/12</span>  [20/0]  via 203.0.113.1, GigabitEthernet0/2  <span class="cmt"># learned via BGP</span>
+<span class="cmd">S   0.0.0.0/0</span>      [1/0]   via 203.0.113.1                       <span class="cmt"># default route (internet)</span></pre>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <h3>Administrative Distance (AD)</h3>
+        <p>When a router knows multiple paths to the same network, AD determines which one to prefer. Lower AD wins. Static = 1, OSPF = 110, BGP = 20 (eBGP) or 200 (iBGP), EIGRP = 90.</p>
+      </div>
+      <div class="card">
+        <h3>Default Route (Gateway of Last Resort)</h3>
+        <p><code>0.0.0.0/0</code> is the default route — used for all traffic that doesn't match a more specific route. On a branch router, the default route points toward the internet or MPLS gateway.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROUTING PROTOCOLS -->
+  <div class="section">
+    <div class="section-header">
+      <h2>Routing Protocols</h2>
+      <div class="divider"></div>
+      <p>Dynamic routing protocols automatically exchange route information between routers so they always know the best path.</p>
+    </div>
+
+    <!-- OSPF -->
+    <div class="card mb-16">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+        <span class="badge badge-orange" style="font-size:12px;padding:4px 10px;">OSPF</span>
+        <h3 style="margin:0;">Open Shortest Path First — Interior Gateway Protocol</h3>
+      </div>
+      <p style="margin-bottom:12px;">OSPF is the most common interior routing protocol in enterprise networks. It uses a "link-state" algorithm (Dijkstra / SPF) to calculate the shortest path. Routers share their link-state advertisements (LSAs) and each builds a full map of the network.</p>
+      <div class="grid-2">
+        <div>
+          <p style="font-size:13px;font-weight:600;margin-bottom:6px;">Key concepts:</p>
+          <ul class="spec-list">
+            <li><div class="spec-dot"></div><span>Areas — Area 0 (backbone) must connect all other areas</span></li>
+            <li><div class="spec-dot"></div><span>DR/BDR — Designated Router election on multi-access segments</span></li>
+            <li><div class="spec-dot"></div><span>Cost metric — based on bandwidth (reference bandwidth / link bandwidth)</span></li>
+            <li><div class="spec-dot"></div><span>Hello packets — detect neighbors; dead interval = 4× hello</span></li>
+            <li><div class="spec-dot"></div><span>Fast convergence — typically &lt;1 second with BFD</span></li>
+          </ul>
+        </div>
+        <div class="code-block" style="margin-bottom:0;">
+          <pre><span class="cmt"># Enable OSPF on Cisco IOS</span>
+Router(config)# <span class="cmd">router ospf 1</span>
+Router(config-router)# <span class="kw">router-id</span> <span class="val">1.1.1.1</span>
+Router(config-router)# <span class="kw">network</span> <span class="val">10.0.0.0 0.0.0.255</span> area 0
+Router(config-router)# <span class="kw">network</span> <span class="val">192.168.1.0 0.0.0.255</span> area 1</pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- BGP -->
+    <div class="card mb-16">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+        <span class="badge badge-cisco" style="font-size:12px;padding:4px 10px;">BGP</span>
+        <h3 style="margin:0;">Border Gateway Protocol — Exterior Gateway Protocol</h3>
+      </div>
+      <p style="margin-bottom:12px;">BGP is the routing protocol of the internet. It runs between autonomous systems (ASes) — networks controlled by different organizations. Orange Business uses BGP to peer with customer and carrier networks. eBGP = between different ASes; iBGP = within the same AS.</p>
+      <div class="grid-2">
+        <div>
+          <ul class="spec-list">
+            <li><div class="spec-dot"></div><span>Path vector protocol — makes decisions based on AS path, not just metric</span></li>
+            <li><div class="spec-dot"></div><span>TCP port 179 — BGP sessions run over TCP</span></li>
+            <li><div class="spec-dot"></div><span>Best path selection: prefer shortest AS path, then MED, then local preference</span></li>
+            <li><div class="spec-dot"></div><span>Communities — tags used to apply routing policies across peers</span></li>
+            <li><div class="spec-dot"></div><span>Used by ISPs, MPLS carriers, and large enterprises</span></li>
+          </ul>
+        </div>
+        <div class="code-block" style="margin-bottom:0;">
+          <pre><span class="cmt"># Basic eBGP peer config</span>
+Router(config)# <span class="cmd">router bgp 65001</span>
+Router(config-router)# <span class="kw">bgp router-id</span> <span class="val">1.1.1.1</span>
+Router(config-router)# <span class="kw">neighbor</span> <span class="val">203.0.113.1</span> remote-as <span class="val">65002</span>
+Router(config-router)# <span class="kw">network</span> <span class="val">10.0.0.0</span> mask <span class="val">255.255.255.0</span></pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- EIGRP -->
+    <div class="card mb-16">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+        <span class="badge badge-cisco" style="font-size:12px;padding:4px 10px;">EIGRP</span>
+        <h3 style="margin:0;">Enhanced Interior Gateway Routing Protocol — Cisco Proprietary</h3>
+      </div>
+      <p style="margin-bottom:12px;">EIGRP is Cisco's proprietary routing protocol, though a limited open standard version exists. It's faster to converge than OSPF in many cases and uses a composite metric based on bandwidth and delay. Common in Cisco-only enterprise environments.</p>
+      <ul class="spec-list">
+        <li><div class="spec-dot"></div><span>Uses DUAL (Diffusing Update Algorithm) for loop-free fast convergence</span></li>
+        <li><div class="spec-dot"></div><span>Feasible successor — pre-computed backup route activated instantly on failure</span></li>
+        <li><div class="spec-dot"></div><span>Metric = composite of bandwidth, delay, reliability, load (usually just BW + delay)</span></li>
+        <li><div class="spec-dot"></div><span>Supports unequal-cost load balancing (variance command)</span></li>
+        <li><div class="spec-dot"></div><span>Named mode (modern) or classic mode configuration</span></li>
+      </ul>
+    </div>
+
+    <!-- Static Routes -->
+    <div class="card mb-16">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+        <span class="badge badge-green" style="font-size:12px;padding:4px 10px;">STATIC</span>
+        <h3 style="margin:0;">Static Routes</h3>
+      </div>
+      <p style="margin-bottom:12px;">Manually configured routes. Used for simple, small networks or for specific paths that must never change. Always preferred over dynamic routes (lower AD = 1) unless a floating static route is configured.</p>
+      <div class="code-block" style="margin-bottom:0;">
+        <pre><span class="cmt"># Static route: to reach 10.20.0.0/24, go via 10.0.0.2</span>
+Router(config)# <span class="cmd">ip route</span> <span class="val">10.20.0.0 255.255.255.0 10.0.0.2</span>
+
+<span class="cmt"># Floating static (backup route, AD=200, only used if OSPF fails)</span>
+Router(config)# <span class="cmd">ip route</span> <span class="val">10.20.0.0 255.255.255.0 10.0.0.2 200</span>
+
+<span class="cmt"># Default route to internet</span>
+Router(config)# <span class="cmd">ip route</span> <span class="val">0.0.0.0 0.0.0.0 203.0.113.1</span></pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- NAT -->
+  <div class="section">
+    <div class="section-header">
+      <h2>NAT — Network Address Translation</h2>
+      <div class="divider"></div>
+      <p>NAT allows private IP addresses inside your LAN to communicate with the public internet using one or a few public IPs.</p>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <h3>PAT / Overload (most common)</h3>
+        <p>Many internal hosts share a single public IP — differentiated by source port. Also called "NAT overload" or "masquerade" on Linux. Used in almost every branch office and home network.</p>
+        <div class="code-block" style="margin-top:12px;margin-bottom:0;">
+          <pre><span class="kw">ip nat inside source list</span> <span class="val">1</span> interface GigE0/0 overload
+<span class="kw">access-list</span> <span class="val">1 permit 192.168.0.0 0.0.0.255</span>
+interface GigE0/0 → <span class="val">ip nat outside</span>
+interface GigE0/1 → <span class="val">ip nat inside</span></pre>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Static NAT</h3>
+        <p>A one-to-one mapping between a private IP and a public IP. Used to expose internal servers (web, mail) to the internet with a fixed public address. Also called "Destination NAT" (DNAT) on some platforms.</p>
+        <div class="code-block" style="margin-top:12px;margin-bottom:0;">
+          <pre><span class="cmt"># Map 10.0.0.10 (server) to public 203.0.113.10</span>
+<span class="kw">ip nat inside source static</span>
+  <span class="val">10.0.0.10 203.0.113.10</span></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- IPV6 BASICS -->
+  <div class="section">
+    <div class="section-header">
+      <h2>IPv6 Basics</h2>
+      <div class="divider"></div>
+    </div>
+    <div class="alert purple">
+      <span class="alert-icon">ℹ️</span>
+      <p><strong>IPv6</strong> uses 128-bit addresses written as eight groups of hex: <code>2001:0db8:85a3::8a2e:0370:7334</code>. No more NAT needed — every device gets a globally unique address. Orange Business customer networks increasingly run dual-stack (IPv4 + IPv6). Key prefix to know: <strong>/64</strong> = standard subnet, <strong>/128</strong> = single host.</p>
+    </div>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <p>Orange <span>Business</span> — Network Knowledge Base &nbsp;·&nbsp; <a href="index.html" style="color:rgba(255,255,255,0.4);">Home</a></p>
+</footer>
+<script src="shared.js"></script>
+</body>
+</html>

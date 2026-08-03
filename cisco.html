@@ -1,0 +1,1552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cisco Devices — OB Network KB</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+/* ── IN-PAGE NAV ── */
+.page-subnav {
+  position: sticky; top: 61px; z-index: 100;
+  background: #fff; border-bottom: 1px solid #EBEBEB;
+  padding: 0 32px;
+  display: flex; gap: 0; overflow-x: auto; scrollbar-width: none;
+}
+.page-subnav::-webkit-scrollbar { display: none; }
+.page-subnav a {
+  padding: 12px 18px; font-size: 13px; font-weight: 600;
+  color: var(--gray-mid); text-decoration: none; white-space: nowrap;
+  border-bottom: 2px solid transparent; transition: all 0.15s;
+}
+.page-subnav a:hover { color: var(--cisco-blue); border-bottom-color: var(--cisco-blue); }
+.page-subnav a.active { color: var(--cisco-blue); border-bottom-color: var(--cisco-blue); }
+
+/* ── DEVICE DETAIL CARD ── */
+.device-detail {
+  background: #fff; border: 1px solid #E8E8E8;
+  border-radius: 16px; overflow: hidden;
+  margin-bottom: 32px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.05);
+}
+.device-detail-header {
+  background: linear-gradient(135deg, #0A1F2D 0%, #0D3347 100%);
+  padding: 22px 28px; display: flex; align-items: center; gap: 18px;
+}
+.device-detail-badge {
+  background: var(--cisco-blue); color: #fff;
+  font-size: 11px; font-weight: 700; padding: 4px 10px;
+  border-radius: 6px; letter-spacing: 0.5px; flex-shrink: 0;
+}
+.device-detail-title { font-size: 22px; font-weight: 700; color: #fff; }
+.device-detail-subtitle { font-size: 13px; color: rgba(255,255,255,0.6); margin-top: 2px; }
+
+.device-detail-body { padding: 24px 28px; }
+.device-detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+@media(max-width:700px){ .device-detail-grid { grid-template-columns: 1fr; } }
+
+.device-desc-block p { font-size: 14px; color: #444; line-height: 1.75; margin-bottom: 16px; }
+.spec-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.spec-table tr { border-bottom: 1px solid #F0F0F0; }
+.spec-table tr:last-child { border: none; }
+.spec-table td { padding: 8px 4px; vertical-align: top; }
+.spec-table td:first-child { color: var(--gray-mid); width: 42%; font-size: 12px; padding-right: 10px; }
+.spec-table td:last-child { font-weight: 600; color: var(--gray-dark); }
+
+/* ── PORT DIAGRAM ── */
+.port-diagram-wrap {
+  background: #111; border-radius: 12px; padding: 18px 20px;
+}
+.port-diagram-title {
+  font-family: var(--mono); font-size: 10px; color: rgba(255,255,255,0.35);
+  text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px;
+}
+.port-face {
+  background: #1E1E1E; border-radius: 8px; padding: 14px 16px;
+  border: 1px solid rgba(255,255,255,0.06); margin-bottom: 10px;
+  position: relative;
+}
+.port-face-label {
+  font-family: var(--mono); font-size: 9px; color: rgba(255,255,255,0.25);
+  margin-bottom: 10px; letter-spacing: 0.5px;
+}
+.port-row-g { display: flex; flex-wrap: wrap; gap: 5px; align-items: center; margin-bottom: 6px; }
+.port-row-g:last-child { margin-bottom: 0; }
+
+/* Port block styles */
+.p { display: inline-flex; flex-direction: column; align-items: center; gap: 3px; cursor: default; }
+.p-body {
+  border-radius: 3px; border: 1.5px solid;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--mono); font-size: 7px; font-weight: 600;
+  transition: transform 0.12s; position: relative;
+}
+.p-body:hover { transform: scale(1.15); }
+.p-label { font-family: var(--mono); font-size: 7px; color: rgba(255,255,255,0.3); }
+
+/* port sizes */
+.p-rj45 .p-body { width: 26px; height: 20px; }
+.p-sfp  .p-body { width: 34px; height: 16px; }
+.p-qsfp .p-body { width: 42px; height: 18px; }
+.p-con  .p-body { width: 26px; height: 18px; }
+.p-usb  .p-body { width: 20px; height: 16px; }
+.p-pwr  .p-body { width: 22px; height: 22px; border-radius: 50% !important; }
+
+/* port colours */
+.c-eth  { border-color: #4A9EFF !important; color: #4A9EFF !important; background: rgba(74,158,255,0.08) !important; }
+.c-poe  { border-color: #00E5CC !important; color: #00E5CC !important; background: rgba(0,229,204,0.08) !important; }
+.c-sfp  { border-color: #FF8C42 !important; color: #FF8C42 !important; background: rgba(255,140,66,0.08) !important; }
+.c-sfp28{ border-color: #FFD700 !important; color: #FFD700 !important; background: rgba(255,215,0,0.08) !important; }
+.c-qsfp { border-color: #DA70D6 !important; color: #DA70D6 !important; background: rgba(218,112,214,0.08) !important; }
+.c-mgmt { border-color: #00CC6A !important; color: #00CC6A !important; background: rgba(0,204,106,0.08) !important; }
+.c-con  { border-color: #B388FF !important; color: #B388FF !important; background: rgba(179,136,255,0.08) !important; }
+.c-usb  { border-color: #999    !important; color: #999    !important; background: rgba(153,153,153,0.08) !important; }
+.c-ha   { border-color: #FF4D6A !important; color: #FF4D6A !important; background: rgba(255,77,106,0.08) !important; }
+.c-psu  { border-color: #78C800 !important; color: #78C800 !important; background: rgba(120,200,0,0.1) !important; }
+.c-stk  { border-color: #4A9EFF !important; color: #4A9EFF !important; background: rgba(74,158,255,0.15) !important; border-style: dashed !important; }
+.c-wan  { border-color: #F5A623 !important; color: #F5A623 !important; background: rgba(245,166,35,0.08) !important; }
+
+.port-legend-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
+.port-legend-item { display: flex; align-items: center; gap: 5px; font-size: 10px; color: rgba(255,255,255,0.4); font-family: var(--mono); }
+.port-legend-dot  { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
+
+.port-divider { width: 1px; height: 24px; background: rgba(255,255,255,0.08); margin: 0 4px; flex-shrink: 0; }
+.port-group-label { font-family: var(--mono); font-size: 8px; color: rgba(255,255,255,0.2); margin-right: 4px; align-self: center; }
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <a href="index.html" class="topnav-brand">
+    <div class="topnav-logo">OB</div>
+    <div class="topnav-brand-text">Orange <span>Business</span></div>
+  </a>
+  <div class="topnav-links">
+    <a href="index.html"          class="nav-link" id="nav-index">Home</a>
+    <a href="lan-wan-basics.html" class="nav-link" id="nav-lan">LAN / WAN</a>
+    <a href="ip-routing.html"     class="nav-link" id="nav-ip">IP Routing</a>
+    <a href="switching.html"      class="nav-link" id="nav-sw">Switching</a>
+    <a href="wireless.html"       class="nav-link" id="nav-wifi">Wireless</a>
+    <a href="firewalls.html"      class="nav-link" id="nav-fw">Firewalls</a>
+    <a href="zscaler.html"        class="nav-link" id="nav-zs">Zscaler</a>
+    <a href="devices.html"        class="nav-link active" id="nav-devices">Devices</a>
+    <a href="glossary.html"       class="nav-link" id="nav-gl">Glossary</a>
+  </div>
+  <div class="topnav-badge">New Hire Guide</div>
+</nav>
+
+<!-- IN-PAGE NAV -->
+<div class="page-subnav">
+  <a href="#switches">Switches</a>
+  <a href="#routers">Routers</a>
+  <a href="#firewalls">Firewalls</a>
+  <a href="#aps">Access Points</a>
+  <a href="#wlcs">WLCs</a>
+  <a href="#management">Catalyst Center &amp; Meraki</a>
+</div>
+
+<div class="breadcrumb"><a href="index.html">Home</a><span>/</span> Cisco</div>
+
+<div class="page-hero cisco-hero">
+  <div class="hero-content">
+    <div class="hero-tag" style="background:rgba(27,160,215,0.2);border-color:rgba(27,160,215,0.4);color:#7DD3F0;">🔵 Vendor Guide</div>
+    <h1><span class="cisco">Cisco</span> Devices</h1>
+    <p class="hero-sub">Switches, routers, firewalls, APs, WLCs, and management platforms. Detailed port diagrams and full specs for every device.</p>
+  </div>
+</div>
+
+<div class="content-wide">
+
+<div class="alert blue" style="margin-bottom:40px;">
+  <span class="alert-icon">ℹ️</span>
+  <p><strong>Cisco IOS-XE CLI essentials:</strong> <code>show ip route</code> · <code>show interfaces status</code> · <code>show mac address-table</code> · <code>configure terminal</code> · <code>show version</code>. Certification path: CCNA → CCNP → CCIE. Platform families: <strong>Catalyst</strong> (campus), <strong>Nexus</strong> (data center), <strong>ISR/ASR</strong> (WAN), <strong>ASA/FTD</strong> (security).</p>
+</div>
+
+<!-- ══════════════════════════════════
+     SWITCHES
+══════════════════════════════════ -->
+<div id="switches" class="section">
+  <div class="section-header">
+    <h2>Switches</h2>
+    <div class="divider cisco"></div>
+  </div>
+
+  <!-- Catalyst 9200L-48P -->
+  <div class="device-detail">
+    <div class="device-detail-header">
+      <span class="device-detail-badge">ACCESS SWITCH</span>
+      <div>
+        <div class="device-detail-title">Catalyst 9200L-48P</div>
+        <div class="device-detail-subtitle">Entry-level campus access switch with PoE — ideal for small-medium deployments</div>
+      </div>
+    </div>
+    <div class="device-detail-body">
+      <div class="device-detail-grid">
+        <div class="device-desc-block">
+          <p>The Catalyst 9200L is the entry point to the Catalyst 9000 family. It provides 48 PoE+ ports for powering APs, phones and cameras, plus 4 fixed uplink SFP+ ports. It is fixed configuration (no module slots) and stackable up to 8 units via StackWise-160. Managed via IOS-XE, Catalyst Center, or CLI.</p>
+          <table class="spec-table">
+            <tr><td>Access ports</td><td>48× 1G PoE+ (802.3at)</td></tr>
+            <tr><td>Uplink ports</td><td>4× 1G/10G SFP+ (fixed)</td></tr>
+            <tr><td>PoE budget</td><td>370W (upgradeable to 740W dual PSU)</td></tr>
+            <tr><td>Stacking</td><td>StackWise-160 — up to 8 units, 160 Gbps ring</td></tr>
+            <tr><td>Forwarding rate</td><td>74.4 Mpps</td></tr>
+            <tr><td>Switching capacity</td><td>108 Gbps</td></tr>
+            <tr><td>OS</td><td>IOS-XE 17.x</td></tr>
+            <tr><td>Management</td><td>CLI, Catalyst Center, WebUI, SNMP</td></tr>
+          </table>
+        </div>
+        <div class="port-diagram-wrap">
+          <div class="port-diagram-title">Front Panel — 1U Rack</div>
+          <div class="port-face">
+            <div class="port-face-label">48× PoE+ Access Ports</div>
+            <div class="port-row-g">
+              <span class="port-group-label">1-12</span>
+              <div class="p p-rj45"><div class="p-body c-poe">1</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">2</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">3</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">4</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">5</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">6</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">7</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">8</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">9</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">10</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">11</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">12</div></div>
+            </div>
+            <div class="port-row-g">
+              <span class="port-group-label">13-24</span>
+              <div class="p p-rj45"><div class="p-body c-poe">13</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">14</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">15</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">16</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">17</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">18</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">19</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">20</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">21</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">22</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">23</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">24</div></div>
+            </div>
+            <div class="port-row-g">
+              <span class="port-group-label">25-36</span>
+              <div class="p p-rj45"><div class="p-body c-poe">25</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">26</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">27</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">28</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">29</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">30</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">31</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">32</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">33</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">34</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">35</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">36</div></div>
+            </div>
+            <div class="port-row-g">
+              <span class="port-group-label">37-48</span>
+              <div class="p p-rj45"><div class="p-body c-poe">37</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">38</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">39</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">40</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">41</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">42</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">43</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">44</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">45</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">46</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">47</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">48</div></div>
+              <div class="port-divider"></div>
+              <div class="p p-sfp"><div class="p-body c-sfp">U1</div></div>
+              <div class="p p-sfp"><div class="p-body c-sfp">U2</div></div>
+              <div class="p p-sfp"><div class="p-body c-sfp">U3</div></div>
+              <div class="p p-sfp"><div class="p-body c-sfp">U4</div></div>
+              <div class="port-divider"></div>
+              <div class="p p-con"><div class="p-body c-mgmt">Mg</div></div>
+              <div class="p p-con"><div class="p-body c-con">CON</div></div>
+              <div class="p p-usb"><div class="p-body c-usb">USB</div></div>
+            </div>
+          </div>
+          <div class="port-legend-row">
+            <div class="port-legend-item"><div class="port-legend-dot" style="background:#00E5CC;"></div>PoE+ (1G)</div>
+            <div class="port-legend-item"><div class="port-legend-dot" style="background:#FF8C42;"></div>SFP+ Uplink</div>
+            <div class="port-legend-item"><div class="port-legend-dot" style="background:#00CC6A;"></div>OOB Mgmt</div>
+            <div class="port-legend-item"><div class="port-legend-dot" style="background:#B388FF;"></div>Console</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Catalyst 9300-48P -->
+  <div class="device-detail">
+    <div class="device-detail-header">
+      <span class="device-detail-badge">ACCESS SWITCH</span>
+      <div>
+        <div class="device-detail-title">Catalyst 9300-48P</div>
+        <div class="device-detail-subtitle">Flagship modular campus access switch — most deployed Cisco switch worldwide</div>
+      </div>
+    </div>
+    <div class="device-detail-body">
+      <div class="device-detail-grid">
+        <div class="device-desc-block">
+          <p>The 9300 is the workhorse of enterprise campus networks. Unlike the 9200, it has a <strong>Network Module (NM) slot</strong> allowing you to add extra uplink ports (4×10G, 2×25G, or 4×1G) without replacing the switch. StackWise-480 supports up to 8 switches in a ring with 480 Gbps stack bandwidth. Full Layer 3 routing, 802.1X, QoS, and automation support.</p>
+          <table class="spec-table">
+            <tr><td>Access ports</td><td>48× 1G PoE+ (802.3at, 30W each)</td></tr>
+            <tr><td>Uplink module</td><td>NM slot: 4×10G SFP+, 2×25G SFP28, or 4×1G</td></tr>
+            <tr><td>PoE budget</td><td>890W (single PSU) / 1,480W (dual PSU)</td></tr>
+            <tr><td>Stacking</td><td>StackWise-480 — up to 8 switches, 480 Gbps ring</td></tr>
+            <tr><td>Switching capacity</td><td>208 Gbps</td></tr>
+            <tr><td>Forwarding rate</td><td>154.8 Mpps</td></tr>
+            <tr><td>Layer 3</td><td>Full OSPF, BGP, EIGRP, VRRP, multicast</td></tr>
+            <tr><td>OS</td><td>IOS-XE 17.x — same as routers</td></tr>
+          </table>
+        </div>
+        <div class="port-diagram-wrap">
+          <div class="port-diagram-title">Front Panel — 1U Rack</div>
+          <div class="port-face">
+            <div class="port-face-label">48× PoE+ Downlinks</div>
+            <div class="port-row-g">
+              <span class="port-group-label">1-12</span>
+              <div class="p p-rj45"><div class="p-body c-poe">1</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">2</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">3</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">4</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">5</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">6</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">7</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">8</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">9</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">10</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">11</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">12</div></div>
+            </div>
+            <div class="port-row-g">
+              <span class="port-group-label">13-24</span>
+              <div class="p p-rj45"><div class="p-body c-poe">13</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">14</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">15</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">16</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">17</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">18</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">19</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">20</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">21</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">22</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">23</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">24</div></div>
+            </div>
+            <div class="port-row-g">
+              <span class="port-group-label">25-48</span>
+              <div class="p p-rj45"><div class="p-body c-poe">25</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">26</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">27</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">28</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">29</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">30</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">31</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">32</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">33</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">34</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">35</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">36</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">37</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">38</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">39</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">40</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">41</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">42</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">43</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">44</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">45</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">46</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">47</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">48</div></div>
+            </div>
+          </div>
+          <div class="port-face">
+            <div class="port-face-label">Network Module (NM slot) Uplinks + Management</div>
+            <div class="port-row-g">
+              <div class="p p-sfp"><div class="p-body c-sfp">U1</div></div>
+              <div class="p p-sfp"><div class="p-body c-sfp">U2</div></div>
+              <div class="p p-sfp"><div class="p-body c-sfp">U3</div></div>
+              <div class="p p-sfp"><div class="p-body c-sfp">U4</div></div>
+              <div class="port-divider"></div>
+              <div class="p p-rj45"><div class="p-body c-stk">STK1</div></div>
+              <div class="p p-rj45"><div class="p-body c-stk">STK2</div></div>
+              <div class="port-divider"></div>
+              <div class="p p-con"><div class="p-body c-mgmt">Mg</div></div>
+              <div class="p p-con"><div class="p-body c-con">CON</div></div>
+              <div class="p p-usb"><div class="p-body c-usb">USB</div></div>
+              <div class="p p-usb"><div class="p-body c-usb">USB3</div></div>
+            </div>
+          </div>
+          <div class="port-legend-row">
+            <div class="port-legend-item"><div class="port-legend-dot" style="background:#00E5CC;"></div>PoE+ downlinks</div>
+            <div class="port-legend-item"><div class="port-legend-dot" style="background:#FF8C42;"></div>10G SFP+ uplinks</div>
+            <div class="port-legend-item"><div class="port-legend-dot" style="background:#4A9EFF;border-style:dashed;"></div>StackWise</div>
+            <div class="port-legend-item"><div class="port-legend-dot" style="background:#00CC6A;"></div>OOB Mgmt</div>
+            <div class="port-legend-item"><div class="port-legend-dot" style="background:#B388FF;"></div>Console</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Catalyst 9500-32C -->
+  <div class="device-detail">
+    <div class="device-detail-header">
+      <span class="device-detail-badge">CORE / DISTRIBUTION</span>
+      <div>
+        <div class="device-detail-title">Catalyst 9500-32C</div>
+        <div class="device-detail-subtitle">High-density 100G core switch for enterprise distribution and data center edge</div>
+      </div>
+    </div>
+    <div class="device-detail-body">
+      <div class="device-detail-grid">
+        <div class="device-desc-block">
+          <p>The 9500-32C is a pure 100G spine/core switch. It has 32 QSFP28 ports, each running at 100G, giving an aggregate capacity of 6.4 Tbps. Two 9500s can be paired as a <strong>StackWise Virtual</strong> pair — they appear as one logical switch to the rest of the network, providing seamless dual-homed uplinks from access switches with no STP blocking.</p>
+          <table class="spec-table">
+            <tr><td>Ports</td><td>32× 100G QSFP28 (each breakable to 4×25G)</td></tr>
+            <tr><td>Switching capacity</td><td>6.4 Tbps</td></tr>
+            <tr><td>Forwarding rate</td><td>4,761 Mpps</td></tr>
+            <tr><td>HA</td><td>StackWise Virtual (2-node VSS)</td></tr>
+            <tr><td>Features</td><td>MPLS, VXLAN, EVPN, MACsec line-rate</td></tr>
+            <tr><td>Power</td><td>Dual hot-swap PSU (AC or DC)</td></tr>
+            <tr><td>OS</td><td>IOS-XE — same CLI as 9300</td></tr>
+          </table>
+        </div>
+        <div class="port-diagram-wrap">
+          <div class="port-diagram-title">Front Panel — 1U Rack</div>
+          <div class="port-face">
+            <div class="port-face-label">32× 100G QSFP28</div>
+            <div class="port-row-g">
+              <span class="port-group-label">1-8</span>
+              <div class="p p-qsfp"><div class="p-body c-qsfp">C1</div></div>
+              <div class="p p-qsfp"><div class="p-body c-qsfp">C2</div></div>
+              <div class="p p-qsfp"><div class="p-body c-qsfp">C3</div></div>
+              <div class="p p-qsfp"><div class="p-body c-qsfp">C4</div></div>
+              <div class="p p-qsfp"><div class="p-body c-qsfp">C5</div></div>
+              <div class="p p-qsfp"><div class="p-body c-qsfp">C6</div></div>
+              <div class="p p-qsfp"><div class="p-body c-qsfp">C7</div></div>
+              <div class="p p-qsfp"><div class="p-body c-qsfp">C8</div></div>
+            </div>
+            <div class="port-row-g">
+              <span class="port-group-label">9-16</span>
+              <div class="p p-qsfp"><div class="p-body c-qsfp">C9</div></div>
+              <div class="p p-qsfp"><div class="p-body c-qsfp">C10</div></div>
+              <div class="p p-qsfp"><div class="p-body c-qsfp">C11</div></div>
+              <div class="p p-qsfp"><div class="p-body c-qsfp">C12</div></div>
+              <div class="p p-qsfp"><div class="p-body c-qsfp">C13</div></div>
+              <div class="p p-qsfp"><div class="p-body c-qsfp">C14</div></div>
+              <div class="p p-qsfp"><div class="p-body c-qsfp">C15</div></div>
+              <div class="p p-qsfp"><div class="p-body c-qsfp">C16</div></div>
+            </div>
+            <div class="port-row-g">
+              <span class="port-group-label">17-24</span>
+              <div class="p p-qsfp"><div class="p-body c-qsfp">C17</div></div>
+              <div class="p p-qsfp"><div class="p-body c-qsfp">C18</div></div>
+              <div class="p p-qsfp"><div class="p-body c-qsfp">C19</div></div>
+              <div class="p p-qsfp"><div class="p-body c-qsfp">C20</div></div>
+              <div class="p p-qsfp"><div class="p-body c-qsfp">C21</div></div>
+              <div class="p p-qsfp"><div class="p-body c-qsfp">C22</div></div>
+              <div class="p p-qsfp"><div class="p-body c-qsfp">C23</div></div>
+              <div class="p p-qsfp"><div class="p-body c-qsfp">C24</div></div>
+            </div>
+            <div class="port-row-g">
+              <span class="port-group-label">25-32</span>
+              <div class="p p-qsfp"><div class="p-body c-qsfp">C25</div></div>
+              <div class="p p-qsfp"><div class="p-body c-qsfp">C26</div></div>
+              <div class="p p-qsfp"><div class="p-body c-qsfp">C27</div></div>
+              <div class="p p-qsfp"><div class="p-body c-qsfp">C28</div></div>
+              <div class="p p-qsfp"><div class="p-body c-qsfp">C29</div></div>
+              <div class="p p-qsfp"><div class="p-body c-qsfp">C30</div></div>
+              <div class="p p-qsfp"><div class="p-body c-qsfp">C31</div></div>
+              <div class="p p-qsfp"><div class="p-body c-qsfp">C32</div></div>
+              <div class="port-divider"></div>
+              <div class="p p-sfp"><div class="p-body c-stk">SVL1</div></div>
+              <div class="p p-sfp"><div class="p-body c-stk">SVL2</div></div>
+              <div class="port-divider"></div>
+              <div class="p p-con"><div class="p-body c-mgmt">Mg</div></div>
+              <div class="p p-con"><div class="p-body c-con">CON</div></div>
+            </div>
+          </div>
+          <div class="port-legend-row">
+            <div class="port-legend-item"><div class="port-legend-dot" style="background:#DA70D6;"></div>100G QSFP28</div>
+            <div class="port-legend-item"><div class="port-legend-dot" style="background:#4A9EFF;border-style:dashed;"></div>StackWise Virtual links</div>
+            <div class="port-legend-item"><div class="port-legend-dot" style="background:#00CC6A;"></div>OOB Mgmt</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Nexus 93180YC-FX -->
+  <div class="device-detail">
+    <div class="device-detail-header">
+      <span class="device-detail-badge">DATA CENTER SWITCH</span>
+      <div>
+        <div class="device-detail-title">Nexus 93180YC-FX</div>
+        <div class="device-detail-subtitle">Top-of-rack data center switch — VXLAN/EVPN spine-leaf fabric</div>
+      </div>
+    </div>
+    <div class="device-detail-body">
+      <div class="device-detail-grid">
+        <div class="device-desc-block">
+          <p>The Nexus 93180 runs <strong>NX-OS</strong> — a completely different operating system from IOS-XE with different CLI commands. It is designed for data center top-of-rack (TOR) use, connecting servers at 25G with 100G uplinks to the spine. Supports VXLAN encapsulation and EVPN control plane for multi-tenant overlay networking. <strong>Note:</strong> <code>show interface</code> not <code>show interfaces</code>, and config uses feature-based enablement.</p>
+          <table class="spec-table">
+            <tr><td>Server ports</td><td>48× 25G SFP28 (downlinks)</td></tr>
+            <tr><td>Spine uplinks</td><td>6× 100G QSFP28</td></tr>
+            <tr><td>Switching capacity</td><td>3.6 Tbps</td></tr>
+            <tr><td>OS</td><td>NX-OS (NOT IOS-XE — different CLI)</td></tr>
+            <tr><td>Overlay</td><td>VXLAN hardware VTEP, EVPN BGP control plane</td></tr>
+            <tr><td>HA</td><td>vPC (dual-homed to two Nexus for active/active)</td></tr>
+            <tr><td>Management</td><td>Cisco DCNM / Nexus Dashboard</td></tr>
+          </table>
+        </div>
+        <div class="port-diagram-wrap">
+          <div class="port-diagram-title">Front Panel — 1U Rack</div>
+          <div class="port-face">
+            <div class="port-face-label">48× 25G SFP28 Server Downlinks</div>
+            <div class="port-row-g">
+              <span class="port-group-label">1-12</span>
+              <div class="p p-sfp"><div class="p-body c-sfp28">1</div></div>
+              <div class="p p-sfp"><div class="p-body c-sfp28">2</div></div>
+              <div class="p p-sfp"><div class="p-body c-sfp28">3</div></div>
+              <div class="p p-sfp"><div class="p-body c-sfp28">4</div></div>
+              <div class="p p-sfp"><div class="p-body c-sfp28">5</div></div>
+              <div class="p p-sfp"><div class="p-body c-sfp28">6</div></div>
+              <div class="p p-sfp"><div class="p-body c-sfp28">7</div></div>
+              <div class="p p-sfp"><div class="p-body c-sfp28">8</div></div>
+              <div class="p p-sfp"><div class="p-body c-sfp28">9</div></div>
+              <div class="p p-sfp"><div class="p-body c-sfp28">10</div></div>
+              <div class="p p-sfp"><div class="p-body c-sfp28">11</div></div>
+              <div class="p p-sfp"><div class="p-body c-sfp28">12</div></div>
+            </div>
+            <div class="port-row-g">
+              <span class="port-group-label">13-36</span>
+              <div class="p p-sfp"><div class="p-body c-sfp28">13</div></div>
+              <div class="p p-sfp"><div class="p-body c-sfp28">14</div></div>
+              <div class="p p-sfp"><div class="p-body c-sfp28">15</div></div>
+              <div class="p p-sfp"><div class="p-body c-sfp28">16</div></div>
+              <div class="p p-sfp"><div class="p-body c-sfp28">17</div></div>
+              <div class="p p-sfp"><div class="p-body c-sfp28">18</div></div>
+              <div class="p p-sfp"><div class="p-body c-sfp28">19</div></div>
+              <div class="p p-sfp"><div class="p-body c-sfp28">20</div></div>
+              <div class="p p-sfp"><div class="p-body c-sfp28">21</div></div>
+              <div class="p p-sfp"><div class="p-body c-sfp28">22</div></div>
+              <div class="p p-sfp"><div class="p-body c-sfp28">23</div></div>
+              <div class="p p-sfp"><div class="p-body c-sfp28">24</div></div>
+            </div>
+            <div class="port-row-g">
+              <span class="port-group-label">37-48</span>
+              <div class="p p-sfp"><div class="p-body c-sfp28">37</div></div>
+              <div class="p p-sfp"><div class="p-body c-sfp28">38</div></div>
+              <div class="p p-sfp"><div class="p-body c-sfp28">39</div></div>
+              <div class="p p-sfp"><div class="p-body c-sfp28">40</div></div>
+              <div class="p p-sfp"><div class="p-body c-sfp28">41</div></div>
+              <div class="p p-sfp"><div class="p-body c-sfp28">42</div></div>
+              <div class="p p-sfp"><div class="p-body c-sfp28">43</div></div>
+              <div class="p p-sfp"><div class="p-body c-sfp28">44</div></div>
+              <div class="p p-sfp"><div class="p-body c-sfp28">45</div></div>
+              <div class="p p-sfp"><div class="p-body c-sfp28">46</div></div>
+              <div class="p p-sfp"><div class="p-body c-sfp28">47</div></div>
+              <div class="p p-sfp"><div class="p-body c-sfp28">48</div></div>
+              <div class="port-divider"></div>
+              <div class="p p-qsfp"><div class="p-body c-qsfp">U1</div></div>
+              <div class="p p-qsfp"><div class="p-body c-qsfp">U2</div></div>
+              <div class="p p-qsfp"><div class="p-body c-qsfp">U3</div></div>
+              <div class="p p-qsfp"><div class="p-body c-qsfp">U4</div></div>
+              <div class="p p-qsfp"><div class="p-body c-qsfp">U5</div></div>
+              <div class="p p-qsfp"><div class="p-body c-qsfp">U6</div></div>
+              <div class="port-divider"></div>
+              <div class="p p-con"><div class="p-body c-mgmt">Mg</div></div>
+            </div>
+          </div>
+          <div class="port-legend-row">
+            <div class="port-legend-item"><div class="port-legend-dot" style="background:#FFD700;"></div>25G SFP28 (servers)</div>
+            <div class="port-legend-item"><div class="port-legend-dot" style="background:#DA70D6;"></div>100G QSFP28 (spine)</div>
+            <div class="port-legend-item"><div class="port-legend-dot" style="background:#00CC6A;"></div>OOB Mgmt</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /switches -->
+
+<!-- ══════════════════════════════════
+     ROUTERS
+══════════════════════════════════ -->
+<div id="routers" class="section">
+  <div class="section-header">
+    <h2>Routers</h2>
+    <div class="divider cisco"></div>
+  </div>
+
+  <!-- ISR 1100 -->
+  <div class="device-detail">
+    <div class="device-detail-header">
+      <span class="device-detail-badge">BRANCH ROUTER</span>
+      <div>
+        <div class="device-detail-title">ISR 1100 Series</div>
+        <div class="device-detail-subtitle">Small branch / home-office router — SD-WAN capable</div>
+      </div>
+    </div>
+    <div class="device-detail-body">
+      <div class="device-detail-grid">
+        <div class="device-desc-block">
+          <p>The ISR 1100 is the entry-level branch router. It supports dual WAN ports for failover (e.g. MPLS + broadband), built-in WiFi (on some SKUs), and runs IOS-XE with full Cisco SD-WAN (Viptela) support. Ideal for small branches of 10–50 users. It replaces the older 800 series.</p>
+          <table class="spec-table">
+            <tr><td>WAN ports</td><td>2× GE (configurable as WAN or LAN)</td></tr>
+            <tr><td>LAN ports</td><td>4× GE switch ports</td></tr>
+            <tr><td>Optional</td><td>Built-in LTE (1101/1109 SKU)</td></tr>
+            <tr><td>Throughput</td><td>Up to 400 Mbps</td></tr>
+            <tr><td>VPN</td><td>IPSec IKEv2, SSL, DMVPN</td></tr>
+            <tr><td>SD-WAN</td><td>Cisco SD-WAN (Viptela vManage) capable</td></tr>
+          </table>
+        </div>
+        <div class="port-diagram-wrap">
+          <div class="port-diagram-title">Front Panel — Desktop</div>
+          <div class="port-face">
+            <div class="port-face-label">WAN + LAN + Management</div>
+            <div class="port-row-g">
+              <div class="p p-rj45"><div class="p-body c-wan">WAN1</div></div>
+              <div class="p p-rj45"><div class="p-body c-wan">WAN2</div></div>
+              <div class="port-divider"></div>
+              <div class="p p-rj45"><div class="p-body c-eth">LAN1</div></div>
+              <div class="p p-rj45"><div class="p-body c-eth">LAN2</div></div>
+              <div class="p p-rj45"><div class="p-body c-eth">LAN3</div></div>
+              <div class="p p-rj45"><div class="p-body c-eth">LAN4</div></div>
+              <div class="port-divider"></div>
+              <div class="p p-con"><div class="p-body c-mgmt">Mg</div></div>
+              <div class="p p-con"><div class="p-body c-con">CON</div></div>
+              <div class="p p-usb"><div class="p-body c-usb">USB</div></div>
+            </div>
+          </div>
+          <div class="port-legend-row">
+            <div class="port-legend-item"><div class="port-legend-dot" style="background:#F5A623;"></div>WAN interfaces</div>
+            <div class="port-legend-item"><div class="port-legend-dot" style="background:#4A9EFF;"></div>LAN switch ports</div>
+            <div class="port-legend-item"><div class="port-legend-dot" style="background:#B388FF;"></div>Console (RJ45)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ISR 4331 -->
+  <div class="device-detail">
+    <div class="device-detail-header">
+      <span class="device-detail-badge">BRANCH ROUTER</span>
+      <div>
+        <div class="device-detail-title">ISR 4331</div>
+        <div class="device-detail-subtitle">Mid-size branch router with modular NIM slots — most common enterprise branch router</div>
+      </div>
+    </div>
+    <div class="device-detail-body">
+      <div class="device-detail-grid">
+        <div class="device-desc-block">
+          <p>The ISR 4331 is the go-to router for medium branches (50–200 users). Its two <strong>NIM (Network Interface Module) slots</strong> accept pluggable WAN cards — T1, E1, DSL, 4G LTE, T3, or additional Ethernet ports — without replacing the entire router. Ships with 3 built-in GE ports and one SFP. Hardware crypto acceleration handles IPSec VPN at full throughput without impacting CPU.</p>
+          <table class="spec-table">
+            <tr><td>Built-in ports</td><td>3× GE RJ45 + 1× GE SFP</td></tr>
+            <tr><td>NIM slots</td><td>2× NIM slots (WAN expansion modules)</td></tr>
+            <tr><td>NIM options</td><td>4G LTE, T1/E1, DSL, 8-port GE switch, Serial</td></tr>
+            <tr><td>Throughput</td><td>Up to 300 Mbps IP (with SEC bundle)</td></tr>
+            <tr><td>IPSec VPN</td><td>Hardware acceleration — full 300 Mbps encrypted</td></tr>
+            <tr><td>Services</td><td>DMVPN, ZBFW, IPSec, MPLS, QoS, NAT</td></tr>
+            <tr><td>Management</td><td>CLI, Catalyst Center, SD-WAN vManage</td></tr>
+          </table>
+        </div>
+        <div class="port-diagram-wrap">
+          <div class="port-diagram-title">Front Panel — 1U Rack</div>
+          <div class="port-face">
+            <div class="port-face-label">Built-in Interfaces</div>
+            <div class="port-row-g">
+              <div class="p p-rj45"><div class="p-body c-wan">GE0/0</div></div>
+              <div class="p p-rj45"><div class="p-body c-wan">GE0/1</div></div>
+              <div class="p p-rj45"><div class="p-body c-eth">GE0/2</div></div>
+              <div class="p p-sfp"><div class="p-body c-sfp">SFP</div></div>
+              <div class="port-divider"></div>
+              <div class="p p-con"><div class="p-body c-mgmt">Mg0</div></div>
+              <div class="p p-con"><div class="p-body c-con">CON</div></div>
+              <div class="p p-usb"><div class="p-body c-usb">USB</div></div>
+            </div>
+          </div>
+          <div class="port-face">
+            <div class="port-face-label">NIM Slot 0 &amp; NIM Slot 1 (modules snap in here)</div>
+            <div class="port-row-g">
+              <div class="p p-sfp" style="width:60px;"><div class="p-body c-wan" style="width:58px;font-size:8px;">NIM 0</div></div>
+              <div class="p p-sfp" style="width:60px;"><div class="p-body c-wan" style="width:58px;font-size:8px;">NIM 1</div></div>
+            </div>
+          </div>
+          <div class="port-legend-row">
+            <div class="port-legend-item"><div class="port-legend-dot" style="background:#F5A623;"></div>WAN ports</div>
+            <div class="port-legend-item"><div class="port-legend-dot" style="background:#4A9EFF;"></div>LAN / internal</div>
+            <div class="port-legend-item"><div class="port-legend-dot" style="background:#FF8C42;"></div>SFP uplink</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ASR 1001-X -->
+  <div class="device-detail">
+    <div class="device-detail-header">
+      <span class="device-detail-badge">ENTERPRISE / SP ROUTER</span>
+      <div>
+        <div class="device-detail-title">ASR 1001-X</div>
+        <div class="device-detail-subtitle">High-throughput aggregation router — data center edge and large enterprise WAN</div>
+      </div>
+    </div>
+    <div class="device-detail-body">
+      <div class="device-detail-grid">
+        <div class="device-desc-block">
+          <p>The ASR 1001-X is a fixed-port aggregation router for large enterprise or service provider edge deployments. It runs on Cisco's <strong>QuantumFlow Processor (QFP)</strong> — a purpose-built network processor that handles all forwarding, QoS, NAT, and VPN in hardware, delivering 20 Gbps throughput regardless of features enabled. Supports full MPLS, BGP, and redundant power.</p>
+          <table class="spec-table">
+            <tr><td>Built-in ports</td><td>6× GE SFP + 2× 10G SFP+</td></tr>
+            <tr><td>Throughput</td><td>Up to 20 Gbps (upgradeable to 20G with licence)</td></tr>
+            <tr><td>IPSec VPN</td><td>Hardware QFP — full 20 Gbps encrypted</td></tr>
+            <tr><td>Processor</td><td>QuantumFlow Processor (ASIC-based)</td></tr>
+            <tr><td>MPLS</td><td>Full LER/LSR — PE router for MPLS VPN</td></tr>
+            <tr><td>HA</td><td>Redundant PSU + optional dual RP for NSF/NSR</td></tr>
+          </table>
+        </div>
+        <div class="port-diagram-wrap">
+          <div class="port-diagram-title">Front Panel — 1U Rack</div>
+          <div class="port-face">
+            <div class="port-face-label">Fixed Interfaces</div>
+            <div class="port-row-g">
+              <div class="p p-sfp"><div class="p-body c-wan">GE1</div></div>
+              <div class="p p-sfp"><div class="p-body c-wan">GE2</div></div>
+              <div class="p p-sfp"><div class="p-body c-sfp">GE3</div></div>
+              <div class="p p-sfp"><div class="p-body c-sfp">GE4</div></div>
+              <div class="p p-sfp"><div class="p-body c-sfp">GE5</div></div>
+              <div class="p p-sfp"><div class="p-body c-sfp">GE6</div></div>
+              <div class="port-divider"></div>
+              <div class="p p-sfp"><div class="p-body c-sfp28">10G-1</div></div>
+              <div class="p p-sfp"><div class="p-body c-sfp28">10G-2</div></div>
+              <div class="port-divider"></div>
+              <div class="p p-con"><div class="p-body c-mgmt">Mg</div></div>
+              <div class="p p-con"><div class="p-body c-con">CON</div></div>
+              <div class="p p-usb"><div class="p-body c-usb">USB</div></div>
+            </div>
+          </div>
+          <div class="port-face">
+            <div class="port-face-label">Rear — Redundant PSU bays</div>
+            <div class="port-row-g">
+              <div class="p p-pwr"><div class="p-body c-psu">PSU1</div></div>
+              <div class="p p-pwr"><div class="p-body c-psu">PSU2</div></div>
+            </div>
+          </div>
+          <div class="port-legend-row">
+            <div class="port-legend-item"><div class="port-legend-dot" style="background:#F5A623;"></div>WAN / outside</div>
+            <div class="port-legend-item"><div class="port-legend-dot" style="background:#FF8C42;"></div>1G SFP</div>
+            <div class="port-legend-item"><div class="port-legend-dot" style="background:#FFD700;"></div>10G SFP+</div>
+            <div class="port-legend-item"><div class="port-legend-dot" style="background:#78C800;"></div>PSU</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div><!-- /routers -->
+
+<!-- ══════════════════════════════════
+     FIREWALLS
+══════════════════════════════════ -->
+<div id="firewalls" class="section">
+  <div class="section-header">
+    <h2>Firewalls</h2>
+    <div class="divider cisco"></div>
+  </div>
+
+  <!-- ASA 5506-X -->
+  <div class="device-detail">
+    <div class="device-detail-header">
+      <span class="device-detail-badge">NGFW — SMALL BRANCH</span>
+      <div>
+        <div class="device-detail-title">ASA 5506-X with FirePOWER</div>
+        <div class="device-detail-subtitle">Desktop NGFW for micro-branches — legacy platform, widely deployed</div>
+      </div>
+    </div>
+    <div class="device-detail-body">
+      <div class="device-detail-grid">
+        <div class="device-desc-block">
+          <p>The ASA 5506-X is a small desktop firewall combining classic ASA stateful inspection with FirePOWER (IPS, URL filtering, malware). GE1 is typically the outside/WAN interface; GE2–GE8 form an internal switch for the LAN. It is a <strong>legacy product</strong> — Cisco has ended new sales, but it remains widely deployed in existing customer networks. Managed via ASDM GUI (Java) or CLI. The successor is the Firepower 1010.</p>
+          <table class="spec-table">
+            <tr><td>Ports</td><td>8× GE RJ45 + 1× GE management</td></tr>
+            <tr><td>Throughput (FW)</td><td>750 Mbps stateful</td></tr>
+            <tr><td>Throughput (IPS)</td><td>125 Mbps with FirePOWER</td></tr>
+            <tr><td>VPN</td><td>IPSec IKEv2 + AnyConnect SSL</td></tr>
+            <tr><td>Management</td><td>ASDM GUI, FMC (central), or CLI</td></tr>
+            <tr><td>Status</td><td>End of Sale — still supported until 2025</td></tr>
+          </table>
+        </div>
+        <div class="port-diagram-wrap">
+          <div class="port-diagram-title">Rear Panel — Desktop</div>
+          <div class="port-face">
+            <div class="port-face-label">8× GE Data + Management</div>
+            <div class="port-row-g">
+              <div class="p p-rj45"><div class="p-body c-wan">GE1/1</div></div>
+              <div class="p p-rj45"><div class="p-body c-eth">GE1/2</div></div>
+              <div class="p p-rj45"><div class="p-body c-eth">GE1/3</div></div>
+              <div class="p p-rj45"><div class="p-body c-eth">GE1/4</div></div>
+              <div class="p p-rj45"><div class="p-body c-eth">GE1/5</div></div>
+              <div class="p p-rj45"><div class="p-body c-eth">GE1/6</div></div>
+              <div class="p p-rj45"><div class="p-body c-eth">GE1/7</div></div>
+              <div class="p p-rj45"><div class="p-body c-eth">GE1/8</div></div>
+              <div class="port-divider"></div>
+              <div class="p p-con"><div class="p-body c-mgmt">Mg</div></div>
+              <div class="p p-con"><div class="p-body c-con">CON</div></div>
+              <div class="p p-usb"><div class="p-body c-usb">USB</div></div>
+            </div>
+          </div>
+          <div class="port-legend-row">
+            <div class="port-legend-item"><div class="port-legend-dot" style="background:#F5A623;"></div>GE1/1 = Outside (WAN)</div>
+            <div class="port-legend-item"><div class="port-legend-dot" style="background:#4A9EFF;"></div>GE1/2–8 = Inside (LAN)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Firepower 1010 -->
+  <div class="device-detail">
+    <div class="device-detail-header">
+      <span class="device-detail-badge">NGFW — SMALL BRANCH</span>
+      <div>
+        <div class="device-detail-title">Firepower 1010</div>
+        <div class="device-detail-subtitle">Replacement for ASA 5506-X — runs FTD natively</div>
+      </div>
+    </div>
+    <div class="device-detail-body">
+      <div class="device-detail-grid">
+        <div class="device-desc-block">
+          <p>The Firepower 1010 is the current small branch NGFW, replacing the ASA 5506-X. It runs <strong>FTD (Firepower Threat Defense)</strong> natively — a single unified image combining ASA stateful firewall + Snort IPS + URL filtering + AMP malware detection. Two ports are PoE+ for powering a phone or AP directly from the firewall. Managed via FMC or locally via FDM (Firepower Device Manager web UI).</p>
+          <table class="spec-table">
+            <tr><td>Ports</td><td>8× GE RJ45 (ports 7–8 are PoE+)</td></tr>
+            <tr><td>Throughput (FW)</td><td>650 Mbps stateful</td></tr>
+            <tr><td>Throughput (NGFW)</td><td>200 Mbps with FTD full inspection</td></tr>
+            <tr><td>VPN</td><td>IPSec + AnyConnect SSL</td></tr>
+            <tr><td>PoE ports</td><td>GE7 + GE8 = PoE+ (802.3at, 15W each)</td></tr>
+            <tr><td>Management</td><td>FDM (local WebUI), FMC (central)</td></tr>
+          </table>
+        </div>
+        <div class="port-diagram-wrap">
+          <div class="port-diagram-title">Front Panel — Desktop</div>
+          <div class="port-face">
+            <div class="port-face-label">8× GE — ports 7&amp;8 are PoE+</div>
+            <div class="port-row-g">
+              <div class="p p-rj45"><div class="p-body c-wan">GE1</div></div>
+              <div class="p p-rj45"><div class="p-body c-eth">GE2</div></div>
+              <div class="p p-rj45"><div class="p-body c-eth">GE3</div></div>
+              <div class="p p-rj45"><div class="p-body c-eth">GE4</div></div>
+              <div class="p p-rj45"><div class="p-body c-eth">GE5</div></div>
+              <div class="p p-rj45"><div class="p-body c-eth">GE6</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">GE7</div></div>
+              <div class="p p-rj45"><div class="p-body c-poe">GE8</div></div>
+              <div class="port-divider"></div>
+              <div class="p p-con"><div class="p-body c-mgmt">Mg</div></div>
+              <div class="p p-con"><div class="p-body c-con">CON</div></div>
+            </div>
+          </div>
+          <div class="port-legend-row">
+            <div class="port-legend-item"><div class="port-legend-dot" style="background:#F5A623;"></div>Outside (WAN)</div>
+            <div class="port-legend-item"><div class="port-legend-dot" style="background:#4A9EFF;"></div>Inside (LAN)</div>
+            <div class="port-legend-item"><div class="port-legend-dot" style="background:#00E5CC;"></div>PoE+ ports</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Firepower 2130 -->
+  <div class="device-detail">
+    <div class="device-detail-header">
+      <span class="device-detail-badge">NGFW — ENTERPRISE</span>
+      <div>
+        <div class="device-detail-title">Firepower 2130</div>
+        <div class="device-detail-subtitle">Mid-range enterprise NGFW — 1U rack mount, 5 Gbps throughput</div>
+      </div>
+    </div>
+    <div class="device-detail-body">
+      <div class="device-detail-grid">
+        <div class="device-desc-block">
+          <p>The Firepower 2130 is the workhorse enterprise perimeter firewall. It runs FTD and has both copper and SFP+ ports. The dedicated HA port enables <strong>active/standby failover</strong> — two 2130s synchronise state so a failover is seamless with no dropped sessions. Uses Cisco Talos threat intelligence for IPS signatures. The 2130 is managed by FMC (Firepower Management Center) which is a separate appliance or VM.</p>
+          <table class="spec-table">
+            <tr><td>Copper ports</td><td>12× GE RJ45</td></tr>
+            <tr><td>SFP+ ports</td><td>4× 10G SFP+</td></tr>
+            <tr><td>HA port</td><td>1× dedicated HA sync (GE copper)</td></tr>
+            <tr><td>Throughput (FW)</td><td>5 Gbps stateful</td></tr>
+            <tr><td>Throughput (NGFW)</td><td>2 Gbps with full FTD inspection</td></tr>
+            <tr><td>VPN</td><td>AnyConnect SSL + IPSec IKEv2</td></tr>
+            <tr><td>Management</td><td>FMC (central) — mandatory for full features</td></tr>
+          </table>
+        </div>
+        <div class="port-diagram-wrap">
+          <div class="port-diagram-title">Front Panel — 1U Rack</div>
+          <div class="port-face">
+            <div class="port-face-label">12× GE Copper + 4× 10G SFP+</div>
+            <div class="port-row-g">
+              <div class="p p-rj45"><div class="p-body c-wan">GE1</div></div>
+              <div class="p p-rj45"><div class="p-body c-wan">GE2</div></div>
+              <div class="p p-rj45"><div class="p-body c-eth">GE3</div></div>
+              <div class="p p-rj45"><div class="p-body c-eth">GE4</div></div>
+              <div class="p p-rj45"><div class="p-body c-eth">GE5</div></div>
+              <div class="p p-rj45"><div class="p-body c-eth">GE6</div></div>
+              <div class="p p-rj45"><div class="p-body c-eth">GE7</div></div>
+              <div class="p p-rj45"><div class="p-body c-eth">GE8</div></div>
+              <div class="p p-rj45"><div class="p-body c-eth">GE9</div></div>
+              <div class="p p-rj45"><div class="p-body c-eth">GE10</div></div>
+              <div class="p p-rj45"><div class="p-body c-eth">GE11</div></div>
+              <div class="p p-rj45"><div class="p-body c-eth">GE12</div></div>
+              <div class="port-divider"></div>
+              <div class="p p-sfp"><div class="p-body c-sfp">10G-1</div></div>
+              <div class="p p-sfp"><div class="p-body c-sfp">10G-2</div></div>
+              <div class="p p-sfp"><div class="p-body c-sfp">10G-3</div></div>
+              <div class="p p-sfp"><div class="p-body c-sfp">10G-4</div></div>
+              <div class="port-divider"></div>
+              <div class="p p-rj45"><div class="p-body c-ha">HA</div></div>
+              <div class="port-divider"></div>
+              <div class="p p-con"><div class="p-body c-mgmt">Mg</div></div>
+              <div class="p p-con"><div class="p-body c-con">CON</div></div>
+            </div>
+          </div>
+          <div class="port-legend-row">
+            <div class="port-legend-item"><div class="port-legend-dot" style="background:#F5A623;"></div>Outside/WAN</div>
+            <div class="port-legend-item"><div class="port-legend-dot" style="background:#4A9EFF;"></div>Inside/DMZ</div>
+            <div class="port-legend-item"><div class="port-legend-dot" style="background:#FF8C42;"></div>10G SFP+</div>
+            <div class="port-legend-item"><div class="port-legend-dot" style="background:#FF4D6A;"></div>HA sync</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /firewalls -->
+
+<!-- ══════════════════════════════════
+     ACCESS POINTS
+══════════════════════════════════ -->
+<div id="aps" class="section">
+  <div class="section-header">
+    <h2>Access Points</h2>
+    <div class="divider cisco"></div>
+  </div>
+
+  <!-- CW9166I -->
+  <div class="device-detail">
+    <div class="device-detail-header">
+      <span class="device-detail-badge">ACCESS POINT — WIFI 6E</span>
+      <div>
+        <div class="device-detail-title">Catalyst CW9166I</div>
+        <div class="device-detail-subtitle">Flagship tri-band WiFi 6E AP — 2.4 GHz + 5 GHz + 6 GHz simultaneously</div>
+      </div>
+    </div>
+    <div class="device-detail-body">
+      <div class="device-detail-grid">
+        <div class="device-desc-block">
+          <p>The CW9166I is Cisco's flagship indoor AP. The addition of the <strong>6 GHz band</strong> (WiFi 6E) is a major advantage — it is completely clean spectrum with no legacy devices, no interference, and wider channels (up to 160 MHz). An integrated <strong>IoT radio</strong> scans for BLE 5.0 and Zigbee devices simultaneously without impacting WiFi performance. Requires PoE++ (802.3bt) — make sure your switch supports it.</p>
+          <table class="spec-table">
+            <tr><td>WiFi standard</td><td>802.11ax (WiFi 6E) — tri-band</td></tr>
+            <tr><td>Bands</td><td>2.4 GHz (4×4) + 5 GHz (4×4) + 6 GHz (4×4)</td></tr>
+            <tr><td>Max throughput</td><td>7.7 Gbps aggregate (theoretical)</td></tr>
+            <tr><td>IoT radio</td><td>BLE 5.0 + 802.15.4 (Zigbee)</td></tr>
+            <tr><td>Uplink</td><td>1× 2.5G mGig Ethernet (RJ45) + USB-C</td></tr>
+            <tr><td>Power</td><td>PoE++ 802.3bt Type 3 (60W) — required</td></tr>
+            <tr><td>Management</td><td>Catalyst Center, 9800 WLC, or Meraki cloud</td></tr>
+          </table>
+        </div>
+        <div class="port-diagram-wrap">
+          <div class="port-diagram-title">Underside Connectors (ceiling-mount AP)</div>
+          <div class="port-face">
+            <div class="port-face-label">Primary uplink + aux + management</div>
+            <div class="port-row-g">
+              <div class="p p-rj45"><div class="p-body c-poe">2.5G</div></div>
+              <div class="p p-usb"><div class="p-body c-usb">USB-C</div></div>
+              <div class="p p-con"><div class="p-body c-con">CON</div></div>
+            </div>
+          </div>
+          <div class="port-legend-row">
+            <div class="port-legend-item"><div class="port-legend-dot" style="background:#00E5CC;"></div>2.5G PoE++ (main uplink + power)</div>
+            <div class="port-legend-item"><div class="port-legend-dot" style="background:#999;"></div>USB-C (management / local)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CW9162I -->
+  <div class="device-detail">
+    <div class="device-detail-header">
+      <span class="device-detail-badge">ACCESS POINT — WIFI 6</span>
+      <div>
+        <div class="device-detail-title">Catalyst CW9162I</div>
+        <div class="device-detail-subtitle">Standard indoor WiFi 6 AP — cost-effective for general office coverage</div>
+      </div>
+    </div>
+    <div class="device-detail-body">
+      <div class="device-detail-grid">
+        <div class="device-desc-block">
+          <p>The CW9162I is the mid-range indoor AP for standard office deployments where 6 GHz is not required. It is dual-band (2.4 + 5 GHz) WiFi 6 with 2×2 MU-MIMO — suitable for meeting rooms, open offices, and corridors. PoE+ powered (30W), so a standard PoE+ switch is sufficient. Managed by the same platforms as the 9166I.</p>
+          <table class="spec-table">
+            <tr><td>WiFi standard</td><td>802.11ax (WiFi 6) — dual-band</td></tr>
+            <tr><td>Bands</td><td>2.4 GHz (2×2) + 5 GHz (2×2)</td></tr>
+            <tr><td>Max throughput</td><td>3.5 Gbps aggregate</td></tr>
+            <tr><td>Uplink</td><td>1× 1G Ethernet (RJ45)</td></tr>
+            <tr><td>Power</td><td>PoE+ 802.3at (30W)</td></tr>
+            <tr><td>Management</td><td>Same as CW9166I</td></tr>
+          </table>
+        </div>
+        <div class="port-diagram-wrap">
+          <div class="port-diagram-title">Underside Connectors</div>
+          <div class="port-face">
+            <div class="port-face-label">Single PoE+ uplink</div>
+            <div class="port-row-g">
+              <div class="p p-rj45"><div class="p-body c-poe">1G PoE+</div></div>
+              <div class="p p-con"><div class="p-body c-con">CON</div></div>
+            </div>
+          </div>
+          <div class="port-legend-row">
+            <div class="port-legend-item"><div class="port-legend-dot" style="background:#00E5CC;"></div>1G PoE+ (uplink + power, 30W)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Aironet 1542I Outdoor -->
+  <div class="device-detail">
+    <div class="device-detail-header">
+      <span class="device-detail-badge">ACCESS POINT — OUTDOOR</span>
+      <div>
+        <div class="device-detail-title">Aironet 1542I (Outdoor)</div>
+        <div class="device-detail-subtitle">IP67-rated outdoor AP — warehouses, courtyards, parking, stadiums</div>
+      </div>
+    </div>
+    <div class="device-detail-body">
+      <div class="device-detail-grid">
+        <div class="device-desc-block">
+          <p>The 1542I is designed for harsh outdoor environments. IP67 rating means fully dust-tight and can withstand water immersion. Operates from -40°C to +60°C. The two RJ45 ports are <strong>weather-sealed</strong> — the primary PoE+ port connects to the building via outdoor-rated Ethernet cable. Internal dual-band antennas are omni-directional for 360° coverage.</p>
+          <table class="spec-table">
+            <tr><td>WiFi standard</td><td>802.11ac Wave 2 (WiFi 5) — dual-band</td></tr>
+            <tr><td>Bands</td><td>2.4 GHz + 5 GHz</td></tr>
+            <tr><td>IP rating</td><td>IP67 — weatherproof, dustproof</td></tr>
+            <tr><td>Temp range</td><td>-40°C to +60°C operating</td></tr>
+            <tr><td>Uplink</td><td>2× GE RJ45 (weather-sealed)</td></tr>
+            <tr><td>Power</td><td>PoE+ 802.3at (30W) — via outdoor cable</td></tr>
+            <tr><td>Antennas</td><td>Internal omni (I model) or external N-type (E model)</td></tr>
+          </table>
+        </div>
+        <div class="port-diagram-wrap">
+          <div class="port-diagram-title">Bottom Connectors (weather-sealed)</div>
+          <div class="port-face">
+            <div class="port-face-label">Sealed RJ45 + Console</div>
+            <div class="port-row-g">
+              <div class="p p-rj45"><div class="p-body c-poe">PoE+</div></div>
+              <div class="p p-rj45"><div class="p-body c-eth">GE2</div></div>
+              <div class="p p-con"><div class="p-body c-con">CON</div></div>
+            </div>
+          </div>
+          <div class="port-legend-row">
+            <div class="port-legend-item"><div class="port-legend-dot" style="background:#00E5CC;"></div>Primary PoE+ uplink (outdoor-rated cable)</div>
+            <div class="port-legend-item"><div class="port-legend-dot" style="background:#4A9EFF;"></div>Secondary GE (optional daisy-chain)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /aps -->
+
+<!-- ══════════════════════════════════
+     WLCs
+══════════════════════════════════ -->
+<div id="wlcs" class="section">
+  <div class="section-header">
+    <h2>Wireless LAN Controllers (WLCs)</h2>
+    <div class="divider cisco"></div>
+  </div>
+
+  <!-- 9800-L -->
+  <div class="device-detail">
+    <div class="device-detail-header">
+      <span class="device-detail-badge">WLC — BRANCH / MID</span>
+      <div>
+        <div class="device-detail-title">Catalyst 9800-L</div>
+        <div class="device-detail-subtitle">Branch and mid-market WLC — up to 250 APs, IOS-XE based</div>
+      </div>
+    </div>
+    <div class="device-detail-body">
+      <div class="device-detail-grid">
+        <div class="device-desc-block">
+          <p>The 9800-L is the most common hardware WLC for enterprise branches. It runs <strong>IOS-XE</strong> — the same OS as Catalyst switches — making it familiar to network engineers. The dedicated <strong>HA port</strong> connects to a standby 9800-L; if the active unit fails, the standby takes over in under a second (SSO) with no dropped wireless sessions. Also available as 9800-CL (virtual machine running on ESXi or KVM).</p>
+          <table class="spec-table">
+            <tr><td>Max APs</td><td>250 APs</td></tr>
+            <tr><td>Max clients</td><td>5,000 wireless clients</td></tr>
+            <tr><td>Data ports</td><td>2× GE RJ45 + 2× GE SFP</td></tr>
+            <tr><td>HA port</td><td>1× dedicated GE HA (SSO failover)</td></tr>
+            <tr><td>HA convergence</td><td>&lt;1 second (SSO — no session loss)</td></tr>
+            <tr><td>Features</td><td>FlexConnect, CAPWAP, 802.11r/k/v roaming</td></tr>
+            <tr><td>Also available as</td><td>9800-CL (VM) on VMware ESXi / KVM</td></tr>
+          </table>
+        </div>
+        <div class="port-diagram-wrap">
+          <div class="port-diagram-title">Front Panel</div>
+          <div class="port-face">
+            <div class="port-face-label">Data + HA + Management</div>
+            <div class="port-row-g">
+              <div class="p p-rj45"><div class="p-body c-eth">GE1</div></div>
+              <div class="p p-rj45"><div class="p-body c-eth">GE2</div></div>
+              <div class="port-divider"></div>
+              <div class="p p-sfp"><div class="p-body c-sfp">SFP1</div></div>
+              <div class="p p-sfp"><div class="p-body c-sfp">SFP2</div></div>
+              <div class="port-divider"></div>
+              <div class="p p-rj45"><div class="p-body c-ha">HA</div></div>
+              <div class="port-divider"></div>
+              <div class="p p-con"><div class="p-body c-mgmt">Mg</div></div>
+              <div class="p p-con"><div class="p-body c-con">CON</div></div>
+              <div class="p p-usb"><div class="p-body c-usb">USB</div></div>
+            </div>
+          </div>
+          <div class="port-legend-row">
+            <div class="port-legend-item"><div class="port-legend-dot" style="background:#4A9EFF;"></div>GE data (CAPWAP)</div>
+            <div class="port-legend-item"><div class="port-legend-dot" style="background:#FF8C42;"></div>SFP uplink</div>
+            <div class="port-legend-item"><div class="port-legend-dot" style="background:#FF4D6A;"></div>HA sync</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 9800-40 -->
+  <div class="device-detail">
+    <div class="device-detail-header">
+      <span class="device-detail-badge">WLC — ENTERPRISE</span>
+      <div>
+        <div class="device-detail-title">Catalyst 9800-40</div>
+        <div class="device-detail-subtitle">Large campus WLC — up to 2,000 APs and 32,000 clients</div>
+      </div>
+    </div>
+    <div class="device-detail-body">
+      <div class="device-detail-grid">
+        <div class="device-desc-block">
+          <p>The 9800-40 is the enterprise WLC for large campuses and multi-building deployments. Four 10G SFP+ ports provide high-throughput uplinks to the core switch — important when thousands of wireless clients are generating significant traffic. Redundant hot-swap PSU ensures the WLC itself never becomes a single point of failure.</p>
+          <table class="spec-table">
+            <tr><td>Max APs</td><td>2,000 APs</td></tr>
+            <tr><td>Max clients</td><td>32,000 wireless clients</td></tr>
+            <tr><td>Data ports</td><td>2× GE RJ45 + 4× 10G SFP+</td></tr>
+            <tr><td>HA port</td><td>1× dedicated GE HA (SSO)</td></tr>
+            <tr><td>PSU</td><td>Dual hot-swap redundant PSU</td></tr>
+            <tr><td>Cisco TrustSec</td><td>SGT tagging for wireless clients</td></tr>
+          </table>
+        </div>
+        <div class="port-diagram-wrap">
+          <div class="port-diagram-title">Front Panel — 1U Rack</div>
+          <div class="port-face">
+            <div class="port-face-label">GE + 10G SFP+ + HA + Management</div>
+            <div class="port-row-g">
+              <div class="p p-rj45"><div class="p-body c-eth">GE1</div></div>
+              <div class="p p-rj45"><div class="p-body c-eth">GE2</div></div>
+              <div class="port-divider"></div>
+              <div class="p p-sfp"><div class="p-body c-sfp">10G-1</div></div>
+              <div class="p p-sfp"><div class="p-body c-sfp">10G-2</div></div>
+              <div class="p p-sfp"><div class="p-body c-sfp">10G-3</div></div>
+              <div class="p p-sfp"><div class="p-body c-sfp">10G-4</div></div>
+              <div class="port-divider"></div>
+              <div class="p p-rj45"><div class="p-body c-ha">HA</div></div>
+              <div class="port-divider"></div>
+              <div class="p p-con"><div class="p-body c-mgmt">Mg</div></div>
+              <div class="p p-con"><div class="p-body c-con">CON</div></div>
+            </div>
+          </div>
+          <div class="port-face">
+            <div class="port-face-label">Rear — Redundant PSU</div>
+            <div class="port-row-g">
+              <div class="p p-pwr"><div class="p-body c-psu">PSU1</div></div>
+              <div class="p p-pwr"><div class="p-body c-psu">PSU2</div></div>
+            </div>
+          </div>
+          <div class="port-legend-row">
+            <div class="port-legend-item"><div class="port-legend-dot" style="background:#4A9EFF;"></div>GE data</div>
+            <div class="port-legend-item"><div class="port-legend-dot" style="background:#FF8C42;"></div>10G SFP+</div>
+            <div class="port-legend-item"><div class="port-legend-dot" style="background:#FF4D6A;"></div>HA</div>
+            <div class="port-legend-item"><div class="port-legend-dot" style="background:#78C800;"></div>PSU</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /wlcs -->
+
+<!-- ══════════════════════════════════
+     MANAGEMENT PLATFORMS
+══════════════════════════════════ -->
+<div id="management" class="section">
+  <div class="section-header">
+    <h2>Management &amp; Software Platforms</h2>
+    <div class="divider cisco"></div>
+  </div>
+
+  <style>
+    /* ── Management platform deep-dive styles ── */
+    .mgmt-platform {
+      background: #fff; border: 1px solid #E8E8E8;
+      border-radius: 16px; overflow: hidden;
+      margin-bottom: 40px;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+    }
+    .mgmt-platform-header {
+      padding: 28px 32px 24px;
+      display: flex; align-items: flex-start; gap: 20px;
+    }
+    .mgmt-platform-icon {
+      width: 56px; height: 56px; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 26px; flex-shrink: 0;
+    }
+    .mgmt-platform-intro {}
+    .mgmt-platform-tag {
+      font-size: 10px; font-weight: 700; letter-spacing: 1.2px;
+      text-transform: uppercase; padding: 3px 10px; border-radius: 20px;
+      display: inline-block; margin-bottom: 7px;
+    }
+    .mgmt-platform-title {
+      font-size: 24px; font-weight: 700; margin-bottom: 6px;
+    }
+    .mgmt-platform-tagline {
+      font-size: 14px; color: var(--gray-mid); line-height: 1.6;
+    }
+
+    .mgmt-platform-body { padding: 0 32px 32px; }
+    .mgmt-platform-body > p {
+      font-size: 14px; color: #444; line-height: 1.8;
+      border-top: 1px solid #F0F0F0; padding-top: 22px; margin-bottom: 24px;
+    }
+
+    /* Feature pillar grid */
+    .mgmt-pillars {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+      margin-bottom: 28px;
+    }
+    @media(max-width:760px){ .mgmt-pillars { grid-template-columns: 1fr 1fr; } }
+    @media(max-width:480px){ .mgmt-pillars { grid-template-columns: 1fr; } }
+
+    .mgmt-pillar {
+      border-radius: 12px; padding: 18px 18px 16px;
+      border: 1px solid;
+    }
+    .mgmt-pillar-icon { font-size: 22px; margin-bottom: 10px; }
+    .mgmt-pillar-title {
+      font-size: 13px; font-weight: 700; margin-bottom: 8px;
+    }
+    .mgmt-pillar-desc {
+      font-size: 12px; line-height: 1.7; color: #555;
+    }
+
+    /* Hardware models table */
+    .mgmt-hw-table {
+      background: #F8F9FA; border-radius: 10px; padding: 18px 20px;
+      margin-bottom: 24px;
+    }
+    .mgmt-hw-table-title {
+      font-size: 11px; font-weight: 700; letter-spacing: 1px;
+      text-transform: uppercase; color: var(--gray-mid); margin-bottom: 14px;
+    }
+    .mgmt-hw-row {
+      display: grid; grid-template-columns: 1fr 1fr 1fr;
+      gap: 0; border-bottom: 1px solid #E8E8E8; padding: 10px 0;
+      font-size: 13px; align-items: start;
+    }
+    .mgmt-hw-row:last-child { border-bottom: none; }
+    .mgmt-hw-row:first-child { font-size: 11px; font-weight: 700; color: var(--gray-mid); text-transform: uppercase; letter-spacing: 0.5px; }
+    .mgmt-hw-row span:first-child { font-weight: 700; }
+
+    /* Meraki product line cards */
+    .meraki-products {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
+      margin-bottom: 24px;
+    }
+    @media(max-width:760px){ .meraki-products { grid-template-columns: 1fr 1fr; } }
+    .meraki-product {
+      border-radius: 12px; border: 1px solid; padding: 16px;
+    }
+    .meraki-product-series {
+      font-size: 22px; font-weight: 800; margin-bottom: 4px;
+    }
+    .meraki-product-name {
+      font-size: 12px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.5px; margin-bottom: 10px;
+    }
+    .meraki-product-models {
+      font-size: 11px; color: #666; font-family: var(--mono);
+      margin-bottom: 10px; line-height: 1.6;
+    }
+    .meraki-product-desc { font-size: 12px; color: #555; line-height: 1.6; }
+
+    /* Comparison table */
+    .mgmt-compare {
+      border-radius: 12px; overflow: hidden; border: 1px solid #E0E0E0;
+      margin-top: 8px;
+    }
+    .mgmt-compare-header {
+      display: grid; grid-template-columns: 1.5fr 1fr 1fr;
+      background: #1A1A1A; padding: 14px 18px;
+      font-size: 12px; font-weight: 700; color: rgba(255,255,255,0.7);
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .mgmt-compare-row {
+      display: grid; grid-template-columns: 1.5fr 1fr 1fr;
+      padding: 12px 18px; border-bottom: 1px solid #F0F0F0;
+      font-size: 13px; align-items: start;
+    }
+    .mgmt-compare-row:last-child { border-bottom: none; }
+    .mgmt-compare-row:nth-child(even) { background: #FAFAFA; }
+    .mgmt-compare-row span:first-child { color: var(--gray-mid); font-size: 12px; }
+    .mgmt-compare-row .cc  { color: var(--cisco-blue); font-weight: 600; }
+    .mgmt-compare-row .mer { color: #00A86B; font-weight: 600; }
+    .yes { color: #00A86B; font-weight: 700; }
+    .no  { color: #CC2200; font-weight: 700; }
+
+    /* Catalyst Centre — blue theme */
+    .cc-header  { background: linear-gradient(135deg, #0A1F2D 0%, #0D4070 100%); }
+    .cc-tag     { background: rgba(27,160,215,0.25); color: #7DD3F0; }
+    .cc-title   { color: var(--cisco-blue); }
+    .cc-icon    { background: var(--cisco-pale); }
+    .cc-pillar  { background: rgba(27,160,215,0.04); border-color: rgba(27,160,215,0.18); }
+    .cc-pillar .mgmt-pillar-title { color: var(--cisco-blue); }
+
+    /* Meraki — green theme */
+    .mr-header  { background: linear-gradient(135deg, #042910 0%, #065A20 100%); }
+    .mr-tag     { background: rgba(0,168,107,0.25); color: #5DE8B5; }
+    .mr-title   { color: #00A86B; }
+    .mr-icon    { background: var(--green-pale); }
+    .mr-pillar  { background: rgba(0,168,107,0.04); border-color: rgba(0,168,107,0.18); }
+    .mr-pillar .mgmt-pillar-title { color: #00A86B; }
+  </style>
+
+  <!-- Comparison callout -->
+  <div class="alert blue" style="margin-bottom:36px;">
+    <span class="alert-icon">💡</span>
+    <p><strong>The key distinction:</strong> <strong>Catalyst Center</strong> is a management layer you put on top of traditional IOS-XE hardware you already own — your existing Catalyst switches and 9800 WLCs. <strong>Meraki</strong> is a completely separate product line where hardware and management are inseparable — you buy Meraki devices and manage them exclusively through Cisco's Meraki cloud. You cannot manage a Meraki switch from Catalyst Center, or a Catalyst switch from the Meraki dashboard. They are two different business models sold to different types of customer.</p>
+  </div>
+
+  <!-- ════════════════════════════════
+       CATALYST CENTER
+  ════════════════════════════════ -->
+  <div class="mgmt-platform">
+    <div class="mgmt-platform-header cc-header">
+      <div class="mgmt-platform-icon cc-icon">🧠</div>
+      <div class="mgmt-platform-intro">
+        <div class="mgmt-platform-tag cc-tag">On-Premises Management Platform</div>
+        <div class="mgmt-platform-title cc-title">Catalyst Center</div>
+        <div class="mgmt-platform-tagline" style="color:rgba(255,255,255,0.65);">Formerly called DNA Center (DNAC) — renamed in 2023. The single management platform for all Cisco IOS-XE campus and branch infrastructure.</div>
+      </div>
+    </div>
+
+    <div class="mgmt-platform-body">
+      <p>Catalyst Center is a physical or virtual appliance that sits in your data center and manages every Cisco IOS-XE device on your network — Catalyst switches, ISR/ASR routers, Catalyst 9800 WLCs, and Cisco access points. Think of it as the "brain" of a Cisco campus. When engineers mention <strong>"DNAC"</strong>, they almost always mean Catalyst Center — the old name is still widely used in conversations even though Cisco officially renamed it. Understanding Catalyst Center is critical because it transforms how a large Cisco network is operated: instead of SSH-ing into individual switches one by one, a network engineer uses Catalyst Center to push configurations, templates, and firmware to hundreds of devices simultaneously from a single dashboard.</p>
+
+      <div class="mgmt-pillars">
+        <div class="mgmt-pillar cc-pillar">
+          <div class="mgmt-pillar-icon">🔍</div>
+          <div class="mgmt-pillar-title">Network Discovery &amp; Inventory</div>
+          <div class="mgmt-pillar-desc">Catalyst Center automatically discovers all devices on the network using CDP and LLDP. It maps the physical topology — which switch connects to which, which APs are on which switch port. The live inventory shows every device's model, serial, IOS-XE version, and health status. No manual spreadsheet needed.</div>
+        </div>
+        <div class="mgmt-pillar cc-pillar">
+          <div class="mgmt-pillar-icon">⚡</div>
+          <div class="mgmt-pillar-title">Zero-Touch Provisioning (PnP)</div>
+          <div class="mgmt-pillar-desc">New Cisco switches and routers can be pre-staged in Catalyst Center before they physically arrive at a site. When the device is unpacked and powered on, it contacts Catalyst Center (via DHCP option 43 or DNS), authenticates, downloads its configuration, and is fully deployed — with no engineer needed on-site. This is called Plug and Play (PnP).</div>
+        </div>
+        <div class="mgmt-pillar cc-pillar">
+          <div class="mgmt-pillar-icon">🗂️</div>
+          <div class="mgmt-pillar-title">Templates &amp; Config Management</div>
+          <div class="mgmt-pillar-desc">Engineers write configuration templates using Velocity or Jinja2 scripting language. A template might define the standard VLAN layout, QoS policy, spanning tree settings, and AAA config for all branch switches. When a new branch is deployed, you apply the template — the device is fully configured to standard in seconds. No copy-pasting CLIs.</div>
+        </div>
+        <div class="mgmt-pillar cc-pillar">
+          <div class="mgmt-pillar-icon">🏗️</div>
+          <div class="mgmt-pillar-title">SD-Access (Software-Defined Access)</div>
+          <div class="mgmt-pillar-desc">SD-Access is Cisco's Zero Trust campus fabric. Catalyst Center, combined with Cisco ISE (Identity Services Engine), uses VXLAN to create a single logical overlay network across the entire campus. Devices are authenticated via 802.1X — their identity determines their network segment, not which physical port they plug into. SGTs (Security Group Tags) enforce policy. Catalyst Center is the orchestrator that builds and manages this fabric.</div>
+        </div>
+        <div class="mgmt-pillar cc-pillar">
+          <div class="mgmt-pillar-icon">📡</div>
+          <div class="mgmt-pillar-title">Wireless Assurance</div>
+          <div class="mgmt-pillar-desc">Catalyst Center receives telemetry from Catalyst 9800 WLCs and all connected APs — client connection events, roaming events, signal strength, channel utilisation, and error rates. The AI engine analyses this data to detect coverage gaps, AP failures, and roaming issues. It can trace exactly why a specific client's WiFi was slow at 3pm on Tuesday.</div>
+        </div>
+        <div class="mgmt-pillar cc-pillar">
+          <div class="mgmt-pillar-icon">🤖</div>
+          <div class="mgmt-pillar-title">AI Network Analytics &amp; REST API</div>
+          <div class="mgmt-pillar-desc">Machine learning analyses network telemetry to establish baselines and alert on anomalies — before users notice. Catalyst Center also exposes a full REST API (called Intent API) so automation tools like Ansible, Python scripts, and ITSM platforms like ServiceNow can trigger configuration changes, query device status, or open tickets automatically when issues occur.</div>
+        </div>
+      </div>
+
+      <!-- Hardware models -->
+      <div class="mgmt-hw-table">
+        <div class="mgmt-hw-table-title">Catalyst Center Appliance Models</div>
+        <div class="mgmt-hw-row"><span>Model</span><span>Scale</span><span>Notes</span></div>
+        <div class="mgmt-hw-row"><span>DN1-HW-APL (Gen 1)</span><span>Up to 5,000 devices</span><span>Legacy — still in production use</span></div>
+        <div class="mgmt-hw-row"><span>DN2-HW-APL (Gen 2)</span><span>Up to 10,000 devices</span><span>Current standard appliance</span></div>
+        <div class="mgmt-hw-row"><span>DN2-HW-APL-L (Large)</span><span>Up to 25,000 devices</span><span>3-node cluster for very large enterprise</span></div>
+        <div class="mgmt-hw-row"><span>Catalyst Center VM</span><span>Up to 5,000 devices</span><span>Runs on VMware ESXi — smaller deployments</span></div>
+        <div class="mgmt-hw-row"><span>Catalyst Center Cloud</span><span>SaaS option</span><span>Cisco-hosted — no appliance required</span></div>
+      </div>
+
+      <!-- Comparison table -->
+      <div class="mgmt-hw-table-title" style="font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--gray-mid);margin-bottom:12px;">Catalyst Center vs. Direct CLI Management</div>
+      <div class="mgmt-compare">
+        <div class="mgmt-compare-header"><span>Task</span><span>CLI (without CC)</span><span>Catalyst Center</span></div>
+        <div class="mgmt-compare-row"><span>Deploy new branch switch</span><span>SSH in, paste config manually (30–60 min)</span><span class="cc">PnP — 5 min, zero touch</span></div>
+        <div class="mgmt-compare-row"><span>Push VLAN change to 50 switches</span><span>Script or SSH to each one individually</span><span class="cc">Template push — &lt;2 minutes</span></div>
+        <div class="mgmt-compare-row"><span>IOS-XE firmware update</span><span>Manual SCP + reload per device</span><span class="cc">Bulk upgrade with maintenance window scheduling</span></div>
+        <div class="mgmt-compare-row"><span>Troubleshoot slow WiFi client</span><span>Check logs on WLC + AP manually</span><span class="cc">Client 360° view — full connection timeline</span></div>
+        <div class="mgmt-compare-row"><span>Network topology map</span><span>Draw it manually in Visio</span><span class="cc">Auto-generated and always live</span></div>
+        <div class="mgmt-compare-row"><span>Compliance audit</span><span>Pull configs manually, compare by hand</span><span class="cc">Compliance dashboard — instant report</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════
+       MERAKI
+  ════════════════════════════════ -->
+  <div class="mgmt-platform">
+    <div class="mgmt-platform-header mr-header">
+      <div class="mgmt-platform-icon mr-icon">☁️</div>
+      <div class="mgmt-platform-intro">
+        <div class="mgmt-platform-tag mr-tag">Cloud-Managed Networking Platform</div>
+        <div class="mgmt-platform-title mr-title">Cisco Meraki</div>
+        <div class="mgmt-platform-tagline" style="color:rgba(255,255,255,0.65);">A completely separate product line acquired by Cisco in 2012. Every device is managed exclusively via dashboard.meraki.com — no CLI, no on-premises controller.</div>
+      </div>
+    </div>
+
+    <div class="mgmt-platform-body">
+      <p>Meraki is often misunderstood as "Cisco with a cloud dashboard." It is much more than that — it is a fundamentally different networking model. With traditional Cisco, you buy hardware and manage it yourself using IOS-XE, SSH, and optionally Catalyst Center. With Meraki, you buy hardware <em>and a cloud management subscription together</em> — the two are inseparable. Every Meraki device runs a lightweight OS and maintains a permanent tunnel to Meraki's cloud. All configuration lives in Meraki's cloud dashboard (dashboard.meraki.com) — there is no local configuration stored on the device. This means <strong>you can configure, monitor, and troubleshoot every device globally from any web browser, anywhere in the world.</strong> Zero-touch deployment: claim the device serial in the dashboard, ship it to a remote site, and when it powers on it configures itself automatically. No engineer needed on-site. This is why Meraki is extremely popular for <strong>distributed retail chains, multi-site enterprises, and organisations without dedicated IT staff at each location</strong>.</p>
+
+      <!-- Product line cards -->
+      <div class="mgmt-hw-table-title" style="font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--gray-mid);margin-bottom:16px;">Meraki Product Lines</div>
+      <div class="meraki-products">
+
+        <div class="meraki-product" style="border-color:rgba(0,168,107,0.25);background:rgba(0,168,107,0.03);">
+          <div class="meraki-product-series" style="color:#00A86B;">MR</div>
+          <div class="meraki-product-name" style="color:#00A86B;">Wireless APs</div>
+          <div class="meraki-product-models">MR28 · MR36 · MR46 · MR57<br>MR78 (outdoor) · MR86 (outdoor)</div>
+          <div class="meraki-product-desc">WiFi 6 and 6E indoor and outdoor APs. The MR46 is the most common office AP. Dashboard shows client heatmaps, channel utilisation, and real-time client locations. Automatic RF optimisation adjusts channels and power across all APs.</div>
+        </div>
+
+        <div class="meraki-product" style="border-color:rgba(27,160,215,0.25);background:rgba(27,160,215,0.03);">
+          <div class="meraki-product-series" style="color:var(--cisco-blue);">MS</div>
+          <div class="meraki-product-name" style="color:var(--cisco-blue);">Switches</div>
+          <div class="meraki-product-models">MS120 · MS210 · MS250 · MS350<br>MS390 (StackWise) · MS410 · MS425</div>
+          <div class="meraki-product-desc">Access to core switches, all managed from the dashboard. VLANs, port profiles, PoE scheduling, and 802.1X are all configured from the browser — no CLI. The MS390 series supports StackWise stacking and is compatible with Catalyst Center (hybrid model).</div>
+        </div>
+
+        <div class="meraki-product" style="border-color:rgba(238,49,36,0.2);background:rgba(238,49,36,0.03);">
+          <div class="meraki-product-series" style="color:#CC2200;">MX</div>
+          <div class="meraki-product-name" style="color:#CC2200;">Security Appliances</div>
+          <div class="meraki-product-models">MX67 · MX68 · MX75 · MX85<br>MX95 · MX105 · MX250 · MX450</div>
+          <div class="meraki-product-desc">NGFW + SD-WAN in one box. <strong>Auto VPN</strong> is a killer feature — enable it with one checkbox and all MX appliances automatically build a full-mesh or hub-and-spoke IPSec VPN between all sites, no configuration required. Built-in IDS/IPS, content filtering, and AMP malware protection.</div>
+        </div>
+
+        <div class="meraki-product" style="border-color:rgba(255,140,66,0.25);background:rgba(255,140,66,0.03);">
+          <div class="meraki-product-series" style="color:#E67300;">MG</div>
+          <div class="meraki-product-name" style="color:#E67300;">Cellular Gateways</div>
+          <div class="meraki-product-models">MG21 · MG41<br>MG51 (5G)</div>
+          <div class="meraki-product-desc">4G LTE and 5G cellular uplinks managed from the same dashboard. Used as primary WAN at locations without fixed broadband, or as automatic failover backup for the MX appliance when the main internet link goes down.</div>
+        </div>
+
+        <div class="meraki-product" style="border-color:rgba(150,80,255,0.25);background:rgba(150,80,255,0.03);">
+          <div class="meraki-product-series" style="color:#7C3AED;">MV</div>
+          <div class="meraki-product-name" style="color:#7C3AED;">Smart Cameras</div>
+          <div class="meraki-product-models">MV2 · MV12 · MV32<br>MV63 · MV93 (outdoor)</div>
+          <div class="meraki-product-desc">PoE security cameras that store footage locally on the camera (no separate NVR required) and can be viewed from the Meraki dashboard. AI-powered motion detection and object recognition. Same licence model as network devices.</div>
+        </div>
+
+        <div class="meraki-product" style="border-color:rgba(255,200,0,0.3);background:rgba(255,200,0,0.03);">
+          <div class="meraki-product-series" style="color:#B07D00;">MT</div>
+          <div class="meraki-product-name" style="color:#B07D00;">IoT Sensors</div>
+          <div class="meraki-product-models">MT10 · MT11 · MT12<br>MT14 · MT20 · MT30</div>
+          <div class="meraki-product-desc">Environmental sensors (temperature, humidity, water leak detection, door open/close) that report to the Meraki dashboard. Used in server rooms, warehouses, and retail environments. Alert via email, SMS, or webhook when thresholds are exceeded.</div>
+        </div>
+
+      </div>
+
+      <div class="mgmt-pillars">
+        <div class="mgmt-pillar mr-pillar">
+          <div class="mgmt-pillar-icon">🔑</div>
+          <div class="mgmt-pillar-title">The Licence Model — Critical to Understand</div>
+          <div class="mgmt-pillar-desc">Every Meraki device requires an annual or multi-year cloud management licence (Enterprise or Advanced Security). <strong>If the licence expires, the device enters a read-only mode and eventually stops forwarding traffic.</strong> This is the most common commercial objection from customers — they are locked into a recurring cost. Orange Business DPMs must understand this risk for contract renewals.</div>
+        </div>
+        <div class="mgmt-pillar mr-pillar">
+          <div class="mgmt-pillar-icon">🌐</div>
+          <div class="mgmt-pillar-title">Auto VPN — One-Click Hub-and-Spoke</div>
+          <div class="mgmt-pillar-desc">Meraki's most popular feature. Every MX security appliance registers with Meraki's cloud. Enable Auto VPN on each MX and they automatically negotiate IPSec tunnels with every other MX in the organisation — full mesh or hub-and-spoke. What takes hours of configuration in traditional IOS is done in under a minute. This is why Meraki dominates the distributed enterprise market.</div>
+        </div>
+        <div class="mgmt-pillar mr-pillar">
+          <div class="mgmt-pillar-icon">📍</div>
+          <div class="mgmt-pillar-title">Location Analytics</div>
+          <div class="mgmt-pillar-desc">Meraki APs passively scan WiFi probe requests from nearby devices (even those not connected) to track footfall patterns. The dashboard shows heatmaps of where people spend time in a building — valuable for retailers measuring in-store customer behaviour. All data is anonymised and aggregated.</div>
+        </div>
+        <div class="mgmt-pillar mr-pillar">
+          <div class="mgmt-pillar-icon">🔒</div>
+          <div class="mgmt-pillar-title">Systems Manager (MDM)</div>
+          <div class="mgmt-pillar-desc">Meraki's built-in Mobile Device Management platform. Enrol company laptops, phones, and tablets into Systems Manager to enforce security policies, push apps, and remotely wipe lost devices — all from the same Meraki dashboard used to manage the network. Tight integration with WiFi: a device not enrolled in MDM can be automatically placed in a guest VLAN.</div>
+        </div>
+        <div class="mgmt-pillar mr-pillar">
+          <div class="mgmt-pillar-icon">🏪</div>
+          <div class="mgmt-pillar-title">Who Buys Meraki?</div>
+          <div class="mgmt-pillar-desc">Meraki is dominant in <strong>retail chains</strong> (manage 500 stores from one dashboard with no IT staff per store), <strong>healthcare</strong> (simple compliance, easy guest WiFi), <strong>education</strong> (intuitive for non-expert IT admins), and <strong>SMB</strong>. Large enterprise with complex routing requirements often find Meraki's simplified model too restrictive and choose Catalyst + Catalyst Center instead.</div>
+        </div>
+        <div class="mgmt-pillar mr-pillar">
+          <div class="mgmt-pillar-icon">⚠️</div>
+          <div class="mgmt-pillar-title">Limitations Customers Ask About</div>
+          <div class="mgmt-pillar-desc">No traditional CLI (limited SSH debug access available). Advanced BGP/MPLS routing not supported on MX. Full routing flexibility requires Catalyst hardware instead. Meraki dashboard requires internet connectivity for config changes (though traffic still flows if cloud is temporarily unreachable). Licence dependency is the biggest long-term commercial risk.</div>
+        </div>
+      </div>
+
+      <!-- Catalyst Center vs Meraki comparison -->
+      <div class="mgmt-hw-table-title" style="font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--gray-mid);margin-bottom:12px;">Catalyst Center vs. Meraki — At a Glance</div>
+      <div class="mgmt-compare">
+        <div class="mgmt-compare-header"><span>Consideration</span><span>Catalyst Center</span><span>Meraki</span></div>
+        <div class="mgmt-compare-row"><span>What hardware it manages</span><span class="cc">Catalyst switches, ISR/ASR routers, 9800 WLCs</span><span class="mer">Only Meraki hardware</span></div>
+        <div class="mgmt-compare-row"><span>Where management lives</span><span class="cc">On-premises appliance (or Cisco-hosted SaaS)</span><span class="mer">Meraki cloud only (dashboard.meraki.com)</span></div>
+        <div class="mgmt-compare-row"><span>CLI access</span><span class="cc">Full IOS-XE CLI via SSH — always available</span><span class="mer">No CLI — dashboard only (limited debug SSH)</span></div>
+        <div class="mgmt-compare-row"><span>Recurring cost model</span><span class="cc">One-time appliance + optional software licence</span><span class="mer">Annual per-device subscription (mandatory)</span></div>
+        <div class="mgmt-compare-row"><span>Zero-touch deployment</span><span class="cc">Yes — via PnP agent in IOS-XE</span><span class="mer">Yes — via Meraki cloud claim</span></div>
+        <div class="mgmt-compare-row"><span>Complex routing (BGP/MPLS)</span><span class="cc">Full support via IOS-XE CLI + Catalyst Center</span><span class="mer">Limited — not suited for complex WAN routing</span></div>
+        <div class="mgmt-compare-row"><span>Best fit</span><span class="cc">Large enterprise, complex campus, data center</span><span class="mer">Distributed SMB/retail, simple multi-site</span></div>
+        <div class="mgmt-compare-row"><span>Upfront cost</span><span class="cc">Higher (appliance + IOS-XE hardware)</span><span class="mer">Lower upfront, but recurring annual cost</span></div>
+        <div class="mgmt-compare-row"><span>What happens if expired/offline</span><span class="cc">Network keeps running — CC is management only</span><span class="mer">Devices enter read-only, traffic may stop</span></div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /management -->
+
+</div><!-- /content-wide -->
+
+<footer class="footer">
+  <p>Orange <span>Business</span> — Network Knowledge Base &nbsp;·&nbsp; <a href="index.html" style="color:rgba(255,255,255,0.4);">Home</a></p>
+</footer>
+<script src="shared.js"></script>
+
+<script>
+// Highlight active in-page nav on scroll
+(function(){
+  var sections = ['switches','routers','firewalls','aps','wlcs','management'];
+  var links = document.querySelectorAll('.page-subnav a');
+  window.addEventListener('scroll', function(){
+    var pos = window.scrollY + 120;
+    var current = sections[0];
+    sections.forEach(function(id){
+      var el = document.getElementById(id);
+      if(el && el.offsetTop <= pos) current = id;
+    });
+    links.forEach(function(a){
+      a.classList.toggle('active', a.getAttribute('href') === '#'+current);
+    });
+  });
+})();
+</script>
+</body>
+</html>

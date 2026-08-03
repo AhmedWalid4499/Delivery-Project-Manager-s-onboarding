@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WAN Delivery Process — OB Process Guide</title>
+<link rel="stylesheet" href="shared.css">
+
+<style>
+:root{--ob-orange:#FF6200;--ord:#D97706;--pre:#1B6CA8;--dur:#0E8A4A;--post:#7C3AED;--ord-p:#FEF3E2;--pre-p:#EEF5FF;--dur-p:#EDFAF4;--post-p:#F4EEFF;}
+.proc-hero{background:linear-gradient(135deg,#0A1E2E 0%,#12384F 60%,#0A1E2E 100%);padding:52px 40px 44px;text-align:center;}
+.proc-hero-tag{display:inline-block;background:rgba(255,98,0,0.25);border:1px solid rgba(255,98,0,0.5);color:#FFAA66;font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;padding:5px 14px;border-radius:20px;margin-bottom:16px;}
+.proc-hero h1{font-size:36px;font-weight:800;color:#fff;margin-bottom:12px;}
+.proc-hero h1 span{color:var(--ob-orange);}
+.proc-hero p{font-size:15px;color:rgba(255,255,255,0.6);max-width:660px;margin:0 auto;}
+.proc-content{max-width:1100px;margin:0 auto;padding:36px 28px 60px;}
+@media(max-width:600px){.proc-content{padding:20px 14px 40px;}}
+
+/* intro box */
+.migration-intro{background:#fff;border:1px solid #E0E0E0;border-radius:16px;padding:28px 32px;margin-bottom:36px;box-shadow:0 2px 16px rgba(0,0,0,0.05);}
+.migration-intro h3{font-size:18px;font-weight:800;color:#1A1A1A;margin-bottom:14px;display:flex;align-items:center;gap:10px;}
+.migration-intro p{font-size:14px;color:#444;line-height:1.8;margin-bottom:12px;}
+.migration-intro p:last-child{margin-bottom:0;}
+.migration-intro-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:20px;}
+@media(max-width:640px){.migration-intro-grid{grid-template-columns:1fr;}}
+.mig-card{border-radius:12px;padding:18px 20px;border:1px solid;}
+.mig-card-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;display:flex;align-items:center;gap:7px;}
+.mig-card p{font-size:13px;color:#555;line-height:1.7;margin:0;}
+
+/* role note */
+.role-note{background:#FFF8F0;border:1px solid #F5D9B0;border-radius:12px;padding:14px 18px;margin-bottom:32px;font-size:12.5px;color:#7A5A20;line-height:1.7;}
+.role-note strong{color:#C05A00;}
+
+/* summary grid */
+.summary-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:32px;}
+@media(max-width:700px){.summary-grid{grid-template-columns:1fr;}}
+.summary-card{border-radius:12px;padding:18px 20px;border:1px solid;}
+.summary-card-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.summary-chip{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;padding:4px 10px;border-radius:6px;margin:3px;border:1.5px solid;}
+
+/* stage pipeline */
+.phase-pipeline{display:flex;align-items:stretch;gap:0;margin-bottom:36px;flex-wrap:wrap;}
+.pp-step{flex:1;min-width:170px;position:relative;padding:16px 18px;border-radius:12px;border:1px solid;margin-right:26px;margin-bottom:12px;}
+.pp-step:last-child{margin-right:0;}
+.pp-step::after{content:'→';position:absolute;right:-20px;top:50%;transform:translateY(-50%);font-size:18px;color:#CBD5E1;font-weight:700;}
+.pp-step:last-child::after{display:none;}
+.pp-phase{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:5px;}
+.pp-title{font-size:14px;font-weight:800;color:#1A1A1A;margin-bottom:4px;}
+.pp-meta{font-size:11px;color:#888;}
+@media(max-width:760px){.pp-step::after{content:'↓';right:50%;top:auto;bottom:-20px;transform:translateX(50%);}.pp-step{margin-right:0;}}
+
+/* stage divider */
+.stage-divider{display:flex;align-items:center;gap:12px;margin:34px 0 18px;}
+.stage-divider .sd-line{flex:1;height:1px;background:#E5E7EB;}
+.stage-divider .sd-label{font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:5px 14px;border-radius:20px;}
+
+/* step list phases */
+.phase-block{border-radius:14px;overflow:hidden;border:1px solid #E0E0E0;margin-bottom:20px;box-shadow:0 3px 18px rgba(0,0,0,0.06);}
+.phase-header{display:flex;align-items:center;gap:14px;padding:14px 24px;border-bottom:1px solid rgba(255,255,255,0.1);}
+.phase-badge{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:4px 12px;border-radius:20px;flex-shrink:0;background:rgba(255,255,255,0.22);color:#fff;}
+.phase-title{font-size:17px;font-weight:800;color:#fff;}
+.phase-count{font-size:12px;margin-left:auto;opacity:0.75;flex-shrink:0;color:#fff;}
+.phase-ord .phase-header{background:var(--ord);}
+.phase-pre .phase-header{background:var(--pre);}
+.phase-dur .phase-header{background:var(--dur);}
+.phase-post .phase-header{background:var(--post);}
+.phase-body{padding:0 0 4px;}
+.step-card{display:flex;align-items:stretch;border-bottom:1px solid #F2F2F2;transition:background 0.12s;}
+.step-card:last-child{border-bottom:none;}
+.step-card:hover{background:#FAFBFF;}
+.step-num{width:44px!important;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:monospace;font-size:12px;font-weight:700;padding:14px 0;color:inherit;}
+.phase-ord .step-num{color:var(--ord);background:rgba(217,119,6,0.07);}
+.phase-pre .step-num{color:var(--pre);background:rgba(27,108,168,0.06);}
+.phase-dur .step-num{color:var(--dur);background:rgba(14,138,74,0.06);}
+.phase-post .step-num{color:var(--post);background:rgba(124,58,237,0.06);}
+.step-body{flex:1;padding:13px 18px;}
+.step-action{font-size:14px;font-weight:600;color:#1A1A1A;line-height:1.45;margin-bottom:3px;}
+.step-note{font-size:12px;color:#888;line-height:1.5;}
+.step-tools{padding:12px 14px 12px 0;display:flex;flex-wrap:wrap;gap:5px;align-items:center;justify-content:flex-end;max-width:150px;flex-shrink:0;}
+
+/* responsibility tags */
+.rt{font-size:10.5px;font-weight:700;padding:3px 9px;border-radius:20px;white-space:nowrap;border:1.5px solid;letter-spacing:0.3px;}
+.rt-ob{color:#C05A00;border-color:#F5C99A;background:#FFF4EA;}
+.rt-carrier{color:#007AC9;border-color:#A0D4F5;background:#EEF8FF;}
+.rt-cust{color:#0E8A4A;border-color:#9FE0C3;background:#EDFAF4;}
+.rt-courier{color:#64748B;border-color:#CBD5E1;background:#F1F5F9;}
+</style>
+
+</head>
+<body>
+<nav class="topnav">
+  <a href="index.html" class="topnav-brand"><div class="topnav-logo">OB</div><div class="topnav-brand-text">Orange <span>Business</span></div></a>
+  <div class="topnav-links">
+    <a href="index.html" class="nav-link">Home</a>
+    <a href="lan-wan-basics.html" class="nav-link">LAN / WAN</a>
+    <a href="ip-routing.html" class="nav-link">IP Routing</a>
+    <a href="switching.html" class="nav-link">Switching</a>
+    <a href="wireless.html" class="nav-link">Wireless</a>
+    <a href="firewalls.html" class="nav-link">Firewalls</a>
+    <a href="zscaler.html" class="nav-link">Zscaler</a>
+    <a href="devices.html"        class="nav-link" id="nav-devices">Devices</a>
+    <a href="glossary.html" class="nav-link">Glossary</a>
+  </div>
+  <div class="topnav-badge">New Hire Guide</div>
+</nav>
+<div class="breadcrumb">
+  <a href="index.html">Home</a><span>/</span>
+  WAN Process
+</div>
+<div class="proc-hero">
+  <div class="proc-hero-tag">🌐 Orange Business — DPM Process Guide</div>
+  <h1>WAN <span>Delivery</span> Process</h1>
+  <p>The end-to-end Delivery Project Manager process for a WAN / SD-WAN site — from local validation and carrier circuit delivery through router installation, cutover, and hand-over. Built from the WAN Project Timeline.</p>
+</div>
+<div class="proc-content">
+<div class="migration-intro">
+  <h3>🌐 What is a WAN delivery?</h3>
+  <p>A <strong>WAN delivery</strong> connects a customer site to the wide-area network — typically migrating it onto a new <strong>SD-WAN</strong> solution. Unlike a LAN migration (where the hardware is already inside the building), a WAN delivery depends on a <strong>third-party carrier</strong> physically delivering a circuit to the site first. That makes it a longer, more coordination-heavy process: the carrier, the customer's local team, and the Orange Business (OB) delivery team all have to act in the right order.</p>
+  <p>As the DPM, most of your job is <strong>chasing dependencies you don't directly control</strong> — the carrier's survey and installation dates, and the customer completing their in-house wiring — then landing a clean cutover once the OB routers are in.</p>
+  <div class="migration-intro-grid">
+    <div class="mig-card" style="background:#FEF3E2;border-color:#F5D9B0;">
+      <div class="mig-card-title" style="color:#D97706;">🤝 Why so many hand-offs?</div>
+      <p>Three parties own different pieces. <strong>OB</strong> validates, orders, and installs the routers. The <strong>carrier</strong> surveys and installs the physical circuit and NTU. The <strong>customer's local team</strong> grants site access, gets landlord approvals, completes the in-house wiring to the server room, and runs acceptance tests. If any one stalls, the whole delivery slips.</p>
+    </div>
+    <div class="mig-card" style="background:#EEF8FF;border-color:#A0D4F5;">
+      <div class="mig-card-title" style="color:#007AC9;">📞 The biggest dependency</div>
+      <p><strong>The carrier and the customer's local team.</strong> The order can't even be placed until the customer validates the scope, site details, and circuit DMARC points. Survey and install dates hinge on the customer granting access — and sometimes on landlord approvals. Keep both moving.</p>
+    </div>
+    <div class="mig-card" style="background:#EDFAF4;border-color:#9FE0C3;">
+      <div class="mig-card-title" style="color:#0E8A4A;">✅ What does success look like?</div>
+      <p>The circuit is installed and handed to OB, the OB routers are racked and connected, the LAN is activated during the agreed change window, the customer's testers confirm the service works, and — after the hyper-care period — the site is handed over to operations.</p>
+    </div>
+    <div class="mig-card" style="background:#F4EEFF;border-color:#D4BAFF;">
+      <div class="mig-card-title" style="color:#7C3AED;">🗓️ The four stages</div>
+      <p><strong>Validate &amp; Order</strong> (phases 1–3) → <strong>Circuit Delivery</strong> (phases 4–8, carrier-led) → <strong>Router Install &amp; Migration Prep</strong> (phases 9–12) → <strong>Migration &amp; HOTO</strong> (phases 13–14). Carrier lead times (survey → install → handover) dominate the timeline; the cutover itself is a single change window.</p>
+    </div>
+  </div>
+</div>
+
+<div class="role-note">
+  <strong>Key terms:</strong> <strong>DMARC</strong> = the demarcation point where the carrier's circuit ends and the customer's wiring begins · <strong>NTU</strong> = Network Termination Unit, the carrier device at the site edge · <strong>SAT</strong> = Service Acceptance Test · <strong>CAB</strong> = Change Advisory Board (approves the cutover) · <strong>hyper care</strong> = the close-support period right after go-live before hand-over to operations.
+</div>
+
+<div class="summary-grid">
+  <div class="summary-card" style="background:#F8F9FA;border-color:#E0E0E0;">
+    <div class="summary-card-title" style="color:#1A1A1A;">📊 At a Glance</div>
+    <span class="summary-chip" style="color:#D97706;border-color:#F5D9B0;background:#FEF3E2;">🔢 14 Phases</span>
+    <span class="summary-chip" style="color:#1B6CA8;border-color:#BDD6F5;background:#EEF5FF;">📋 35 Steps</span>
+    <span class="summary-chip" style="color:#7C3AED;border-color:#D4BAFF;background:#F4EEFF;">🧭 4 Stages</span>
+    <span class="summary-chip" style="color:#0E8A4A;border-color:#9FE0C3;background:#EDFAF4;">🌐 SD-WAN cutover</span>
+  </div>
+  <div class="summary-card" style="background:#EEF8FF;border-color:#A0D4F5;">
+    <div class="summary-card-title" style="color:#007AC9;">🤝 Who's involved</div>
+    <span class="summary-chip rt rt-ob">OB delivery team</span>
+    <span class="summary-chip rt rt-ob">OB engineer</span>
+    <span class="summary-chip rt rt-ob">OB TM team</span>
+    <span class="summary-chip rt rt-ob">OB PM</span>
+    <span class="summary-chip rt rt-carrier">Carrier</span>
+    <span class="summary-chip rt rt-cust">Customer local team</span>
+    <span class="summary-chip rt rt-courier">Courier</span>
+  </div>
+  <div class="summary-card" style="background:#FAFAFA;border-color:#E0E0E0;">
+    <div class="summary-card-title" style="color:#444;">🧭 Responsibility key</div>
+    <span class="summary-chip rt rt-ob">OB — Orange Business owns it</span>
+    <span class="summary-chip rt rt-carrier">Carrier — physical circuit</span>
+    <span class="summary-chip rt rt-cust">Customer — local action needed</span>
+  </div>
+</div>
+
+<h2 style="font-size:20px;font-weight:800;color:#1A1A1A;margin-bottom:20px;padding-top:8px;">🧭 The Four Stages</h2>
+<div class="phase-pipeline">
+  <div class="pp-step" style="background:#FEF3E2;border-color:#F5D9B0;">
+    <div class="pp-phase" style="color:#D97706;">🟠 Stage A · Phases 1–3</div>
+    <div class="pp-title">Validate &amp; Order</div>
+    <div class="pp-meta">Local validation, order circuit &amp; hardware, carrier ack</div>
+  </div>
+  <div class="pp-step" style="background:#EEF5FF;border-color:#BDD6F5;">
+    <div class="pp-phase" style="color:#1B6CA8;">🔵 Stage B · Phases 4–8</div>
+    <div class="pp-title">Circuit Delivery</div>
+    <div class="pp-meta">Survey, install, NTU, handover to OB — carrier-led</div>
+  </div>
+  <div class="pp-step" style="background:#EDFAF4;border-color:#9FE0C3;">
+    <div class="pp-phase" style="color:#0E8A4A;">🟢 Stage C · Phases 9–12</div>
+    <div class="pp-title">Router Install &amp; Prep</div>
+    <div class="pp-meta">Ship &amp; rack routers, plan migration, CAB approval</div>
+  </div>
+  <div class="pp-step" style="background:#F4EEFF;border-color:#D4BAFF;">
+    <div class="pp-phase" style="color:#7C3AED;">🟣 Stage D · Phases 13–14</div>
+    <div class="pp-title">Migration &amp; HOTO</div>
+    <div class="pp-meta">Cutover, acceptance test, hand over to operations</div>
+  </div>
+</div>
+
+<h2 style="font-size:20px;font-weight:800;color:#1A1A1A;margin-bottom:8px;padding-top:8px;">📋 Full Phase-by-Phase Process</h2>
+
+<!-- STAGE A -->
+<div class="stage-divider"><span class="sd-label" style="color:#D97706;background:#FEF3E2;">🟠 Stage A — Validate &amp; Order</span><div class="sd-line"></div></div>
+
+<div class="phase-block phase-ord">
+  <div class="phase-header"><span class="phase-badge">Phase 1</span><span class="phase-title">Local validation</span><span class="phase-count">2 steps</span></div>
+  <div class="phase-body">
+    <div class="step-card">
+      <div class="step-num">1.1</div>
+      <div class="step-body"><div class="step-action">OB local team contacts the customer's local team to validate the order scope, site details, circuit DMARC points, etc.</div></div>
+      <div class="step-tools"><span class="rt rt-ob">OB</span></div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">1.2</div>
+      <div class="step-body"><div class="step-action">Customer local team responds to the validation request and provides all details</div><div class="step-note">Mandatory — OB cannot place the order with the carrier until this is returned.</div></div>
+      <div class="step-tools"><span class="rt rt-cust">Customer</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="phase-block phase-ord">
+  <div class="phase-header"><span class="phase-badge">Phase 2</span><span class="phase-title">Ordering circuit &amp; hardware</span><span class="phase-count">1 step</span></div>
+  <div class="phase-body">
+    <div class="step-card">
+      <div class="step-num">2.1</div>
+      <div class="step-body"><div class="step-action">Once the order is validated by the customer's local contact, OB delivery team orders the hardware &amp; circuit</div></div>
+      <div class="step-tools"><span class="rt rt-ob">OB</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="phase-block phase-ord">
+  <div class="phase-header"><span class="phase-badge">Phase 3</span><span class="phase-title">Carrier acknowledge</span><span class="phase-count">1 step</span></div>
+  <div class="phase-body">
+    <div class="step-card">
+      <div class="step-num">3.1</div>
+      <div class="step-body"><div class="step-action">The carrier acknowledges the order</div><div class="step-note">Typically within 2–5 days of the order being placed.</div></div>
+      <div class="step-tools"><span class="rt rt-carrier">Carrier</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- STAGE B -->
+<div class="stage-divider"><span class="sd-label" style="color:#1B6CA8;background:#EEF5FF;">🔵 Stage B — Circuit Delivery (carrier-led)</span><div class="sd-line"></div></div>
+
+<div class="phase-block phase-pre">
+  <div class="phase-header"><span class="phase-badge">Phase 4</span><span class="phase-title">Arrange circuit site survey</span><span class="phase-count">2 steps</span></div>
+  <div class="phase-body">
+    <div class="step-card">
+      <div class="step-num">4.1</div>
+      <div class="step-body"><div class="step-action">Carrier contacts the customer's local team to arrange a site survey — to confirm the work required to deliver the circuits and the exact delivery dates</div></div>
+      <div class="step-tools"><span class="rt rt-carrier">Carrier</span></div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">4.2</div>
+      <div class="step-body"><div class="step-action">Customer local team responds to the carrier to confirm a date</div></div>
+      <div class="step-tools"><span class="rt rt-cust">Customer</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="phase-block phase-pre">
+  <div class="phase-header"><span class="phase-badge">Phase 5</span><span class="phase-title">Circuit site survey</span><span class="phase-count">2 steps</span></div>
+  <div class="phase-body">
+    <div class="step-card">
+      <div class="step-num">5.1</div>
+      <div class="step-body"><div class="step-action">Carrier engineer is on site to run the site survey</div></div>
+      <div class="step-tools"><span class="rt rt-carrier">Carrier</span></div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">5.2</div>
+      <div class="step-body"><div class="step-action">Customer local team grants the carrier engineer access to site to complete the survey</div></div>
+      <div class="step-tools"><span class="rt rt-cust">Customer</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="phase-block phase-pre">
+  <div class="phase-header"><span class="phase-badge">Phase 6</span><span class="phase-title">Arrange circuit installation</span><span class="phase-count">4 steps</span></div>
+  <div class="phase-body">
+    <div class="step-card">
+      <div class="step-num">6.1</div>
+      <div class="step-body"><div class="step-action">Carrier contacts the customer's local team again to arrange the circuit installation and install the carrier NTU devices</div></div>
+      <div class="step-tools"><span class="rt rt-carrier">Carrier</span></div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">6.2</div>
+      <div class="step-body"><div class="step-action">Obtain landlord approvals where required</div><div class="step-note">In some cases installation needs landlord approval — this requires customer support and may need multiple visits based on the survey results.</div></div>
+      <div class="step-tools"><span class="rt rt-cust">Customer</span></div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">6.3</div>
+      <div class="step-body"><div class="step-action">Customer local team responds to the carrier and grants access to complete the circuit installation</div></div>
+      <div class="step-tools"><span class="rt rt-cust">Customer</span></div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">6.4</div>
+      <div class="step-body"><div class="step-action">Customer completes the in-house wiring to extend the circuit from the carrier DMARC up to the server room where the OB routers will be installed</div></div>
+      <div class="step-tools"><span class="rt rt-cust">Customer</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="phase-block phase-pre">
+  <div class="phase-header"><span class="phase-badge">Phase 7</span><span class="phase-title">Circuit installation</span><span class="phase-count">2 steps</span></div>
+  <div class="phase-body">
+    <div class="step-card">
+      <div class="step-num">7.1</div>
+      <div class="step-body"><div class="step-action">Carrier engineer is on site to run the circuit installation</div></div>
+      <div class="step-tools"><span class="rt rt-carrier">Carrier</span></div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">7.2</div>
+      <div class="step-body"><div class="step-action">Customer local team escorts the carrier engineer</div></div>
+      <div class="step-tools"><span class="rt rt-cust">Customer</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="phase-block phase-pre">
+  <div class="phase-header"><span class="phase-badge">Phase 8</span><span class="phase-title">Circuit handover to OB</span><span class="phase-count">1 step</span></div>
+  <div class="phase-body">
+    <div class="step-card">
+      <div class="step-num">8.1</div>
+      <div class="step-body"><div class="step-action">After the circuit is successfully installed by the local carrier, the circuit is handed over to the OB team</div></div>
+      <div class="step-tools"><span class="rt rt-carrier">Carrier → OB</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- STAGE C -->
+<div class="stage-divider"><span class="sd-label" style="color:#0E8A4A;background:#EDFAF4;">🟢 Stage C — Router Install &amp; Migration Prep</span><div class="sd-line"></div></div>
+
+<div class="phase-block phase-dur">
+  <div class="phase-header"><span class="phase-badge">Phase 9</span><span class="phase-title">Router installation planning</span><span class="phase-count">7 steps</span></div>
+  <div class="phase-body">
+    <div class="step-card">
+      <div class="step-num">9.1</div>
+      <div class="step-body"><div class="step-action">Once the circuit is handed over, OB local delivery team contacts the customer's local team to arrange the OB routers' shipment to the customer</div></div>
+      <div class="step-tools"><span class="rt rt-ob">OB</span></div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">9.2</div>
+      <div class="step-body"><div class="step-action">Agree on the installation date</div><div class="step-note">The OB engineer can sometimes carry the routers on the day, but the standard process ships the hardware to site beforehand.</div></div>
+      <div class="step-tools"><span class="rt rt-ob">OB</span></div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">9.3</div>
+      <div class="step-body"><div class="step-action">Customer local team confirms the installation date and shares the local contact who will escort the OB engineer</div></div>
+      <div class="step-tools"><span class="rt rt-cust">Customer</span></div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">9.4</div>
+      <div class="step-body"><div class="step-action">Hardware shipment to the customer site</div></div>
+      <div class="step-tools"><span class="rt rt-ob">OB</span></div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">9.5</div>
+      <div class="step-body"><div class="step-action">Courier contacts the customer's local team to ship the new hardware to site</div></div>
+      <div class="step-tools"><span class="rt rt-courier">Courier</span></div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">9.6</div>
+      <div class="step-body"><div class="step-action">Customer local team responds to the courier and collects the new devices</div></div>
+      <div class="step-tools"><span class="rt rt-cust">Customer</span></div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">9.7</div>
+      <div class="step-body"><div class="step-action">Customer local team stores the hardware until the installation date, then hands it to the OB engineer</div></div>
+      <div class="step-tools"><span class="rt rt-cust">Customer</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="phase-block phase-dur">
+  <div class="phase-header"><span class="phase-badge">Phase 10</span><span class="phase-title">Router installation &amp; service acceptance test</span><span class="phase-count">2 steps</span></div>
+  <div class="phase-body">
+    <div class="step-card">
+      <div class="step-num">10.1</div>
+      <div class="step-body"><div class="step-action">OB engineer visits the site and racks &amp; connects the routers to the WAN connection; OB installation team supports remotely and tests connectivity</div><div class="step-note">The LAN connection is kept unshut (inactive) at this stage — activation happens at cutover.</div></div>
+      <div class="step-tools"><span class="rt rt-ob">OB</span></div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">10.2</div>
+      <div class="step-body"><div class="step-action">Customer local team escorts the OB engineer and guides them to the server room where the devices will be installed</div></div>
+      <div class="step-tools"><span class="rt rt-cust">Customer</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="phase-block phase-dur">
+  <div class="phase-header"><span class="phase-badge">Phase 11</span><span class="phase-title">Migration planning</span><span class="phase-count">4 steps</span></div>
+  <div class="phase-body">
+    <div class="step-card">
+      <div class="step-num">11.1</div>
+      <div class="step-body"><div class="step-action">OB &amp; customer project teams plan a date to cut over the current service and migrate to the new SD-WAN solution</div></div>
+      <div class="step-tools"><span class="rt rt-ob">OB</span></div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">11.2</div>
+      <div class="step-body"><div class="step-action">Customer local &amp; project team confirm a date &amp; downtime window to activate the LAN connectivity &amp; SD-WAN solution</div></div>
+      <div class="step-tools"><span class="rt rt-cust">Customer</span></div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">11.3</div>
+      <div class="step-body"><div class="step-action">Customer local testers are available during the agreed window to run the acceptance testing</div></div>
+      <div class="step-tools"><span class="rt rt-cust">Customer</span></div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">11.4</div>
+      <div class="step-body"><div class="step-action">OB PM sends a team meeting invite for the activity a week in advance to secure all resources</div></div>
+      <div class="step-tools"><span class="rt rt-ob">OB PM</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="phase-block phase-dur">
+  <div class="phase-header"><span class="phase-badge">Phase 12</span><span class="phase-title">Submit change for CAB approval</span><span class="phase-count">1 step</span></div>
+  <div class="phase-body">
+    <div class="step-card">
+      <div class="step-num">12.1</div>
+      <div class="step-body"><div class="step-action">Customer PM submits a CAB request to be approved prior to the cutover date</div></div>
+      <div class="step-tools"><span class="rt rt-cust">Customer</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- STAGE D -->
+<div class="stage-divider"><span class="sd-label" style="color:#7C3AED;background:#F4EEFF;">🟣 Stage D — Migration &amp; HOTO</span><div class="sd-line"></div></div>
+
+<div class="phase-block phase-post">
+  <div class="phase-header"><span class="phase-badge">Phase 13</span><span class="phase-title">Migration &amp; customer acceptance test</span><span class="phase-count">4 steps</span></div>
+  <div class="phase-body">
+    <div class="step-card">
+      <div class="step-num">13.1</div>
+      <div class="step-body"><div class="step-action">OB PM opens the Teams meeting</div></div>
+      <div class="step-tools"><span class="rt rt-ob">OB PM</span></div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">13.2</div>
+      <div class="step-body"><div class="step-action">OB engineer or customer local engineer connects the LAN cables to the new routers</div></div>
+      <div class="step-tools"><span class="rt rt-ob">OB / Cust</span></div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">13.3</div>
+      <div class="step-body"><div class="step-action">OB TM team activates the LAN &amp; tests the service remotely</div></div>
+      <div class="step-tools"><span class="rt rt-ob">OB TM</span></div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">13.4</div>
+      <div class="step-body"><div class="step-action">Customer local testers run the acceptance testing and confirm the service is working as expected</div></div>
+      <div class="step-tools"><span class="rt rt-cust">Customer</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="phase-block phase-post">
+  <div class="phase-header"><span class="phase-badge">Phase 14</span><span class="phase-title">HOTO — hand over to operations</span><span class="phase-count">2 steps</span></div>
+  <div class="phase-body">
+    <div class="step-card">
+      <div class="step-num">14.1</div>
+      <div class="step-body"><div class="step-action">OB project team hands the new site over to operations after 7 calendar days from the migration date</div></div>
+      <div class="step-tools"><span class="rt rt-ob">OB</span></div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">14.2</div>
+      <div class="step-body"><div class="step-action">Customer local &amp; project team approve the site to exit hyper care and hand over to operations</div></div>
+      <div class="step-tools"><span class="rt rt-cust">Customer</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="role-note" style="background:#EEF5FF;border-color:#BDD6F5;color:#1A4E7A;margin-top:12px;">
+  🔍 <strong>WAN vs LAN:</strong> a WAN delivery adds a third-party <strong>carrier</strong> and a physical <strong>circuit</strong> that must be surveyed, installed, and handed over before OB can even install the routers — so most phases are carrier- or customer-dependent. Compare with the <a href="lan-process.html">LAN Process</a> (AP and WLC/Switch), where the hardware is already on the customer LAN.
+</div>
+
+</div>
+<footer class="footer">
+  <p>Orange <span>Business</span> — Network Knowledge Base &nbsp;·&nbsp;
+  <a href="index.html" style="color:rgba(255,255,255,0.4);">Home</a></p>
+</footer>
+<script src="shared.js"></script>
+</body>
+</html>
