@@ -1,5 +1,5 @@
 /* ============================================================
-   DPM-KB · Glossary store
+   Delivery-Project-Manager-s-onboarding · Glossary store
    ------------------------------------------------------------
    Adds glossary terms and saves them into the repo (glossary.json)
    so every visitor sees them. Reuses the SAME GitHub token as the
@@ -10,7 +10,7 @@
 
   var CONFIG = {
     owner:   "AhmedWalid4499",
-    repo:    "DPM-KB",
+    repo:    "Delivery-Project-Manager-s-onboarding",
     branch:  "main",            // change to "master" if that's your default branch
     dataPath:"glossary.json"
   };
@@ -201,7 +201,7 @@
       '<h3>Add a glossary term</h3>' +
       '<div class="sub">It will be placed under the correct letter automatically.</div>' +
       '<div class="gl-tokbox" id="glTokBox">' +
-        '<p>Saving requires the one-time GitHub token (fine-grained, <b>Contents: Read &amp; write</b> on DPM-KB), stored only in this browser. ' +
+        '<p>Saving requires the one-time GitHub token (fine-grained, <b>Contents: Read &amp; write</b> on Delivery-Project-Manager-s-onboarding), stored only in this browser. ' +
         'This is the same token used for the squads. ' +
         '<a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">Create a token \u2192</a></p>' +
         '<div class="gl-field" style="margin-bottom:0;"><label>GitHub token</label>' +
@@ -244,7 +244,7 @@
     }).catch(function (err) {
       $("#glSave").disabled = false; $("#glSave").textContent = "Save";
       var m = String(err && err.message || err);
-      if (m === "auth") { showStatus("That token was rejected. Make sure it has <b>Contents: Read &amp; write</b> on DPM-KB, then set it again via Editor mode.", "err"); setToken(""); $("#glTokBox").style.display = "block"; }
+      if (m === "auth") { showStatus("That token was rejected. Make sure it has <b>Contents: Read &amp; write</b> on Delivery-Project-Manager-s-onboarding, then set it again via Editor mode.", "err"); setToken(""); $("#glTokBox").style.display = "block"; }
       else { showStatus("Couldn't save: " + esc(m) + ". Check the branch name in glossary-data.js and the token permissions.", "err"); }
     });
   });

@@ -1,5 +1,5 @@
 /* ============================================================
-   DPM-KB · Squad membership store
+   Delivery-Project-Manager-s-onboarding · Squad membership store
    ------------------------------------------------------------
    Saves squad additions into the GitHub repo itself (squads.json)
    so every visitor sees them — no Firebase, no separate backend.
@@ -15,7 +15,7 @@
 
   var CONFIG = {
     owner:      "AhmedWalid4499",
-    repo:       "DPM-KB",
+    repo:       "Delivery-Project-Manager-s-onboarding",
     branch:     "main",          // change to "master" if that's your default branch
     dataPath:   "squads.json",
     peoplePath: "people.json"
@@ -205,7 +205,7 @@
       '<h3>Add a DPM</h3>' +
       '<div class="sub">Type a name to pick an existing DPM (email & cluster auto-fill), or enter someone new.</div>' +
       '<div class="sq-tokbox" id="sqTokBox">' +
-        '<p>Saving requires a one-time GitHub token (fine-grained, <b>Contents: Read &amp; write</b> on DPM-KB). ' +
+        '<p>Saving requires a one-time GitHub token (fine-grained, <b>Contents: Read &amp; write</b> on Delivery-Project-Manager-s-onboarding). ' +
         'It is stored only in this browser. ' +
         '<a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">Create a token \u2192</a></p>' +
         '<div class="sq-field" style="margin-bottom:0;"><label>GitHub token</label>' +
@@ -268,7 +268,7 @@
     }).catch(function (err) {
       $("#sqSave").disabled = false; $("#sqSave").textContent = "Save";
       var m = String(err && err.message || err);
-      if (m === "auth") { showStatus("That token was rejected. Check it has <b>Contents: Read &amp; write</b> on DPM-KB, then set it again via Editor mode.", "err"); setToken(""); $("#sqTokBox").style.display = "block"; }
+      if (m === "auth") { showStatus("That token was rejected. Check it has <b>Contents: Read &amp; write</b> on Delivery-Project-Manager-s-onboarding, then set it again via Editor mode.", "err"); setToken(""); $("#sqTokBox").style.display = "block"; }
       else { showStatus("Couldn't save: " + esc(m) + ". Check the branch name in squad-data.js and the token permissions.", "err"); }
     });
   });
