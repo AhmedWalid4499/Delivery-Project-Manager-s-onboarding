@@ -1,8 +1,3 @@
 {
-  "terms": [
-    {
-      "term": "Test Term",
-      "def": "This is a test term"
-    }
-  ]
+  "terms": []
 }

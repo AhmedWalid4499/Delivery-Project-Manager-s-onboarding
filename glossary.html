@@ -131,6 +131,10 @@
     <div class="section-header"><h2>C</h2><div class="divider"></div></div>
     <div class="glossary-grid">
       <div class="glossary-item">
+        <div class="glossary-term">CAB (Change Advisory Board)</div>
+        <div class="glossary-def">The board that reviews and approves change requests before a migration or cutover. On the WAN process, the customer PM submits a CAB request for approval ahead of the cutover date.</div>
+      </div>
+      <div class="glossary-item">
         <div class="glossary-term">CAPWAP</div>
         <div class="glossary-def">Control and Provisioning of Wireless Access Points. The protocol used between an AP and its WLC — control traffic + optionally data traffic are tunneled to the WLC.</div>
       </div>
@@ -158,8 +162,16 @@
         <div class="glossary-def">Automatically assigns IP addresses, subnet mask, default gateway, and DNS to devices. DHCP server is usually the router, firewall, or a Windows server.</div>
       </div>
       <div class="glossary-item">
+        <div class="glossary-term">DMARC / Demarc (Demarcation Point)</div>
+        <div class="glossary-def">The point where the carrier's circuit ends and the customer's in-house wiring begins. On a WAN delivery, the customer extends the circuit from the DMARC up to the server room. (Not to be confused with email DMARC.)</div>
+      </div>
+      <div class="glossary-item">
         <div class="glossary-term">DMZ (Demilitarized Zone)</div>
         <div class="glossary-def">A network segment between untrust and trust zones, used for public-facing servers. If a DMZ server is compromised, the attacker still cannot reach the internal LAN.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">DNAC (Catalyst Center)</div>
+        <div class="glossary-def">Cisco's network management and automation platform (formerly DNA Center, now Catalyst Center). DPMs send a DNAC update after a LAN migration so the new devices are managed and monitored.</div>
       </div>
       <div class="glossary-item">
         <div class="glossary-term">DNS (Domain Name System)</div>
@@ -180,6 +192,10 @@
   <div class="section">
     <div class="section-header"><h2>E</h2><div class="divider"></div></div>
     <div class="glossary-grid">
+      <div class="glossary-item">
+        <div class="glossary-term">EDD (Estimated Date of Delivery)</div>
+        <div class="glossary-def">The date the ordered hardware is expected to arrive. The DPM gets an EDD from the ODM during the Ordering phase to plan the rest of the migration.</div>
+      </div>
       <div class="glossary-item">
         <div class="glossary-term">EIGRP</div>
         <div class="glossary-def">Enhanced Interior Gateway Routing Protocol. Cisco's proprietary routing protocol using DUAL. Fast convergence via feasible successors. Supports unequal-cost load balancing.</div>
@@ -204,6 +220,10 @@
         <div class="glossary-def">Cisco wireless mode where APs can switch client traffic locally at the branch, even if the WAN link to the WLC is down. Critical for branch office WiFi continuity.</div>
       </div>
       <div class="glossary-item">
+        <div class="glossary-term">FLIP</div>
+        <div class="glossary-def">The Orange Business tool used to book a Field Engineer for on-site work. Used in the WLC &amp; Switch process (not the AP process, where the customer mounts the APs themselves).</div>
+      </div>
+      <div class="glossary-item">
         <div class="glossary-term">FortiLink</div>
         <div class="glossary-def">Fortinet's proprietary protocol for managing FortiSwitches and FortiAPs from a FortiGate. The FortiGate acts as the controller over a dedicated trunk port.</div>
       </div>
@@ -223,12 +243,24 @@
         <div class="glossary-def">Palo Alto Networks' remote access VPN client. Uses IPSec/SSL tunnels to connect remote users to a PA firewall acting as a GlobalProtect gateway.</div>
       </div>
       <div class="glossary-item">
+        <div class="glossary-term">GOLD</div>
+        <div class="glossary-def">Orange Business order-management system. The DPM makes sure the GOLD order is created with the right scope, assigns it to themselves, and closes it after the migration.</div>
+      </div>
+      <div class="glossary-item">
         <div class="glossary-term">HA (High Availability)</div>
         <div class="glossary-def">A pair of devices (firewalls, WLCs, routers) configured to fail over if one fails. Active/passive = one active, one standby. Active/active = both process traffic.</div>
       </div>
       <div class="glossary-item">
+        <div class="glossary-term">HOTO (Hand-Over-To-Operations)</div>
+        <div class="glossary-def">The formal hand-over of a completed site from the delivery project team to the operations/support team. The DPM uploads the HOTO document (with runbook and LLD) to SharePoint and sends it to the HOTO Manager.</div>
+      </div>
+      <div class="glossary-item">
         <div class="glossary-term">HSRP / VRRP</div>
         <div class="glossary-def">First Hop Redundancy Protocols. Two routers share a virtual IP — if the active router fails, the standby takes over instantly. HSRP = Cisco proprietary, VRRP = open standard.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">Hyper care</div>
+        <div class="glossary-def">The close-support period right after go-live, before a site is handed over to operations. On the WAN process, the site exits hyper care roughly 7 calendar days after the migration date.</div>
       </div>
     </div>
   </div>
@@ -284,6 +316,10 @@
         <div class="glossary-def">A 48-bit hardware address burned into every network interface card (e.g. AA:BB:CC:DD:EE:FF). Switches use MAC addresses to forward frames within a LAN.</div>
       </div>
       <div class="glossary-item">
+        <div class="glossary-term">MACHX</div>
+        <div class="glossary-def">The Orange Business tool used to raise and manage VPO work orders. The AP process needs one MACHX raise; the WLC &amp; Switch process needs two (one for staging, one for migration).</div>
+      </div>
+      <div class="glossary-item">
         <div class="glossary-term">MPLS (Multi-Protocol Label Switching)</div>
         <div class="glossary-def">A carrier WAN technology that forwards packets using short labels instead of IP lookups. Faster, supports Traffic Engineering and QoS. Orange Business sells MPLS WAN services.</div>
       </div>
@@ -300,6 +336,10 @@
         <div class="glossary-def">A firewall with Layer 7 inspection — identifies applications (not just ports), includes IPS, URL filtering, SSL inspection, and sandboxing. Key vendors: Cisco, Palo Alto, Fortinet.</div>
       </div>
       <div class="glossary-item">
+        <div class="glossary-term">NTU (Network Termination Unit)</div>
+        <div class="glossary-def">The carrier's device installed at the customer site edge that terminates the WAN circuit. Installed by the carrier engineer during circuit installation on a WAN delivery.</div>
+      </div>
+      <div class="glossary-item">
         <div class="glossary-term">NX-OS</div>
         <div class="glossary-def">Cisco's operating system for Nexus data center switches. Different CLI and feature set from IOS-XE. Key commands differ — e.g. "show ip route" vs "show bgp l2vpn evpn".</div>
       </div>
@@ -313,6 +353,10 @@
       <div class="glossary-item">
         <div class="glossary-term">OFDMA</div>
         <div class="glossary-def">Orthogonal Frequency Division Multiple Access. WiFi 6 feature that subdivides a channel into smaller resource units, allowing simultaneous transmissions to multiple clients — like a cell tower does for mobile data.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">Option 43 (DHCP)</div>
+        <div class="glossary-def">A DHCP option that tells a Cisco access point where to find its WLC. If it's missing, APs get an IP address but never join the WLC — the most common AP-migration failure. Always verify before migration day.</div>
       </div>
       <div class="glossary-item">
         <div class="glossary-term">OSI Model</div>
@@ -365,12 +409,24 @@
     <div class="section-header"><h2>S</h2><div class="divider"></div></div>
     <div class="glossary-grid">
       <div class="glossary-item">
+        <div class="glossary-term">SALTO</div>
+        <div class="glossary-def">Orange Business order-closure system. The DPM makes sure the SALTO order matches the GOLD order scope, and closes it after the migration alongside the GOLD order.</div>
+      </div>
+      <div class="glossary-item">
         <div class="glossary-term">SASE (Secure Access Service Edge)</div>
         <div class="glossary-def">Cloud-delivered security combining SD-WAN and security services (NGFW, CASB, ZTNA) from a cloud POP. Palo Alto Prisma Access and Fortinet SASE are leading products.</div>
       </div>
       <div class="glossary-item">
+        <div class="glossary-term">SAT (Service Acceptance Test)</div>
+        <div class="glossary-def">The test the customer runs to confirm the new service works as expected before formally accepting it. Follows router installation and the cutover on the WAN process.</div>
+      </div>
+      <div class="glossary-item">
         <div class="glossary-term">SD-WAN</div>
         <div class="glossary-def">Software-Defined WAN. Intelligently routes traffic across multiple WAN links (MPLS, broadband, LTE) based on application policy and real-time link quality. Core Orange Business offering.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">ServiceNow (SNOW)</div>
+        <div class="glossary-def">The platform used to raise change requests and update the CMDB. DPMs raise a change request on ServiceNow before a migration, and send a CMDB update after it.</div>
       </div>
       <div class="glossary-item">
         <div class="glossary-term">SFP / SFP+</div>
@@ -414,6 +470,10 @@
       <div class="glossary-item">
         <div class="glossary-term">VPN (Virtual Private Network)</div>
         <div class="glossary-def">Encrypts traffic over a public network to create a private tunnel. Site-to-site VPN = connects two offices; Remote Access VPN = connects individual users to the corporate network.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">VPO</div>
+        <div class="glossary-def">The operations engineer who stages and migrates the devices during a LAN migration, and joins the migration call. MACHX work orders are raised for the VPOs.</div>
       </div>
       <div class="glossary-item">
         <div class="glossary-term">VXLAN</div>

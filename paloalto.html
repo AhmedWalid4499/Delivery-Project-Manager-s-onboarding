@@ -78,9 +78,9 @@
 
 <div class="page-subnav">
   <a href="#pa-entry">Entry (PA-220 / PA-400)</a>
-  <a href="#pa-mid">Mid-Range (PA-3200)</a>
-  <a href="#pa-high">High-End (PA-5200)</a>
-  <a href="#pa-dc">Data Center (PA-7000)</a>
+  <a href="#pa-mid">Mid-Range (PA-3400)</a>
+  <a href="#pa-high">High-End (PA-5400)</a>
+  <a href="#pa-dc">Data Center (PA-7500)</a>
   <a href="#pa-mgmt">Panorama</a>
   <a href="#pa-cloud">Cloud (Prisma)</a>
 </div>
@@ -215,30 +215,31 @@
 
 <!-- MID -->
 <div id="pa-mid" class="section">
-  <div class="section-header"><h2>Mid-Range — PA-3200 Series</h2><div class="divider palo"></div></div>
+  <div class="section-header"><h2>Mid-Range — PA-3400 Series</h2><div class="divider palo"></div></div>
 
   <div class="device-detail">
     <div class="device-detail-header">
       <span class="device-detail-badge">NGFW — 1U RACK</span>
-      <div><div class="device-detail-title">PA-3220 / PA-3250 / PA-3260</div><div class="device-detail-subtitle">Enterprise perimeter and data center edge NGFWs</div></div>
+      <div><div class="device-detail-title">PA-3410 / PA-3420 / PA-3430 / PA-3440</div><div class="device-detail-subtitle">Enterprise perimeter &amp; internet-gateway NGFWs — 14–35 Gbps</div></div>
     </div>
     <div class="device-detail-body">
       <div class="device-detail-grid">
         <div class="device-desc-block">
-          <p>The PA-3200 series is for enterprise perimeters, internet edge, and data center edge deployments. Each model uses Palo Alto's custom ASICs — <strong>separate processors</strong> handle firewall sessions, threat prevention, and SSL decryption independently, so enabling all features simultaneously does not degrade throughput the way it does on competitors. The PA-3260 also supports VSYS (virtual systems) for hosting multiple firewall contexts on one physical device.</p>
+          <p>The PA-3400 series is the current mid-range generation (replacing the PA-3200), for enterprise perimeters, internet gateways, and campus edge. Each model uses Palo Alto's single-pass architecture with <strong>dedicated processing</strong> for firewall sessions, threat prevention, and SSL decryption, so enabling all features at once does not collapse throughput the way it does on competitors. The top PA-3440 also supports VSYS (virtual systems) for hosting multiple firewall contexts on one physical device.</p>
           <table class="spec-table">
-            <tr><td>PA-3220 NGFW</td><td>4.2 Gbps App-ID</td></tr>
-            <tr><td>PA-3250 NGFW</td><td>5.4 Gbps App-ID</td></tr>
-            <tr><td>PA-3260 NGFW</td><td>7.2 Gbps App-ID</td></tr>
-            <tr><td>Threat Prevention</td><td>PA-3260: 4.1 Gbps</td></tr>
-            <tr><td>SSL Inspection</td><td>PA-3260: 3.7 Gbps</td></tr>
-            <tr><td>Ports</td><td>8× GE + 4× SFP + 2× SFP+ (10G) + 2× HA</td></tr>
-            <tr><td>Virtual Systems</td><td>PA-3260: up to 25 VSYS</td></tr>
+            <tr><td>PA-3410 NGFW</td><td>14 Gbps App-ID</td></tr>
+            <tr><td>PA-3420 NGFW</td><td>19 Gbps App-ID</td></tr>
+            <tr><td>PA-3430 NGFW</td><td>29 Gbps App-ID</td></tr>
+            <tr><td>PA-3440 NGFW</td><td>35 Gbps App-ID</td></tr>
+            <tr><td>Threat Prevention</td><td>PA-3440: 20 Gbps</td></tr>
+            <tr><td>Max sessions</td><td>PA-3440: ~3.0 million</td></tr>
+            <tr><td>Ports</td><td>Multi-Gig RJ45 (2.5/5/10G) + 1G/10G SFP/SFP+ + HA</td></tr>
+            <tr><td>Virtual Systems</td><td>PA-3440: up to 25 VSYS</td></tr>
             <tr><td>HA</td><td>Active/active or active/passive</td></tr>
           </table>
         </div>
         <div class="port-diagram-wrap">
-          <div class="port-diagram-title">PA-3260 Front Panel — 1U Rack</div>
+          <div class="port-diagram-title">PA-3440 Front Panel — 1U Rack</div>
           <div class="port-face">
             <div class="port-face-label">8× GE + 4× SFP + 2× 10G SFP+ + HA + OOB</div>
             <div class="port-row-g">
@@ -282,30 +283,30 @@
 
 <!-- HIGH END -->
 <div id="pa-high" class="section">
-  <div class="section-header"><h2>High-End — PA-5200 Series</h2><div class="divider palo"></div></div>
+  <div class="section-header"><h2>High-End — PA-5400 Series</h2><div class="divider palo"></div></div>
 
   <div class="device-detail">
     <div class="device-detail-header">
       <span class="device-detail-badge">NGFW — HIGH END</span>
-      <div><div class="device-detail-title">PA-5220 / PA-5250 / PA-5260</div><div class="device-detail-subtitle">Large enterprise and service provider NGFWs — 20–72 Gbps</div></div>
+      <div><div class="device-detail-title">PA-5410 / PA-5420 / PA-5430 / PA-5440 / PA-5445</div><div class="device-detail-subtitle">Data-center &amp; service-provider NGFWs — 52–90 Gbps</div></div>
     </div>
     <div class="device-detail-body">
       <div class="device-detail-grid">
         <div class="device-desc-block">
-          <p>The PA-5200 series is for large enterprise internet edges, large campus perimeters, and service providers. The PA-5260 at the top of the range delivers 72 Gbps App-ID throughput. All models have <strong>NPC (Network Processing Cards)</strong> — modular interface cards that add interface density without replacing the chassis. Supports up to 225 VSYS for service provider multi-tenancy. Panorama is essentially required at this scale.</p>
+          <p>The PA-5400 series is the current high-end generation (replacing the PA-5200), for high-speed data centers, large campus/internet gateways, and service providers. The PA-5445 tops the range at 90 Gbps App-ID with tens of millions of concurrent sessions, using Palo Alto's custom hardware data plane and built-in 100G/10G interfaces. Supports large VSYS counts for service-provider multi-tenancy. Panorama is essentially required at this scale.</p>
           <table class="spec-table">
-            <tr><td>PA-5220 NGFW</td><td>20 Gbps App-ID</td></tr>
-            <tr><td>PA-5250 NGFW</td><td>34 Gbps App-ID</td></tr>
-            <tr><td>PA-5260 NGFW</td><td>72 Gbps App-ID</td></tr>
-            <tr><td>Built-in ports</td><td>4× 100G QSFP28 + 8× 10G SFP+ + 12× GE</td></tr>
-            <tr><td>NPC slots</td><td>2 expansion slots for additional interface cards</td></tr>
-            <tr><td>VSYS (PA-5260)</td><td>Up to 225 virtual systems</td></tr>
-            <tr><td>HA</td><td>Active/active + active/passive</td></tr>
-            <tr><td>Form factor</td><td>2U rack (PA-5260)</td></tr>
+            <tr><td>PA-5410 NGFW</td><td>52 Gbps App-ID</td></tr>
+            <tr><td>PA-5420 NGFW</td><td>70 Gbps App-ID</td></tr>
+            <tr><td>PA-5430 NGFW</td><td>82 Gbps App-ID</td></tr>
+            <tr><td>PA-5440 / 5445 NGFW</td><td>90 Gbps App-ID</td></tr>
+            <tr><td>Threat Prevention</td><td>PA-5445: 76 Gbps</td></tr>
+            <tr><td>Max sessions</td><td>PA-5445: up to ~48 million</td></tr>
+            <tr><td>Built-in ports</td><td>100G QSFP28 + 10G SFP+ + GE (model-dependent)</td></tr>
+            <tr><td>Form factor</td><td>2U rack</td></tr>
           </table>
         </div>
         <div class="port-diagram-wrap">
-          <div class="port-diagram-title">PA-5260 Front Panel — 2U Rack</div>
+          <div class="port-diagram-title">PA-5440 Front Panel — 2U Rack</div>
           <div class="port-face">
             <div class="port-face-label">Built-in 100G + 10G + GE interfaces</div>
             <div class="port-row-g">
@@ -345,7 +346,7 @@
             </div>
           </div>
           <div class="port-face">
-            <div class="port-face-label">NPC Expansion Slot 1 &amp; 2 (modular interface cards)</div>
+            <div class="port-face-label">Expansion / additional interface slots (model-dependent)</div>
             <div class="port-row-g">
               <div class="p p-sfp" style="width:80px;"><div class="p-body c-sfp28" style="width:76px;font-size:8px;">NPC Slot 1</div></div>
               <div class="p p-sfp" style="width:80px;"><div class="p-body c-sfp28" style="width:76px;font-size:8px;">NPC Slot 2</div></div>
@@ -365,7 +366,7 @@
 
 <!-- DATA CENTER -->
 <div id="pa-dc" class="section">
-  <div class="section-header"><h2>Data Center — PA-7000 Series</h2><div class="divider palo"></div></div>
+  <div class="section-header"><h2>Data Center — PA-7500 &amp; PA-7000 Series</h2><div class="divider palo"></div></div>
 
   <div class="device-detail">
     <div class="device-detail-header">
@@ -375,8 +376,9 @@
     <div class="device-detail-body">
       <div class="device-detail-grid">
         <div class="device-desc-block">
-          <p>The PA-7000 is a fully modular chassis firewall. The chassis holds <strong>Line Cards (LPC)</strong> for interfaces and <strong>Switch Management Cards (SMC)</strong> for the control plane. The PA-7050 has 5 slots; the PA-7080 has 8 slots. Each slot can hold a different line card — mix and match 100G, 40G, and 10G cards as needed. Used by large enterprises with 100G data center interconnects, major internet service providers, and large cloud providers. Panorama is mandatory — managing a PA-7000 via direct GUI is not practical at scale.</p>
+          <p>The current flagship is the <strong>PA-7500</strong> — Palo Alto's newest hyperscale data-center NGFW, built on the custom <strong>FE400 ASIC</strong>, delivering over <strong>1.5 Tbps</strong> App-ID throughput with ~440 million concurrent sessions. The established <strong>PA-7000</strong> chassis (PA-7050 / PA-7080) remains available for modular, mixed-interface deployments. The PA-7000 is a fully modular chassis firewall. The chassis holds <strong>Line Cards (LPC)</strong> for interfaces and <strong>Switch Management Cards (SMC)</strong> for the control plane. The PA-7050 has 5 slots; the PA-7080 has 8 slots. Each slot can hold a different line card — mix and match 100G, 40G, and 10G cards as needed. Used by large enterprises with 100G data center interconnects, major internet service providers, and large cloud providers. Panorama is mandatory — managing a PA-7000 via direct GUI is not practical at scale.</p>
           <table class="spec-table">
+            <tr><td>PA-7500 (flagship)</td><td>Over 1,500 Gbps App-ID · FE400 ASIC</td></tr>
             <tr><td>PA-7050 throughput</td><td>Up to 120 Gbps App-ID (fully loaded)</td></tr>
             <tr><td>PA-7080 throughput</td><td>Up to 256 Gbps App-ID (fully loaded)</td></tr>
             <tr><td>PA-7050 slots</td><td>5 line card slots + 2 SMC slots</td></tr>
