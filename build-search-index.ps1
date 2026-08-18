@@ -72,4 +72,4 @@ if (Test-Path -LiteralPath $glossPath) {
 
 $json = $entries | ConvertTo-Json -Depth 6 -Compress
 [System.IO.File]::WriteAllText((Join-Path $dir 'search-index.json'), $json, (New-Object System.Text.UTF8Encoding($false)))
-Write-Output ("search-index.json rebuilt — {0} entries." -f $entries.Count)
+Write-Output ("search-index.json rebuilt - {0} entries." -f $entries.Count)

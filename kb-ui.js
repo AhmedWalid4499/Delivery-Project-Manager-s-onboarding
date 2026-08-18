@@ -45,6 +45,62 @@
     });
   }
 
+  /* ---------- themed hero background icons ---------- */
+  var ICONS = {
+    globe: "M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM3 12h18M12 3c2.6 2.7 2.6 15.3 0 18M12 3c-2.6 2.7-2.6 15.3 0 18",
+    wifi:  "M2.5 8.5a15 15 0 0 1 19 0M5.5 12a10 10 0 0 1 13 0M8.5 15.5a5 5 0 0 1 7 0M12 19h.01",
+    shield:"M12 3l7 3v5c0 4.6-3 7.9-7 9.7-4-1.8-7-5.1-7-9.7V6z",
+    lock:  "M6 11h12v9H6zM9 11V8a3 3 0 0 1 6 0v3",
+    cloud: "M7 18a4 4 0 0 1 0-8 6 6 0 0 1 11.3 1.6A3.5 3.5 0 0 1 17.5 18z",
+    server:"M4 4h16v6H4zM4 14h16v6H4zM7.5 7h.01M7.5 17h.01",
+    sw:    "M3 9h18v7H3zM7 9V6M12 9V6M17 9V6M6.5 12.5h.01M9.5 12.5h.01M12.5 12.5h.01",
+    nodes: "M6 4a2 2 0 1 0 0 4 2 2 0 0 0 0-4zM18 4a2 2 0 1 0 0 4 2 2 0 0 0 0-4zM12 16a2 2 0 1 0 0 4 2 2 0 0 0 0-4zM6 8v2a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V8M12 14v-2",
+    route: "M6 4a2 2 0 1 0 0 4 2 2 0 0 0 0-4zM18 16a2 2 0 1 0 0 4 2 2 0 0 0 0-4zM8 6h6a4 4 0 0 1 0 8h-4a4 4 0 0 0 0 8h6",
+    book:  "M5 4h11a2 2 0 0 1 2 2v12H7a2 2 0 0 0-2 2zM5 18a2 2 0 0 1 2-2h11",
+    list:  "M4 6h16M4 12h16M4 18h10",
+    chip:  "M7 7h10v10H7zM10 3v2M14 3v2M10 19v2M14 19v2M3 10h2M3 14h2M19 10h2M19 14h2",
+    flame: "M12 3c.5 3 3.6 4 3.6 8a3.6 3.6 0 0 1-7.2 0c0-1.8.9-2.9 1.9-3.7.2 1.7 1.7 1.7 1.7 0 0-1.7 0-3 0-4.3z",
+    signal:"M4 20a12 12 0 0 1 16 0M8 20a7 7 0 0 1 8 0M12 20h.01",
+    check: "M5 4h14v16H5zM8.5 10.5l2.2 2.2L15 8.5M8.5 15.5h7",
+    key:   "M9 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6zM12 12h8M17 12v3M20 12v3",
+    eth:   "M5 8h14v8H5zM8 16v2M12 16v2M16 16v2M8 8V6h8v2"
+  };
+  var PAGE_ICONS = {
+    "lan-wan-basics":     ["globe", "nodes", "server", "wifi"],
+    "ip-routing":         ["route", "nodes", "globe", "list"],
+    "switching":          ["sw", "eth", "nodes", "server"],
+    "wireless":           ["wifi", "signal", "nodes", "wifi"],
+    "firewalls":          ["shield", "lock", "flame", "key"],
+    "zscaler":            ["cloud", "shield", "lock", "globe"],
+    "glossary":           ["book", "list", "globe", "nodes"],
+    "devices":            ["server", "chip", "sw", "shield"],
+    "cisco":              ["sw", "server", "wifi", "shield"],
+    "paloalto":           ["shield", "lock", "cloud", "key"],
+    "fortinet":           ["shield", "flame", "lock", "server"],
+    "lan-process":        ["check", "nodes", "sw", "wifi"],
+    "process-ap":         ["wifi", "check", "signal", "nodes"],
+    "process-wlc-switch": ["sw", "check", "server", "eth"],
+    "wan-process":        ["globe", "cloud", "route", "check"]
+  };
+  function heroDecor() {
+    var page = (location.pathname.split("/").pop() || "index.html").replace(".html", "");
+    var names = PAGE_ICONS[page];
+    if (!names) return;
+    var hero = document.querySelector(".page-hero, .proc-hero");
+    if (!hero || hero.querySelector(".kb-herobg")) return;
+    var bg = el("div", "kb-herobg"); bg.setAttribute("aria-hidden", "true");
+    var pos = [{ t: "15%", l: "6%", s: 52 }, { t: "22%", r: "8%", s: 62 }, { b: "16%", l: "15%", s: 46 }, { b: "26%", r: "13%", s: 54 }];
+    names.slice(0, 4).forEach(function (nm, i) {
+      var d = ICONS[nm]; if (!d) return;
+      var p = pos[i] || pos[0];
+      var st = "width:" + p.s + "px;height:" + p.s + "px;";
+      if (p.t) st += "top:" + p.t + ";"; if (p.b) st += "bottom:" + p.b + ";";
+      if (p.l) st += "left:" + p.l + ";"; if (p.r) st += "right:" + p.r + ";";
+      bg.insertAdjacentHTML("beforeend", '<svg viewBox="0 0 24 24" style="' + st + '"><path d="' + d + '"/></svg>');
+    });
+    hero.insertBefore(bg, hero.firstChild);
+  }
+
   /* ---------- heading ids + anchors ---------- */
   function slug(s) {
     return (s || "").toLowerCase().replace(/[^\w\s-]/g, "").trim().replace(/\s+/g, "-").replace(/-+/g, "-").slice(0, 60) || "section";
@@ -270,8 +326,21 @@
       ".kb-navmenu.open{display:flex;}",
       ".kb-navmenu a{color:rgba(255,255,255,0.82);padding:13px 16px;border-radius:9px;text-decoration:none;font-size:15px;font-weight:500;}",
       ".kb-navmenu a:hover,.kb-navmenu a.active{background:rgba(255,98,0,0.16);color:#fff;}",
-      "@media(max-width:820px){html.kb-enh .topnav-links{display:none;}html.kb-enh .kb-hamburger{display:inline-flex;}}",
-      "@media(min-width:821px){.kb-navmenu{display:none !important;}}"
+      "@media(max-width:1024px){html.kb-enh .topnav-links{display:none;}html.kb-enh .kb-hamburger{display:inline-flex;}}",
+      "@media(min-width:1025px){.kb-navmenu{display:none !important;}}",
+      /* nav crowding on small laptops */
+      ".kb-enh .topnav-logo{font-size:11.5px;letter-spacing:0;}",
+      "@media(max-width:1280px){.topnav-badge{display:none !important;}.kb-navsearch-t{display:none !important;}.kb-navsearch-k{display:none !important;}.kb-navsearch{padding:6px !important;}}",
+      "@media(max-width:1180px) and (min-width:1025px){.topnav{padding:0 18px;}.topnav-links{gap:0;}.nav-link{padding:6px 9px;font-size:12.5px;}}",
+      /* centered heroes (like the home page) */
+      ".kb-enh .page-hero{text-align:center;}",
+      ".kb-enh .page-hero .hero-content{margin-left:auto;margin-right:auto;}",
+      ".kb-enh .page-hero .hero-sub{margin-left:auto;margin-right:auto;}",
+      ".kb-enh .proc-hero{position:relative;overflow:hidden;}",
+      /* themed hero background icons */
+      ".kb-herobg{position:absolute;inset:0;pointer-events:none;overflow:hidden;opacity:.14;z-index:0;}",
+      ".kb-herobg svg{position:absolute;stroke:#fff;stroke-width:1.4;fill:none;}",
+      ".kb-enh .page-hero>:not(.kb-herobg),.kb-enh .proc-hero>:not(.kb-herobg){position:relative;z-index:1;}"
     ].join("\n");
     document.head.appendChild(s);
   }
@@ -280,6 +349,7 @@
   ready(function () {
     injectCSS();
     heroSearch();
+    heroDecor();
     var wrap = document.querySelector(".content, .content-wide, .proc-content");
     var headings = anchorsAndHeadings(wrap);
     buildTOC(wrap, headings);
