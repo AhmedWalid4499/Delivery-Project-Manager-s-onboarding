@@ -115,3 +115,18 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 });
+
+
+/* ── BOOTSTRAP SITE SEARCH ──────────────────────────────────
+   Loads search.js on every page (it injects the nav search
+   pill + the "search anything" overlay). Kept as a separate
+   file so the search index/UI can be updated independently.
+─────────────────────────────────────────────────────────── */
+(function () {
+  if (document.getElementById('kb-search-js')) return;
+  var s = document.createElement('script');
+  s.id = 'kb-search-js';
+  s.src = 'search.js';
+  s.defer = true;
+  document.head.appendChild(s);
+})();
