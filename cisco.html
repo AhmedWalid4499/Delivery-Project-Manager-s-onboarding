@@ -159,7 +159,7 @@
 
 <div class="alert blue" style="margin-bottom:40px;">
   <span class="alert-icon">ℹ️</span>
-  <p><strong>Cisco IOS-XE CLI essentials:</strong> <code>show ip route</code> · <code>show interfaces status</code> · <code>show mac address-table</code> · <code>configure terminal</code> · <code>show version</code>. Certification path: CCNA → CCNP → CCIE. Platform families: <strong>Catalyst</strong> (campus), <strong>Nexus</strong> (data center), <strong>ISR/ASR</strong> (WAN), <strong>ASA/FTD</strong> (security).</p>
+  <p><strong>Cisco IOS-XE CLI essentials:</strong> <code>show ip route</code> · <code>show interfaces status</code> · <code>show mac address-table</code> · <code>configure terminal</code> · <code>show version</code>. Certification path: CCNA → CCNP → CCIE. Platform families: <strong>Catalyst</strong> (campus switching &amp; SD-WAN edge), <strong>Nexus</strong> (data center), <strong>Catalyst 8000 / ISR</strong> (WAN), <strong>Secure Firewall / FTD</strong> (security).<br><br><strong>Current software (2026):</strong> Catalyst switches, Catalyst 8000/ISR routers &amp; 9800 WLCs run <strong>IOS&nbsp;XE 17.18.x</strong> (17.15.x is the recommended Extended-Support release); Nexus runs <strong>NX-OS 10.x</strong>; Cisco Secure Firewall runs <strong>Threat Defense (FTD) 7.x</strong>.</p>
 </div>
 
 <!-- ══════════════════════════════════
@@ -641,22 +641,23 @@
     <div class="device-detail-header">
       <span class="device-detail-badge">BRANCH ROUTER</span>
       <div>
-        <div class="device-detail-title">ISR 4331</div>
-        <div class="device-detail-subtitle">Mid-size branch router with modular NIM slots — most common enterprise branch router</div>
+        <div class="device-detail-title">Catalyst 8300 (C8300-1N1S-6T)</div>
+        <div class="device-detail-subtitle">Modular SD-WAN branch/edge router — the current successor to the ISR 4000</div>
       </div>
     </div>
     <div class="device-detail-body">
       <div class="device-detail-grid">
         <div class="device-desc-block">
-          <p>The ISR 4331 is the go-to router for medium branches (50–200 users). Its two <strong>NIM (Network Interface Module) slots</strong> accept pluggable WAN cards — T1, E1, DSL, 4G LTE, T3, or additional Ethernet ports — without replacing the entire router. Ships with 3 built-in GE ports and one SFP. Hardware crypto acceleration handles IPSec VPN at full throughput without impacting CPU.</p>
+          <p>The Catalyst 8300 is Cisco's current modular branch/edge router for medium sites (50–200+ users), directly succeeding the ISR 4000. Its <strong>NIM (Network Interface Module) slots</strong> accept pluggable WAN cards — 5G/LTE, T1/E1, DSL, or additional Ethernet — without replacing the router. It ships with built-in GE + 10G SFP+ uplinks, hardware crypto for full-rate IPSec, and runs <strong>IOS&nbsp;XE 17.x</strong> with Cisco Catalyst SD-WAN.</p>
           <table class="spec-table">
-            <tr><td>Built-in ports</td><td>3× GE RJ45 + 1× GE SFP</td></tr>
-            <tr><td>NIM slots</td><td>2× NIM slots (WAN expansion modules)</td></tr>
-            <tr><td>NIM options</td><td>4G LTE, T1/E1, DSL, 8-port GE switch, Serial</td></tr>
-            <tr><td>Throughput</td><td>Up to 300 Mbps IP (with SEC bundle)</td></tr>
-            <tr><td>IPSec VPN</td><td>Hardware acceleration — full 300 Mbps encrypted</td></tr>
-            <tr><td>Services</td><td>DMVPN, ZBFW, IPSec, MPLS, QoS, NAT</td></tr>
-            <tr><td>Management</td><td>CLI, Catalyst Center, SD-WAN vManage</td></tr>
+            <tr><td>Software</td><td>IOS XE 17.18.x (17.15.x Extended-Support)</td></tr>
+            <tr><td>Built-in ports</td><td>Up to 6× GE + 2× 10G SFP+ (SKU-dependent)</td></tr>
+            <tr><td>NIM / SM slots</td><td>NIM + service-module slots (WAN expansion)</td></tr>
+            <tr><td>Module options</td><td>5G/LTE, T1/E1, DSL, GE switch, Serial</td></tr>
+            <tr><td>Throughput</td><td>Up to ~9 Gbps (SEC bundle, model-dependent)</td></tr>
+            <tr><td>IPSec VPN</td><td>Hardware crypto — multi-Gbps encrypted</td></tr>
+            <tr><td>SD-WAN</td><td>Cisco Catalyst SD-WAN (Manager / vManage)</td></tr>
+            <tr><td>Management</td><td>CLI, Catalyst Center, SD-WAN Manager</td></tr>
           </table>
         </div>
         <div class="port-diagram-wrap">
@@ -696,20 +697,21 @@
     <div class="device-detail-header">
       <span class="device-detail-badge">ENTERPRISE / SP ROUTER</span>
       <div>
-        <div class="device-detail-title">ASR 1001-X</div>
-        <div class="device-detail-subtitle">High-throughput aggregation router — data center edge and large enterprise WAN</div>
+        <div class="device-detail-title">Catalyst 8500 (C8500-12X4QC)</div>
+        <div class="device-detail-subtitle">High-throughput SD-WAN aggregation router — the current successor to the ASR 1000</div>
       </div>
     </div>
     <div class="device-detail-body">
       <div class="device-detail-grid">
         <div class="device-desc-block">
-          <p>The ASR 1001-X is a fixed-port aggregation router for large enterprise or service provider edge deployments. It runs on Cisco's <strong>QuantumFlow Processor (QFP)</strong> — a purpose-built network processor that handles all forwarding, QoS, NAT, and VPN in hardware, delivering 20 Gbps throughput regardless of features enabled. Supports full MPLS, BGP, and redundant power.</p>
+          <p>The Catalyst 8500 is Cisco's fixed-port aggregation / SD-WAN head-end router for data-center edge and large enterprise WAN, succeeding the ASR 1000. It runs on the <strong>QuantumFlow Processor (QFP)</strong> — a purpose-built ASIC that forwards, applies QoS, NAT and VPN in hardware — under <strong>IOS&nbsp;XE 17.x</strong>. High-density 10G/40G interfaces, full MPLS/BGP, and redundant power.</p>
           <table class="spec-table">
-            <tr><td>Built-in ports</td><td>6× GE SFP + 2× 10G SFP+</td></tr>
-            <tr><td>Throughput</td><td>Up to 20 Gbps (upgradeable to 20G with licence)</td></tr>
-            <tr><td>IPSec VPN</td><td>Hardware QFP — full 20 Gbps encrypted</td></tr>
+            <tr><td>Software</td><td>IOS XE 17.18.x (17.15.x Extended-Support)</td></tr>
+            <tr><td>Built-in ports</td><td>12× 10G SFP+ + 4× 40G QSFP+ (C8500-12X4QC)</td></tr>
+            <tr><td>Throughput</td><td>Up to ~100 Gbps forwarding</td></tr>
+            <tr><td>IPSec VPN</td><td>Hardware QFP — multi-10G encrypted</td></tr>
             <tr><td>Processor</td><td>QuantumFlow Processor (ASIC-based)</td></tr>
-            <tr><td>MPLS</td><td>Full LER/LSR — PE router for MPLS VPN</td></tr>
+            <tr><td>MPLS / SD-WAN</td><td>Full LER/LSR; Catalyst SD-WAN head-end</td></tr>
             <tr><td>HA</td><td>Redundant PSU + optional dual RP for NSF/NSR</td></tr>
           </table>
         </div>
@@ -773,14 +775,15 @@
     <div class="device-detail-body">
       <div class="device-detail-grid">
         <div class="device-desc-block">
-          <p>The ASA 5506-X is a small desktop firewall combining classic ASA stateful inspection with FirePOWER (IPS, URL filtering, malware). GE1 is typically the outside/WAN interface; GE2–GE8 form an internal switch for the LAN. It is a <strong>legacy product</strong> — Cisco has ended new sales, but it remains widely deployed in existing customer networks. Managed via ASDM GUI (Java) or CLI. The successor is the Firepower 1010.</p>
+          <p>The ASA 5506-X is a small desktop firewall combining classic ASA stateful inspection with FirePOWER (IPS, URL filtering, malware). GE1 is typically the outside/WAN interface; GE2–GE8 form an internal switch for the LAN. It is a <strong>legacy product</strong> — Cisco has ended new sales, but it remains widely deployed in existing customer networks. Managed via ASDM GUI (Java) or CLI. The successor is the <strong>Cisco Secure Firewall 1200 series</strong>.</p>
           <table class="spec-table">
             <tr><td>Ports</td><td>8× GE RJ45 + 1× GE management</td></tr>
             <tr><td>Throughput (FW)</td><td>750 Mbps stateful</td></tr>
             <tr><td>Throughput (IPS)</td><td>125 Mbps with FirePOWER</td></tr>
             <tr><td>VPN</td><td>IPSec IKEv2 + AnyConnect SSL</td></tr>
             <tr><td>Management</td><td>ASDM GUI, FMC (central), or CLI</td></tr>
-            <tr><td>Status</td><td>End of Sale — still supported until 2025</td></tr>
+            <tr><td>Software</td><td>ASA 9.x + FirePOWER (legacy)</td></tr>
+            <tr><td>Status</td><td>Legacy — End of Sale; hardware support ending 2026</td></tr>
           </table>
         </div>
         <div class="port-diagram-wrap">
@@ -816,21 +819,21 @@
     <div class="device-detail-header">
       <span class="device-detail-badge">NGFW — SMALL BRANCH</span>
       <div>
-        <div class="device-detail-title">Firepower 1010</div>
-        <div class="device-detail-subtitle">Replacement for ASA 5506-X — runs FTD natively</div>
+        <div class="device-detail-title">Cisco Secure Firewall 1220</div>
+        <div class="device-detail-subtitle">Small-branch NGFW (formerly Firepower 1010) — runs Threat Defense (FTD) 7.x</div>
       </div>
     </div>
     <div class="device-detail-body">
       <div class="device-detail-grid">
         <div class="device-desc-block">
-          <p>The Firepower 1010 is the current small branch NGFW, replacing the ASA 5506-X. It runs <strong>FTD (Firepower Threat Defense)</strong> natively — a single unified image combining ASA stateful firewall + Snort IPS + URL filtering + AMP malware detection. Two ports are PoE+ for powering a phone or AP directly from the firewall. Managed via FMC or locally via FDM (Firepower Device Manager web UI).</p>
+          <p>The Secure Firewall 1220 (the platform formerly branded Firepower 1010) is the current small-branch NGFW, replacing the ASA 5506-X. It runs <strong>Threat Defense (FTD) 7.x</strong> natively — a single unified image combining ASA stateful firewall + <strong>Snort 3</strong> IPS + URL filtering + malware detection. Two ports are PoE+ for powering a phone or AP directly from the firewall. Managed via cloud-delivered FMC, on-prem FMC, or locally via the device manager (FDM).</p>
           <table class="spec-table">
-            <tr><td>Ports</td><td>8× GE RJ45 (ports 7–8 are PoE+)</td></tr>
-            <tr><td>Throughput (FW)</td><td>650 Mbps stateful</td></tr>
-            <tr><td>Throughput (NGFW)</td><td>200 Mbps with FTD full inspection</td></tr>
-            <tr><td>VPN</td><td>IPSec + AnyConnect SSL</td></tr>
-            <tr><td>PoE ports</td><td>GE7 + GE8 = PoE+ (802.3at, 15W each)</td></tr>
-            <tr><td>Management</td><td>FDM (local WebUI), FMC (central)</td></tr>
+            <tr><td>Software</td><td>Threat Defense (FTD) 7.x — Snort 3</td></tr>
+            <tr><td>Ports</td><td>8× GE RJ45 + 2× 1/10G SFP+ (ports 7–8 PoE+)</td></tr>
+            <tr><td>Throughput (FW)</td><td>~1 Gbps stateful</td></tr>
+            <tr><td>Throughput (NGFW)</td><td>~800 Mbps with full FTD inspection</td></tr>
+            <tr><td>VPN</td><td>IPSec + Secure Client (AnyConnect) SSL</td></tr>
+            <tr><td>Management</td><td>FDM (local), FMC / cloud-delivered FMC</td></tr>
           </table>
         </div>
         <div class="port-diagram-wrap">
@@ -866,22 +869,22 @@
     <div class="device-detail-header">
       <span class="device-detail-badge">NGFW — ENTERPRISE</span>
       <div>
-        <div class="device-detail-title">Firepower 2130</div>
-        <div class="device-detail-subtitle">Mid-range enterprise NGFW — 1U rack mount, 5 Gbps throughput</div>
+        <div class="device-detail-title">Cisco Secure Firewall 3105</div>
+        <div class="device-detail-subtitle">Mid-range enterprise NGFW (Firepower 2100 successor) — 1U, higher throughput</div>
       </div>
     </div>
     <div class="device-detail-body">
       <div class="device-detail-grid">
         <div class="device-desc-block">
-          <p>The Firepower 2130 is the workhorse enterprise perimeter firewall. It runs FTD and has both copper and SFP+ ports. The dedicated HA port enables <strong>active/standby failover</strong> — two 2130s synchronise state so a failover is seamless with no dropped sessions. Uses Cisco Talos threat intelligence for IPS signatures. The 2130 is managed by FMC (Firepower Management Center) which is a separate appliance or VM.</p>
+          <p>The Secure Firewall 3105 (the Firepower 2100 successor) is the workhorse enterprise perimeter firewall. It runs <strong>Threat Defense (FTD) 7.x</strong> with <strong>Snort 3</strong>, and has both copper and SFP+ ports plus an optional network module. The dedicated HA port enables <strong>active/standby failover</strong> — two units synchronise state so a failover is seamless with no dropped sessions. Uses Cisco Talos threat intelligence. Managed by FMC (on-prem or cloud-delivered).</p>
           <table class="spec-table">
-            <tr><td>Copper ports</td><td>12× GE RJ45</td></tr>
-            <tr><td>SFP+ ports</td><td>4× 10G SFP+</td></tr>
-            <tr><td>HA port</td><td>1× dedicated HA sync (GE copper)</td></tr>
-            <tr><td>Throughput (FW)</td><td>5 Gbps stateful</td></tr>
-            <tr><td>Throughput (NGFW)</td><td>2 Gbps with full FTD inspection</td></tr>
-            <tr><td>VPN</td><td>AnyConnect SSL + IPSec IKEv2</td></tr>
-            <tr><td>Management</td><td>FMC (central) — mandatory for full features</td></tr>
+            <tr><td>Software</td><td>Threat Defense (FTD) 7.x — Snort 3</td></tr>
+            <tr><td>Fixed ports</td><td>8× 1/10G (copper + SFP+) + network-module bay</td></tr>
+            <tr><td>Module options</td><td>Up to 4× 10G/25G SFP (network module)</td></tr>
+            <tr><td>HA port</td><td>1× dedicated HA sync</td></tr>
+            <tr><td>Throughput (FW)</td><td>~28 Gbps stateful</td></tr>
+            <tr><td>Throughput (NGFW)</td><td>~13 Gbps with full FTD inspection</td></tr>
+            <tr><td>Management</td><td>FMC / cloud-delivered FMC</td></tr>
           </table>
         </div>
         <div class="port-diagram-wrap">

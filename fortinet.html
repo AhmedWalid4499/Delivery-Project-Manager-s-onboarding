@@ -101,7 +101,7 @@
 
 <div class="alert fort" style="margin-bottom:40px;">
   <span class="alert-icon">ℹ️</span>
-  <p><strong>FortiOS CLI essentials:</strong> Hierarchical config: <code>config system interface / edit port1 / set ip 192.168.1.1/24 / end</code>. Key concept: <strong>FortiLink</strong> — a special aggregated trunk port connecting a FortiGate to FortiSwitches and FortiAPs, allowing the FortiGate to act as their controller. <strong>ASIC acceleration:</strong> NP (Network Processor) offloads firewall sessions; CP (Content Processor) handles crypto and inspection. Certification: NSE 1–4 (freely available online) → NSE 7/8 (expert).</p>
+  <p><strong>FortiOS CLI essentials:</strong> Hierarchical config: <code>config system interface / edit port1 / set ip 192.168.1.1/24 / end</code>. Key concept: <strong>FortiLink</strong> — a special aggregated trunk port connecting a FortiGate to FortiSwitches and FortiAPs, allowing the FortiGate to act as their controller. <strong>ASIC acceleration:</strong> NP (Network Processor) offloads firewall sessions; CP (Content Processor) handles crypto and inspection. Certification: NSE 1–4 (freely available online) → NSE 7/8 (expert).<br><br><strong>Current software (2026):</strong> all FortiGate / FortiSwitch / FortiAP run <strong>FortiOS</strong> — <strong>7.6</strong> is current and <strong>7.4 LTS</strong> is the recommended stable branch; FortiOS <strong>8.0</strong> is now shipping.</p>
 </div>
 
 <!-- SMALL FORTIGATE -->
@@ -411,13 +411,14 @@
   <div class="device-detail">
     <div class="device-detail-header">
       <span class="device-detail-badge">NGFW — HIGH END</span>
-      <div><div class="device-detail-title">FortiGate 600E</div><div class="device-detail-subtitle">Large enterprise and data center edge — 10G interfaces throughout</div></div>
+      <div><div class="device-detail-title">FortiGate 600F</div><div class="device-detail-subtitle">Large enterprise &amp; data-center edge — 10G throughout (900G / 1800F sit above it)</div></div>
     </div>
     <div class="device-detail-body">
       <div class="device-detail-grid">
         <div class="device-desc-block">
-          <p>The 600E is for large enterprise perimeters and data center edges requiring 10G connectivity throughout. The NP7 processor delivers 239 Gbps raw firewall throughput with full hardware offload. All data interfaces are 10G SFP+ — no copper GE ports. Dual redundant hot-swap PSUs. The 600E supports <strong>full SSL inspection at line rate</strong>, meaning enabling SSL decryption does not reduce throughput.</p>
+          <p>The 600F is for large enterprise perimeters and data-center edges requiring 10G connectivity throughout, succeeding the 600E. Its <strong>NP7</strong> security processor delivers ~239 Gbps raw firewall throughput with full hardware offload, and it supports <strong>full SSL inspection at line rate</strong> (enabling decryption doesn't collapse throughput). Dual redundant hot-swap PSUs. Runs <strong>FortiOS</strong>; for higher throughput the current <strong>G-series</strong> (700G / 900G / 1800F) sit above it.</p>
           <table class="spec-table">
+            <tr><td>Software</td><td>FortiOS 7.6 (7.4 LTS recommended)</td></tr>
             <tr><td>Data ports</td><td>16× GE RJ45 + 8× 10G SFP+</td></tr>
             <tr><td>HA ports</td><td>2× dedicated HA (HA1 + HA2)</td></tr>
             <tr><td>Firewall throughput</td><td>239 Gbps (NP7)</td></tr>

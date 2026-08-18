@@ -340,7 +340,14 @@
       /* themed hero background icons */
       ".kb-herobg{position:absolute;inset:0;pointer-events:none;overflow:hidden;opacity:.14;z-index:0;}",
       ".kb-herobg svg{position:absolute;stroke:#fff;stroke-width:1.4;fill:none;}",
-      ".kb-enh .page-hero>:not(.kb-herobg),.kb-enh .proc-hero>:not(.kb-herobg){position:relative;z-index:1;}"
+      ".kb-enh .page-hero>:not(.kb-herobg),.kb-enh .proc-hero>:not(.kb-herobg){position:relative;z-index:1;}",
+      /* front-panel realism (applies to every vendor port diagram) */
+      ".kb-enh .port-diagram-wrap{background:linear-gradient(180deg,#161616,#0c0c0c)!important;box-shadow:0 6px 22px rgba(0,0,0,0.35);border:1px solid #000;}",
+      ".kb-enh .port-face{background:linear-gradient(180deg,#272727,#171717)!important;border:1px solid rgba(255,255,255,0.08)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,0.05),inset 0 -14px 26px rgba(0,0,0,0.45)!important;}",
+      ".kb-enh .p-body{box-shadow:inset 0 0 0 1px rgba(0,0,0,0.35),0 1px 2px rgba(0,0,0,0.45)!important;}",
+      ".kb-enh .p-rj45 .p-body{position:relative;border-radius:2px 2px 4px 4px!important;background-image:linear-gradient(180deg,rgba(255,255,255,0.07),transparent 45%)!important;}",
+      ".kb-enh .p-rj45 .p-body::after{content:'';position:absolute;left:50%;bottom:-3px;transform:translateX(-50%);width:9px;height:3px;background:currentColor;opacity:.4;border-radius:0 0 2px 2px;}",
+      ".kb-enh .p-sfp .p-body,.kb-enh .p-qsfp .p-body{border-radius:2px!important;background-image:linear-gradient(90deg,rgba(255,255,255,0.1),transparent 32%)!important;}"
     ].join("\n");
     document.head.appendChild(s);
   }

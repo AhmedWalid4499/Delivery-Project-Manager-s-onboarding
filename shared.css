@@ -29,8 +29,9 @@ img{max-width:100%;display:block;}
 .nav-link.vendor-fort.active{background:var(--fort-red);}
 .topnav-badge{margin-left:auto;flex-shrink:0;background:rgba(255,98,0,0.18);border:1px solid rgba(255,98,0,0.35);color:var(--orange-light);font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;letter-spacing:0.4px;}
 
-/* BREADCRUMB */
-.breadcrumb{background:var(--gray-faint);border-bottom:1px solid #EBEBEB;padding:10px 32px;font-size:12px;color:var(--gray-mid);display:flex;align-items:center;gap:6px;}
+/* BREADCRUMB — removed site-wide per request */
+.breadcrumb{display:none !important;}
+.breadcrumb-legacy{background:var(--gray-faint);border-bottom:1px solid #EBEBEB;padding:10px 32px;font-size:12px;color:var(--gray-mid);display:flex;align-items:center;gap:6px;}
 .breadcrumb a{color:var(--gray-mid);}.breadcrumb a:hover{color:var(--orange);}
 .breadcrumb span{color:var(--gray-light);}
 
