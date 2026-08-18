@@ -126,7 +126,21 @@ document.addEventListener('DOMContentLoaded', function () {
   if (document.getElementById('kb-search-js')) return;
   var s = document.createElement('script');
   s.id = 'kb-search-js';
-  s.src = 'search.js';
+  s.src = 'search.js?v=3';
+  s.defer = true;
+  document.head.appendChild(s);
+})();
+
+/* ── BOOTSTRAP KB EXPERIENCE LAYER ──────────────────────────
+   Loads kb-ui.js on every page (hero search, "On this page"
+   TOC + scroll-spy, progress bar, back-to-top, section anchors,
+   code-copy, responsive tables, mobile nav, reveal-on-scroll).
+─────────────────────────────────────────────────────────── */
+(function () {
+  if (document.getElementById('kb-ui-js')) return;
+  var s = document.createElement('script');
+  s.id = 'kb-ui-js';
+  s.src = 'kb-ui.js?v=3';
   s.defer = true;
   document.head.appendChild(s);
 })();
