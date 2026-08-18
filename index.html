@@ -6,22 +6,16 @@
 <title>DPM Knowledge Base</title>
 <link rel="stylesheet" href="shared.css">
 <style>
-/* ── DPM ROLE INTRO ── */
-.role-lead { font-size:15px; color:#444; line-height:1.8; max-width:760px; margin-bottom:24px; }
+/* ── quick-note lead ── */
+.role-lead { font-size:15px; color:#444; line-height:1.8; max-width:780px; margin-bottom:22px; }
 .role-lead strong { color:var(--black); }
 
-.lifecycle { display:flex; align-items:stretch; gap:0; flex-wrap:wrap; margin-bottom:8px; }
-.lc-step {
-  flex:1; min-width:150px; background:#fff; border:1px solid #ECECEC;
-  border-radius:12px; padding:16px 18px; position:relative;
-}
+/* ── lifecycle strip ── */
+.lifecycle { display:flex; align-items:stretch; gap:0; flex-wrap:wrap; margin-bottom:4px; }
+.lc-step { flex:1; min-width:150px; background:#fff; border:1px solid #ECECEC; border-radius:12px; padding:16px 18px; position:relative; }
 .lc-step + .lc-step { margin-left:30px; }
-.lc-step + .lc-step::before {
-  content:'→'; position:absolute; left:-23px; top:50%; transform:translateY(-50%);
-  color:var(--orange); font-size:18px; font-weight:700;
-}
-.lc-step .lc-tag { font-size:10.5px; font-weight:700; letter-spacing:0.6px; text-transform:uppercase;
-  color:var(--orange-dark); background:var(--orange-pale); padding:2px 9px; border-radius:20px; }
+.lc-step + .lc-step::before { content:'→'; position:absolute; left:-23px; top:50%; transform:translateY(-50%); color:var(--orange); font-size:18px; font-weight:700; }
+.lc-step .lc-tag { font-size:10.5px; font-weight:700; letter-spacing:0.6px; text-transform:uppercase; color:var(--orange-dark); background:var(--orange-pale); padding:2px 9px; border-radius:20px; }
 .lc-step h4 { font-size:14px; font-weight:700; margin:10px 0 4px; }
 .lc-step p { font-size:12.5px; color:var(--gray-mid); line-height:1.55; }
 @media(max-width:680px){
@@ -29,81 +23,49 @@
   .lc-step + .lc-step::before { left:50%; top:-22px; transform:translateX(-50%); content:'↓'; }
 }
 
-/* ── ORG TREE ── */
-.org-wrap { overflow-x:auto; padding:6px 0 6px; }
-.org-tree { min-width:700px; }
-.org-tree ul { display:flex; justify-content:center; position:relative; padding-top:26px; list-style:none; }
-.org-tree li { position:relative; padding:26px 10px 0; text-align:center; }
-.org-tree li::before, .org-tree li::after {
-  content:''; position:absolute; top:0; right:50%; width:50%; height:26px; border-top:2px solid #E2CDBA;
-}
-.org-tree li::after { right:auto; left:50%; border-left:2px solid #E2CDBA; }
-.org-tree li:only-child::before, .org-tree li:only-child::after { display:none; }
-.org-tree li:only-child { padding-top:26px; }
-.org-tree li:first-child::before, .org-tree li:last-child::after { border:0 none; }
-.org-tree li:last-child::before { border-right:2px solid #E2CDBA; border-radius:0 6px 0 0; }
-.org-tree li:first-child::after { border-radius:6px 0 0 0; }
-.org-tree ul ul::before {
-  content:''; position:absolute; top:0; left:50%; width:0; height:26px; border-left:2px solid #E2CDBA;
-}
-.node {
-  display:inline-block; background:#fff; border:1px solid #ECECEC; border-top:3px solid var(--orange);
-  border-radius:13px; padding:15px 16px 14px; box-shadow:0 2px 12px rgba(0,0,0,0.06);
-  min-width:178px; max-width:210px; transition:transform .18s, box-shadow .18s;
-}
-.node:hover { transform:translateY(-3px); box-shadow:0 12px 28px rgba(0,0,0,0.13); }
-.node .avatar { width:48px; height:48px; border-radius:50%; margin:0 auto 10px;
-  display:flex; align-items:center; justify-content:center; font-weight:700; font-size:15px;
-  color:#fff; letter-spacing:0.5px; }
-.node .nm { font-size:14px; font-weight:700; color:var(--black); line-height:1.25; }
-.node .ttl { font-size:11.5px; color:#777; line-height:1.45; margin-top:5px; }
-.node .lvl { display:inline-block; font-size:9.5px; font-weight:700; text-transform:uppercase;
-  letter-spacing:0.6px; padding:3px 9px; border-radius:20px; margin-top:11px; }
+/* ── leadership strip ── */
+.lead-strip { display:flex; align-items:center; gap:14px; flex-wrap:wrap; margin-bottom:22px; }
+.lead-chip { display:flex; align-items:center; gap:12px; background:var(--orange-faint); border:1px solid var(--orange-pale); border-radius:14px; padding:11px 18px 11px 12px; }
+.lead-av { width:44px; height:44px; border-radius:50%; background:var(--orange); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:15px; flex-shrink:0; }
+.lead-nm { font-size:15px; font-weight:800; color:var(--black); }
+.lead-ttl { font-size:12px; color:var(--gray-mid); margin-top:1px; }
+.lead-arrow { color:var(--orange); font-size:20px; font-weight:700; }
+@media(max-width:560px){ .lead-arrow{ transform:rotate(90deg); } }
 
-.node.lead    { border-top-color:var(--orange); }
-.node.lead    .avatar { background:var(--orange); }
-.node.lead    .lvl { color:var(--orange-dark); background:var(--orange-pale); }
-.node.dach    { border-top-color:var(--purple); }
-.node.dach    .avatar { background:var(--purple); }
-.node.dach    .lvl { color:var(--purple); background:var(--purple-pale); }
-.node.north   { border-top-color:var(--cisco-blue); }
-.node.north   .avatar { background:var(--cisco-blue); }
-.node.north   .lvl { color:var(--cisco-blue); background:var(--cisco-pale); }
-.node.south   { border-top-color:var(--green); }
-.node.south   .avatar { background:var(--green); }
-.node.south   .lvl { color:var(--green); background:var(--green-pale); }
-.node.benelux { border-top-color:var(--palo-orange); }
-.node.benelux .avatar { background:var(--palo-orange); }
-.node.benelux .lvl { color:var(--palo-orange); background:var(--palo-pale); }
+/* ── department cards ── */
+.dept-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+@media(max-width:760px){ .dept-grid{ grid-template-columns:1fr; } }
+.dept-card { display:flex; flex-direction:column; background:#fff; border:1px solid #ECECEC; border-top:4px solid var(--c); border-radius:16px; padding:22px; text-decoration:none !important; color:inherit; transition:transform .16s, box-shadow .16s; }
+.dept-card:hover { transform:translateY(-3px); box-shadow:0 14px 34px rgba(0,0,0,0.12); }
+.dept-head { display:flex; align-items:center; gap:14px; margin-bottom:13px; }
+.dept-av { width:52px; height:52px; border-radius:50%; background:var(--c); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:17px; flex-shrink:0; letter-spacing:0.5px; }
+.dept-mgr { font-size:17px; font-weight:800; color:var(--black); line-height:1.2; }
+.dept-mgr-ttl { font-size:12px; color:var(--gray-mid); margin-top:2px; }
+.dept-region { align-self:flex-start; font-size:10.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.6px; color:var(--c); background:var(--cp); padding:3px 11px; border-radius:20px; margin-bottom:11px; }
+.dept-note { font-size:13px; color:#555; line-height:1.65; margin-bottom:13px; flex:1; }
+.dept-sme { font-size:11.5px; color:var(--gray-mid); margin-bottom:13px; }
+.dept-sme b { color:var(--gray-dark); font-weight:600; }
+.dept-foot { display:flex; align-items:center; justify-content:space-between; border-top:1px solid #F2F2F2; padding-top:13px; margin-top:auto; }
+.dept-count { font-size:16px; font-weight:800; color:var(--black); }
+.dept-count span { font-size:12px; font-weight:500; color:var(--gray-mid); }
+.dept-link { font-size:12.5px; font-weight:700; color:var(--c); }
 
-/* Subject Matter Experts — smaller node, keeps parent region colour */
-.node.sme { min-width:150px; max-width:188px; padding:12px 14px 11px; }
-.node.sme .avatar { width:38px; height:38px; font-size:13px; margin-bottom:8px; }
-.node.sme .nm { font-size:13px; }
-.node.sme .ttl { font-size:10.5px; }
-.node.sme .lvl { margin-top:9px; font-size:9px; }
+/* ── team summary stats ── */
+.team-stats { display:flex; gap:12px; flex-wrap:wrap; margin-bottom:22px; }
+.team-stat { flex:1; min-width:130px; background:#fff; border:1px solid #ECECEC; border-radius:12px; padding:15px 18px; }
+.team-stat b { display:block; font-size:24px; font-weight:800; color:var(--orange); line-height:1; }
+.team-stat span { font-size:12px; color:var(--gray-mid); margin-top:5px; display:block; }
 
-/* Manager nodes are links into their team pages */
-a.node { text-decoration:none !important; color:inherit; cursor:pointer; position:relative; z-index:2; }
-a.node:hover { text-decoration:none !important; }
-.node-link-hint { display:block; margin-top:9px; font-size:10px; font-weight:700;
-  letter-spacing:0.3px; color:var(--orange); opacity:0.85; }
-a.node:hover .node-link-hint { opacity:1; }
-
-/* ── SQUAD BUTTONS ── */
+/* ── squad cards ── */
 .squad-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
 @media(max-width:680px){ .squad-grid{ grid-template-columns:1fr; } }
-.squad-btn { display:flex; align-items:center; gap:16px; background:#fff; border:1px solid #ECECEC;
-  border-left:4px solid var(--c); border-radius:14px; padding:18px 20px;
-  text-decoration:none !important; color:inherit; transition:transform .16s, box-shadow .16s; }
+.squad-btn { display:flex; align-items:center; gap:16px; background:#fff; border:1px solid #ECECEC; border-left:4px solid var(--c); border-radius:14px; padding:18px 20px; text-decoration:none !important; color:inherit; transition:transform .16s, box-shadow .16s; }
 .squad-btn:hover { transform:translateY(-3px); box-shadow:0 14px 34px rgba(0,0,0,0.12); }
-.squad-ic { width:54px; height:54px; border-radius:14px; background:var(--cp); flex-shrink:0;
-  display:flex; align-items:center; justify-content:center; font-size:27px; }
-.squad-tx { flex:1; }
+.squad-ic { width:54px; height:54px; border-radius:14px; background:var(--cp); flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:27px; }
+.squad-tx { flex:1; min-width:0; }
 .squad-nm { font-size:17px; font-weight:800; color:var(--black); }
-.squad-sub { font-size:12.5px; color:var(--gray-mid); margin-top:2px; }
-.squad-meta { flex-shrink:0; font-size:12px; font-weight:700; color:var(--c);
-  display:flex; align-items:center; gap:8px; }
+.squad-sub { font-size:12.5px; color:var(--gray-mid); margin-top:3px; line-height:1.5; }
+.squad-meta { flex-shrink:0; font-size:12px; font-weight:700; color:var(--c); display:flex; align-items:center; gap:8px; }
 .squad-meta span { font-size:18px; line-height:1; }
 </style>
 </head>
@@ -161,7 +123,7 @@ a.node:hover .node-link-hint { opacity:1; }
   <div class="kb-hero-inner">
     <div class="kb-hero-tag">🚀 DPM Knowledge Base</div>
     <h1 class="kb-hero-h1">How can we help?</h1>
-    <p class="kb-hero-sub">Search the knowledge base — the DPM role, the team, the delivery process, networking fundamentals, and every vendor device.</p>
+    <p class="kb-hero-sub">Your onboarding guide — the DPM role, the team, the delivery process, and enough networking to be productive. Search anything, or skim the quick notes below.</p>
     <button class="kb-hero-search" data-kb-open type="button" aria-label="Search the knowledge base">
       <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
       <span class="kb-hero-search-ph">Search anything — “Option 43”, “BGP”, “AP process”, a person…</span>
@@ -181,42 +143,43 @@ a.node:hover .node-link-hint { opacity:1; }
 
 <div class="content">
 
-  <!-- WHAT IS A DPM -->
+  <!-- QUICK NOTE: THE DPM ROLE -->
   <div class="section">
     <div class="section-header">
-      <h2>What does a Delivery Project Manager do?</h2>
+      <h2>The DPM role, in a nutshell</h2>
       <div class="divider"></div>
+      <p>A quick orientation before you dive in. Each card links to the full detail.</p>
     </div>
     <p class="role-lead">
-      A <strong>Delivery Project Manager (DPM)</strong> owns a customer's network delivery from the moment an order is placed through to final handover. You are the single point of accountability that turns a signed order into working infrastructure on the customer's site — keeping the project on schedule, on scope, and clearly communicated the whole way through.
+      A <strong>Delivery Project Manager (DPM)</strong> owns a customer's network delivery from the moment an order is placed through to final handover — the single point of accountability that turns a signed order into working infrastructure on the customer's site, on schedule, on scope, and clearly communicated the whole way.
     </p>
 
     <div class="grid-2" style="margin-bottom:28px;">
       <div class="card">
         <div class="card-icon" style="background:var(--orange-pale);">🗂️</div>
         <h3>Own the delivery</h3>
-        <p>Drive each project from kickoff to HOTO sign-off — planning the timeline, tracking milestones, and managing order records in tools like GOLD, ServiceNow, and SALTO.</p>
+        <p>Drive each project from kickoff to HOTO sign-off — planning the timeline, tracking milestones, and managing orders in GOLD, ServiceNow, and SALTO.</p>
       </div>
       <div class="card">
         <div class="card-icon" style="background:var(--cisco-pale);">🤝</div>
         <h3>Coordinate the teams</h3>
-        <p>Orchestrate everyone the delivery depends on — VPOs and engineering, Field Engineers booked via FLIP, logistics, and the customer's own technical contacts.</p>
+        <p>Orchestrate everyone the delivery depends on — VPOs and engineering, Field Engineers booked via FLIP, logistics, and the customer's technical contacts.</p>
       </div>
       <div class="card">
         <div class="card-icon" style="background:var(--green-pale);">📊</div>
         <h3>Manage scope &amp; risk</h3>
-        <p>Keep internal stakeholders and the customer aligned: confirm prerequisites, flag blockers early, run staging and dry runs, and document decisions as you go.</p>
+        <p>Keep everyone aligned: confirm prerequisites, flag blockers early, run staging and dry runs, and document decisions as you go.</p>
       </div>
       <div class="card">
         <div class="card-icon" style="background:var(--purple-pale);">🔧</div>
         <h3>Run the migration</h3>
-        <p>Execute LAN and WAN migrations — switches, WLCs and access points — manage UAT with the customer, then close out every system once the site is live.</p>
+        <p>Execute LAN and WAN migrations — switches, WLCs and APs — manage UAT with the customer, then close out every system once the site is live.</p>
       </div>
     </div>
 
     <div class="section-header" style="margin-bottom:16px;">
       <h3 style="font-size:16px;">The delivery lifecycle</h3>
-      <p style="font-size:13px;color:var(--gray-mid);">Every DPM project follows the same core lifecycle. The <a href="lan-process.html">LAN Process</a> and <a href="wan-process.html">WAN Process</a> guides break each phase down step by step.</p>
+      <p style="font-size:13px;color:var(--gray-mid);">Every project follows the same three phases. The <a href="lan-process.html">LAN</a> and <a href="wan-process.html">WAN</a> process guides break each one down step by step.</p>
     </div>
     <div class="lifecycle">
       <div class="lc-step">
@@ -237,173 +200,174 @@ a.node:hover .node-link-hint { opacity:1; }
     </div>
   </div>
 
-  <!-- MEET THE TEAM -->
+  <!-- ★ THE TEAM — DEPARTMENTS -->
   <div class="section" id="team">
     <div class="section-header">
-      <h2>Meet the Team</h2>
+      <h2>The Team — 4 Delivery Departments</h2>
       <div class="divider"></div>
-      <p>Who's who in the Europe Delivery Project Managers organisation. More team members will be added over time.</p>
+      <p>The Europe Delivery Project Managers organisation — <strong>77 DPMs</strong> across four regional clusters, led by Mona Tamimy under Khaled Khattab. Click a department to see everyone in it.</p>
     </div>
 
-    <div class="org-wrap">
-      <div class="org-tree">
-        <ul>
-          <li>
-            <div class="node lead">
-              <div class="avatar">KK</div>
-              <div class="nm">Khaled Khattab</div>
-              <div class="ttl">Head of Order to Bill</div>
-              <span class="lvl">Order to Bill</span>
-            </div>
-            <ul>
-              <li>
-                <div class="node lead">
-                  <div class="avatar">MT</div>
-                  <div class="nm">Mona Tamimy</div>
-                  <div class="ttl">Head of Europe Delivery Project Managers</div>
-                  <span class="lvl">Europe DPM</span>
-                </div>
-                <ul>
-                  <li>
-                    <a class="node north" href="karim-elzarka.html">
-                      <div class="avatar">KE</div>
-                      <div class="nm">Karim El Zarka</div>
-                      <div class="ttl">Team Manager, North Europe Transversal Team</div>
-                      <span class="lvl">North Europe</span>
-                      <span class="node-link-hint">View team →</span>
-                    </a>
-                    <ul>
-                      <li>
-                        <div class="node north sme">
-                          <div class="avatar">AW</div>
-                          <div class="nm">Abanoub Wasfy</div>
-                          <div class="ttl">Subject Matter Expert</div>
-                          <span class="lvl">SME</span>
-                        </div>
-                      </li>
-                      <li>
-                        <div class="node north sme">
-                          <div class="avatar">SE</div>
-                          <div class="nm">Salma El-Shazly</div>
-                          <div class="ttl">Subject Matter Expert</div>
-                          <span class="lvl">SME</span>
-                        </div>
-                      </li>
-                    </ul>
-                  </li>
-                  <li>
-                    <a class="node dach" href="mona-tantawy.html">
-                      <div class="avatar">MT</div>
-                      <div class="nm">Mona Tantawi</div>
-                      <div class="ttl">Head of Delivery Project Managers — DACH Territory</div>
-                      <span class="lvl">DACH</span>
-                      <span class="node-link-hint">View team →</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a class="node south" href="peter-sabet.html">
-                      <div class="avatar">PS</div>
-                      <div class="nm">Peter Sabet</div>
-                      <div class="ttl">Team Manager, Southern Europe Transversal Team</div>
-                      <span class="lvl">Southern Europe</span>
-                      <span class="node-link-hint">View team →</span>
-                    </a>
-                    <ul>
-                      <li>
-                        <div class="node south sme">
-                          <div class="avatar">EO</div>
-                          <div class="nm">Emad Osman</div>
-                          <div class="ttl">Subject Matter Expert</div>
-                          <span class="lvl">SME</span>
-                        </div>
-                      </li>
-                    </ul>
-                  </li>
-                  <li>
-                    <a class="node benelux" href="maryam-etry.html">
-                      <div class="avatar">ME</div>
-                      <div class="nm">Maryam Etry</div>
-                      <div class="ttl">Europe DPMs Manager, BENELUX</div>
-                      <span class="lvl">BENELUX</span>
-                      <span class="node-link-hint">View team →</span>
-                    </a>
-                    <ul>
-                      <li>
-                        <div class="node benelux sme">
-                          <div class="avatar">AH</div>
-                          <div class="nm">Ahmed Hweedy</div>
-                          <div class="ttl">Subject Matter Expert</div>
-                          <span class="lvl">SME</span>
-                        </div>
-                      </li>
-                    </ul>
-                  </li>
-                </ul>
-              </li>
-            </ul>
-          </li>
-        </ul>
+    <div class="lead-strip">
+      <div class="lead-chip">
+        <div class="lead-av">KK</div>
+        <div><div class="lead-nm">Khaled Khattab</div><div class="lead-ttl">Head of Order to Bill</div></div>
       </div>
+      <div class="lead-arrow">→</div>
+      <div class="lead-chip">
+        <div class="lead-av">MT</div>
+        <div><div class="lead-nm">Mona Tamimy</div><div class="lead-ttl">Head of Europe Delivery Project Managers</div></div>
+      </div>
+    </div>
+
+    <div class="team-stats">
+      <div class="team-stat"><b>77</b><span>Delivery Project Managers</span></div>
+      <div class="team-stat"><b>4</b><span>Regional departments</span></div>
+      <div class="team-stat"><b>4</b><span>Subject Matter Experts</span></div>
+      <div class="team-stat"><b>5</b><span>Cross-team squads</span></div>
+    </div>
+
+    <div class="dept-grid">
+      <a class="dept-card" href="karim-elzarka.html" style="--c:var(--cisco-blue);--cp:var(--cisco-pale);">
+        <div class="dept-head">
+          <div class="dept-av">KE</div>
+          <div><div class="dept-mgr">Karim El Zarka</div><div class="dept-mgr-ttl">Team Manager</div></div>
+        </div>
+        <span class="dept-region">North Europe · Transversal</span>
+        <p class="dept-note">Delivery across Northern &amp; Scandinavian Europe, plus cross-region transversal projects — the largest cluster.</p>
+        <div class="dept-sme">SMEs · <b>Abanoub Wasfy</b>, <b>Salma El-Shazly</b></div>
+        <div class="dept-foot"><div class="dept-count">30 <span>DPMs</span></div><div class="dept-link">View team →</div></div>
+      </a>
+
+      <a class="dept-card" href="peter-sabet.html" style="--c:var(--green);--cp:var(--green-pale);">
+        <div class="dept-head">
+          <div class="dept-av">PS</div>
+          <div><div class="dept-mgr">Peter Sabet</div><div class="dept-mgr-ttl">Team Manager</div></div>
+        </div>
+        <span class="dept-region">Southern Europe · Transversal</span>
+        <p class="dept-note">Delivery across Southern Europe, plus cross-region transversal projects (GEA).</p>
+        <div class="dept-sme">SME · <b>Emad Osman</b></div>
+        <div class="dept-foot"><div class="dept-count">20 <span>DPMs</span></div><div class="dept-link">View team →</div></div>
+      </a>
+
+      <a class="dept-card" href="maryam-etry.html" style="--c:var(--palo-orange);--cp:var(--palo-pale);">
+        <div class="dept-head">
+          <div class="dept-av">ME</div>
+          <div><div class="dept-mgr">Maryam Etry</div><div class="dept-mgr-ttl">Europe DPMs Manager</div></div>
+        </div>
+        <span class="dept-region">BENELUX</span>
+        <p class="dept-note">Delivery across Belgium, the Netherlands &amp; Luxembourg.</p>
+        <div class="dept-sme">SME · <b>Ahmed Hweedy</b></div>
+        <div class="dept-foot"><div class="dept-count">14 <span>DPMs</span></div><div class="dept-link">View team →</div></div>
+      </a>
+
+      <a class="dept-card" href="mona-tantawy.html" style="--c:var(--purple);--cp:var(--purple-pale);">
+        <div class="dept-head">
+          <div class="dept-av">MT</div>
+          <div><div class="dept-mgr">Mona Tantawi</div><div class="dept-mgr-ttl">Head of DPMs — DACH</div></div>
+        </div>
+        <span class="dept-region">DACH Territory</span>
+        <p class="dept-note">Delivery across the DACH territory — Germany, Austria &amp; Switzerland.</p>
+        <div class="dept-sme" style="color:var(--gray-light);">—</div>
+        <div class="dept-foot"><div class="dept-count">13 <span>DPMs</span></div><div class="dept-link">View team →</div></div>
+      </a>
     </div>
   </div>
 
-  <!-- DPM SQUADS -->
+  <!-- ★ DPM SQUADS -->
   <div class="section" id="squads">
     <div class="section-header">
-      <h2>DPM Squads</h2>
+      <h2>5 DPM Squads</h2>
       <div class="divider"></div>
-      <p>Cross-team working groups that keep the DPM function running. Click a squad to see its members, emails, and clusters.</p>
+      <p>Cross-team working groups made up of DPMs from every department — they keep the DPM function running and improving. Click a squad to see its members.</p>
     </div>
     <div class="squad-grid">
       <a href="automation-squad.html" class="squad-btn" style="--c:#0E8AA6;--cp:#E6F6FA;">
         <div class="squad-ic">⚙️</div>
         <div class="squad-tx">
           <div class="squad-nm">Automation Squad</div>
-          <div class="squad-sub">Automations &amp; dashboards</div>
+          <div class="squad-sub">Builds the automations &amp; Power BI dashboards that cut manual DPM work.</div>
         </div>
-        <div class="squad-meta">4 members <span>→</span></div>
-      </a>
-      <a href="marketing-squad.html" class="squad-btn" style="--c:#D6336C;--cp:#FDEAF1;">
-        <div class="squad-ic">📣</div>
-        <div class="squad-tx">
-          <div class="squad-nm">Marketing Squad</div>
-          <div class="squad-sub">Marketing for the DPMs</div>
-        </div>
-        <div class="squad-meta">3 members <span>→</span></div>
-      </a>
-      <a href="hiring-squad.html" class="squad-btn" style="--c:#0E8A4A;--cp:#E6F7EF;">
-        <div class="squad-ic">🎯</div>
-        <div class="squad-tx">
-          <div class="squad-nm">Hiring Squad</div>
-          <div class="squad-sub">CV screening &amp; interviews</div>
-        </div>
-        <div class="squad-meta">1 member <span>→</span></div>
+        <div class="squad-meta">4 <span>→</span></div>
       </a>
       <a href="onboarding-squad.html" class="squad-btn" style="--c:#4F46E5;--cp:#ECEBFD;">
         <div class="squad-ic">🚀</div>
         <div class="squad-tx">
           <div class="squad-nm">Onboarding Squad</div>
-          <div class="squad-sub">Ramping up new joiners</div>
+          <div class="squad-sub">Ramps up new joiners — this knowledge base is one of theirs.</div>
         </div>
-        <div class="squad-meta">2 members <span>→</span></div>
+        <div class="squad-meta">2 <span>→</span></div>
+      </a>
+      <a href="hiring-squad.html" class="squad-btn" style="--c:#0E8A4A;--cp:#E6F7EF;">
+        <div class="squad-ic">🎯</div>
+        <div class="squad-tx">
+          <div class="squad-nm">Hiring Squad</div>
+          <div class="squad-sub">Screens CVs and runs interviews for new DPM roles.</div>
+        </div>
+        <div class="squad-meta">1 <span>→</span></div>
+      </a>
+      <a href="marketing-squad.html" class="squad-btn" style="--c:#D6336C;--cp:#FDEAF1;">
+        <div class="squad-ic">📣</div>
+        <div class="squad-tx">
+          <div class="squad-nm">Marketing Squad</div>
+          <div class="squad-sub">Internal communications &amp; branding for the DPM function.</div>
+        </div>
+        <div class="squad-meta">3 <span>→</span></div>
       </a>
       <a href="presales-squad.html" class="squad-btn" style="--c:#C77700;--cp:#FFF4E0;grid-column:1/-1;">
         <div class="squad-ic">💼</div>
         <div class="squad-tx">
           <div class="squad-nm">Pre-Sales Squad</div>
-          <div class="squad-sub">Solution input, scoping &amp; bid support</div>
+          <div class="squad-sub">Solution input, scoping &amp; bid support on live deals before they become projects.</div>
         </div>
-        <div class="squad-meta">3 members <span>→</span></div>
+        <div class="squad-meta">3 <span>→</span></div>
       </a>
     </div>
   </div>
 
-  <!-- NETWORKING CONCEPTS -->
+  <!-- QUICK NOTES: PROCESS + TOOLS -->
   <div class="section">
     <div class="section-header">
-      <h2>Networking Concepts</h2>
+      <h2>Delivery process &amp; tools</h2>
       <div class="divider"></div>
-      <p>New to networking? Start here. Each page covers one topic in depth with diagrams, CLI examples, and plain-English explanations.</p>
+      <p>The step-by-step processes you'll run, plus the reference tools you'll reach for.</p>
+    </div>
+    <div class="grid-2" style="margin-bottom:16px;">
+      <a href="lan-process.html" class="card" style="border-top:3px solid #FF6200;text-decoration:none;">
+        <div class="card-icon" style="background:#FFF3EA;">🏢</div>
+        <h3 style="color:#FF6200;">LAN Process</h3>
+        <p>End-to-end LAN migration — the <strong>AP process</strong> and the <strong>WLC &amp; Switch process</strong>, phase by phase, with tools and team contacts.</p>
+        <span class="card-link" style="color:#FF6200;">View LAN Process →</span>
+      </a>
+      <a href="wan-process.html" class="card" style="border-top:3px solid #1BA0D7;text-decoration:none;">
+        <div class="card-icon" style="background:#E8F6FD;">🌐</div>
+        <h3 style="color:#1BA0D7;">WAN Process</h3>
+        <p>End-to-end WAN / SD-WAN delivery — carrier circuit, survey, router install, cutover, HOTO. <strong>14 phases</strong>.</p>
+        <span class="card-link" style="color:#1BA0D7;">View WAN Process →</span>
+      </a>
+    </div>
+    <div class="grid-2" style="margin-bottom:0;">
+      <a href="option43.html" class="card" style="border-top:3px solid var(--orange);text-decoration:none;">
+        <div class="card-icon" style="background:var(--orange-pale);">🧮</div>
+        <h3>Option 43 Calculator</h3>
+        <p>Generate the exact DHCP Option 43 hex string for WLC discovery — with a byte-by-byte breakdown. A staple of the AP process.</p>
+        <span class="card-link">Open calculator →</span>
+      </a>
+      <a href="devices.html" class="card" style="border-top:3px solid #7C3AED;text-decoration:none;">
+        <div class="card-icon" style="background:#F3EEFF;">🧩</div>
+        <h3>Vendor Device Guides</h3>
+        <p>Cisco, Palo Alto &amp; Fortinet — summaries, a side-by-side comparison, and per-model specs with front-panel diagrams.</p>
+        <span class="card-link" style="color:#7C3AED;">Open device guides →</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- QUICK NOTES: LEARN THE NETWORK -->
+  <div class="section">
+    <div class="section-header">
+      <h2>Learn the network</h2>
+      <div class="divider"></div>
+      <p>New to networking? Each page is a plain-English primer with diagrams and CLI examples.</p>
     </div>
     <div class="topic-nav">
       <a href="lan-wan-basics.html" class="topic-nav-card">
@@ -446,7 +410,7 @@ a.node:hover .node-link-hint { opacity:1; }
         <div class="topic-nav-card-icon">📖</div>
         <div class="topic-nav-card-label">Reference</div>
         <div class="topic-nav-card-title">Glossary</div>
-        <div class="topic-nav-card-sub">50+ networking terms explained simply</div>
+        <div class="topic-nav-card-sub">80+ networking &amp; DPM terms, explained</div>
       </a>
       <a href="option43.html" class="topic-nav-card">
         <div class="topic-nav-card-icon">🧮</div>
@@ -457,49 +421,11 @@ a.node:hover .node-link-hint { opacity:1; }
     </div>
   </div>
 
-  <!-- DEVICE GUIDES -->
-  <div class="section">
-    <div class="section-header">
-      <h2>Vendor Device Guides</h2>
-      <div class="divider"></div>
-      <p>Hardware reference for the three vendors you'll meet most — Cisco, Palo Alto, and Fortinet — all in one place.</p>
-    </div>
-    <a href="devices.html" class="card" style="display:block;border-top:3px solid var(--orange);text-decoration:none;">
-      <div class="card-icon" style="background:var(--orange-pale);">🧩</div>
-      <h3>Device Guides</h3>
-      <p>Vendor summaries and a side-by-side comparison of Cisco, Palo Alto Networks, and Fortinet — with links straight into each vendor's full device reference (port diagrams and per-model specs).</p>
-      <span class="card-link">Open Device Guides →</span>
-    </a>
-  </div>
-
-  <!-- DPM PROCESS GUIDES -->
-  <div class="section">
-    <div class="section-header">
-      <h2>DPM Process Guides</h2>
-      <div class="divider"></div>
-      <p>Orange Business delivery processes for new DPMs — step-by-step flowcharts covering every phase from pre-migration through to HOTO sign-off.</p>
-    </div>
-    <div class="grid-2" style="margin-bottom:0;">
-      <a href="lan-process.html" class="card" style="border-top:3px solid var(--ob-orange,#FF6200);text-decoration:none;">
-        <div class="card-icon" style="background:#FFF3EA;">🏢</div>
-        <h3 style="color:#FF6200;">LAN Process</h3>
-        <p>End-to-end DPM process for LAN migrations. Covers both the <strong>AP process</strong> (wireless access point deployment) and the <strong>WLC &amp; Switch process</strong> — with phase-by-phase flowcharts, tool references, and team contacts.</p>
-        <span class="card-link" style="color:#FF6200;">View LAN Process →</span>
-      </a>
-      <a href="wan-process.html" class="card" style="border-top:3px solid #1BA0D7;text-decoration:none;">
-        <div class="card-icon" style="background:#E8F6FD;">🌐</div>
-        <h3 style="color:#1BA0D7;">WAN Process</h3>
-        <p>End-to-end DPM process for WAN / SD-WAN sites — carrier circuit delivery, site survey, in-house wiring, router installation, cutover, and hand-over. <strong>14 phases</strong> across validate, deliver, install, and migrate.</p>
-        <span class="card-link" style="color:#1BA0D7;">View WAN Process →</span>
-      </a>
-    </div>
-  </div>
-
   <!-- HOW TO USE -->
   <div class="section">
     <div class="alert orange">
       <span class="alert-icon">💡</span>
-      <p><strong>How to use this guide:</strong> Get familiar with the DPM role and the team above, then start with <a href="lan-wan-basics.html">LAN / WAN Basics</a> and move through IP Routing → Switching → Wireless → Firewalls → Zscaler. Use the <a href="devices.html">Device Guides</a> as a hardware reference when working on specific customer environments.</p>
+      <p><strong>How to use this guide:</strong> get familiar with the role and your department above, then when you pick up a project follow the <a href="lan-process.html">LAN</a> or <a href="wan-process.html">WAN</a> process. Use the networking pages and <a href="devices.html">device guides</a> as reference, and the search box (<strong>Ctrl K</strong>) to jump to anything.</p>
     </div>
   </div>
 
