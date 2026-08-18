@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Option 43 Calculator — DPM Knowledge Base</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+/* ── Option 43 calculator (scoped) ── */
+.opt43 .calc-wrapper{background:#fff;border:1px solid #E0E0E0;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.07);}
+.opt43 .calc-header{background:var(--gray-faint);padding:14px 20px;border-bottom:1px solid #EDEDED;display:flex;align-items:center;gap:8px;}
+.opt43 .calc-dot{width:11px;height:11px;border-radius:50%;flex-shrink:0;}
+.opt43 .calc-dot:nth-child(1){background:#ff5f57;}
+.opt43 .calc-dot:nth-child(2){background:#ffbd2e;}
+.opt43 .calc-dot:nth-child(3){background:#28c840;}
+.opt43 .calc-header-title{font-size:14px;font-weight:700;margin-left:8px;color:var(--black);}
+.opt43 .calc-body{padding:24px;}
+.opt43 .form-group{margin-bottom:20px;}
+.opt43 label{display:block;font-size:11px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;color:var(--gray-mid);margin-bottom:9px;}
+.opt43 .radio-group{display:flex;gap:9px;flex-wrap:wrap;}
+.opt43 .radio-btn{cursor:pointer;}
+.opt43 .radio-btn input{display:none;}
+.opt43 .radio-btn span{display:block;padding:9px 16px;border-radius:9px;border:1.5px solid #E0E0E0;font-size:13px;font-weight:600;color:var(--gray-mid);background:#fff;transition:all .15s;}
+.opt43 .radio-btn input:checked+span{border-color:var(--orange);color:var(--orange-dark);background:var(--orange-pale);}
+.opt43 .radio-btn:hover span{border-color:var(--orange-light);color:var(--gray-dark);}
+.opt43 textarea{width:100%;background:var(--gray-faint);border:1.5px solid #E0E0E0;border-radius:10px;color:var(--black);font-family:var(--mono);font-size:13px;padding:12px 14px;resize:vertical;min-height:84px;outline:none;transition:border-color .18s;}
+.opt43 textarea:focus{border-color:var(--orange);}
+.opt43 .btn-row{display:flex;gap:10px;flex-wrap:wrap;}
+.opt43 .btn{display:inline-flex;align-items:center;gap:7px;padding:11px 22px;border-radius:10px;border:none;cursor:pointer;font-family:var(--font);font-size:14px;font-weight:700;transition:all .18s;}
+.opt43 .btn-primary{background:var(--orange);color:#fff;}
+.opt43 .btn-primary:hover{filter:brightness(1.06);transform:translateY(-1px);box-shadow:0 8px 26px rgba(255,98,0,0.28);}
+.opt43 .btn-secondary{background:var(--gray-faint);color:var(--gray-mid);border:1px solid #E0E0E0;}
+.opt43 .btn-secondary:hover{color:var(--black);border-color:var(--gray-light);}
+.opt43 .error-msg{background:#FDECEC;border:1px solid #F5C6C6;color:#C0392B;border-radius:10px;padding:12px 16px;font-size:13px;margin-top:14px;display:none;}
+.opt43 #result{display:none;margin-top:24px;}
+.opt43 .result-panel{background:#0D1117;border:1px solid rgba(255,98,0,0.28);border-radius:12px;overflow:hidden;}
+.opt43 .result-header{padding:11px 16px;border-bottom:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:space-between;gap:10px;}
+.opt43 .result-header-label{font-family:var(--mono);font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--orange-light);}
+.opt43 .copy-btn{background:none;border:1px solid rgba(255,255,255,0.18);color:rgba(255,255,255,0.65);border-radius:6px;padding:4px 12px;font-size:11px;cursor:pointer;font-family:var(--mono);transition:all .15s;flex-shrink:0;}
+.opt43 .copy-btn:hover{border-color:var(--orange);color:var(--orange-light);}
+.opt43 .result-value{padding:18px 20px;font-family:var(--mono);font-size:15px;word-break:break-all;color:#5DE8AA;line-height:1.9;letter-spacing:1px;}
+.opt43 .breakdown{margin-top:20px;overflow-x:auto;}
+.opt43 .breakdown-title{font-family:var(--mono);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gray-mid);margin-bottom:10px;}
+.opt43 .breakdown-table{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:12.5px;min-width:440px;}
+.opt43 .breakdown-table th{text-align:left;padding:8px 12px;color:var(--gray-mid);font-weight:600;border-bottom:1px solid #EAEAEA;font-size:10.5px;text-transform:uppercase;letter-spacing:0.8px;}
+.opt43 .breakdown-table td{padding:9px 12px;border-bottom:1px solid #F2F2F2;color:var(--gray-dark);vertical-align:top;}
+.opt43 .breakdown-table tr:last-child td{border-bottom:none;}
+.opt43 .tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700;}
+.opt43 .tag-type{background:var(--orange-pale);color:var(--orange-dark);}
+.opt43 .tag-len{background:var(--green-pale);color:#0A7A4A;}
+.opt43 .tag-ip{background:#EEF3FF;color:#1A4E8A;}
+.opt43 .explanation-box{margin-top:16px;background:var(--gray-faint);border:1px solid #EDEDED;border-radius:12px;padding:18px 20px;}
+.opt43 .explanation-box h4{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--black);margin-bottom:12px;}
+.opt43 .explanation-box ol{padding-left:18px;color:var(--gray-dark);font-size:13px;line-height:1.9;}
+.opt43 .mono{font-family:var(--mono);color:var(--orange-dark);font-weight:600;}
+/* TLV mini cards */
+.tlv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:20px 0 8px;}
+@media(max-width:640px){.tlv-grid{grid-template-columns:1fr;}}
+.tlv-card{border:1px solid #E6E6E6;border-radius:12px;padding:18px;background:#fff;}
+.tlv-badge{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:9px;font-family:var(--mono);font-weight:700;font-size:15px;margin-bottom:10px;}
+.tlv-t{background:var(--orange-pale);color:var(--orange-dark);}
+.tlv-l{background:var(--green-pale);color:#0A7A4A;}
+.tlv-v{background:#EEF3FF;color:#1A4E8A;}
+.tlv-card h4{font-size:14px;font-weight:700;color:var(--black);margin-bottom:5px;}
+.tlv-card p{font-size:12.5px;color:var(--gray-mid);line-height:1.6;margin:0;}
+</style>
+</head>
+<body>
+<nav class="topnav">
+  <a href="index.html" class="topnav-brand">
+    <div class="topnav-logo">DPM</div>
+    <div class="topnav-brand-text">Knowledge <span>Base</span></div>
+  </a>
+  <div class="topnav-links">
+    <a href="index.html"          class="nav-link">Home</a>
+    <a href="lan-wan-basics.html" class="nav-link">LAN / WAN</a>
+    <a href="ip-routing.html"     class="nav-link">IP Routing</a>
+    <a href="switching.html"      class="nav-link">Switching</a>
+    <a href="wireless.html"       class="nav-link">Wireless</a>
+    <a href="firewalls.html"      class="nav-link">Firewalls</a>
+    <a href="zscaler.html"        class="nav-link">Zscaler</a>
+    <a href="devices.html"        class="nav-link">Devices</a>
+    <a href="glossary.html"       class="nav-link">Glossary</a>
+  </div>
+  <div class="topnav-badge">New Hire Guide</div>
+</nav>
+
+<div class="page-hero dark">
+  <div class="hero-content">
+    <div class="hero-tag">🧮 DPM Tool</div>
+    <h1>Option 43 <span>Calculator</span></h1>
+    <p class="hero-sub">Generate the exact DHCP Option 43 hex string your wireless controller needs to point access points at the WLC — with a full byte-by-byte breakdown of how it was built.</p>
+  </div>
+</div>
+
+<div class="content">
+
+  <div class="opt43">
+    <div class="section">
+      <div class="section-header">
+        <h2>Option 43 Generator</h2>
+        <div class="divider"></div>
+        <p>Pick your controller type, enter one or more controller IP addresses, and get an instant hex string plus a step-by-step breakdown. Paste the result straight into your DHCP scope's Option 43.</p>
+      </div>
+
+      <div class="calc-wrapper">
+        <div class="calc-header">
+          <div class="calc-dot"></div>
+          <div class="calc-dot"></div>
+          <div class="calc-dot"></div>
+          <span class="calc-header-title">Option 43 Calculator</span>
+        </div>
+        <div class="calc-body">
+
+          <div class="form-group">
+            <label>Controller Type</label>
+            <div class="radio-group">
+              <label class="radio-btn"><input type="radio" name="vendor" value="cisco" checked><span>Cisco WLC</span></label>
+              <label class="radio-btn"><input type="radio" name="vendor" value="ruckus_zd"><span>Ruckus ZD</span></label>
+              <label class="radio-btn"><input type="radio" name="vendor" value="ruckus_scg"><span>Ruckus SCG / vSZ</span></label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Controller IP Address(es)</label>
+            <textarea id="ipInput" placeholder="Separate by space, comma, or newline&#10;e.g. 192.168.1.10 192.168.1.11"></textarea>
+          </div>
+
+          <div class="btn-row">
+            <button class="btn btn-primary" onclick="calculate()">⚡ Generate Option 43</button>
+            <button class="btn btn-secondary" onclick="resetCalc()">Reset</button>
+          </div>
+
+          <div class="error-msg" id="errorMsg"></div>
+
+          <div id="result">
+            <div class="result-panel">
+              <div class="result-header">
+                <span class="result-header-label">Option 43 hex string</span>
+                <button class="copy-btn" onclick="copyResult()">Copy</button>
+              </div>
+              <div class="result-value" id="resultValue"></div>
+            </div>
+
+            <div class="breakdown">
+              <div class="breakdown-title">Byte-by-byte breakdown</div>
+              <table class="breakdown-table">
+                <thead><tr><th>Byte(s)</th><th>Hex</th><th>Role</th><th>Meaning</th></tr></thead>
+                <tbody id="breakdownBody"></tbody>
+              </table>
+            </div>
+
+            <div class="explanation-box">
+              <h4>📐 How this was calculated</h4>
+              <ol id="explanationSteps"></ol>
+            </div>
+          </div><!-- /#result -->
+
+        </div>
+      </div>
+    </div>
+  </div><!-- /.opt43 -->
+
+  <!-- WHAT IS OPTION 43 -->
+  <div class="section">
+    <div class="section-header">
+      <h2>What is DHCP Option 43?</h2>
+      <div class="divider"></div>
+      <p>When an access point (AP) boots, it needs to find its Wireless LAN Controller (WLC) — the brain that manages it. <strong>DHCP Option 43</strong> is a vendor-specific field in the DHCP offer that hands the AP one or more controller IP addresses automatically, so the AP can join the WLC with zero manual configuration. Without it (or DNS-based discovery), a freshly-powered AP has no idea where its controller lives.</p>
+    </div>
+    <div class="grid-3">
+      <div class="card">
+        <div class="card-icon" style="background:var(--cisco-pale);">📡</div>
+        <h3>AP boots &amp; sends DHCP Discover</h3>
+        <p>The AP broadcasts a request — it needs an IP address and, crucially, a path to its controller.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:var(--orange-pale);">🏷️</div>
+        <h3>DHCP server includes Option 43</h3>
+        <p>The DHCP scope is configured to attach a vendor-specific hex payload pointing at the WLC IP(s).</p>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:var(--green-pale);">🔗</div>
+        <h3>AP decodes it &amp; joins the WLC</h3>
+        <p>The AP parses the hex, extracts the controller IP(s), and opens a CAPWAP tunnel to the WLC.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ENCODING -->
+  <div class="section">
+    <div class="section-header">
+      <h2>How Cisco encodes it — TLV</h2>
+      <div class="divider"></div>
+      <p>Cisco uses a <strong>TLV</strong> (Type · Length · Value) structure inside Option 43. Every byte is hex-encoded:</p>
+    </div>
+    <div class="tlv-grid">
+      <div class="tlv-card">
+        <div class="tlv-badge tlv-t">T</div>
+        <h4>Type — 0xF1</h4>
+        <p>Cisco sub-option <strong>0xF1</strong> (241) means "WLC address list". It tells the AP the following bytes are controller IPs.</p>
+      </div>
+      <div class="tlv-card">
+        <div class="tlv-badge tlv-l">L</div>
+        <h4>Length — N × 4</h4>
+        <p>Each IPv4 address is 4 bytes. Two WLCs → length <strong>0x08</strong>. Tells the AP how many bytes to read.</p>
+      </div>
+      <div class="tlv-card">
+        <div class="tlv-badge tlv-v">V</div>
+        <h4>Value — IPs as hex</h4>
+        <p>Each IP is converted octet-by-octet: <strong>192.168.1.100</strong> → <span style="font-family:var(--mono)">C0A80164</span>. Concatenated, no separators.</p>
+      </div>
+    </div>
+    <div class="code-block" style="margin-top:12px;">
+<span class="cmt"># Example — single WLC at 10.0.0.1</span>
+<span class="kw">F1</span> <span class="val">04</span> <span class="cmd">0A 00 00 01</span>
+<span class="cmt"># F1 = sub-option · 04 = length (1 IP × 4 bytes) · 0A000001 = 10.0.0.1 in hex</span>
+
+<span class="cmt"># Cisco IOS DHCP scope:</span>
+<span class="cmd">option 43 hex</span> <span class="val">f1040a000001</span>
+    </div>
+    <div class="alert orange" style="margin-top:16px;">
+      <span class="alert-icon">💡</span>
+      <p>Verifying Option 43 is a <strong>critical pre-migration step</strong> in the <a href="process-ap.html">AP migration process</a> — if it's missing, APs get an IP but never find the WLC. See the <a href="wireless.html#kb-toc-list">Wireless</a> page for the discovery order (Option 43 → DNS → broadcast).</p>
+    </div>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <p>DPM <span>Knowledge Base</span> &nbsp;·&nbsp;
+  <a href="index.html" style="color:rgba(255,255,255,0.4);">Home</a>
+  &nbsp;·&nbsp;
+  References: <a href="https://www.rfc-editor.org/rfc/rfc2132" target="_blank" rel="noopener" style="color:rgba(255,255,255,0.4);">RFC 2132</a></p>
+</footer>
+
+<script src="shared.js"></script>
+<script>
+/* ── Option 43 calculator (logic ported from the standalone tool) ── */
+function parseIPs(raw){ return raw.split(/[\s,;:\n]+/).map(function(s){return s.trim();}).filter(Boolean); }
+
+function validateIP(ip){
+  var parts = ip.split('.');
+  if (parts.length !== 4) return false;
+  return parts.every(function(p){
+    var n = parseInt(p, 10);
+    return !isNaN(n) && n >= 0 && n <= 255 && String(n) === p;
+  });
+}
+function ipToHex(ip){ return ip.split('.').map(function(o){return parseInt(o,10).toString(16).padStart(2,'0').toUpperCase();}).join(' '); }
+function ipToHexNS(ip){ return ip.split('.').map(function(o){return parseInt(o,10).toString(16).padStart(2,'0').toUpperCase();}).join(''); }
+
+function showError(msg){
+  var el = document.getElementById('errorMsg');
+  el.style.display = 'block'; el.textContent = msg;
+  document.getElementById('result').style.display = 'none';
+}
+function hideError(){ document.getElementById('errorMsg').style.display = 'none'; }
+
+function calculate(){
+  hideError();
+  var raw = document.getElementById('ipInput').value;
+  var vendor = document.querySelector('input[name="vendor"]:checked').value;
+  var ips = parseIPs(raw);
+
+  if (!ips.length){ showError('Please enter at least one controller IP address.'); return; }
+  for (var k=0;k<ips.length;k++){ if (!validateIP(ips[k])){ showError('"'+ips[k]+'" is not a valid IPv4 address.'); return; } }
+
+  var hexString = '', tbodyHTML = '', stepsHTML = '';
+
+  if (vendor === 'cisco'){
+    var type = 'F1';
+    var len = (ips.length * 4).toString(16).padStart(2,'0').toUpperCase();
+    hexString = type + len + ips.map(ipToHexNS).join('');
+
+    tbodyHTML += row('1', type, 'tag-type', 'Sub-option Type', 'Cisco vendor sub-option F1 (241) = WLC address list');
+    tbodyHTML += row('2', len, 'tag-len', 'Length', ips.length+' IP(s) × 4 bytes = '+(ips.length*4)+' bytes → 0x'+len);
+    ips.forEach(function(ip, i){ tbodyHTML += row((3+i*4)+'–'+(6+i*4), ipToHex(ip), 'tag-ip', 'IP #'+(i+1), ip+' → '+ipToHex(ip)); });
+
+    stepsHTML += '<li>Sub-option type: Cisco uses <span class="mono">0xF1</span> (241) to indicate a WLC address list.</li>';
+    stepsHTML += '<li>Length: <strong>'+ips.length+' IP'+(ips.length>1?'s':'')+'</strong> × 4 bytes each = <span class="mono">'+(ips.length*4)+' bytes</span> → hex <span class="mono">0x'+len+'</span></li>';
+    ips.forEach(function(ip, i){
+      var parts = ip.split('.');
+      var hexP = parts.map(function(p){return parseInt(p).toString(16).padStart(2,'0').toUpperCase();});
+      stepsHTML += '<li>IP #'+(i+1)+' <strong>'+ip+'</strong>: '+parts.map(function(p,j){return p+' → <span class="mono">'+hexP[j]+'</span>';}).join(', ')+' → <span class="mono">'+hexP.join(' ')+'</span></li>';
+    });
+    stepsHTML += '<li>Concatenate all bytes → <span class="mono">'+hexString.match(/.{1,2}/g).join(' ')+'</span></li>';
+
+  } else if (vendor === 'ruckus_zd'){
+    var type2 = '03';
+    var len2 = (ips.length * 4).toString(16).padStart(2,'0').toUpperCase();
+    hexString = type2 + len2 + ips.map(ipToHexNS).join('');
+
+    tbodyHTML += row('1', type2, 'tag-type', 'Sub-option Type', 'Ruckus ZD sub-option 0x03 = Zone Director address');
+    tbodyHTML += row('2', len2, 'tag-len', 'Length', ips.length+' IP(s) × 4 bytes = '+(ips.length*4)+' bytes → 0x'+len2);
+    ips.forEach(function(ip, i){ tbodyHTML += row((3+i*4)+'–'+(6+i*4), ipToHex(ip), 'tag-ip', 'ZD IP #'+(i+1), ip+' → '+ipToHex(ip)); });
+
+    stepsHTML += '<li>Sub-option type: Ruckus ZD uses <span class="mono">0x03</span> for Zone Director addresses.</li>';
+    stepsHTML += '<li>Length: '+ips.length+' address'+(ips.length>1?'es':'')+' × 4 bytes = <span class="mono">0x'+len2+'</span></li>';
+    ips.forEach(function(ip, i){
+      var parts = ip.split('.');
+      var hexP = parts.map(function(p){return parseInt(p).toString(16).padStart(2,'0').toUpperCase();});
+      stepsHTML += '<li>ZD IP #'+(i+1)+' <strong>'+ip+'</strong>: '+parts.map(function(p,j){return p+' → <span class="mono">'+hexP[j]+'</span>';}).join(', ')+' → <span class="mono">'+hexP.join(' ')+'</span></li>';
+    });
+    stepsHTML += '<li>Result → <span class="mono">'+hexString.match(/.{1,2}/g).join(' ')+'</span></li>';
+
+  } else {
+    // Ruckus SCG / vSZ — ASCII
+    var ipStr = ips.join(';');
+    var asciiHx = Array.from(ipStr).map(function(c){return c.charCodeAt(0).toString(16).padStart(2,'0').toUpperCase();});
+    var len3 = asciiHx.length.toString(16).padStart(2,'0').toUpperCase();
+    hexString = '06' + len3 + asciiHx.join('');
+
+    tbodyHTML += row('1', '06', 'tag-type', 'Sub-option Type', 'Ruckus SCG/vSZ sub-option 0x06 = SmartZone controller');
+    tbodyHTML += row('2', len3, 'tag-len', 'Length', '"'+ipStr+'" = '+asciiHx.length+' ASCII bytes → 0x'+len3);
+    asciiHx.forEach(function(b,i){ tbodyHTML += row(String(3+i), b, 'tag-ip', "ASCII '"+ipStr[i]+"'", "'"+ipStr[i]+"' → 0x"+b); });
+
+    stepsHTML += '<li>Ruckus SCG/vSZ uses sub-option <span class="mono">0x06</span> and encodes IPs as an <strong>ASCII string</strong>, not binary octets.</li>';
+    stepsHTML += '<li>Join IPs with semicolons: <span class="mono">'+ipStr+'</span></li>';
+    stepsHTML += '<li>Length of ASCII string: <strong>'+asciiHx.length+' bytes</strong> → <span class="mono">0x'+len3+'</span></li>';
+    stepsHTML += '<li>Convert each character to its hex ASCII code: '+Array.from(ipStr).slice(0,6).map(function(c,i){return "'"+c+"'→<span class=\"mono\">"+asciiHx[i]+"</span>";}).join(', ')+(ipStr.length>6?' …':'')+'</li>';
+    stepsHTML += '<li>Result → <span class="mono">'+hexString.match(/.{1,2}/g).join(' ')+'</span></li>';
+  }
+
+  var formatted = hexString.match(/.{1,2}/g).join(' ');
+  document.getElementById('resultValue').textContent = formatted;
+  document.getElementById('breakdownBody').innerHTML = tbodyHTML;
+  document.getElementById('explanationSteps').innerHTML = stepsHTML;
+  document.getElementById('result').style.display = 'block';
+  document.getElementById('result').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function row(bytes, hex, tagClass, role, meaning){
+  return '<tr>'+
+    '<td style="color:var(--gray-light);font-family:var(--mono);font-size:11px">'+bytes+'</td>'+
+    '<td><span class="tag '+tagClass+'">'+hex+'</span></td>'+
+    '<td style="color:var(--black);font-size:12px">'+role+'</td>'+
+    '<td style="font-size:12px">'+meaning+'</td>'+
+  '</tr>';
+}
+
+function copyResult(){
+  var txt = document.getElementById('resultValue').textContent;
+  function done(){ var b=document.querySelector('.copy-btn'); if(b){ b.textContent='Copied ✓'; setTimeout(function(){b.textContent='Copy';},2000);} }
+  if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(done, done);
+  else done();
+}
+
+function resetCalc(){
+  document.getElementById('ipInput').value = '';
+  document.getElementById('result').style.display = 'none';
+  hideError();
+}
+</script>
+</body>
+</html>

@@ -140,7 +140,7 @@ document.addEventListener('DOMContentLoaded', function () {
   if (document.getElementById('kb-ui-js')) return;
   var s = document.createElement('script');
   s.id = 'kb-ui-js';
-  s.src = 'kb-ui.js?v=5';
+  s.src = 'kb-ui.js?v=6';
   s.defer = true;
   document.head.appendChild(s);
 })();

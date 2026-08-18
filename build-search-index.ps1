@@ -52,7 +52,7 @@ foreach ($f in $files) {
   elseif ($name -match '^(lan-wan-basics|ip-routing|switching|wireless|firewalls|zscaler)\.html$') { $cat = 'Networking' }
   elseif ($name -match '^(cisco|paloalto|fortinet|devices)\.html$') { $cat = 'Vendors' }
   elseif ($name -match '^(lan-process|process-ap|process-wlc-switch|wan-process)\.html$') { $cat = 'Process' }
-  elseif ($name -match '^glossary\.html$') { $cat = 'Reference' }
+  elseif ($name -match '^(glossary|option43)\.html$') { $cat = 'Reference' }
   elseif ($name -match '^(karim-elzarka|mona-tantawy|peter-sabet|maryam-etry)\.html$') { $cat = 'Team' }
   elseif ($name -match '-squad\.html$') { $cat = 'Squads' }
 
