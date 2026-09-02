@@ -8,8 +8,14 @@
 <link rel="stylesheet" href="shared.css">
 <style>
 /* ── quick-note lead ── */
-.role-lead { font-size:15px; color:#444; line-height:1.8; max-width:780px; margin-bottom:22px; }
+.role-lead { font-size:15px; color:#444; line-height:1.8; max-width:820px; margin-bottom:22px; }
 .role-lead strong { color:var(--black); }
+
+/* ── in-this-handbook quick jump ── */
+.hb-jump { display:flex; flex-wrap:wrap; gap:8px; margin:2px 0 0; }
+.hb-jump a { font-size:12.5px; font-weight:600; color:var(--gray-dark); background:#fff; border:1px solid #E6E6E6; border-radius:20px; padding:6px 13px; text-decoration:none; transition:all .15s; }
+.hb-jump a:hover { border-color:var(--orange); color:var(--orange); text-decoration:none; transform:translateY(-1px); }
+.hb-jump a b { color:var(--orange); font-family:var(--mono); margin-right:5px; }
 
 /* ── lifecycle strip ── */
 .lifecycle { display:flex; align-items:stretch; gap:0; flex-wrap:wrap; margin-bottom:4px; }
@@ -23,6 +29,29 @@
   .lc-step + .lc-step { margin-left:0; margin-top:28px; }
   .lc-step + .lc-step::before { left:50%; top:-22px; transform:translateX(-50%); content:'↓'; }
 }
+
+/* ── what good looks like ── */
+.good-list { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+@media(max-width:680px){ .good-list{ grid-template-columns:1fr; } }
+.good-item { display:flex; gap:11px; align-items:flex-start; background:var(--green-pale); border:1px solid #D6EFE4; border-radius:12px; padding:14px 16px; }
+.good-item .gi-check { color:var(--green); flex-shrink:0; font-weight:800; margin-top:1px; }
+.good-item p { font-size:13.5px; color:var(--gray-dark); line-height:1.6; margin:0; }
+
+/* ── roles + golden rule ── */
+.raci-legend { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px; }
+.raci-legend span { font-size:12.5px; color:var(--gray-dark); background:var(--gray-faint); border:1px solid #EAEAEA; border-radius:20px; padding:5px 13px; }
+.raci-legend b { color:var(--orange-dark); font-family:var(--mono); }
+.roles-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:20px; }
+@media(max-width:760px){ .roles-grid{ grid-template-columns:1fr 1fr; } }
+@media(max-width:460px){ .roles-grid{ grid-template-columns:1fr; } }
+.role-item { background:#fff; border:1px solid #ECECEC; border-radius:12px; padding:13px 15px; border-left:4px solid var(--orange); }
+.role-code { font-family:var(--mono); font-weight:700; font-size:13px; color:var(--orange-dark); }
+.role-desc { font-size:12.5px; color:var(--gray-mid); margin-top:3px; line-height:1.5; }
+.golden { display:flex; gap:16px; align-items:flex-start; background:linear-gradient(135deg,#1A1A1A 0%,#2D1A0A 100%); color:#fff; border-radius:14px; padding:20px 24px; }
+.golden .g-ic { font-size:26px; flex-shrink:0; line-height:1.2; }
+.golden h4 { font-size:15px; font-weight:800; margin:0 0 7px; color:#fff; }
+.golden p { font-size:13.5px; color:rgba(255,255,255,0.82); line-height:1.75; margin:0; }
+.golden strong { color:var(--orange-light); font-weight:700; }
 
 /* ── leadership strip ── */
 .lead-strip { display:flex; align-items:center; gap:14px; flex-wrap:wrap; margin-bottom:22px; }
@@ -69,6 +98,35 @@
 .squad-meta { flex-shrink:0; font-size:12px; font-weight:700; color:var(--c); display:flex; align-items:center; gap:8px; }
 .squad-meta span { font-size:18px; line-height:1; }
 
+/* ── tools tables ── */
+.tbl-sub { font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.7px; color:var(--gray-mid); margin:0 0 10px; }
+
+/* ── vendor mini ── */
+.vend-you { font-size:12px; color:var(--gray-mid); margin-top:10px; line-height:1.55; }
+.vend-you b { color:var(--gray-dark); font-weight:600; }
+
+/* ── your first few weeks ── */
+.weeks-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+@media(max-width:760px){ .weeks-grid{ grid-template-columns:1fr; } }
+.week-card { background:#fff; border:1px solid #ECECEC; border-top:4px solid var(--c); border-radius:16px; padding:20px 22px; }
+.week-tag { font-size:11px; font-weight:700; letter-spacing:0.6px; text-transform:uppercase; color:var(--c); }
+.week-card h4 { font-size:16px; font-weight:800; margin:4px 0 13px; color:var(--black); }
+.week-card ul { list-style:none; margin:0; padding:0; }
+.week-card li { position:relative; padding:0 0 11px 25px; font-size:13px; color:var(--gray-dark); line-height:1.55; }
+.week-card li::before { content:''; position:absolute; left:0; top:2px; width:14px; height:14px; border:2px solid var(--c); border-radius:4px; }
+.week-card li:last-child { padding-bottom:0; }
+
+/* ── key terms + help ── */
+.help-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:22px; }
+@media(max-width:680px){ .help-grid{ grid-template-columns:1fr; } }
+.help-card { display:flex; gap:14px; align-items:flex-start; background:#fff; border:1px solid #ECECEC; border-radius:14px; padding:16px 18px; }
+.help-ic { width:42px; height:42px; border-radius:11px; background:var(--orange-pale); display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0; }
+.help-tx b { font-size:14px; font-weight:700; color:var(--black); }
+.help-tx p { font-size:12.5px; color:var(--gray-mid); line-height:1.55; margin:3px 0 0; }
+.closer { text-align:center; background:var(--orange-faint); border:1px solid var(--orange-pale); border-radius:16px; padding:28px 24px; }
+.closer h3 { font-size:19px; font-weight:800; color:var(--black); margin:0 0 8px; }
+.closer p { font-size:14px; color:var(--gray-dark); line-height:1.7; max-width:640px; margin:0 auto; }
+
 /* ── handbook download banner ── */
 .dl-banner{display:flex;align-items:center;gap:20px;background:linear-gradient(135deg,#1A1A1A 0%,#2D1A0A 100%);border-radius:16px;padding:22px 26px;text-decoration:none !important;color:#fff;box-shadow:0 8px 30px rgba(0,0,0,0.18);transition:transform .16s, box-shadow .16s;margin-bottom:6px;}
 .dl-banner:hover{transform:translateY(-2px);box-shadow:0 14px 40px rgba(0,0,0,0.26);}
@@ -112,7 +170,7 @@
 .kb-hero-inner{position:relative;max-width:720px;margin:0 auto;}
 .kb-hero-tag{display:inline-block;background:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.38);color:#fff;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:5px 14px;border-radius:20px;margin-bottom:20px;}
 .kb-hero-h1{font-size:clamp(30px,5vw,46px);font-weight:800;color:#fff;margin:0 0 12px;line-height:1.12;}
-.kb-hero-sub{font-size:16px;color:rgba(255,255,255,0.92);max-width:560px;margin:0 auto 26px;line-height:1.6;}
+.kb-hero-sub{font-size:16px;color:rgba(255,255,255,0.92);max-width:580px;margin:0 auto 26px;line-height:1.6;}
 .kb-hero-search{display:flex;align-items:center;gap:12px;width:100%;max-width:600px;margin:0 auto;background:#fff;border:none;border-radius:14px;padding:16px 18px;box-shadow:0 18px 50px rgba(120,40,0,0.30);cursor:text;transition:transform .15s,box-shadow .15s;text-align:left;font-family:inherit;}
 .kb-hero-search:hover{transform:translateY(-2px);box-shadow:0 22px 62px rgba(120,40,0,0.36);}
 .kb-hero-search>svg{color:#FF6200;flex-shrink:0;}
@@ -133,12 +191,12 @@
     <svg style="top:44%;left:3%;width:40px;height:40px" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.6 9a2.4 2.4 0 1 1 3.4 2.2c-.8.4-1 .8-1 1.6M12 16h.01"/></svg>
   </div>
   <div class="kb-hero-inner">
-    <div class="kb-hero-tag">🚀 DPM Knowledge Base</div>
+    <div class="kb-hero-tag">📘 DPM Onboarding Handbook · Edition 1.3</div>
     <h1 class="kb-hero-h1">How can we help?</h1>
-    <p class="kb-hero-sub">Your onboarding guide — the DPM role, the team, the delivery process, and enough networking to be productive. Search anything, or skim the quick notes below.</p>
+    <p class="kb-hero-sub">Everything a new Delivery Project Manager needs to understand — the role, the team, the tools, and how we deliver, end to end. Read it straight through, or search anything.</p>
     <button class="kb-hero-search" data-kb-open type="button" aria-label="Search the knowledge base">
       <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-      <span class="kb-hero-search-ph">Search anything — “Option 43”, “BGP”, “AP process”, a person…</span>
+      <span class="kb-hero-search-ph">Search anything — “Option 43”, “MACHX”, “AP process”, a person…</span>
       <kbd>Ctrl K</kbd>
     </button>
     <div class="kb-hero-pop">
@@ -146,9 +204,9 @@
       <button data-kbq="AP Process">AP Process</button>
       <button data-kbq="Option 43">Option 43</button>
       <button data-kbq="WAN Process">WAN Process</button>
-      <button data-kbq="BGP">BGP</button>
-      <button data-kbq="Zscaler">Zscaler</button>
-      <button data-kbq="VLAN">VLAN</button>
+      <button data-kbq="MACHX">MACHX</button>
+      <button data-kbq="HOTO">HOTO</button>
+      <button data-kbq="Tools">Tools</button>
     </div>
   </div>
 </div>
@@ -159,75 +217,108 @@
   <a href="DPM-Onboarding-Handbook.pdf" download class="dl-banner">
     <div class="dl-ic">📘</div>
     <div class="dl-tx">
-      <div class="dl-title">DPM Onboarding Handbook</div>
-      <div class="dl-sub">The whole onboarding guide in one PDF — role, team, delivery process, tools and your first weeks. Grab it to read offline.</div>
+      <div class="dl-title">DPM Onboarding Handbook — Edition 1.3</div>
+      <div class="dl-sub">The complete onboarding guide in one PDF — role, team, tools, the full LAN &amp; WAN processes, and your first weeks. Grab it to read offline.</div>
     </div>
     <span class="dl-btn">⬇ Download PDF</span>
   </a>
 
-  <!-- QUICK NOTE: THE DPM ROLE -->
-  <div class="section">
+  <!-- HOW TO USE + CONTENTS -->
+  <div class="section" style="margin-bottom:40px;">
+    <div class="alert orange" style="margin-bottom:18px;">
+      <span class="alert-icon">💡</span>
+      <p><strong>How to use this guide.</strong> This home page is the handbook, in full — written for someone brand new to the team, no prior knowledge assumed. Read it top to bottom once, then keep it as a reference. It gives you the big picture; the rest of the Knowledge Base goes deeper on each topic with diagrams, CLI examples, the full process flowcharts, the live team directory and a searchable glossary. Use them together — press <strong>Ctrl&nbsp;K</strong> to search anytime.</p>
+    </div>
+    <div class="hb-jump">
+      <a href="#what-is-dpm"><b>01</b>What is a DPM?</a>
+      <a href="#team"><b>02</b>The Team</a>
+      <a href="#squads"><b>03</b>The Squads</a>
+      <a href="#tools"><b>04</b>Tools &amp; Systems</a>
+      <a href="#processes"><b>05</b>Delivery Process</a>
+      <a href="#networking"><b>06</b>Networking Basics</a>
+      <a href="#vendors"><b>07</b>Vendor Hardware</a>
+      <a href="#first-weeks"><b>08</b>Your First Weeks</a>
+      <a href="#key-terms"><b>09</b>Key Terms &amp; Help</a>
+    </div>
+  </div>
+
+  <!-- ★ SECTION 1 — WHAT IS A DPM -->
+  <div class="section" id="what-is-dpm">
     <div class="section-header">
-      <h2>The DPM role, in a nutshell</h2>
+      <h2>What is a Delivery Project Manager?</h2>
       <div class="divider"></div>
-      <p>A quick orientation before you dive in. Each card links to the full detail.</p>
+      <p>The role in a nutshell — what you own, what good looks like, and where your responsibility begins and ends.</p>
     </div>
     <p class="role-lead">
-      A <strong>Delivery Project Manager (DPM)</strong> owns a customer's network delivery from the moment an order is placed through to final handover — the single point of accountability that turns a signed order into working infrastructure on the customer's site, on schedule, on scope, and clearly communicated the whole way.
+      A <strong>Delivery Project Manager (DPM)</strong> owns a customer's network delivery from the moment an order is placed through to final handover. You are the <strong>single point of accountability</strong> that turns a signed order into working infrastructure on the customer's site. You don't configure every device yourself — you orchestrate the specialists, keep the plan on track, manage risk, and communicate clearly so the customer always knows where things stand.
     </p>
 
     <div class="grid-2" style="margin-bottom:28px;">
       <div class="card">
         <div class="card-icon" style="background:var(--orange-pale);">🗂️</div>
         <h3>Own the delivery</h3>
-        <p>Drive each project from kickoff to HOTO sign-off — planning the timeline, tracking milestones, and managing orders in GOLD, ServiceNow, and SALTO.</p>
+        <p>Drive each project from kickoff to HOTO sign-off — plan the timeline, track milestones, and keep order records accurate in GOLD, ServiceNow and SALTO.</p>
       </div>
       <div class="card">
         <div class="card-icon" style="background:var(--cisco-pale);">🤝</div>
         <h3>Coordinate the teams</h3>
-        <p>Orchestrate everyone the delivery depends on — VPOs and engineering, Field Engineers booked via FLIP, logistics, and the customer's technical contacts.</p>
+        <p>Orchestrate everyone the delivery depends on — VPOs/TIMs and engineering, Field Engineers booked through FLIP, logistics, and the customer's own technical contacts.</p>
       </div>
       <div class="card">
         <div class="card-icon" style="background:var(--green-pale);">📊</div>
         <h3>Manage scope &amp; risk</h3>
-        <p>Keep everyone aligned: confirm prerequisites, flag blockers early, run staging and dry runs, and document decisions as you go.</p>
+        <p>Confirm prerequisites, flag blockers early, run staging and dry runs, and document decisions so nothing is lost or disputed later.</p>
       </div>
       <div class="card">
         <div class="card-icon" style="background:var(--purple-pale);">🔧</div>
         <h3>Run the migration</h3>
-        <p>Execute LAN and WAN migrations — switches, WLCs and APs — manage UAT with the customer, then close out every system once the site is live.</p>
+        <p>Execute LAN/WAN cutovers — switches, WLCs and access points — support UAT with the customer, then close out every system once the site is live.</p>
       </div>
     </div>
 
-    <div class="section-header" style="margin-bottom:16px;">
-      <h3 style="font-size:16px;">The delivery lifecycle</h3>
-      <p style="font-size:13px;color:var(--gray-mid);">Every project follows the same three phases. The <a href="lan-process.html">LAN</a> and <a href="wan-process.html">WAN</a> process guides break each one down step by step.</p>
+    <div class="section-header" style="margin-bottom:14px;">
+      <h3 style="font-size:16px;">What good looks like</h3>
     </div>
-    <div class="lifecycle">
-      <div class="lc-step">
-        <span class="lc-tag">Phase 1</span>
-        <h4>Pre-migration</h4>
-        <p>Confirm supply, raise MACHX, validate prerequisites, stage hardware, and run dry runs with the customer.</p>
-      </div>
-      <div class="lc-step">
-        <span class="lc-tag">Phase 2</span>
-        <h4>Migration</h4>
-        <p>Execute the cutover on the agreed window, support the field/VPO teams, and run UAT on every migrated service.</p>
-      </div>
-      <div class="lc-step">
-        <span class="lc-tag">Phase 3</span>
-        <h4>Post-migration / HOTO</h4>
-        <p>Send the success notification, update DNAC/CMDB, upload the HOTO pack, and close the GOLD and SALTO orders.</p>
+    <div class="good-list" style="margin-bottom:28px;">
+      <div class="good-item"><span class="gi-check">✓</span><p>The customer is <strong>never surprised</strong> — they always know the plan, the date, and the status.</p></div>
+      <div class="good-item"><span class="gi-check">✓</span><p>Prerequisites are confirmed <strong>before</strong> the migration window, not discovered during it.</p></div>
+      <div class="good-item"><span class="gi-check">✓</span><p>Every migrated service is tested and signed off, and every system is closed cleanly at the end.</p></div>
+      <div class="good-item"><span class="gi-check">✓</span><p>Issues are put on record factually and escalated early, while there's still time to act.</p></div>
+    </div>
+
+    <div class="section-header" style="margin-bottom:14px;">
+      <h3 style="font-size:16px;">Who does what — roles &amp; the golden rule</h3>
+      <p style="font-size:13px;color:var(--gray-mid);">Delivery is a team sport, but ownership must be unambiguous. In a typical delivery, responsibility is shared as R&nbsp;/&nbsp;A&nbsp;/&nbsp;C&nbsp;/&nbsp;I — the full RACI matrix is in the <a href="DPM-Onboarding-Handbook.pdf" download>handbook PDF</a>.</p>
+    </div>
+    <div class="raci-legend">
+      <span><b>R</b> — Responsible, does the work</span>
+      <span><b>A</b> — Accountable, owns the outcome</span>
+      <span><b>C</b> — Consulted</span>
+      <span><b>I</b> — Informed</span>
+    </div>
+    <div class="roles-grid">
+      <div class="role-item"><div class="role-code">DPM — you</div><div class="role-desc">Accountable for the delivery end-to-end.</div></div>
+      <div class="role-item"><div class="role-code">PM</div><div class="role-desc">Project Manager — scope &amp; commercial owner.</div></div>
+      <div class="role-item"><div class="role-code">SC</div><div class="role-desc">Solution Consultant — technical design owner.</div></div>
+      <div class="role-item"><div class="role-code">VPO / TIM</div><div class="role-desc">Engineering &amp; staging, requested via MACHX.</div></div>
+      <div class="role-item"><div class="role-code">FE</div><div class="role-desc">Field Engineer — hands on site.</div></div>
+      <div class="role-item"><div class="role-code">Supply Chain</div><div class="role-desc">Hardware &amp; logistics.</div></div>
+    </div>
+    <div class="golden">
+      <div class="g-ic">⭐</div>
+      <div>
+        <h4>The DPM golden rule</h4>
+        <p>The DPM is accountable for the delivery end-to-end — the <strong>dates</strong>, the <strong>MACHX raises</strong>, the <strong>Field Engineer dispatch</strong>, and the <strong>HOTO package</strong> are yours. The PM owns <strong>scope, BOM and the commercial relationship</strong>. Keeping these boundaries clear is what keeps a delivery calm.</p>
       </div>
     </div>
   </div>
 
-  <!-- ★ THE TEAM — DEPARTMENTS -->
+  <!-- ★ SECTION 2 — THE TEAM -->
   <div class="section" id="team">
     <div class="section-header">
-      <h2>The Team — 4 Delivery Departments</h2>
+      <h2>The Team &amp; Organisation</h2>
       <div class="divider"></div>
-      <p>The Europe Delivery Project Managers organisation — <strong>77 DPMs</strong> across four regional clusters, led by Mona Tamimy under Khaled Khattab. Click a department to see everyone in it.</p>
+      <p>The Europe DPM organisation sits within <strong>Order to Bill</strong> and is split into regional clusters, each led by a manager. Within a cluster the DPMs are peers — they pick up deliveries across the cluster's territory. Click a cluster to see everyone in it.</p>
     </div>
 
     <div class="lead-strip">
@@ -244,7 +335,7 @@
 
     <div class="team-stats">
       <div class="team-stat"><b>77</b><span>Delivery Project Managers</span></div>
-      <div class="team-stat"><b>4</b><span>Regional departments</span></div>
+      <div class="team-stat"><b>4</b><span>Regional clusters</span></div>
       <div class="team-stat"><b>4</b><span>Subject Matter Experts</span></div>
       <div class="team-stat"><b>5</b><span>Cross-team squads</span></div>
     </div>
@@ -253,10 +344,10 @@
       <a class="dept-card" href="karim-elzarka.html" style="--c:var(--cisco-blue);--cp:var(--cisco-pale);">
         <div class="dept-head">
           <div class="dept-av">KE</div>
-          <div><div class="dept-mgr">Karim El Zarka</div><div class="dept-mgr-ttl">Team Manager</div></div>
+          <div><div class="dept-mgr">Karim El-Zarka</div><div class="dept-mgr-ttl">Cluster Manager</div></div>
         </div>
-        <span class="dept-region">North Europe · Transversal</span>
-        <p class="dept-note">Delivery across Northern &amp; Scandinavian Europe, plus cross-region transversal projects — the largest cluster.</p>
+        <span class="dept-region">NSEU · Inc. Trans</span>
+        <p class="dept-note">North &amp; South Europe transversal delivery — the broadest cluster.</p>
         <div class="dept-sme">SMEs · <b>Abanoub Wasfy</b>, <b>Salma El-Shazly</b></div>
         <div class="dept-foot"><div class="dept-count">30 <span>DPMs</span></div><div class="dept-link">View team →</div></div>
       </a>
@@ -264,10 +355,10 @@
       <a class="dept-card" href="peter-sabet.html" style="--c:var(--green);--cp:var(--green-pale);">
         <div class="dept-head">
           <div class="dept-av">PS</div>
-          <div><div class="dept-mgr">Peter Sabet</div><div class="dept-mgr-ttl">Team Manager</div></div>
+          <div><div class="dept-mgr">Peter Sabet</div><div class="dept-mgr-ttl">Cluster Manager</div></div>
         </div>
-        <span class="dept-region">Southern Europe · Transversal</span>
-        <p class="dept-note">Delivery across Southern Europe, plus cross-region transversal projects (GEA).</p>
+        <span class="dept-region">GEA</span>
+        <p class="dept-note">Southern Europe transversal delivery.</p>
         <div class="dept-sme">SME · <b>Emad Osman</b></div>
         <div class="dept-foot"><div class="dept-count">20 <span>DPMs</span></div><div class="dept-link">View team →</div></div>
       </a>
@@ -275,9 +366,9 @@
       <a class="dept-card" href="maryam-etry.html" style="--c:var(--palo-orange);--cp:var(--palo-pale);">
         <div class="dept-head">
           <div class="dept-av">ME</div>
-          <div><div class="dept-mgr">Maryam Etry</div><div class="dept-mgr-ttl">Europe DPMs Manager</div></div>
+          <div><div class="dept-mgr">Maryam Etry</div><div class="dept-mgr-ttl">Cluster Manager</div></div>
         </div>
-        <span class="dept-region">BENELUX</span>
+        <span class="dept-region">Benelux</span>
         <p class="dept-note">Delivery across Belgium, the Netherlands &amp; Luxembourg.</p>
         <div class="dept-sme">SME · <b>Ahmed Hweedy</b></div>
         <div class="dept-foot"><div class="dept-count">14 <span>DPMs</span></div><div class="dept-link">View team →</div></div>
@@ -286,181 +377,367 @@
       <a class="dept-card" href="mona-tantawy.html" style="--c:var(--purple);--cp:var(--purple-pale);">
         <div class="dept-head">
           <div class="dept-av">MT</div>
-          <div><div class="dept-mgr">Mona Tantawi</div><div class="dept-mgr-ttl">Head of DPMs — DACH</div></div>
+          <div><div class="dept-mgr">Mona Tantawy</div><div class="dept-mgr-ttl">Cluster Manager</div></div>
         </div>
-        <span class="dept-region">DACH Territory</span>
-        <p class="dept-note">Delivery across the DACH territory — Germany, Austria &amp; Switzerland.</p>
+        <span class="dept-region">Swiss · DACH</span>
+        <p class="dept-note">DACH / Switzerland territory.</p>
         <div class="dept-sme" style="color:var(--gray-light);">—</div>
         <div class="dept-foot"><div class="dept-count">13 <span>DPMs</span></div><div class="dept-link">View team →</div></div>
       </a>
     </div>
+
+    <div class="alert blue" style="margin-top:20px;margin-bottom:0;">
+      <span class="alert-icon">👥</span>
+      <p>Some DPMs also act as <strong>Subject Matter Experts (SMEs)</strong> — go-to people for deeper technical or process questions, shown with a <em>DPM / SME</em> tag on the cluster pages. The live directory is kept current on the Knowledge Base: every cluster page lists all its DPMs with name, email and cluster.</p>
+    </div>
   </div>
 
-  <!-- ★ DPM SQUADS -->
+  <!-- ★ SECTION 3 — SQUADS -->
   <div class="section" id="squads">
     <div class="section-header">
-      <h2>5 DPM Squads</h2>
+      <h2>The Squads</h2>
       <div class="divider"></div>
-      <p>Cross-team working groups made up of DPMs from every department — they keep the DPM function running and improving. Click a squad to see its members.</p>
+      <p>Alongside delivery work, DPMs join cross-team <strong>squads</strong> — small working groups that keep the function running and improving. They're how we share the load on things that benefit the whole team rather than a single customer, and a great way to make an impact early. Click a squad to see its members.</p>
     </div>
     <div class="squad-grid">
       <a href="automation-squad.html" class="squad-btn" style="--c:#0E8AA6;--cp:#E6F6FA;">
         <div class="squad-ic">⚙️</div>
         <div class="squad-tx">
-          <div class="squad-nm">Automation Squad</div>
-          <div class="squad-sub">Builds the automations &amp; Power BI dashboards that cut manual DPM work.</div>
+          <div class="squad-nm">Automation</div>
+          <div class="squad-sub">Builds the automations &amp; dashboards that save the team manual effort and give visibility into delivery.</div>
         </div>
         <div class="squad-meta">4 <span>→</span></div>
-      </a>
-      <a href="onboarding-squad.html" class="squad-btn" style="--c:#4F46E5;--cp:#ECEBFD;">
-        <div class="squad-ic">🚀</div>
-        <div class="squad-tx">
-          <div class="squad-nm">Onboarding Squad</div>
-          <div class="squad-sub">Ramps up new joiners — this knowledge base is one of theirs.</div>
-        </div>
-        <div class="squad-meta">2 <span>→</span></div>
-      </a>
-      <a href="hiring-squad.html" class="squad-btn" style="--c:#0E8A4A;--cp:#E6F7EF;">
-        <div class="squad-ic">🎯</div>
-        <div class="squad-tx">
-          <div class="squad-nm">Hiring Squad</div>
-          <div class="squad-sub">Screens CVs and runs interviews for new DPM roles.</div>
-        </div>
-        <div class="squad-meta">1 <span>→</span></div>
       </a>
       <a href="marketing-squad.html" class="squad-btn" style="--c:#D6336C;--cp:#FDEAF1;">
         <div class="squad-ic">📣</div>
         <div class="squad-tx">
-          <div class="squad-nm">Marketing Squad</div>
-          <div class="squad-sub">Internal communications &amp; branding for the DPM function.</div>
+          <div class="squad-nm">Marketing</div>
+          <div class="squad-sub">Internal marketing &amp; communications for the DPM function — telling the story of what we deliver.</div>
         </div>
         <div class="squad-meta">3 <span>→</span></div>
+      </a>
+      <a href="hiring-squad.html" class="squad-btn" style="--c:#0E8A4A;--cp:#E6F7EF;">
+        <div class="squad-ic">🎯</div>
+        <div class="squad-tx">
+          <div class="squad-nm">Hiring</div>
+          <div class="squad-sub">CV screening and interviews — helping grow the team with the right people.</div>
+        </div>
+        <div class="squad-meta">1 <span>→</span></div>
+      </a>
+      <a href="onboarding-squad.html" class="squad-btn" style="--c:#4F46E5;--cp:#ECEBFD;">
+        <div class="squad-ic">🚀</div>
+        <div class="squad-tx">
+          <div class="squad-nm">Onboarding</div>
+          <div class="squad-sub">Welcomes and ramps up new joiners — this handbook is part of that effort.</div>
+        </div>
+        <div class="squad-meta">2 <span>→</span></div>
       </a>
       <a href="presales-squad.html" class="squad-btn" style="--c:#C77700;--cp:#FFF4E0;grid-column:1/-1;">
         <div class="squad-ic">💼</div>
         <div class="squad-tx">
-          <div class="squad-nm">Pre-Sales Squad</div>
-          <div class="squad-sub">Solution input, scoping &amp; bid support on live deals before they become projects.</div>
+          <div class="squad-nm">Pre-Sales</div>
+          <div class="squad-sub">Solution input, scoping &amp; bid support — helping shape deals before they become deliveries.</div>
         </div>
         <div class="squad-meta">3 <span>→</span></div>
       </a>
     </div>
   </div>
 
-  <!-- QUICK NOTES: PROCESS + TOOLS -->
-  <div class="section">
+  <!-- ★ SECTION 4 — TOOLS & SYSTEMS -->
+  <div class="section" id="tools">
     <div class="section-header">
-      <h2>Delivery process &amp; tools</h2>
+      <h2>Tools &amp; Systems</h2>
       <div class="divider"></div>
-      <p>The step-by-step processes you'll run, plus the reference tools you'll reach for.</p>
+      <p>The systems you'll use most. You don't need to master them on day one — learn them as they come up in your first deliveries.</p>
     </div>
-    <div class="grid-2" style="margin-bottom:16px;">
+
+    <p class="tbl-sub">Core delivery tools</p>
+    <div class="kb-tablewrap">
+      <table class="data-table">
+        <thead><tr><th style="width:190px;">Tool</th><th>What you use it for</th></tr></thead>
+        <tbody>
+          <tr><td>GOLD</td><td>Order management. Where the customer order lives; you track and ultimately <strong>close the GOLD order</strong> at the end of delivery.</td></tr>
+          <tr><td>ServiceNow (SNOW)</td><td>Raising change requests and updating the <strong>CMDB</strong> (the record of what's installed) — change control around migration windows.</td></tr>
+          <tr><td>MACHX</td><td>Raising and managing <strong>TIM / VPO work orders</strong> — the requests that get engineering &amp; staging work done. An AP job needs one raise; a Switch/WLC job needs two.</td></tr>
+          <tr><td>FLIP</td><td>Booking <strong>Field Engineers</strong> to attend site — used on Switch/WLC deliveries where hardware is handled on-site.</td></tr>
+          <tr><td>DNAC / Catalyst Center</td><td>Cisco's network management platform. Post-migration you send the DNAC update so the new devices are managed and monitored.</td></tr>
+          <tr><td>SALTO</td><td>A second order system, closed post-migration alongside GOLD.</td></tr>
+          <tr><td>SharePoint</td><td>Where delivery documents live — you upload the <strong>HOTO document, runbook and LLD</strong> (Low-Level Design) for each project.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="tbl-sub" style="margin-top:26px;">Reporting, time &amp; automation</p>
+    <div class="kb-tablewrap">
+      <table class="data-table">
+        <thead><tr><th style="width:190px;">Tool</th><th>What you use it for</th></tr></thead>
+        <tbody>
+          <tr><td>Oracle PRIME</td><td>Time entry — logging hours against projects.</td></tr>
+          <tr><td>Power BI</td><td>Dashboards and reporting on delivery status and KPIs.</td></tr>
+          <tr><td>Power Automate / Office Scripts</td><td>Automating repetitive steps (reminders, data prep) — much of it built by the Automation squad.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="alert blue" style="margin-top:22px;margin-bottom:0;">
+      <span class="alert-icon">🧠</span>
+      <p><strong>Quick mental model.</strong> GOLD / SALTO = <em>the order</em> · ServiceNow / MACHX = <em>getting the work approved &amp; done</em> · FLIP = <em>people on site</em> · DNAC = <em>managing the result</em> · SharePoint = <em>the paperwork</em> · PRIME / Power BI = <em>your time &amp; the reporting</em>.</p>
+    </div>
+  </div>
+
+  <!-- ★ SECTION 5 — DELIVERY PROCESS -->
+  <div class="section" id="processes">
+    <div class="section-header">
+      <h2>The Delivery Process</h2>
+      <div class="divider"></div>
+      <p>Every delivery follows the same three phases. The Knowledge Base process pages present these steps as interactive, phase-by-phase flowcharts — use them as your live checklist on a delivery.</p>
+    </div>
+
+    <div class="lifecycle" style="margin-bottom:26px;">
+      <div class="lc-step">
+        <span class="lc-tag">Phase 1</span>
+        <h4>Pre-migration</h4>
+        <p>Confirm supply, raise MACHX, validate prerequisites, stage hardware, and run dry runs with the customer.</p>
+      </div>
+      <div class="lc-step">
+        <span class="lc-tag">Phase 2</span>
+        <h4>Migration</h4>
+        <p>Execute the cutover in the agreed window, support the field / VPO teams, and run UAT on every migrated service.</p>
+      </div>
+      <div class="lc-step">
+        <span class="lc-tag">Phase 3</span>
+        <h4>Post-migration / HOTO</h4>
+        <p>Send the success notification, update DNAC/CMDB, upload the HOTO pack, and close the GOLD and SALTO orders.</p>
+      </div>
+    </div>
+
+    <div class="grid-2" style="margin-bottom:24px;">
       <a href="lan-process.html" class="card" style="border-top:3px solid #FF6200;text-decoration:none;">
         <div class="card-icon" style="background:#FFF3EA;">🏢</div>
         <h3 style="color:#FF6200;">LAN Process</h3>
-        <p>End-to-end LAN migration — the <strong>AP process</strong> and the <strong>WLC &amp; Switch process</strong>, phase by phase, with tools and team contacts.</p>
+        <p>Local-site delivery in two flavours — the <a href="process-ap.html">AP (wireless) process</a> and the <a href="process-wlc-switch.html">WLC &amp; Switch process</a> — each with its full step list and Gantt timeline.</p>
         <span class="card-link" style="color:#FF6200;">View LAN Process →</span>
       </a>
       <a href="wan-process.html" class="card" style="border-top:3px solid #1BA0D7;text-decoration:none;">
         <div class="card-icon" style="background:#E8F6FD;">🌐</div>
         <h3 style="color:#1BA0D7;">WAN Process</h3>
-        <p>End-to-end WAN / SD-WAN delivery — carrier circuit, survey, router install, cutover, HOTO. <strong>14 phases</strong>.</p>
+        <p>SD-WAN, MPLS &amp; circuit delivery — adds a <strong>carrier</strong> and the <strong>customer's local site team</strong>: circuit ordering, survey, install, router install and cutover.</p>
         <span class="card-link" style="color:#1BA0D7;">View WAN Process →</span>
       </a>
     </div>
-    <div class="grid-2" style="margin-bottom:0;">
-      <a href="option43.html" class="card" style="border-top:3px solid var(--orange);text-decoration:none;">
-        <div class="card-icon" style="background:var(--orange-pale);">🧮</div>
-        <h3>Option 43 Calculator</h3>
-        <p>Generate the exact DHCP Option 43 hex string for WLC discovery — with a byte-by-byte breakdown. A staple of the AP process.</p>
-        <span class="card-link">Open calculator →</span>
-      </a>
-      <a href="devices.html" class="card" style="border-top:3px solid #7C3AED;text-decoration:none;">
-        <div class="card-icon" style="background:#F3EEFF;">🧩</div>
-        <h3>Vendor Device Guides</h3>
-        <p>Cisco, Palo Alto &amp; Fortinet — summaries, a side-by-side comparison, and per-model specs with front-panel diagrams.</p>
-        <span class="card-link" style="color:#7C3AED;">Open device guides →</span>
-      </a>
+
+    <p class="tbl-sub">LAN — AP vs WLC / Switch: key differences</p>
+    <div class="kb-tablewrap">
+      <table class="data-table">
+        <thead><tr><th style="width:150px;">Topic</th><th>AP process</th><th>WLC / Switch process</th></tr></thead>
+        <tbody>
+          <tr><td>Physical install</td><td>Customer mounts the APs</td><td>Field Engineer booked via FLIP</td></tr>
+          <tr><td>Staging</td><td>VPOs stage remotely</td><td>Formal staging session + post-staging email</td></tr>
+          <tr><td>Dry run</td><td>Internal — VPO &amp; SC only</td><td>External — VPO, SC &amp; customer; check 3rd-party servers</td></tr>
+          <tr><td>Unique pre-check</td><td>Option 43 must be verified</td><td>Second MACHX raise before migration</td></tr>
+          <tr><td>UAT</td><td>Test all SSIDs, then per-AP</td><td>Test all services on each migrated switch</td></tr>
+          <tr><td>MACHX raises</td><td>One</td><td>Two (pre-staging + pre-migration)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="alert orange" style="margin-top:8px;margin-bottom:0;">
+      <span class="alert-icon">🌐</span>
+      <p><strong>Two things make WAN different from LAN:</strong> much of the timeline depends on the <strong>carrier</strong> (survey &amp; circuit-installation dates), and the <strong>customer's local team</strong> must actively support — validating scope, granting site access, completing in-house wiring, and escorting engineers. Keep both moving and the plan stays on track. The Option 43 hex string APs need to find their WLC? <a href="option43.html">Generate it here →</a></p>
     </div>
   </div>
 
-  <!-- QUICK NOTES: LEARN THE NETWORK -->
-  <div class="section">
+  <!-- ★ SECTION 6 — NETWORKING FUNDAMENTALS -->
+  <div class="section" id="networking">
     <div class="section-header">
-      <h2>Learn the network</h2>
+      <h2>Networking Fundamentals</h2>
       <div class="divider"></div>
-      <p>New to networking? Each page is a plain-English primer with diagrams and CLI examples.</p>
+      <p>You don't need to be a network engineer, but understanding the basics makes every conversation easier. Here's the quick orientation — each page goes in depth with diagrams and CLI examples.</p>
     </div>
     <div class="topic-nav">
       <a href="lan-wan-basics.html" class="topic-nav-card">
         <div class="topic-nav-card-icon">🌐</div>
         <div class="topic-nav-card-label">Foundation</div>
-        <div class="topic-nav-card-title">LAN &amp; WAN Basics</div>
-        <div class="topic-nav-card-sub">Network types, topology, OSI model</div>
+        <div class="topic-nav-card-title">LAN &amp; WAN</div>
+        <div class="topic-nav-card-sub">A LAN is the local network at a site; a WAN connects sites over distance.</div>
       </a>
       <a href="ip-routing.html" class="topic-nav-card">
         <div class="topic-nav-card-icon">🗺️</div>
         <div class="topic-nav-card-label">Layer 3</div>
         <div class="topic-nav-card-title">IP Routing</div>
-        <div class="topic-nav-card-sub">Subnetting, OSPF, BGP, EIGRP, static routes</div>
+        <div class="topic-nav-card-sub">How traffic finds its way between networks — addresses, subnets, OSPF &amp; BGP.</div>
       </a>
       <a href="switching.html" class="topic-nav-card">
         <div class="topic-nav-card-icon">🔌</div>
         <div class="topic-nav-card-label">Layer 2</div>
         <div class="topic-nav-card-title">Switching</div>
-        <div class="topic-nav-card-sub">VLANs, STP, trunking, stacking, QoS</div>
+        <div class="topic-nav-card-sub">Moving traffic within a site — VLANs separate, STP prevents loops, trunks carry many VLANs.</div>
       </a>
       <a href="wireless.html" class="topic-nav-card">
         <div class="topic-nav-card-icon">📡</div>
         <div class="topic-nav-card-label">WiFi</div>
         <div class="topic-nav-card-title">Wireless</div>
-        <div class="topic-nav-card-sub">APs, WLCs, 802.11ax, roaming, SSIDs</div>
+        <div class="topic-nav-card-sub">APs broadcast Wi-Fi; a controller (WLC) manages them; SSIDs are the names users see.</div>
       </a>
       <a href="firewalls.html" class="topic-nav-card">
         <div class="topic-nav-card-icon">🛡️</div>
         <div class="topic-nav-card-label">Security</div>
-        <div class="topic-nav-card-title">Firewalls &amp; Security</div>
-        <div class="topic-nav-card-sub">NGFW, NAT, VPN, IPS, zones, policies</div>
+        <div class="topic-nav-card-title">Firewalls</div>
+        <div class="topic-nav-card-sub">Control what's allowed between zones; next-gen firewalls also inspect apps &amp; threats.</div>
       </a>
       <a href="zscaler.html" class="topic-nav-card">
         <div class="topic-nav-card-icon">☁️</div>
         <div class="topic-nav-card-label">Cloud Security</div>
         <div class="topic-nav-card-title">Zscaler</div>
-        <div class="topic-nav-card-sub">ZIA, ZPA, Zero Trust, SASE</div>
+        <div class="topic-nav-card-sub">Cloud-delivered security (ZIA/ZPA) on Zero-Trust &amp; SASE — no backhauling traffic.</div>
       </a>
       <a href="glossary.html" class="topic-nav-card">
         <div class="topic-nav-card-icon">📖</div>
         <div class="topic-nav-card-label">Reference</div>
         <div class="topic-nav-card-title">Glossary</div>
-        <div class="topic-nav-card-sub">80+ networking &amp; DPM terms, explained</div>
+        <div class="topic-nav-card-sub">80+ networking &amp; DPM terms, explained in plain English.</div>
       </a>
       <a href="option43.html" class="topic-nav-card">
         <div class="topic-nav-card-icon">🧮</div>
         <div class="topic-nav-card-label">Tool</div>
         <div class="topic-nav-card-title">Option 43 Calculator</div>
-        <div class="topic-nav-card-sub">Generate the WLC discovery hex string</div>
+        <div class="topic-nav-card-sub">Generate the WLC-discovery hex string, with a byte-by-byte breakdown.</div>
       </a>
       <a href="resources.html" class="topic-nav-card">
         <div class="topic-nav-card-icon">🔗</div>
         <div class="topic-nav-card-label">Learn more</div>
         <div class="topic-nav-card-title">External Resources</div>
-        <div class="topic-nav-card-sub">Vendor docs, free training, standards &amp; tools</div>
+        <div class="topic-nav-card-sub">Vendor docs, free training, standards &amp; tools to go deeper.</div>
       </a>
     </div>
   </div>
 
-  <!-- HOW TO USE -->
-  <div class="section">
-    <div class="alert orange">
-      <span class="alert-icon">💡</span>
-      <p><strong>How to use this guide:</strong> get familiar with the role and your department above, then when you pick up a project follow the <a href="lan-process.html">LAN</a> or <a href="wan-process.html">WAN</a> process. Use the networking pages and <a href="devices.html">device guides</a> as reference, the search box (<strong>Ctrl K</strong>) to jump to anything, and the <a href="DPM-Onboarding-Handbook.pdf" download>handbook PDF</a> or <a href="resources.html">external resources</a> to go deeper.</p>
+  <!-- ★ SECTION 7 — VENDOR HARDWARE -->
+  <div class="section" id="vendors">
+    <div class="section-header">
+      <h2>Vendor Hardware</h2>
+      <div class="divider"></div>
+      <p>Three vendors come up most often. You'll learn the specific models as you meet them on customer sites — the <a href="devices.html">Devices hub</a> has a full guide per vendor with port diagrams, model specs and a side-by-side comparison.</p>
+    </div>
+    <div class="grid-3">
+      <a href="cisco.html" class="card" style="border-top:3px solid var(--cisco-blue);text-decoration:none;">
+        <div class="card-icon" style="background:var(--cisco-pale);">🔷</div>
+        <h3 style="color:var(--cisco-blue);">Cisco</h3>
+        <p>The broadest portfolio — switching, routing, security and wireless.</p>
+        <div class="vend-you">You'll meet: <b>Catalyst switches, WLCs, Catalyst APs, ASA/FTD firewalls, Catalyst Center</b></div>
+        <span class="card-link" style="color:var(--cisco-blue);">Cisco guide →</span>
+      </a>
+      <a href="paloalto.html" class="card" style="border-top:3px solid var(--palo-orange);text-decoration:none;">
+        <div class="card-icon" style="background:var(--palo-pale);">🔶</div>
+        <h3 style="color:var(--palo-orange);">Palo Alto</h3>
+        <p>Security specialist — next-generation firewalls and cloud security.</p>
+        <div class="vend-you">You'll meet: <b>PA-Series firewalls, Panorama, Prisma, GlobalProtect</b></div>
+        <span class="card-link" style="color:var(--palo-orange);">Palo Alto guide →</span>
+      </a>
+      <a href="fortinet.html" class="card" style="border-top:3px solid var(--fort-red);text-decoration:none;">
+        <div class="card-icon" style="background:var(--fort-pale);">🔻</div>
+        <h3 style="color:var(--fort-red);">Fortinet</h3>
+        <p>An integrated “Security Fabric” where the firewall manages the whole stack.</p>
+        <div class="vend-you">You'll meet: <b>FortiGate, FortiSwitch, FortiAP, FortiManager</b></div>
+        <span class="card-link" style="color:var(--fort-red);">Fortinet guide →</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- ★ SECTION 8 — YOUR FIRST FEW WEEKS -->
+  <div class="section" id="first-weeks">
+    <div class="section-header">
+      <h2>Your First Few Weeks</h2>
+      <div class="divider"></div>
+      <p>A simple path to getting productive. Tick these off with your manager and buddy.</p>
+    </div>
+    <div class="weeks-grid">
+      <div class="week-card" style="--c:var(--orange);">
+        <div class="week-tag">Week 1</div>
+        <h4>Orient</h4>
+        <ul>
+          <li>Read this handbook end-to-end and browse the Knowledge Base.</li>
+          <li>Meet your manager and find out which cluster and customers you'll support.</li>
+          <li>Get your accounts and access requested (GOLD, ServiceNow, SharePoint, PRIME).</li>
+          <li>Learn who your SMEs are and how to reach them.</li>
+        </ul>
+      </div>
+      <div class="week-card" style="--c:var(--cisco-blue);">
+        <div class="week-tag">Weeks 2–3</div>
+        <h4>Shadow</h4>
+        <ul>
+          <li>Shadow an experienced DPM through a live delivery — sit in on staging and dry-run calls.</li>
+          <li>Follow one project through the phases using the LAN / WAN step lists.</li>
+          <li>Watch how MACHX raises and FLIP bookings are made.</li>
+          <li>Start logging your time in Oracle PRIME.</li>
+        </ul>
+      </div>
+      <div class="week-card" style="--c:var(--green);">
+        <div class="week-tag">Weeks 4+</div>
+        <h4>Contribute</h4>
+        <ul>
+          <li>Take ownership of a small delivery (or a workstream within a larger one) with support.</li>
+          <li>Run a UAT session and prepare a HOTO pack for SharePoint.</li>
+          <li>Pick a squad to join and make your first contribution.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ★ SECTION 9 — KEY TERMS + HELP -->
+  <div class="section" id="key-terms">
+    <div class="section-header">
+      <h2>Key Terms &amp; Where to Get Help</h2>
+      <div class="divider"></div>
+      <p>A handful of acronyms you'll hear in your first week. The full, searchable glossary is on the Knowledge Base.</p>
+    </div>
+
+    <div class="glossary-grid" style="margin-bottom:14px;">
+      <div class="glossary-item"><div class="glossary-term">DPM</div><div class="glossary-def">Delivery Project Manager — you.</div></div>
+      <div class="glossary-item"><div class="glossary-term">HOTO</div><div class="glossary-def">Hand-Over-To-Operations — the final sign-off handing the delivered environment to support.</div></div>
+      <div class="glossary-item"><div class="glossary-term">VPO / TIM</div><div class="glossary-def">The engineering / staging resource that performs technical work, requested via MACHX.</div></div>
+      <div class="glossary-item"><div class="glossary-term">SC</div><div class="glossary-def">Solution Consultant — the technical design owner who joins dry runs.</div></div>
+      <div class="glossary-item"><div class="glossary-term">UAT</div><div class="glossary-def">User Acceptance Testing — the customer confirms services work after migration.</div></div>
+      <div class="glossary-item"><div class="glossary-term">LLD</div><div class="glossary-def">Low-Level Design — the detailed technical design document for the build.</div></div>
+      <div class="glossary-item"><div class="glossary-term">CAB</div><div class="glossary-def">Change Advisory Board — approves the change before a cutover (especially WAN).</div></div>
+      <div class="glossary-item"><div class="glossary-term">DMARC</div><div class="glossary-def">The demarcation point — where the carrier's circuit responsibility ends and the customer's begins.</div></div>
+      <div class="glossary-item"><div class="glossary-term">EDD</div><div class="glossary-def">Estimated Date of Delivery — when ordered hardware is expected.</div></div>
+      <div class="glossary-item"><div class="glossary-term">Option 43</div><div class="glossary-def">The DHCP setting that tells an AP where to find its controller.</div></div>
+    </div>
+    <p style="font-size:13px;margin-bottom:28px;"><a href="glossary.html">See all 80+ terms in the glossary →</a></p>
+
+    <div class="section-header" style="margin-bottom:14px;">
+      <h3 style="font-size:16px;">Where to get help</h3>
+    </div>
+    <div class="help-grid">
+      <div class="help-card">
+        <div class="help-ic">🧭</div>
+        <div class="help-tx"><b>Your manager</b><p>Your first stop for anything about your deliveries, priorities or access.</p></div>
+      </div>
+      <div class="help-card">
+        <div class="help-ic">🧠</div>
+        <div class="help-tx"><b>Your cluster SMEs</b><p>For technical and process questions — find them on your cluster page.</p></div>
+      </div>
+      <div class="help-card">
+        <div class="help-ic">📚</div>
+        <div class="help-tx"><b>The Knowledge Base</b><p>Process flowcharts, tool references, vendor guides, the team directory and glossary.</p></div>
+      </div>
+      <div class="help-card">
+        <div class="help-ic">🤝</div>
+        <div class="help-tx"><b>Your buddy / fellow DPMs</b><p>No question is too small in your first weeks.</p></div>
+      </div>
+    </div>
+
+    <div class="closer">
+      <h3>Welcome aboard 🎉</h3>
+      <p>Nobody expects you to know everything on day one. Ask questions, shadow generously, and lean on the team and the Knowledge Base — you'll be running your own deliveries before long.</p>
     </div>
   </div>
 
 </div>
 
 <footer class="footer">
-  <p>DPM <span>Knowledge Base</span> &nbsp;·&nbsp; Internal Use Only &nbsp;·&nbsp; New Hire Reference Guide</p>
+  <p>DPM <span>Knowledge Base</span> &nbsp;·&nbsp; Onboarding Handbook Ed.&nbsp;1.3 &nbsp;·&nbsp; Internal Use Only</p>
 </footer>
 <script src="shared.js"></script>
 </body>
