@@ -81,7 +81,8 @@
     "process-ap":         ["wifi", "check", "signal", "nodes"],
     "process-wlc-switch": ["sw", "check", "server", "eth"],
     "wan-process":        ["globe", "cloud", "route", "check"],
-    "option43":           ["wifi", "nodes", "route", "list"]
+    "option43":           ["wifi", "nodes", "route", "list"],
+    "resources":          ["book", "list", "globe", "nodes"]
   };
   function heroDecor() {
     var page = (location.pathname.split("/").pop() || "index.html").replace(".html", "");

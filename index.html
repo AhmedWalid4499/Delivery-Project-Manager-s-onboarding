@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DPM Knowledge Base</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="stylesheet" href="shared.css">
 <style>
 /* ── quick-note lead ── */
@@ -67,6 +68,17 @@
 .squad-sub { font-size:12.5px; color:var(--gray-mid); margin-top:3px; line-height:1.5; }
 .squad-meta { flex-shrink:0; font-size:12px; font-weight:700; color:var(--c); display:flex; align-items:center; gap:8px; }
 .squad-meta span { font-size:18px; line-height:1; }
+
+/* ── handbook download banner ── */
+.dl-banner{display:flex;align-items:center;gap:20px;background:linear-gradient(135deg,#1A1A1A 0%,#2D1A0A 100%);border-radius:16px;padding:22px 26px;text-decoration:none !important;color:#fff;box-shadow:0 8px 30px rgba(0,0,0,0.18);transition:transform .16s, box-shadow .16s;margin-bottom:6px;}
+.dl-banner:hover{transform:translateY(-2px);box-shadow:0 14px 40px rgba(0,0,0,0.26);}
+.dl-ic{font-size:30px;flex-shrink:0;width:60px;height:60px;border-radius:14px;background:rgba(255,98,0,0.18);display:flex;align-items:center;justify-content:center;}
+.dl-tx{flex:1;min-width:0;}
+.dl-title{font-size:18px;font-weight:800;}
+.dl-sub{font-size:13px;color:rgba(255,255,255,0.72);margin-top:3px;line-height:1.5;}
+.dl-btn{flex-shrink:0;background:var(--orange);color:#fff;font-weight:700;font-size:14px;padding:11px 20px;border-radius:10px;white-space:nowrap;}
+.dl-banner:hover .dl-btn{filter:brightness(1.08);}
+@media(max-width:640px){.dl-banner{flex-direction:column;align-items:flex-start;gap:14px;}.dl-btn{width:100%;text-align:center;}}
 </style>
 </head>
 <body>
@@ -142,6 +154,16 @@
 </div>
 
 <div class="content">
+
+  <!-- HANDBOOK DOWNLOAD -->
+  <a href="DPM-Onboarding-Handbook.pdf" download class="dl-banner">
+    <div class="dl-ic">📘</div>
+    <div class="dl-tx">
+      <div class="dl-title">DPM Onboarding Handbook</div>
+      <div class="dl-sub">The whole onboarding guide in one PDF — role, team, delivery process, tools and your first weeks. Grab it to read offline.</div>
+    </div>
+    <span class="dl-btn">⬇ Download PDF</span>
+  </a>
 
   <!-- QUICK NOTE: THE DPM ROLE -->
   <div class="section">
@@ -418,6 +440,12 @@
         <div class="topic-nav-card-title">Option 43 Calculator</div>
         <div class="topic-nav-card-sub">Generate the WLC discovery hex string</div>
       </a>
+      <a href="resources.html" class="topic-nav-card">
+        <div class="topic-nav-card-icon">🔗</div>
+        <div class="topic-nav-card-label">Learn more</div>
+        <div class="topic-nav-card-title">External Resources</div>
+        <div class="topic-nav-card-sub">Vendor docs, free training, standards &amp; tools</div>
+      </a>
     </div>
   </div>
 
@@ -425,7 +453,7 @@
   <div class="section">
     <div class="alert orange">
       <span class="alert-icon">💡</span>
-      <p><strong>How to use this guide:</strong> get familiar with the role and your department above, then when you pick up a project follow the <a href="lan-process.html">LAN</a> or <a href="wan-process.html">WAN</a> process. Use the networking pages and <a href="devices.html">device guides</a> as reference, and the search box (<strong>Ctrl K</strong>) to jump to anything.</p>
+      <p><strong>How to use this guide:</strong> get familiar with the role and your department above, then when you pick up a project follow the <a href="lan-process.html">LAN</a> or <a href="wan-process.html">WAN</a> process. Use the networking pages and <a href="devices.html">device guides</a> as reference, the search box (<strong>Ctrl K</strong>) to jump to anything, and the <a href="DPM-Onboarding-Handbook.pdf" download>handbook PDF</a> or <a href="resources.html">external resources</a> to go deeper.</p>
     </div>
   </div>
 

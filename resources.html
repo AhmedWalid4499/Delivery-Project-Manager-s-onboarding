@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Resources — DPM Knowledge Base</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="stylesheet" href="shared.css">
+<style>
+.res-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+@media(max-width:700px){.res-grid{grid-template-columns:1fr;}}
+.res-card{display:block;background:#fff;border:1px solid #ECECEC;border-left:3px solid var(--c,#FF6200);border-radius:12px;padding:16px 18px;text-decoration:none !important;color:inherit;transition:transform .14s, box-shadow .14s;}
+.res-card:hover{transform:translateY(-2px);box-shadow:0 10px 26px rgba(0,0,0,0.10);}
+.res-name{font-size:14.5px;font-weight:700;color:var(--black);display:flex;align-items:center;gap:8px;}
+.res-name .ext{margin-left:auto;color:var(--gray-light);font-size:14px;flex-shrink:0;}
+.res-card:hover .res-name .ext{color:var(--c,#FF6200);}
+.res-host{font-size:11px;color:var(--c,#FF6200);font-family:var(--mono);margin-top:3px;word-break:break-all;}
+.res-desc{font-size:12.5px;color:var(--gray-mid);line-height:1.55;margin-top:7px;}
+.res-badge{display:inline-block;font-size:10px;font-weight:700;letter-spacing:0.4px;text-transform:uppercase;padding:2px 7px;border-radius:5px;background:var(--green-pale);color:#0A7A4A;margin-left:2px;}
+</style>
+</head>
+<body>
+<nav class="topnav">
+  <a href="index.html" class="topnav-brand">
+    <div class="topnav-logo">DPM</div>
+    <div class="topnav-brand-text">Knowledge <span>Base</span></div>
+  </a>
+  <div class="topnav-links">
+    <a href="index.html"          class="nav-link">Home</a>
+    <a href="lan-wan-basics.html" class="nav-link">LAN / WAN</a>
+    <a href="ip-routing.html"     class="nav-link">IP Routing</a>
+    <a href="switching.html"      class="nav-link">Switching</a>
+    <a href="wireless.html"       class="nav-link">Wireless</a>
+    <a href="firewalls.html"      class="nav-link">Firewalls</a>
+    <a href="zscaler.html"        class="nav-link">Zscaler</a>
+    <a href="devices.html"        class="nav-link">Devices</a>
+    <a href="glossary.html"       class="nav-link">Glossary</a>
+  </div>
+  <div class="topnav-badge">New Hire Guide</div>
+</nav>
+
+<div class="page-hero dark">
+  <div class="hero-content">
+    <div class="hero-tag">🔗 Learn More</div>
+    <h1>External <span>Resources</span></h1>
+    <p class="hero-sub">Hand-picked, mostly-free places to go deeper — vendor docs, training platforms, standards, and tools. Green badges are free training.</p>
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- FUNDAMENTALS -->
+  <div class="section">
+    <div class="section-header"><h2>Networking fundamentals</h2><div class="divider"></div>
+      <p>Start here if networking is new. Plain-English courses and practice.</p></div>
+    <div class="res-grid">
+      <a class="res-card" style="--c:#FF6200;" href="https://www.professormesser.com/" target="_blank" rel="noopener">
+        <div class="res-name">Professor Messer <span class="res-badge">Free</span><span class="ext">↗</span></div>
+        <div class="res-host">professormesser.com</div>
+        <div class="res-desc">Free, complete video courses for CompTIA Network+ and Security+ — the fastest way to build a foundation.</div>
+      </a>
+      <a class="res-card" style="--c:#FF6200;" href="https://www.practicalnetworking.net/" target="_blank" rel="noopener">
+        <div class="res-name">Practical Networking <span class="ext">↗</span></div>
+        <div class="res-host">practicalnetworking.net</div>
+        <div class="res-desc">Exceptionally clear write-ups on how routing, switching, NAT and subnetting actually work.</div>
+      </a>
+      <a class="res-card" style="--c:#FF6200;" href="https://skillsforall.com/" target="_blank" rel="noopener">
+        <div class="res-name">Cisco Networking Academy — Skills for All <span class="res-badge">Free</span><span class="ext">↗</span></div>
+        <div class="res-host">skillsforall.com</div>
+        <div class="res-desc">Free self-paced Cisco courses (Networking Basics, CCNA-aligned) with hands-on labs.</div>
+      </a>
+      <a class="res-card" style="--c:#FF6200;" href="https://jodies.de/ipcalc" target="_blank" rel="noopener">
+        <div class="res-name">ipcalc — subnet calculator <span class="ext">↗</span></div>
+        <div class="res-host">jodies.de/ipcalc</div>
+        <div class="res-desc">Paste an IP/CIDR and instantly see network, broadcast, host range and mask. A daily-driver tool.</div>
+      </a>
+    </div>
+  </div>
+
+  <!-- CISCO -->
+  <div class="section">
+    <div class="section-header"><h2>Cisco</h2><div class="divider"></div>
+      <p>The vendor you'll meet most on LAN deliveries.</p></div>
+    <div class="res-grid">
+      <a class="res-card" style="--c:#1BA0D7;" href="https://learningnetwork.cisco.com/" target="_blank" rel="noopener">
+        <div class="res-name">Cisco Learning Network <span class="ext">↗</span></div>
+        <div class="res-host">learningnetwork.cisco.com</div>
+        <div class="res-desc">Community, study material and certification paths (CCNA → CCNP → CCIE).</div>
+      </a>
+      <a class="res-card" style="--c:#1BA0D7;" href="https://www.cisco.com/c/en/us/support/all-products.html" target="_blank" rel="noopener">
+        <div class="res-name">Cisco Product Support &amp; Config Guides <span class="ext">↗</span></div>
+        <div class="res-host">cisco.com/support</div>
+        <div class="res-desc">IOS XE configuration guides, datasheets and release notes for Catalyst switches, routers and 9800 WLCs.</div>
+      </a>
+      <a class="res-card" style="--c:#1BA0D7;" href="https://developer.cisco.com/" target="_blank" rel="noopener">
+        <div class="res-name">Cisco DevNet <span class="res-badge">Free</span><span class="ext">↗</span></div>
+        <div class="res-host">developer.cisco.com</div>
+        <div class="res-desc">Free sandboxes, learning labs and APIs for Catalyst Center (DNAC), Meraki and more.</div>
+      </a>
+      <a class="res-card" style="--c:#1BA0D7;" href="https://documentation.meraki.com/" target="_blank" rel="noopener">
+        <div class="res-name">Meraki Documentation <span class="ext">↗</span></div>
+        <div class="res-host">documentation.meraki.com</div>
+        <div class="res-desc">The full knowledge base for cloud-managed Meraki switches, APs and security appliances.</div>
+      </a>
+    </div>
+  </div>
+
+  <!-- PALO ALTO -->
+  <div class="section">
+    <div class="section-header"><h2>Palo Alto Networks</h2><div class="divider"></div>
+      <p>NGFW, Panorama and Prisma / SASE.</p></div>
+    <div class="res-grid">
+      <a class="res-card" style="--c:#FA5A28;" href="https://beacon.paloaltonetworks.com/" target="_blank" rel="noopener">
+        <div class="res-name">Palo Alto Beacon <span class="res-badge">Free</span><span class="ext">↗</span></div>
+        <div class="res-host">beacon.paloaltonetworks.com</div>
+        <div class="res-desc">Free digital learning platform — self-paced PAN-OS, Prisma and certification (PCNSA / PCNSE) courses.</div>
+      </a>
+      <a class="res-card" style="--c:#FA5A28;" href="https://docs.paloaltonetworks.com/" target="_blank" rel="noopener">
+        <div class="res-name">PAN-OS Documentation <span class="ext">↗</span></div>
+        <div class="res-host">docs.paloaltonetworks.com</div>
+        <div class="res-desc">Admin guides, new-feature guides and release notes for every PAN-OS version and Panorama.</div>
+      </a>
+      <a class="res-card" style="--c:#FA5A28;" href="https://live.paloaltonetworks.com/" target="_blank" rel="noopener">
+        <div class="res-name">LIVEcommunity <span class="ext">↗</span></div>
+        <div class="res-host">live.paloaltonetworks.com</div>
+        <div class="res-desc">Official community — how-tos, best-practice articles, and troubleshooting discussions.</div>
+      </a>
+    </div>
+  </div>
+
+  <!-- FORTINET -->
+  <div class="section">
+    <div class="section-header"><h2>Fortinet</h2><div class="divider"></div>
+      <p>FortiGate, FortiSwitch, FortiAP and the Security Fabric.</p></div>
+    <div class="res-grid">
+      <a class="res-card" style="--c:#EE3124;" href="https://training.fortinet.com/" target="_blank" rel="noopener">
+        <div class="res-name">Fortinet Training Institute <span class="res-badge">Free NSE</span><span class="ext">↗</span></div>
+        <div class="res-host">training.fortinet.com</div>
+        <div class="res-desc">Free self-paced NSE courses and the FCP / FCX certification tracks for FortiGate and FortiOS.</div>
+      </a>
+      <a class="res-card" style="--c:#EE3124;" href="https://docs.fortinet.com/" target="_blank" rel="noopener">
+        <div class="res-name">Fortinet Document Library <span class="ext">↗</span></div>
+        <div class="res-host">docs.fortinet.com</div>
+        <div class="res-desc">FortiOS admin guides, CLI references, and release notes (supported-models lists per version).</div>
+      </a>
+      <a class="res-card" style="--c:#EE3124;" href="https://community.fortinet.com/" target="_blank" rel="noopener">
+        <div class="res-name">Fortinet Community <span class="ext">↗</span></div>
+        <div class="res-host">community.fortinet.com</div>
+        <div class="res-desc">Knowledge-base articles, configuration examples and troubleshooting from Fortinet and its users.</div>
+      </a>
+    </div>
+  </div>
+
+  <!-- WIRELESS / CLOUD / SECURITY -->
+  <div class="section">
+    <div class="section-header"><h2>Wireless, cloud &amp; Zscaler</h2><div class="divider"></div>
+      <p>Deeper on the wireless and cloud-security topics you'll deliver.</p></div>
+    <div class="res-grid">
+      <a class="res-card" style="--c:#00A86B;" href="option43.html">
+        <div class="res-name">Option 43 Calculator <span class="res-badge" style="background:var(--orange-pale);color:var(--orange-dark);">In here</span><span class="ext">→</span></div>
+        <div class="res-host">this knowledge base</div>
+        <div class="res-desc">Generate the DHCP Option 43 hex string for WLC discovery — a staple of the AP migration process.</div>
+      </a>
+      <a class="res-card" style="--c:#00A86B;" href="https://www.cwnp.com/" target="_blank" rel="noopener">
+        <div class="res-name">CWNP — Wireless knowledge <span class="ext">↗</span></div>
+        <div class="res-host">cwnp.com</div>
+        <div class="res-desc">Vendor-neutral WiFi learning and the CWNA certification — RF, roaming, 802.11 done properly.</div>
+      </a>
+      <a class="res-card" style="--c:#00A86B;" href="https://help.zscaler.com/" target="_blank" rel="noopener">
+        <div class="res-name">Zscaler Help Portal <span class="ext">↗</span></div>
+        <div class="res-host">help.zscaler.com</div>
+        <div class="res-desc">Product documentation for ZIA, ZPA and the wider Zero Trust Exchange.</div>
+      </a>
+      <a class="res-card" style="--c:#00A86B;" href="https://www.zscaler.com/resources/training-certification" target="_blank" rel="noopener">
+        <div class="res-name">Zscaler Academy — Training <span class="res-badge">Free</span><span class="ext">↗</span></div>
+        <div class="res-host">zscaler.com</div>
+        <div class="res-desc">Free training and certifications on Zscaler's SASE / Zero-Trust platform.</div>
+      </a>
+    </div>
+  </div>
+
+  <!-- STANDARDS / TOOLS -->
+  <div class="section">
+    <div class="section-header"><h2>Standards, tools &amp; certifications</h2><div class="divider"></div>
+      <p>The primary sources and the tools engineers keep open.</p></div>
+    <div class="res-grid">
+      <a class="res-card" style="--c:#7C3AED;" href="https://www.rfc-editor.org/" target="_blank" rel="noopener">
+        <div class="res-name">RFC Editor <span class="ext">↗</span></div>
+        <div class="res-host">rfc-editor.org</div>
+        <div class="res-desc">The actual internet standards — e.g. RFC 2132 (DHCP options, incl. Option 43), RFC 1918 (private IPs).</div>
+      </a>
+      <a class="res-card" style="--c:#7C3AED;" href="https://www.iana.org/protocols" target="_blank" rel="noopener">
+        <div class="res-name">IANA Protocol Registries <span class="ext">↗</span></div>
+        <div class="res-host">iana.org</div>
+        <div class="res-desc">Authoritative registries for DHCP options, port numbers, and other assigned parameters.</div>
+      </a>
+      <a class="res-card" style="--c:#7C3AED;" href="https://www.wireshark.org/" target="_blank" rel="noopener">
+        <div class="res-name">Wireshark <span class="res-badge">Free</span><span class="ext">↗</span></div>
+        <div class="res-host">wireshark.org</div>
+        <div class="res-desc">The packet analyzer. Capture a DHCP exchange and watch Option 43 arrive in real time.</div>
+      </a>
+      <a class="res-card" style="--c:#7C3AED;" href="https://packetlife.net/library/cheat-sheets/" target="_blank" rel="noopener">
+        <div class="res-name">PacketLife Cheat Sheets <span class="ext">↗</span></div>
+        <div class="res-host">packetlife.net</div>
+        <div class="res-desc">One-page printable references for OSPF, BGP, EIGRP, STP, IPsec, subnetting and more.</div>
+      </a>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="alert blue">
+      <span class="alert-icon">🔎</span>
+      <p>Links go to third-party sites and can change over time. If one moves, search the site name — and if you find a great resource worth adding here, pass it to the <a href="onboarding-squad.html">Onboarding Squad</a>.</p>
+    </div>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <p>DPM <span>Knowledge Base</span> &nbsp;·&nbsp;
+  <a href="index.html" style="color:rgba(255,255,255,0.4);">Home</a></p>
+</footer>
+<script src="shared.js"></script>
+</body>
+</html>
