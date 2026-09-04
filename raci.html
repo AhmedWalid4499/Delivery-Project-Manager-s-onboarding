@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RACI Matrix — DPM Knowledge Base</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="stylesheet" href="shared.css">
+<style>
+/* ── RACI legend + roles ── */
+.raci-legend { display:flex; flex-wrap:wrap; gap:10px; margin-bottom:18px; }
+.raci-legend .lg { display:flex; align-items:center; gap:9px; background:#fff; border:1px solid #ECECEC; border-radius:10px; padding:8px 14px; font-size:13px; color:var(--gray-dark); }
+.raci-legend .lg b { color:var(--black); }
+
+.roles-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:8px; }
+@media(max-width:760px){ .roles-grid{ grid-template-columns:1fr 1fr; } }
+@media(max-width:460px){ .roles-grid{ grid-template-columns:1fr; } }
+.role-item { background:#fff; border:1px solid #ECECEC; border-radius:12px; padding:13px 15px; border-left:4px solid var(--orange); }
+.role-code { font-family:var(--mono); font-weight:700; font-size:13px; color:var(--orange-dark); }
+.role-desc { font-size:12.5px; color:var(--gray-mid); margin-top:3px; line-height:1.5; }
+
+/* ── RACI cells ── */
+.cell { display:inline-flex; align-items:center; justify-content:center; min-width:34px; height:26px; border-radius:6px; font-weight:700; font-size:12.5px; font-family:var(--mono); padding:0 6px; }
+.c-ar { background:var(--orange); color:#fff; box-shadow:0 1px 4px rgba(255,98,0,0.35); }
+.c-a  { background:var(--orange); color:#fff; }
+.c-r  { background:var(--green-pale); color:#0A7A4A; }
+.c-c  { background:var(--cisco-pale); color:var(--cisco-blue); }
+.c-i  { background:var(--gray-faint); color:var(--gray-mid); border:1px solid #ECECEC; }
+.c-x  { color:var(--gray-light); font-weight:400; }
+
+/* ── RACI table ── */
+.raci{ width:100%; border-collapse:collapse; font-size:13px; min-width:720px; }
+.raci thead th{ background:var(--black); color:#fff; padding:11px 8px; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.4px; text-align:center; white-space:nowrap; }
+.raci thead th:first-child{ text-align:left; padding-left:14px; }
+.raci tbody td{ padding:8px; border-bottom:1px solid #F0F0F0; text-align:center; vertical-align:middle; }
+.raci tbody td:first-child{ text-align:left; font-weight:600; color:var(--gray-dark); background:var(--gray-faint); padding-left:14px; font-size:13px; }
+.raci tbody tr:hover td{ background:var(--orange-faint); }
+.raci tbody tr:hover td:first-child{ background:#FDEAD9; }
+.raci-col-dpm{ background:rgba(255,98,0,0.06); }
+
+/* ── golden rule ── */
+.golden { display:flex; gap:16px; align-items:flex-start; background:linear-gradient(135deg,#1A1A1A 0%,#2D1A0A 100%); color:#fff; border-radius:14px; padding:20px 24px; margin-top:8px; }
+.golden .g-ic { font-size:26px; flex-shrink:0; line-height:1.2; }
+.golden h4 { font-size:15px; font-weight:800; margin:0 0 7px; color:#fff; }
+.golden p { font-size:13.5px; color:rgba(255,255,255,0.82); line-height:1.75; margin:0; }
+.golden strong { color:var(--orange-light); font-weight:700; }
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <a href="index.html" class="topnav-brand">
+    <div class="topnav-logo">DPM</div>
+    <div class="topnav-brand-text">Knowledge <span>Base</span></div>
+  </a>
+  <div class="topnav-links">
+    <a href="index.html"          class="nav-link">Home</a>
+    <a href="lan-wan-basics.html" class="nav-link">LAN / WAN</a>
+    <a href="ip-routing.html"     class="nav-link">IP Routing</a>
+    <a href="switching.html"      class="nav-link">Switching</a>
+    <a href="wireless.html"       class="nav-link">Wireless</a>
+    <a href="firewalls.html"      class="nav-link">Firewalls</a>
+    <a href="zscaler.html"        class="nav-link">Zscaler</a>
+    <a href="devices.html"        class="nav-link">Devices</a>
+    <a href="glossary.html"       class="nav-link">Glossary</a>
+  </div>
+  <div class="topnav-badge">New Hire Guide</div>
+</nav>
+
+<div class="breadcrumb" style="background:transparent;border:none;padding:0;"></div>
+
+<div class="page-hero dark">
+  <div class="hero-content">
+    <div class="hero-tag">📋 DPM Reference</div>
+    <h1>The <span>RACI</span> Matrix</h1>
+    <p class="hero-sub">Delivery is a team sport, but ownership must be unambiguous. This matrix shows who is <strong>Accountable</strong> and <strong>Responsible</strong> for each activity in a typical delivery — and where you consult or simply inform.</p>
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- LEGEND + ROLES -->
+  <div class="section">
+    <div class="section-header">
+      <h2>How to read it</h2>
+      <div class="divider"></div>
+      <p>Each activity has exactly one <strong>Accountable</strong> owner. Where the same party both owns and does the work, the cell shows <span class="cell c-ar" style="height:20px;min-width:26px;">A/R</span>.</p>
+    </div>
+    <div class="raci-legend">
+      <span class="lg"><span class="cell c-a">A</span> <b>Accountable</b> — owns the outcome</span>
+      <span class="lg"><span class="cell c-r">R</span> <b>Responsible</b> — does the work</span>
+      <span class="lg"><span class="cell c-c">C</span> <b>Consulted</b></span>
+      <span class="lg"><span class="cell c-i">I</span> <b>Informed</b></span>
+      <span class="lg"><span class="cell c-x">–</span> not involved</span>
+    </div>
+
+    <div class="roles-grid">
+      <div class="role-item"><div class="role-code">DPM — you</div><div class="role-desc">Accountable for the delivery end-to-end.</div></div>
+      <div class="role-item"><div class="role-code">PM</div><div class="role-desc">Project Manager — scope &amp; commercial owner.</div></div>
+      <div class="role-item"><div class="role-code">SC</div><div class="role-desc">Solution Consultant — technical design owner.</div></div>
+      <div class="role-item"><div class="role-code">VPO / TIM</div><div class="role-desc">Engineering &amp; staging, requested via MACHX.</div></div>
+      <div class="role-item"><div class="role-code">FE</div><div class="role-desc">Field Engineer — hands on site.</div></div>
+      <div class="role-item"><div class="role-code">Supply Chain</div><div class="role-desc">Hardware &amp; logistics.</div></div>
+    </div>
+  </div>
+
+  <!-- MATRIX -->
+  <div class="section">
+    <div class="section-header">
+      <h2>Who does what</h2>
+      <div class="divider"></div>
+      <p>Every activity in a typical LAN/WAN delivery, in order. The <strong>DPM</strong> column is highlighted — you're accountable for almost all of it.</p>
+    </div>
+
+    <div class="kb-tablewrap">
+      <table class="raci">
+        <thead>
+          <tr>
+            <th>Activity</th>
+            <th class="raci-col-dpm">DPM</th>
+            <th>PM</th>
+            <th>SC</th>
+            <th>VPO / TIM</th>
+            <th>FE</th>
+            <th>Supply&nbsp;Chain</th>
+            <th>Customer</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Scope, BOM &amp; commercial coordination</td><td class="raci-col-dpm"><span class="cell c-c">C</span></td><td><span class="cell c-ar">A/R</span></td><td><span class="cell c-c">C</span></td><td><span class="cell c-x">–</span></td><td><span class="cell c-x">–</span></td><td><span class="cell c-x">–</span></td><td><span class="cell c-c">C</span></td></tr>
+          <tr><td>GOLD / SALTO order creation &amp; accuracy</td><td class="raci-col-dpm"><span class="cell c-ar">A/R</span></td><td><span class="cell c-c">C</span></td><td><span class="cell c-x">–</span></td><td><span class="cell c-x">–</span></td><td><span class="cell c-x">–</span></td><td><span class="cell c-x">–</span></td><td><span class="cell c-x">–</span></td></tr>
+          <tr><td>Hardware ordering, EDD &amp; shipping</td><td class="raci-col-dpm"><span class="cell c-a">A</span></td><td><span class="cell c-i">I</span></td><td><span class="cell c-x">–</span></td><td><span class="cell c-x">–</span></td><td><span class="cell c-x">–</span></td><td><span class="cell c-r">R</span></td><td><span class="cell c-i">I</span></td></tr>
+          <tr><td>Runbook &amp; LLD preparation</td><td class="raci-col-dpm"><span class="cell c-c">C</span></td><td><span class="cell c-x">–</span></td><td><span class="cell c-ar">A/R</span></td><td><span class="cell c-c">C</span></td><td><span class="cell c-x">–</span></td><td><span class="cell c-x">–</span></td><td><span class="cell c-c">C</span></td></tr>
+          <tr><td>Staging &amp; migration date selection</td><td class="raci-col-dpm"><span class="cell c-ar">A/R</span></td><td><span class="cell c-i">I</span></td><td><span class="cell c-x">–</span></td><td><span class="cell c-c">C</span></td><td><span class="cell c-x">–</span></td><td><span class="cell c-x">–</span></td><td><span class="cell c-c">C</span></td></tr>
+          <tr><td>MACHX raises (VPO work orders)</td><td class="raci-col-dpm"><span class="cell c-ar">A/R</span></td><td><span class="cell c-x">–</span></td><td><span class="cell c-x">–</span></td><td><span class="cell c-i">I</span></td><td><span class="cell c-x">–</span></td><td><span class="cell c-x">–</span></td><td><span class="cell c-x">–</span></td></tr>
+          <tr><td>Field Engineer booking (FLIP)</td><td class="raci-col-dpm"><span class="cell c-ar">A/R</span></td><td><span class="cell c-x">–</span></td><td><span class="cell c-x">–</span></td><td><span class="cell c-x">–</span></td><td><span class="cell c-i">I</span></td><td><span class="cell c-x">–</span></td><td><span class="cell c-x">–</span></td></tr>
+          <tr><td>Change request (ServiceNow)</td><td class="raci-col-dpm"><span class="cell c-ar">A/R</span></td><td><span class="cell c-i">I</span></td><td><span class="cell c-x">–</span></td><td><span class="cell c-c">C</span></td><td><span class="cell c-x">–</span></td><td><span class="cell c-x">–</span></td><td><span class="cell c-i">I</span></td></tr>
+          <tr><td>Staging execution</td><td class="raci-col-dpm"><span class="cell c-a">A</span></td><td><span class="cell c-x">–</span></td><td><span class="cell c-c">C</span></td><td><span class="cell c-r">R</span></td><td><span class="cell c-x">–</span></td><td><span class="cell c-x">–</span></td><td><span class="cell c-c">C</span></td></tr>
+          <tr><td>Dry run</td><td class="raci-col-dpm"><span class="cell c-a">A</span></td><td><span class="cell c-x">–</span></td><td><span class="cell c-c">C</span></td><td><span class="cell c-r">R</span></td><td><span class="cell c-x">–</span></td><td><span class="cell c-x">–</span></td><td><span class="cell c-c">C</span></td></tr>
+          <tr><td>Migration / cutover execution</td><td class="raci-col-dpm"><span class="cell c-a">A</span></td><td><span class="cell c-i">I</span></td><td><span class="cell c-c">C</span></td><td><span class="cell c-r">R</span></td><td><span class="cell c-r">R</span></td><td><span class="cell c-x">–</span></td><td><span class="cell c-c">C</span></td></tr>
+          <tr><td>User Acceptance Testing (UAT)</td><td class="raci-col-dpm"><span class="cell c-a">A</span></td><td><span class="cell c-x">–</span></td><td><span class="cell c-x">–</span></td><td><span class="cell c-c">C</span></td><td><span class="cell c-x">–</span></td><td><span class="cell c-x">–</span></td><td><span class="cell c-r">R</span></td></tr>
+          <tr><td>Success notification &amp; status comms</td><td class="raci-col-dpm"><span class="cell c-ar">A/R</span></td><td><span class="cell c-i">I</span></td><td><span class="cell c-x">–</span></td><td><span class="cell c-x">–</span></td><td><span class="cell c-x">–</span></td><td><span class="cell c-x">–</span></td><td><span class="cell c-i">I</span></td></tr>
+          <tr><td>DNAC / CMDB updates</td><td class="raci-col-dpm"><span class="cell c-ar">A/R</span></td><td><span class="cell c-x">–</span></td><td><span class="cell c-x">–</span></td><td><span class="cell c-c">C</span></td><td><span class="cell c-x">–</span></td><td><span class="cell c-x">–</span></td><td><span class="cell c-x">–</span></td></tr>
+          <tr><td>HOTO package &amp; sign-off</td><td class="raci-col-dpm"><span class="cell c-ar">A/R</span></td><td><span class="cell c-i">I</span></td><td><span class="cell c-c">C</span></td><td><span class="cell c-c">C</span></td><td><span class="cell c-x">–</span></td><td><span class="cell c-x">–</span></td><td><span class="cell c-i">I</span></td></tr>
+          <tr><td>GOLD / SALTO order closure</td><td class="raci-col-dpm"><span class="cell c-ar">A/R</span></td><td><span class="cell c-i">I</span></td><td><span class="cell c-x">–</span></td><td><span class="cell c-x">–</span></td><td><span class="cell c-x">–</span></td><td><span class="cell c-x">–</span></td><td><span class="cell c-x">–</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="golden">
+      <div class="g-ic">⭐</div>
+      <div>
+        <h4>The DPM golden rule</h4>
+        <p>The DPM is accountable for the delivery end-to-end — the <strong>dates</strong>, the <strong>MACHX raises</strong>, the <strong>Field Engineer dispatch</strong>, and the <strong>HOTO package</strong> are yours. The PM owns <strong>scope, BOM and the commercial relationship</strong>; the SC owns the <strong>design</strong> (runbook &amp; LLD). Keeping these boundaries clear is what keeps a delivery calm.</p>
+      </div>
+    </div>
+
+    <div class="alert orange" style="margin-top:22px;margin-bottom:0;">
+      <span class="alert-icon">📘</span>
+      <p>This matrix is reproduced from the <a href="DPM-Onboarding-Handbook.pdf" download>DPM Onboarding Handbook (Ed. 1.3)</a>. See the <a href="index.html#processes">delivery process</a> pages for where each activity happens in the timeline, and the <a href="index.html#what-is-dpm">role overview</a> on the home page.</p>
+    </div>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <p>DPM <span>Knowledge Base</span> &nbsp;·&nbsp; Onboarding Handbook Ed.&nbsp;1.3 &nbsp;·&nbsp; Internal Use Only</p>
+</footer>
+<script src="shared.js"></script>
+</body>
+</html>
