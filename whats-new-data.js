@@ -47,6 +47,12 @@ window.KB_WHATS_NEW = [
     desc: 'The “Start a new project” form now sits at the top of the page, so you enter the customer, site, kick-off date, target migration date and the people involved first — then the checklist opens straight away.',
     links: [{ href: 'checklist.html', label: 'Open the checklists' }]
   },
+  {
+    date: '2026-09-30', tag: 'Improved',
+    title: 'Email templates grouped by activity',
+    desc: 'Click an activity box to jump to its emails — from ordering and delivery through staging, UAT and migration day to the HOTO hand-over, plus the WAN steps. The new Activity filter combines with the process, phase and search filters.',
+    links: [{ href: 'templates.html', label: 'Browse the templates' }]
+  },
 
   /* ── 29 Sep 2026 ─────────────────────────────────────────── */
   {

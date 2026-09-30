@@ -22,13 +22,28 @@
      group       fields with the same group are shown together
      multiline   true = a text area instead of a one-line input
 
+   ── activities (window.KB_TEMPLATE_ACTIVITIES) ─────────────
+   { id, name, icon, desc, order }
+     id      lowercase-with-dashes; named by each template's
+             activity  field and used in links:
+             templates.html?activity=<id>
+     name    shown on the activity box and as the group heading
+     icon    one emoji (decorative only)
+     desc    one line: what the DPM is doing at that point
+     order   position in delivery order (lowest first)
+   The page shows one clickable box per activity and groups the
+   templates under those headings. A template whose activity is
+   missing or unknown is grouped under "Other templates".
+
    ── templates ──────────────────────────────────────────────
-   { id, title, process, phase, kind, audience, step, to, cc,
-     subject, body, draft? }
+   { id, title, process, phase, activity, kind, audience, step,
+     to, cc, subject, body, draft? }
      id        unique, lowercase-with-dashes (used in links:
                templates.html#tmpl-<id>)
      process   any of "ap", "wlc", "wan"
      phase     one of the names in  phases  below
+     activity  the id of exactly one entry in
+               KB_TEMPLATE_ACTIVITIES (every template has one)
      kind      "email" or "invite" (a Teams / Outlook meeting)
      audience  "customer" (customer-facing), "internal", or
                "mixed" (customer and Orange Business attendees)
@@ -47,6 +62,28 @@
      • [Square brackets] = a note the sender must complete or
        delete before sending. They are highlighted on the page.
 ============================================================ */
+/* Activities, in delivery order: one clickable box on the page per
+   activity, and every template names exactly one of these ids in
+   its  activity  field. */
+window.KB_TEMPLATE_ACTIVITIES = [
+  { id: "ordering",    order: 10, icon: "📦", name: "Ordering & delivery",
+    desc: "Chase the order and its EDD, confirm the equipment arrived on site and request the IP addressing." },
+  { id: "planning",    order: 20, icon: "🗓️", name: "Planning calls & migration date",
+    desc: "Align with the customer on staging and migration dates, then get the migration date confirmed in writing." },
+  { id: "staging",     order: 30, icon: "🧰", name: "Staging, dry run & AP mounting",
+    desc: "Invite to the staging session, report its status, run the external dry run and ask the customer to mount the APs." },
+  { id: "readiness",   order: 40, icon: "✅", name: "UAT & pre-migration checks",
+    desc: "Send the UAT document and get it back, check DHCP Option 43 and line up the teams you need on the day." },
+  { id: "migration",   order: 50, icon: "🚀", name: "Migration day",
+    desc: "Invite everyone to the migration and report progress when it runs over several days." },
+  { id: "closure",     order: 60, icon: "🏁", name: "Success, records & HOTO",
+    desc: "Announce the success, then update the CMDB and DNAC and hand the site over to operations." },
+  { id: "wan-circuit", order: 70, icon: "🌐", name: "WAN: site validation & circuit order",
+    desc: "Get the customer's local team to validate the site details before the carrier circuit is ordered." },
+  { id: "wan-cutover", order: 80, icon: "🔌", name: "WAN: router install, CAB & cutover",
+    desc: "Agree the router installation, secure the CAB approval, run the cutover and exit hyper-care." }
+];
+
 window.KB_TEMPLATES = {
 
   phases: ["Ordering", "Pre-migration", "Migration", "Post-migration"],
@@ -88,6 +125,7 @@ window.KB_TEMPLATES = {
       title: "Ordering progress & EDD request",
       process: ["ap", "wlc"],
       phase: "Ordering",
+      activity: "ordering",
       kind: "email",
       audience: "internal",
       step: "AP & WLC/Switch · Ordering 04–05: “Contact supply chain for ordering progress” and “Get an EDD (Estimated Date of Delivery)”",
@@ -117,6 +155,7 @@ window.KB_TEMPLATES = {
       title: "WAN: local validation request",
       process: ["wan"],
       phase: "Ordering",
+      activity: "wan-circuit",
       kind: "email",
       audience: "customer",
       step: [
@@ -154,6 +193,7 @@ window.KB_TEMPLATES = {
       title: "Equipment delivered - confirm receipt",
       process: ["ap", "wlc"],
       phase: "Pre-migration",
+      activity: "ordering",
       kind: "email",
       audience: "customer",
       step: "AP & WLC/Switch · Pre-migration 02: “Send to the customer and confirm receipt with them”",
@@ -183,6 +223,7 @@ window.KB_TEMPLATES = {
       title: "IP addressing request (TDT)",
       process: ["wlc"],
       phase: "Pre-migration",
+      activity: "ordering",
       kind: "email",
       audience: "internal",
       step: "WLC/Switch · Pre-migration 03: “Get the IP addresses from the TDT” — addressing is needed before staging.",
@@ -214,6 +255,7 @@ window.KB_TEMPLATES = {
       title: "Migration-date alignment call (AP)",
       process: ["ap"],
       phase: "Pre-migration",
+      activity: "planning",
       kind: "invite",
       audience: "mixed",
       step: "AP · Pre-migration 04: “Set up a call with the customer — align on a possible migration date and explain that the customer will be the one mounting the APs”",
@@ -245,6 +287,7 @@ window.KB_TEMPLATES = {
       title: "External dry-run invitation",
       process: ["wlc"],
       phase: "Pre-migration",
+      activity: "staging",
       kind: "invite",
       audience: "mixed",
       step: [
@@ -284,6 +327,7 @@ window.KB_TEMPLATES = {
       title: "Staging & migration planning call (WLC/Switch)",
       process: ["wlc"],
       phase: "Pre-migration",
+      activity: "planning",
       kind: "invite",
       audience: "mixed",
       step: "WLC/Switch · Pre-migration 06: “Set up dates for the staging with the customer”",
@@ -314,6 +358,7 @@ window.KB_TEMPLATES = {
       title: "Request to mount & connect the new APs",
       process: ["ap"],
       phase: "Pre-migration",
+      activity: "staging",
       kind: "email",
       audience: "customer",
       step: "AP · Pre-migration 05: “Send the customer to connect the APs to the switch” — in the AP process the customer mounts the APs; there is no Field Engineer on site.",
@@ -349,6 +394,7 @@ window.KB_TEMPLATES = {
       title: "Staging session invitation",
       process: ["wlc"],
       phase: "Pre-migration",
+      activity: "staging",
       kind: "invite",
       audience: "mixed",
       step: "WLC/Switch · Pre-migration 09: “Send the invitation for staging” (the staging itself is step 10).",
@@ -385,6 +431,7 @@ window.KB_TEMPLATES = {
       title: "Post-staging status (daily if staging runs over several days)",
       process: ["wlc"],
       phase: "Pre-migration",
+      activity: "staging",
       kind: "email",
       audience: "mixed",
       step: "WLC/Switch · Pre-migration 11: “Send the post-staging email, including daily status (if it runs more than one day)”",
@@ -422,6 +469,7 @@ window.KB_TEMPLATES = {
       title: "UAT test document - send it and ask for it back",
       process: ["ap", "wlc"],
       phase: "Pre-migration",
+      activity: "readiness",
       kind: "email",
       audience: "customer",
       step: [
@@ -456,6 +504,7 @@ window.KB_TEMPLATES = {
       title: "Migration-date confirmation request",
       process: ["ap", "wlc"],
       phase: "Pre-migration",
+      activity: "planning",
       kind: "email",
       audience: "customer",
       step: [
@@ -494,6 +543,7 @@ window.KB_TEMPLATES = {
       title: "Option 43 check / request (DHCP team)",
       process: ["ap"],
       phase: "Pre-migration",
+      activity: "readiness",
       kind: "email",
       audience: "internal",
       step: [
@@ -526,6 +576,7 @@ window.KB_TEMPLATES = {
       title: "Migration support teams alignment (DXC, ODC, DHCP)",
       process: ["wlc"],
       phase: "Pre-migration",
+      activity: "readiness",
       kind: "email",
       audience: "internal",
       step: "WLC/Switch · Pre-migration 16: “Align any teams you'll need during migration (DXC, ODC, DHCP teams)”",
@@ -558,6 +609,7 @@ window.KB_TEMPLATES = {
       title: "Migration invitation",
       process: ["ap", "wlc"],
       phase: "Pre-migration",
+      activity: "migration",
       kind: "invite",
       audience: "mixed",
       step: "AP Pre-migration 14 / WLC/Switch Pre-migration 19: “Send migration invitations to the customer and VPO (PM and SC as optional on all migrations)”",
@@ -596,6 +648,7 @@ window.KB_TEMPLATES = {
       title: "WAN: router installation date & escort contact",
       process: ["wan"],
       phase: "Pre-migration",
+      activity: "wan-cutover",
       kind: "email",
       audience: "customer",
       step: [
@@ -631,6 +684,7 @@ window.KB_TEMPLATES = {
       title: "WAN: cutover meeting invite (a week ahead)",
       process: ["wan"],
       phase: "Pre-migration",
+      activity: "wan-cutover",
       kind: "invite",
       audience: "mixed",
       step: "WAN · Phase 11.4: “OB PM sends a team meeting invite for the activity a week in advance to secure all resources”",
@@ -669,6 +723,7 @@ window.KB_TEMPLATES = {
       title: "WAN: CAB approval reminder (customer PM)",
       process: ["wan"],
       phase: "Pre-migration",
+      activity: "wan-cutover",
       kind: "email",
       audience: "customer",
       step: "WAN · Phase 12.1: “Customer PM submits a CAB request to be approved prior to the cutover date”",
@@ -700,6 +755,7 @@ window.KB_TEMPLATES = {
       title: "Partial-migration update (multi-day migration)",
       process: ["wlc"],
       phase: "Post-migration",
+      activity: "migration",
       kind: "email",
       audience: "customer",
       step: "WLC/Switch · Post-migration 01: “Send the partial-migration email if it runs over multiple days (template provided); on a single day, or the last migration day, send the success notification”",
@@ -739,6 +795,7 @@ window.KB_TEMPLATES = {
       title: "Migration success notification",
       process: ["ap", "wlc"],
       phase: "Post-migration",
+      activity: "closure",
       kind: "email",
       audience: "customer",
       step: [
@@ -777,6 +834,7 @@ window.KB_TEMPLATES = {
       title: "CMDB update request",
       process: ["ap", "wlc"],
       phase: "Post-migration",
+      activity: "closure",
       kind: "email",
       audience: "internal",
       step: "AP & WLC/Switch · Post-migration 02: “Send the CMDB update”",
@@ -812,6 +870,7 @@ window.KB_TEMPLATES = {
       title: "DNAC update request",
       process: ["ap", "wlc"],
       phase: "Post-migration",
+      activity: "closure",
       kind: "email",
       audience: "internal",
       step: "AP & WLC/Switch · Post-migration 03: “Send the DNAC update” — so the new devices are managed and monitored.",
@@ -843,6 +902,7 @@ window.KB_TEMPLATES = {
       title: "HOTO document to the HOTO Manager",
       process: ["ap", "wlc"],
       phase: "Post-migration",
+      activity: "closure",
       kind: "email",
       audience: "internal",
       step: [
@@ -885,6 +945,7 @@ window.KB_TEMPLATES = {
       title: "WAN: hyper-care exit & hand-over approval",
       process: ["wan"],
       phase: "Post-migration",
+      activity: "wan-cutover",
       kind: "email",
       audience: "customer",
       step: [

@@ -72,7 +72,7 @@ mark.tpl-ph, .tpl-ph { background:var(--orange-pale); color:var(--tpl-ph-ink); b
 .tpl-edit { background:var(--purple-pale); color:var(--tpl-edit-ink); border:1px dashed #B79CF0; border-radius:4px; padding:0 3px; }
 
 /* ── template cards ── */
-.tpl-list { display:flex; flex-direction:column; gap:18px; }
+.tpl-list { display:flex; flex-direction:column; gap:30px; }
 .tpl-card { background:#fff; border:1px solid #E6E6E6; border-radius:var(--radius); padding:20px 22px; box-shadow:0 2px 12px rgba(0,0,0,0.04); min-width:0; scroll-margin-top:80px; transition:box-shadow .2s, border-color .2s; }
 .tpl-card:hover { border-color:rgba(255,98,0,0.28); }
 .tpl-card:target { border-color:var(--orange); box-shadow:0 0 0 3px rgba(255,98,0,0.22); }
@@ -116,6 +116,51 @@ a.tpl-chip.proc:hover { text-decoration:underline; }
 .tpl-empty-title { font-size:16px; font-weight:700; color:var(--gray-dark); margin-bottom:4px; }
 .tpl-empty p { font-size:14px; color:var(--tpl-muted); margin-bottom:14px; }
 .tpl-loaderr { margin:0; }
+
+/* ── browse by activity (one button per activity) ── */
+.tpl-acts-head { display:flex; flex-wrap:wrap; align-items:flex-start; justify-content:space-between; gap:10px 16px; margin:0 0 12px; }
+.tpl-acts-intro { flex:1 1 280px; min-width:0; }
+.tpl-acts-title { font-size:17px; font-weight:700; color:var(--black); line-height:1.3; margin:0 0 4px; }
+.tpl-acts-sub { margin:0; font-size:13.5px; line-height:1.5; color:var(--gray-mid); }
+.tpl-acts { display:grid; grid-template-columns:repeat(auto-fill, minmax(230px, 1fr)); gap:12px; margin:0 0 22px; }
+.tpl-act { display:flex; align-items:flex-start; gap:12px; width:100%; min-width:0; margin:0; padding:14px 14px 12px; text-align:left; font-family:var(--font); color:var(--gray-dark); background:#fff; border:1.5px solid #E2E2E2; border-radius:var(--radius); box-shadow:0 2px 10px rgba(0,0,0,0.04); cursor:pointer; -webkit-appearance:none; appearance:none; transition:border-color .15s, box-shadow .15s, background .15s; }
+.tpl-act:hover { border-color:var(--orange-dark); box-shadow:var(--shadow-hover); }
+.tpl-act:focus-visible { outline:3px solid var(--orange-dark); outline-offset:2px; }
+.tpl-act[aria-pressed="true"] { border-color:var(--orange-dark); background:var(--orange-faint); box-shadow:inset 0 0 0 1.5px var(--orange-dark); }
+.tpl-act-icon { flex:0 0 auto; width:40px; height:40px; display:inline-flex; align-items:center; justify-content:center; font-size:21px; line-height:1; border-radius:10px; background:var(--orange-pale); }
+.tpl-act-body { display:flex; flex-direction:column; gap:4px; flex:1 1 auto; min-width:0; }
+.tpl-act-name { font-size:14.5px; font-weight:700; line-height:1.3; color:var(--black); overflow-wrap:anywhere; }
+.tpl-act-desc { font-size:12.5px; line-height:1.5; color:var(--tpl-muted); overflow-wrap:anywhere; }
+.tpl-act-foot { display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin-top:4px; font-size:11.5px; }
+.tpl-act-count { font-weight:700; color:var(--gray-dark); white-space:nowrap; }
+.tpl-act-procs { display:inline-flex; flex-wrap:wrap; gap:4px; }
+.tpl-act-proc { display:inline-block; font-size:10.5px; font-weight:700; letter-spacing:.3px; line-height:1.3; padding:2px 7px; border-radius:20px; background:var(--cisco-pale); color:var(--cisco-text); border:1px solid #B5E0F3; }
+.tpl-act-sel { display:none; margin-left:auto; font-size:11px; font-weight:700; color:var(--orange-text); white-space:nowrap; }
+.tpl-act[aria-pressed="true"] .tpl-act-sel { display:inline; }
+
+/* ── activity groups in the list ── */
+.tpl-grp { min-width:0; scroll-margin-top:76px; }
+.tpl-grp-head { display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; gap:4px 14px; padding-bottom:12px; margin-bottom:16px; border-bottom:2px solid #ECECEC; }
+.tpl-grp-title { display:flex; flex-wrap:wrap; align-items:center; gap:6px 10px; margin:0; font-size:19px; font-weight:700; line-height:1.3; color:var(--black); border-radius:4px; }
+.tpl-grp-title:focus-visible { outline:3px solid var(--orange-dark); outline-offset:4px; }
+.tpl-grp-icon { font-size:20px; line-height:1; }
+.tpl-grp-name { overflow-wrap:anywhere; }
+.tpl-grp-count { font-size:12px; font-weight:700; color:var(--gray-dark); background:var(--gray-faint); border:1px solid #E0E0E0; border-radius:20px; padding:2px 9px; white-space:nowrap; }
+.tpl-grp-up { font-size:12.5px; font-weight:600; color:var(--orange-text); text-decoration:none; white-space:nowrap; }
+.tpl-grp-up:hover { text-decoration:underline; }
+.tpl-grp-desc { grid-column:1 / -1; margin:0; font-size:13.5px; line-height:1.5; color:var(--tpl-muted); }
+.tpl-grp-list { display:flex; flex-direction:column; gap:18px; }
+
+@media (max-width:680px) {
+  .tpl-acts { grid-template-columns:repeat(2, minmax(0, 1fr)); gap:10px; }
+  .tpl-act { flex-direction:column; gap:8px; padding:12px; }
+  .tpl-act-icon { width:34px; height:34px; font-size:18px; }
+  .tpl-grp-title { font-size:17px; }
+}
+@media (max-width:420px) {
+  .tpl-acts { grid-template-columns:minmax(0, 1fr); }
+  .tpl-act { flex-direction:row; gap:10px; }
+}
 
 @media (max-width:720px) {
   .tpl-card { padding:16px; }
@@ -197,8 +242,17 @@ a.tpl-chip.proc:hover { text-decoration:underline; }
     <div class="section-header">
       <h2 id="templates">Templates</h2>
       <div class="divider"></div>
-      <p>One draft for each process step where you send, invite or notify: the ordering status and EDD request, the delivery-receipt check, the IP addressing (TDT) and Option 43 requests, the migration-date alignment and staging planning calls, the AP mounting request, the staging invitation and post-staging status, the external dry run, the UAT document, the migration-date confirmation, the support-team alignment and migration invitation, the partial-migration and success notifications, the CMDB, DNAC and HOTO hand-overs, and the WAN local validation, router installation, cutover meeting, CAB reminder and hyper-care exit emails.</p>
+      <p>One draft for each process step where you send, invite or notify. Pick the activity you are working on below to jump straight to its emails, or narrow the list by process, phase or a search. The drafts cover the ordering status and EDD request, the delivery-receipt check, the IP addressing (TDT) and Option 43 requests, the migration-date alignment and staging planning calls, the AP mounting request, the staging invitation and post-staging status, the external dry run, the UAT document, the migration-date confirmation, the support-team alignment and migration invitation, the partial-migration and success notifications, the CMDB, DNAC and HOTO hand-overs, and the WAN local validation, router installation, cutover meeting, CAB reminder and hyper-care exit emails.</p>
     </div>
+
+    <div class="tpl-acts-head">
+      <div class="tpl-acts-intro">
+        <h3 id="browse-by-activity" class="tpl-acts-title">Browse by activity</h3>
+        <p class="tpl-acts-sub">Pick the activity you are working on and the list below jumps to its emails. The process, phase and search filters still apply on top.</p>
+      </div>
+      <button type="button" class="tpl-btn" id="tpl-acts-all">Show all<span class="sr-only"> activities</span></button>
+    </div>
+    <div id="tpl-acts" class="tpl-acts" role="group" aria-labelledby="browse-by-activity"></div>
 
     <div class="tpl-filters" role="search" aria-label="Filter templates">
       <fieldset class="tpl-seg">
@@ -211,6 +265,12 @@ a.tpl-chip.proc:hover { text-decoration:underline; }
         </div>
       </fieldset>
       <div class="tpl-filter-row">
+        <div class="tpl-filter">
+          <label for="tpl-activity">Activity</label>
+          <select id="tpl-activity">
+            <option value="">All activities</option>
+          </select>
+        </div>
         <div class="tpl-filter">
           <label for="tpl-phase">Phase</label>
           <select id="tpl-phase">
@@ -229,11 +289,11 @@ a.tpl-chip.proc:hover { text-decoration:underline; }
       <p class="tpl-legend"><span class="sr-only">Preview key:</span><mark class="tpl-ph">[Blank field]</mark> <span class="tpl-val">your value</span> <span class="tpl-edit">[complete or delete]</span></p>
     </div>
 
-    <div id="tpl-list" class="tpl-list"></div>
+    <div id="tpl-list" class="tpl-list" data-kb-noanchor></div>
 
     <div id="tpl-empty" class="tpl-empty" hidden>
       <p class="tpl-empty-title">No templates match these filters.</p>
-      <p>Try another process or phase, or a shorter search.</p>
+      <p>Try another activity, process or phase, or a shorter search.</p>
       <button type="button" class="tpl-btn" id="tpl-reset">Reset filters</button>
     </div>
   </div>
@@ -285,23 +345,26 @@ a.tpl-chip.proc:hover { text-decoration:underline; }
 <script>
 /* ═══════════════════════════════════════════════════════════
    Email Templates page logic.  Data: templates-data.js
-   (window.KB_TEMPLATES).  Everything inserted with innerHTML
-   is HTML-escaped first; stored values are validated on load.
+   (window.KB_TEMPLATES and window.KB_TEMPLATE_ACTIVITIES).
+   Everything inserted with innerHTML is HTML-escaped first;
+   stored values are validated on load.
 ═══════════════════════════════════════════════════════════ */
 (function () {
   "use strict";
 
   var DATA = window.KB_TEMPLATES;
+  var ACT_DATA = window.KB_TEMPLATE_ACTIVITIES;   // activities, in delivery order
   var STORE_KEY = "dpmkb_tpl_fields";   // the viewer's field values (convenience only)
   var PANEL_KEY = "dpmkb_tpl_panel";    // whether the fields panel is collapsed
   var MAILTO_WARN_LEN = 1800;           // some mail apps truncate longer mailto: links
   var MAX_LEN = 200, MAX_LEN_MULTI = 1000;
 
   var PROCESSES = {
-    ap:  { label: "AP",           href: "process-ap.html" },
-    wlc: { label: "WLC & Switch", href: "process-wlc-switch.html" },
-    wan: { label: "WAN",          href: "wan-process.html" }
+    ap:  { label: "AP",           short: "AP",  href: "process-ap.html" },
+    wlc: { label: "WLC & Switch", short: "WLC", href: "process-wlc-switch.html" },
+    wan: { label: "WAN",          short: "WAN", href: "wan-process.html" }
   };
+  var PROC_ORDER = ["ap", "wlc", "wan"];
   var AUDIENCE = { customer: "Customer-facing", internal: "Internal", mixed: "Customer + internal" };
   var KIND = {
     email:  { icon: "✉️", label: "Email" },
@@ -313,8 +376,10 @@ a.tpl-chip.proc:hover { text-decoration:underline; }
   var BRACKET_1 = /\[[^\[\]\n]{1,160}\]/;
 
   var FIELDS = [], FIELD_BY_KEY = {}, TEMPLATES = [], TPL_BY_ID = {}, PHASES = [];
+  var ACTIVITIES = [], ACT_BY_ID = {};
   var values = {};
-  var state = { proc: "all", phase: "", q: "" };
+  var state = { proc: "all", phase: "", q: "", activity: "" };
+  var reduceMotion = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
   var expanded = {};
   var statusTimers = {};
   var storageOK = true;
@@ -418,6 +483,25 @@ a.tpl-chip.proc:hover { text-decoration:underline; }
   function normalise() {
     if (!DATA || typeof DATA !== "object") return false;
 
+    (Array.isArray(ACT_DATA) ? ACT_DATA : []).forEach(function (a, i) {
+      if (!a || typeof a.id !== "string" || !a.name) return;
+      var id = safeId(a.id);
+      if (has(ACT_BY_ID, id)) return;
+      var na = {
+        id: id,
+        name: String(a.name),
+        icon: a.icon ? String(a.icon) : "✉️",
+        desc: a.desc ? String(a.desc) : "",
+        order: isFinite(+a.order) ? +a.order : 1000 + i,
+        seq: i,
+        count: 0,
+        procs: []
+      };
+      ACTIVITIES.push(na);
+      ACT_BY_ID[id] = na;
+    });
+    ACTIVITIES.sort(function (x, y) { return (x.order - y.order) || (x.seq - y.seq); });
+
     (Array.isArray(DATA.fields) ? DATA.fields : []).forEach(function (f) {
       if (!f || typeof f.key !== "string" || !/^[A-Za-z0-9_]+$/.test(f.key) || has(FIELD_BY_KEY, f.key)) return;
       var nf = {
@@ -445,6 +529,7 @@ a.tpl-chip.proc:hover { text-decoration:underline; }
         title: String(t.title),
         process: procs,
         phase: String(t.phase || "Other"),
+        activity: (typeof t.activity === "string" && has(ACT_BY_ID, safeId(t.activity))) ? safeId(t.activity) : "",
         kind: t.kind === "invite" ? "invite" : "email",
         audience: (typeof t.audience === "string" && has(AUDIENCE, t.audience)) ? t.audience : "",
         step: Array.isArray(t.step) ? t.step.map(String) : (t.step ? [String(t.step)] : []),
@@ -465,6 +550,30 @@ a.tpl-chip.proc:hover { text-decoration:underline; }
       ].join(" ").toLowerCase();
       TEMPLATES.push(nt);
       TPL_BY_ID[id] = nt;
+    });
+
+    /* every template ends up in exactly one activity; unknown ones go to "Other" */
+    var orphans = TEMPLATES.filter(function (t) { return !t.activity; });
+    if (orphans.length) {
+      var oid = "other", k = 2;
+      while (has(ACT_BY_ID, oid)) { oid = "other-" + k; k++; }
+      var other = { id: oid, name: "Other templates", icon: "✉️", desc: "Templates that have not been given an activity yet.", order: 1e9, seq: ACTIVITIES.length, count: 0, procs: [] };
+      ACTIVITIES.push(other);
+      ACT_BY_ID[oid] = other;
+      orphans.forEach(function (t) { t.activity = oid; });
+    }
+    TEMPLATES.forEach(function (t) {
+      var a = ACT_BY_ID[t.activity];
+      a.count++;
+      t.process.forEach(function (p) { if (a.procs.indexOf(p) < 0) a.procs.push(p); });
+    });
+    ACTIVITIES = ACTIVITIES.filter(function (a) {
+      if (a.count > 0) return true;
+      delete ACT_BY_ID[a.id];   // an activity with no templates gets no box
+      return false;
+    });
+    ACTIVITIES.forEach(function (a) {
+      a.procs.sort(function (x, y) { return PROC_ORDER.indexOf(x) - PROC_ORDER.indexOf(y); });
     });
 
     var present = {};
@@ -660,7 +769,7 @@ a.tpl-chip.proc:hover { text-decoration:underline; }
     var desc = ' aria-describedby="' + id + '-title"';
     return '<article class="tpl-card" id="' + id + '" data-id="' + esc(t.id) + '" aria-labelledby="' + id + '-title">' +
       '<div class="tpl-tags">' + tags.join("") + "</div>" +
-      '<div class="tpl-title" id="' + id + '-title" role="heading" aria-level="3">' + esc(t.title) + "</div>" +
+      '<div class="tpl-title" id="' + id + '-title" role="heading" aria-level="4">' + esc(t.title) + "</div>" +
       step + meta +
       '<div class="tpl-mail">' +
         '<div class="tpl-subj"><span class="tpl-k">Subject</span><span data-role="subject"></span></div>' +
@@ -747,6 +856,7 @@ a.tpl-chip.proc:hover { text-decoration:underline; }
   function matches(t) {
     if (state.proc !== "all" && t.process.indexOf(state.proc) < 0) return false;
     if (state.phase && t.phase !== state.phase) return false;
+    if (state.activity && t.activity !== state.activity) return false;
     if (state.q) {
       var terms = state.q.toLowerCase().split(/\s+/);
       for (var i = 0; i < terms.length; i++) {
@@ -761,10 +871,18 @@ a.tpl-chip.proc:hover { text-decoration:underline; }
     Object.keys(statusTimers).forEach(function (k) { clearTimeout(statusTimers[k]); });
     statusTimers = {};
     var shown = TEMPLATES.filter(matches);
-    list.innerHTML = shown.map(cardHtml).join("");
+    var html = "";
+    ACTIVITIES.forEach(function (a) {          // grouped, in activity order; empty groups are left out
+      var items = shown.filter(function (t) { return t.activity === a.id; });
+      if (items.length) html += groupHtml(a, items);
+    });
+    list.innerHTML = html;
     if (empty) empty.hidden = shown.length > 0;
     if (count) {
-      count.textContent = shown.length === TEMPLATES.length
+      var act = (state.activity && has(ACT_BY_ID, state.activity)) ? ACT_BY_ID[state.activity] : null;
+      if (act && !shown.length) count.textContent = "No templates in “" + act.name + "” match the other filters.";
+      else if (act) count.textContent = "Showing " + shown.length + " of " + TEMPLATES.length + " templates in “" + act.name + "”";
+      else count.textContent = shown.length === TEMPLATES.length
         ? "Showing all " + TEMPLATES.length + " templates"
         : "Showing " + shown.length + " of " + TEMPLATES.length + " templates";
     }
@@ -773,7 +891,11 @@ a.tpl-chip.proc:hover { text-decoration:underline; }
   function applyStateToControls() {
     [].forEach.call(document.querySelectorAll('input[name="tpl-proc"]'), function (r) { r.checked = (r.value === state.proc); });
     var ph = $("tpl-phase"); if (ph) ph.value = state.phase;
+    var act = $("tpl-activity"); if (act) act.value = state.activity;
     var q = $("tpl-q"); if (q) q.value = state.q;
+    [].forEach.call(document.querySelectorAll(".tpl-act[data-activity]"), function (b) {
+      b.setAttribute("aria-pressed", b.getAttribute("data-activity") === state.activity ? "true" : "false");
+    });
   }
   function buildPhaseOptions() {
     var sel = $("tpl-phase");
@@ -785,6 +907,100 @@ a.tpl-chip.proc:hover { text-decoration:underline; }
       sel.appendChild(o);
     });
   }
+  function buildActivityOptions() {
+    var sel = $("tpl-activity");
+    if (!sel) return;
+    ACTIVITIES.forEach(function (a) {
+      var o = document.createElement("option");
+      o.value = a.id;
+      o.textContent = a.name + " (" + a.count + ")";
+      sel.appendChild(o);
+    });
+  }
+
+  /* ---------- activity boxes + grouped list ---------- */
+  function procChips(a) {
+    return a.procs.map(function (p) {
+      return '<span class="tpl-act-proc" title="' + esc(PROCESSES[p].label) + '">' + esc(PROCESSES[p].short) + "</span>";
+    }).join(" ");   // the space keeps the chips apart for screen readers ("AP WLC", not "APWLC"); flex ignores it visually
+  }
+  function activityCardHtml(a) {
+    var id = "tpl-act-" + a.id;
+    var by = [id + "-count"];
+    if (a.desc) by.unshift(id + "-desc");
+    if (a.procs.length) by.push(id + "-procs");
+    return '<button type="button" class="tpl-act" data-activity="' + esc(a.id) + '" aria-pressed="false" aria-labelledby="' + id + '-name" aria-describedby="' + by.join(" ") + '">' +
+      '<span class="tpl-act-icon" aria-hidden="true">' + esc(a.icon) + "</span>" +
+      '<span class="tpl-act-body">' +
+        '<span class="tpl-act-name" id="' + id + '-name">' + esc(a.name) + "</span>" +
+        (a.desc ? '<span class="tpl-act-desc" id="' + id + '-desc">' + esc(a.desc) + "</span>" : "") +
+        '<span class="tpl-act-foot">' +
+          '<span class="tpl-act-count" id="' + id + '-count">' + a.count + (a.count === 1 ? " template" : " templates") + "</span>" +
+          (a.procs.length ? '<span class="tpl-act-procs" id="' + id + '-procs"><span class="sr-only">Processes: </span>' + procChips(a) + "</span>" : "") +
+          '<span class="tpl-act-sel" aria-hidden="true">✓ Selected</span>' +
+        "</span>" +
+      "</span>" +
+    "</button>";
+  }
+  function renderActivityGrid() {
+    var host = $("tpl-acts");
+    if (host) host.innerHTML = ACTIVITIES.map(activityCardHtml).join("");
+  }
+  function groupHtml(a, items) {
+    var id = "tpl-grp-" + a.id;
+    var n = items.length;
+    var countTxt = n === a.count ? n + (n === 1 ? " template" : " templates") : n + " of " + a.count + " templates";
+    return '<section class="tpl-grp" id="' + id + '" data-activity="' + esc(a.id) + '" aria-labelledby="' + id + '-h">' +
+      '<div class="tpl-grp-head">' +
+        '<h3 class="tpl-grp-title" id="' + id + '-h" tabindex="-1">' +
+          '<span class="tpl-grp-icon" aria-hidden="true">' + esc(a.icon) + "</span>" +
+          '<span class="tpl-grp-name">' + esc(a.name) + "</span>" +
+          '<span class="tpl-grp-count">' + esc(countTxt) + "</span>" +
+        "</h3>" +
+        '<a class="tpl-grp-up" href="#browse-by-activity">↑ All activities</a>' +
+        (a.desc ? '<p class="tpl-grp-desc">' + esc(a.desc) + "</p>" : "") +
+      "</div>" +
+      '<div class="tpl-grp-list">' + items.map(cardHtml).join("") + "</div>" +
+    "</section>";
+  }
+  function syncUrl(keepHash) {
+    /* keeps every filter shareable in the URL (?process=&phase=&q=&activity=) and
+       drops a stale #tmpl- hash, which would otherwise override the filters when
+       the link is reopened; other hashes (e.g. #templates) are left alone */
+    if (!window.history || !history.replaceState || !window.URLSearchParams) return;
+    try {
+      var p = new URLSearchParams(location.search);
+      if (state.proc !== "all") p.set("process", state.proc); else p["delete"]("process");
+      if (state.phase) p.set("phase", state.phase); else p["delete"]("phase");
+      if (state.q) p.set("q", state.q); else p["delete"]("q");
+      if (state.activity) p.set("activity", state.activity); else p["delete"]("activity");
+      var qs = p.toString();
+      var hash = location.hash || "";
+      if (!keepHash && hash.indexOf("#tmpl-") === 0) hash = "";
+      history.replaceState(null, "", location.pathname + (qs ? "?" + qs : "") + hash);
+    } catch (e) { /* ignore */ }
+  }
+  function jumpToGroup(id, instant) {
+    /* "instant" (not "auto") so a deep link lands like a native anchor even in a background tab */
+    var behavior = (instant || reduceMotion) ? "instant" : "smooth";
+    var grp = $("tpl-grp-" + id);
+    if (!grp) {   // the other filters hide every template of this activity: show the empty state instead
+      var empty = $("tpl-empty");
+      if (empty && !empty.hidden) { try { empty.scrollIntoView({ behavior: behavior, block: "nearest" }); } catch (e0) { /* ignore */ } }
+      return false;
+    }
+    try { grp.scrollIntoView({ behavior: behavior, block: "start" }); } catch (e) { grp.scrollIntoView(true); }
+    var h = grp.querySelector(".tpl-grp-title");
+    if (h) { try { h.focus({ preventScroll: true }); } catch (e2) { try { h.focus(); } catch (e3) { /* ignore */ } } }
+    return true;
+  }
+  function setActivity(id, jump) {
+    state.activity = (id && has(ACT_BY_ID, id)) ? id : "";
+    applyStateToControls();
+    renderList();
+    syncUrl();
+    if (jump && state.activity) jumpToGroup(state.activity, false);
+  }
   function readUrl() {
     try {
       if (!window.URLSearchParams || !location.search) return;
@@ -793,18 +1009,22 @@ a.tpl-chip.proc:hover { text-decoration:underline; }
       if (proc && (proc === "all" || has(PROCESSES, proc))) state.proc = proc;
       var ph = p.get("phase");
       if (ph && PHASES.indexOf(ph) >= 0) state.phase = ph;
+      var a = p.get("activity");
+      if (a && has(ACT_BY_ID, safeId(a))) state.activity = safeId(a);
       var q = p.get("q");
       if (q) state.q = q.slice(0, 100);
     } catch (e) { /* ignore malformed URLs */ }
   }
-  function hashTarget() {
+  function hashTarget() {   // returns true when the filters had to be cleared for the linked template
     var h = location.hash || "";
-    if (h.indexOf("#tmpl-") !== 0) return;
+    if (h.indexOf("#tmpl-") !== 0) return false;
     var id = h.slice(6);
     var t = has(TPL_BY_ID, id) ? TPL_BY_ID[id] : null;
-    if (!t) return;
+    if (!t) return false;
     expanded[id] = true;
-    if (!matches(t)) state = { proc: "all", phase: "", q: "" };
+    if (matches(t)) return false;
+    state = { proc: "all", phase: "", q: "", activity: "" };   // never hide the linked template
+    return true;
   }
 
   /* ---------- actions ---------- */
@@ -914,11 +1134,26 @@ a.tpl-chip.proc:hover { text-decoration:underline; }
 
     [].forEach.call(document.querySelectorAll('input[name="tpl-proc"]'), function (r) {
       r.addEventListener("change", function () {
-        if (r.checked) { state.proc = r.value; renderList(); }
+        if (r.checked) { state.proc = r.value; renderList(); syncUrl(); }
       });
     });
     var ph = $("tpl-phase");
-    if (ph) ph.addEventListener("change", function () { state.phase = ph.value; renderList(); });
+    if (ph) ph.addEventListener("change", function () { state.phase = ph.value; renderList(); syncUrl(); });
+
+    var actSel = $("tpl-activity");
+    if (actSel) actSel.addEventListener("change", function () { setActivity(actSel.value, false); });
+
+    var acts = $("tpl-acts");
+    if (acts) acts.addEventListener("click", function (e) {
+      var b = e.target && e.target.closest ? e.target.closest(".tpl-act[data-activity]") : null;
+      if (!b || !acts.contains(b)) return;
+      var id = b.getAttribute("data-activity");
+      if (id === state.activity) setActivity("", false);   // pressing the selected box again releases it
+      else setActivity(id, true);
+    });
+
+    var showAll = $("tpl-acts-all");
+    if (showAll) showAll.addEventListener("click", function () { setActivity("", false); });
 
     var q = $("tpl-q"), qTimer = null;
     if (q) q.addEventListener("input", function () {
@@ -928,14 +1163,16 @@ a.tpl-chip.proc:hover { text-decoration:underline; }
         if (v === state.q) return;
         state.q = v;
         renderList();
+        syncUrl();
       }, 180);
     });
 
     var reset = $("tpl-reset");
     if (reset) reset.addEventListener("click", function () {
-      state = { proc: "all", phase: "", q: "" };
+      state = { proc: "all", phase: "", q: "", activity: "" };
       applyStateToControls();
       renderList();
+      syncUrl();
       if (q) q.focus();
     });
 
@@ -980,11 +1217,23 @@ a.tpl-chip.proc:hover { text-decoration:underline; }
     if (notice && !TEMPLATES.some(function (t) { return t.draft; })) notice.hidden = true;
 
     buildPhaseOptions();
+    buildActivityOptions();
+    renderActivityGrid();
     readUrl();
-    hashTarget();
+    var cleared = hashTarget();
     applyStateToControls();
     wire();
     renderList();
+    if (cleared) syncUrl(true);   // the URL's filters no longer apply; keep the #tmpl- hash
+
+    /* ?activity= deep link: jump once the page (and kb-ui's "On this page"
+       box above the content) has laid out; a #tmpl- link wins over it */
+    var deep = state.activity;
+    if (deep && (location.hash || "").indexOf("#tmpl-") !== 0) {
+      window.addEventListener("load", function () {
+        setTimeout(function () { if (state.activity === deep) jumpToGroup(deep, true); }, 120);
+      });
+    }
   }
 
   init();
