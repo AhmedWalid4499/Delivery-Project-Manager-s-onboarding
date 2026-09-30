@@ -7,25 +7,32 @@
    term) and renders a keyboard-navigable search overlay.
    • A "Search" pill is injected into the top nav on every page.
    • The home hero and any [data-kb-open] element open it too.
-   • Shortcuts: Ctrl/⌘-K or "/" to open, Esc to close.
-   Rebuild the index after editing content: run
-   scratchpad/build-search-index.ps1 (or see README notes).
+   • Shortcuts: Ctrl/⌘-K to open, Esc to close. (The bare "/" key
+     shortcut was removed: single-character shortcuts can fire by
+     accident for speech-input users, WCAG 2.1.4.)
+   The index (search-index.json, plus page-meta.json) is rebuilt
+   by build-search-index.ps1 at the repo root. GitHub Actions runs
+   it on every push to main, so you only need to run it by hand
+   to preview search locally (see README notes).
 ═══════════════════════════════════════════════════════════ */
 (function () {
   "use strict";
 
   var INDEX = [], LOADED = false, LOADING = false, cbs = [];
 
+  /* c = brand hue (icon tile only), t = text ink for the category label,
+     >= 4.5:1 on white and on the active row (#FFE8D6) */
   var CAT = {
-    Home:       { c: "#FF6200", i: "🏠" },
-    Networking: { c: "#1BA0D7", i: "🌐" },
-    Vendors:    { c: "#7C3AED", i: "🖥️" },
-    Process:    { c: "#0E8A4A", i: "📋" },
-    Team:       { c: "#D6336C", i: "👥" },
-    Squads:     { c: "#0E8AA6", i: "⚡" },
-    Reference:  { c: "#C77700", i: "📚" },
-    Glossary:   { c: "#C77700", i: "📖" },
-    Page:       { c: "#787878", i: "📄" }
+    Home:       { c: "#FF6200", t: "#B34200", i: "🏠" },
+    Networking: { c: "#1BA0D7", t: "#0B6A93", i: "🌐" },
+    Vendors:    { c: "#7C3AED", t: "#6D28D9", i: "🖥️" },
+    Process:    { c: "#0E8A4A", t: "#0A7A4A", i: "📋" },
+    Tools:      { c: "#2563EB", t: "#1D4ED8", i: "🧰" },
+    Team:       { c: "#D6336C", t: "#B0275A", i: "👥" },
+    Squads:     { c: "#0E8AA6", t: "#0B6E80", i: "⚡" },
+    Reference:  { c: "#C77700", t: "#8A5200", i: "📚" },
+    Glossary:   { c: "#C77700", t: "#8A5200", i: "📖" },
+    Page:       { c: "#787878", t: "#5E5E5E", i: "📄" }
   };
 
   /* ---------- index loading ---------- */
@@ -103,8 +110,11 @@
     return out.replace(new RegExp("(" + parts.join("|") + ")", "ig"), "<mark>$1</mark>");
   }
   /* ---------- overlay ---------- */
-  var ov, inp, res, rows = [], active = -1, curToks = [];
+  var ov, panel, inp, res, live, rows = [], active = -1, curToks = [];
+  var opener = null, inerted = [];
 
+  /* Combobox pattern: the input keeps focus; ↑/↓ move a virtual cursor over the
+     listbox options (aria-activedescendant) and Enter opens the active one. */
   function build() {
     ov = document.createElement("div");
     ov.className = "kbso";
@@ -113,40 +123,61 @@
       '<div class="kbso-back"></div>' +
       '<div class="kbso-panel" role="dialog" aria-modal="true" aria-label="Search the knowledge base">' +
         '<div class="kbso-top">' +
-          '<svg class="kbso-mag" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>' +
-          '<input id="kbsoInput" type="text" autocomplete="off" spellcheck="false" placeholder="Search anything — a topic, a device, a process step, a person, a term…">' +
-          '<button class="kbso-esc" type="button" aria-label="Close">esc</button>' +
+          '<svg class="kbso-mag" aria-hidden="true" focusable="false" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>' +
+          '<input id="kbsoInput" type="search" role="combobox" aria-label="Search the knowledge base" aria-autocomplete="list" aria-expanded="false" aria-controls="kbsoResults" aria-describedby="kbsoHelp" autocomplete="off" spellcheck="false" placeholder="Search anything — a topic, a device, a process step, a person, a term…">' +
+          '<button class="kbso-esc" type="button" aria-label="esc, close search">esc</button>' +
         '</div>' +
-        '<div class="kbso-results" id="kbsoResults"></div>' +
-        '<div class="kbso-foot"><span><kbd>↑</kbd><kbd>↓</kbd> navigate</span><span><kbd>↵</kbd> open</span><span><kbd>esc</kbd> close</span><span class="kbso-brand">Orange Business KB</span></div>' +
+        '<div class="kbso-results" id="kbsoResults" role="listbox" aria-label="Search results"></div>' +
+        '<div class="kbso-foot" id="kbsoHelp"><span><kbd>↑</kbd><kbd>↓</kbd> navigate</span><span><kbd>↵</kbd> open</span><span><kbd>esc</kbd> close</span><span class="kbso-brand" aria-hidden="true">Orange Business KB</span></div>' +
+        '<div class="kbso-sr" id="kbsoLive" role="status" aria-live="polite" aria-atomic="true"></div>' +
       '</div>';
     document.body.appendChild(ov);
+    panel = ov.querySelector(".kbso-panel");
     inp = ov.querySelector("#kbsoInput");
     res = ov.querySelector("#kbsoResults");
+    live = ov.querySelector("#kbsoLive");
     ov.querySelector(".kbso-back").addEventListener("click", close);
     ov.querySelector(".kbso-esc").addEventListener("click", close);
     var deb;
     inp.addEventListener("input", function () { clearTimeout(deb); deb = setTimeout(function () { render(inp.value); }, 90); });
     inp.addEventListener("keydown", onKey);
+    /* keep Tab / Shift+Tab inside the dialog */
+    panel.addEventListener("keydown", function (e) {
+      if (e.key !== "Tab") return;
+      var f = [].filter.call(panel.querySelectorAll("input, button, [href], [tabindex]:not([tabindex='-1'])"), function (n) { return !n.disabled && n.offsetParent !== null; });
+      if (!f.length) return;
+      var first = f[0], last = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    });
   }
+
+  var liveT;
+  function say(msg) {
+    if (!live) return;
+    clearTimeout(liveT);
+    liveT = setTimeout(function () { live.textContent = msg; }, 250);
+  }
+  function setExpanded(on) { if (inp) inp.setAttribute("aria-expanded", on ? "true" : "false"); }
 
   function render(q) {
     curToks = tokenize(q);
+    inp.removeAttribute("aria-activedescendant");
     if (!q.trim()) {
-      res.innerHTML = '<div class="kbso-empty">Type to search the whole knowledge base — networking, vendors, the delivery process, the DPM team, and every glossary term.</div>';
-      rows = []; active = -1; return;
+      res.innerHTML = '<div class="kbso-empty" role="presentation">Type to search the whole knowledge base — networking, vendors, the delivery process, the DPM team, and every glossary term.</div>';
+      rows = []; active = -1; setExpanded(false); say(""); return;
     }
-    if (!LOADED) { res.innerHTML = '<div class="kbso-empty">Loading search…</div>'; return; }
+    if (!LOADED) { res.innerHTML = '<div class="kbso-empty" role="presentation">Loading search…</div>'; setExpanded(false); say("Loading search…"); return; }
     var list = run(q);
-    if (!list.length) { res.innerHTML = '<div class="kbso-empty">No matches for “' + esc(q) + '”. Try a different word.</div>'; rows = []; active = -1; return; }
+    if (!list.length) { res.innerHTML = '<div class="kbso-empty" role="presentation">No matches for “' + esc(q) + '”. Try a different word.</div>'; rows = []; active = -1; setExpanded(false); say("No matches for “" + q + "”"); return; }
     var html = "";
     for (var i = 0; i < list.length; i++) {
       var e = list[i], m = CAT[e.c] || CAT.Page;
       html +=
-        '<a class="kbso-row' + (i === 0 ? " on" : "") + '" href="' + esc(e.u) + '" data-i="' + i + '">' +
-          '<span class="kbso-ic" style="background:' + m.c + '22;color:' + m.c + '">' + m.i + '</span>' +
+        '<a class="kbso-row' + (i === 0 ? " on" : "") + '" id="kbso-opt-' + i + '" role="option" aria-selected="' + (i === 0 ? "true" : "false") + '" tabindex="-1" href="' + esc(e.u) + '" data-i="' + i + '">' +
+          '<span class="kbso-ic" aria-hidden="true" style="background:' + m.c + '22;color:' + m.c + '">' + m.i + '</span>' +
           '<span class="kbso-main">' +
-            '<span class="kbso-t"><span class="kbso-tt">' + hl(e.t, curToks) + '</span><span class="kbso-cat" style="color:' + m.c + '">' + esc(e.c) + '</span></span>' +
+            '<span class="kbso-t"><span class="kbso-tt">' + hl(e.t, curToks) + '</span><span class="kbso-cat" style="color:' + m.t + '">' + esc(e.c) + '</span></span>' +
             '<span class="kbso-s">' + hl(snip(e, curToks), curToks) + '</span>' +
           '</span>' +
         '</a>';
@@ -155,13 +186,16 @@
     rows = [].slice.call(res.querySelectorAll(".kbso-row"));
     active = rows.length ? 0 : -1;
     rows.forEach(function (r, i) { r.addEventListener("mouseenter", function () { setActive(i); }); });
+    setExpanded(true);
+    if (rows[0]) inp.setAttribute("aria-activedescendant", rows[0].id);
+    say(list.length + (list.length === 1 ? " result" : " results") + ". Use up and down arrows to review, Enter to open.");
   }
 
   function setActive(i) {
     if (!rows.length) return;
     active = (i + rows.length) % rows.length;
-    rows.forEach(function (r, j) { r.classList.toggle("on", j === active); });
-    if (rows[active]) rows[active].scrollIntoView({ block: "nearest" });
+    rows.forEach(function (r, j) { r.classList.toggle("on", j === active); r.setAttribute("aria-selected", j === active ? "true" : "false"); });
+    if (rows[active]) { rows[active].scrollIntoView({ block: "nearest" }); inp.setAttribute("aria-activedescendant", rows[active].id); }
   }
   function onKey(e) {
     if (e.key === "ArrowDown") { e.preventDefault(); setActive(active + 1); }
@@ -170,8 +204,30 @@
     else if (e.key === "Escape") { e.preventDefault(); close(); }
   }
 
+  /* make everything behind the dialog inert while it is open */
+  function setInert(on) {
+    if (on) {
+      inerted = [];
+      [].forEach.call(document.body.children, function (n) {
+        if (n === ov || n.tagName === "SCRIPT" || n.tagName === "STYLE") return;
+        if (n.hasAttribute("inert") || n.getAttribute("aria-hidden") === "true") return;
+        n.setAttribute("inert", "");
+        n.setAttribute("aria-hidden", "true");
+        inerted.push(n);
+      });
+    } else {
+      inerted.forEach(function (n) { n.removeAttribute("inert"); n.removeAttribute("aria-hidden"); });
+      inerted = [];
+    }
+  }
+
   function open(prefill) {
     if (!ov) build();
+    if (!ov.classList.contains("show")) {
+      var a = document.activeElement;
+      opener = (a && a !== document.body && !ov.contains(a)) ? a : null;
+      setInert(true);
+    }
     ov.classList.add("show");
     ov.setAttribute("aria-hidden", "false");
     document.body.style.overflow = "hidden";
@@ -181,10 +237,15 @@
     setTimeout(function () { inp.focus(); if (prefill) inp.select(); }, 30);
   }
   function close() {
-    if (!ov) return;
+    if (!ov || !ov.classList.contains("show")) return;
     ov.classList.remove("show");
     ov.setAttribute("aria-hidden", "true");
     document.body.style.overflow = "";
+    setInert(false);
+    setExpanded(false);
+    var back = (opener && document.contains(opener) && opener.getClientRects().length) ? opener : document.querySelector(".kb-navsearch");
+    opener = null;
+    if (back) { try { back.focus(); } catch (e) { /* ignore */ } }
   }
   window.KBSearch = { open: open, close: close };
 
@@ -218,8 +279,7 @@
       var t = (e.target && e.target.tagName) || "";
       var inField = /^(INPUT|TEXTAREA|SELECT)$/.test(t) || (e.target && e.target.isContentEditable);
       if ((e.ctrlKey || e.metaKey) && (k === "k" || k === "K")) { e.preventDefault(); open(""); }
-      else if (k === "/" && !inField) { e.preventDefault(); open(""); }
-      else if (k === "Escape" && ov && ov.classList.contains("show")) { close(); }
+      else if (k === "Escape" && ov && ov.classList.contains("show") && !inField) { close(); }
     });
   }
 
@@ -231,7 +291,7 @@
       ".kb-navsearch{display:inline-flex;align-items:center;gap:7px;margin-left:10px;flex-shrink:0;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.16);color:rgba(255,255,255,0.72);border-radius:8px;padding:6px 10px;font:600 12.5px/1 var(--font,sans-serif);cursor:pointer;transition:all .15s;}",
       ".kb-navsearch:hover{background:rgba(255,255,255,0.15);color:#fff;border-color:rgba(255,255,255,0.28);}",
       ".kb-navsearch svg{opacity:.85;flex-shrink:0;}",
-      ".kb-navsearch-k{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.18);border-radius:5px;padding:2px 6px;font:600 10px/1 var(--mono,monospace);color:rgba(255,255,255,0.55);}",
+      ".kb-navsearch-k{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.18);border-radius:5px;padding:2px 6px;font:600 10px/1 var(--mono,monospace);color:rgba(255,255,255,0.75);}",
       "@media(max-width:760px){.kb-navsearch-t,.kb-navsearch-k{display:none;}.kb-navsearch{padding:6px;}}",
       "@media(max-width:600px){.topnav-badge{display:none;}}",
       ".kbso{position:fixed;inset:0;z-index:9999;display:none;}",
@@ -240,26 +300,33 @@
       ".kbso-panel{position:relative;max-width:640px;margin:9vh auto 0;background:#fff;border-radius:16px;box-shadow:0 24px 80px rgba(0,0,0,0.35);overflow:hidden;animation:kbso-in .14s ease;}",
       "@keyframes kbso-in{from{opacity:0;transform:translateY(-8px);}to{opacity:1;transform:none;}}",
       ".kbso-top{display:flex;align-items:center;gap:12px;padding:15px 18px;border-bottom:1px solid #EEE;}",
+      /* the input has no outline of its own: show focus on the whole bar */
+      ".kbso-top:focus-within{box-shadow:inset 0 -3px 0 #B34200;}",
+      ".kbso-sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}",
+      "#kbsoInput::-webkit-search-cancel-button{cursor:pointer;}",
       ".kbso-mag{color:#FF6200;flex-shrink:0;}",
       "#kbsoInput{flex:1;min-width:0;border:none;outline:none;font:400 16px/1.3 var(--font,sans-serif);color:#1A1A1A;background:transparent;}",
-      ".kbso-esc{flex-shrink:0;background:#F3F3F3;border:1px solid #E4E4E4;border-radius:6px;color:#888;font:600 11px/1 var(--mono,monospace);padding:5px 8px;cursor:pointer;}",
+      ".kbso-esc{flex-shrink:0;background:#F3F3F3;border:1px solid #E4E4E4;border-radius:6px;color:#5E5E5E;font:600 11px/1 var(--mono,monospace);padding:5px 8px;cursor:pointer;}",
+      ".kbso-esc:focus-visible{outline:3px solid #B34200;outline-offset:2px;}",
       ".kbso-esc:hover{background:#ECECEC;}",
       ".kbso-results{max-height:60vh;overflow-y:auto;}",
       ".kbso-row{display:flex;gap:12px;padding:11px 16px;border-bottom:1px solid #F4F4F4;text-decoration:none;align-items:flex-start;}",
       ".kbso-row:last-child{border-bottom:none;}",
-      ".kbso-row.on{background:#FFF4EA;}",
+      ".kbso-row.on{background:#FFE8D6;box-shadow:inset 3px 0 0 #B34200;}",
+      ".kbso-row:focus-visible{outline:3px solid #B34200;outline-offset:-3px;}",
       ".kbso-ic{flex-shrink:0;width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;margin-top:1px;}",
       ".kbso-main{min-width:0;flex:1;}",
       ".kbso-t{display:flex;align-items:baseline;gap:9px;margin-bottom:2px;}",
       ".kbso-tt{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font:600 14px/1.3 var(--font,sans-serif);color:#1A1A1A;}",
       ".kbso-cat{flex-shrink:0;font:700 10px/1 var(--font,sans-serif);text-transform:uppercase;letter-spacing:.5px;}",
-      ".kbso-s{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font:400 12.5px/1.5 var(--font,sans-serif);color:#777;}",
-      ".kbso-row mark{background:rgba(255,98,0,0.18);color:#B33F00;border-radius:2px;padding:0 1px;font-weight:600;}",
-      ".kbso-empty{padding:26px 22px;text-align:center;color:#999;font-size:13.5px;line-height:1.6;}",
-      ".kbso-foot{display:flex;align-items:center;gap:16px;padding:10px 16px;border-top:1px solid #EEE;background:#FAFAFA;font-size:11px;color:#999;}",
-      ".kbso-foot kbd{background:#fff;border:1px solid #E0E0E0;border-radius:4px;padding:1px 5px;font-family:var(--mono,monospace);font-size:10px;color:#777;margin-right:2px;}",
-      ".kbso-brand{margin-left:auto;font-weight:600;color:#C8C8C8;}",
-      "@media(max-width:640px){.kbso-panel{margin:0;border-radius:0;max-width:none;min-height:100%;}.kbso-results{max-height:calc(100vh - 118px);}}"
+      ".kbso-s{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font:400 12.5px/1.5 var(--font,sans-serif);color:#5E5E5E;}",
+      ".kbso-row mark{background:rgba(255,98,0,0.18);color:#8A3300;border-radius:2px;padding:0 1px;font-weight:600;}",
+      ".kbso-empty{padding:26px 22px;text-align:center;color:#5E5E5E;font-size:13.5px;line-height:1.6;}",
+      ".kbso-foot{display:flex;align-items:center;gap:16px;padding:10px 16px;border-top:1px solid #EEE;background:#FAFAFA;font-size:11px;color:#5E5E5E;}",
+      ".kbso-foot kbd{background:#fff;border:1px solid #E0E0E0;border-radius:4px;padding:1px 5px;font-family:var(--mono,monospace);font-size:10px;color:#5E5E5E;margin-right:2px;}",
+      ".kbso-brand{margin-left:auto;font-weight:600;color:#666;}",
+      "@media(max-width:640px){.kbso-panel{margin:0;border-radius:0;max-width:none;min-height:100%;}.kbso-results{max-height:calc(100vh - 118px);}}",
+      "@media(max-width:760px){.kbso-tt{white-space:normal;overflow:visible;}}"
     ].join("\n");
     document.head.appendChild(s);
   }

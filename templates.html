@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Email Templates — DPM Knowledge Base</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="stylesheet" href="shared.css">
+<style>
+/* ── page tokens (darker text shades keep small text above 4.5:1) ── */
+:root { --tpl-muted:#5E5E5E; --tpl-ph-ink:#9A3B00; --tpl-edit-ink:#5B21B6; --tpl-ok-ink:#0A6B45; }
+[hidden] { display:none !important; }
+.sr-only { position:absolute !important; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+.content code { font-family:var(--mono); font-size:.88em; background:rgba(0,0,0,0.06); padding:1px 5px; border-radius:4px; overflow-wrap:anywhere; }
+
+/* ── draft notice ── */
+.tpl-notice { border:1px solid #F5C99A; border-left-width:4px; }
+.tpl-notice p { color:var(--gray-dark); }
+
+/* ── shared controls ── */
+.tpl-btn { display:inline-flex; align-items:center; justify-content:center; gap:6px; font-family:var(--font); font-size:13px; font-weight:600; line-height:1.2; padding:9px 14px; border-radius:var(--radius-sm); border:1.5px solid #D2D2D2; background:#fff; color:var(--gray-dark); cursor:pointer; text-decoration:none; transition:border-color .15s, color .15s, background .15s; }
+.tpl-btn:hover { border-color:var(--orange-dark); color:var(--orange-dark); text-decoration:none; }
+.tpl-btn.primary { background:var(--orange-dark); border-color:var(--orange-dark); color:#fff; }
+.tpl-btn.primary:hover { background:#A83F00; border-color:#A83F00; color:#fff; }
+.tpl-btn:focus-visible, .tpl-toggle:focus-visible, .tpl-linkbtn:focus-visible, .tpl-needbtn:focus-visible, .tpl-chip:focus-visible { outline:3px solid var(--orange-dark); outline-offset:2px; }
+.tpl-linkbtn { background:none; border:none; padding:0; font:inherit; font-weight:700; color:var(--tpl-ph-ink); text-decoration:underline; cursor:pointer; }
+
+/* ── "Your details" panel ── */
+.tpl-panel { background:#fff; border:1px solid #E6E6E6; border-radius:var(--radius); box-shadow:var(--shadow); overflow:hidden; }
+.tpl-panel-head { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:10px 16px; padding:14px 20px; background:var(--orange-faint); border-bottom:1px solid #F3E3D6; }
+.tpl-panel-meta { font-size:13px; color:var(--gray-dark); line-height:1.5; min-width:0; }
+.tpl-panel-meta strong { color:var(--black); }
+.tpl-panel-actions { display:flex; flex-wrap:wrap; gap:8px; }
+.tpl-panel-body { padding:18px 20px 6px; }
+.tpl-group { border:none; margin:0 0 18px; padding:0; min-width:0; }
+.tpl-group legend { font-size:11px; font-weight:700; letter-spacing:.8px; text-transform:uppercase; color:var(--tpl-muted); margin-bottom:10px; padding:0; }
+.tpl-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(220px, 1fr)); gap:12px 16px; }
+.tpl-field { display:flex; flex-direction:column; gap:5px; min-width:0; }
+.tpl-field label { font-size:12.5px; font-weight:600; color:var(--gray-dark); }
+.tpl-hint { font-size:11.5px; color:var(--tpl-muted); line-height:1.45; }
+.tpl-field input, .tpl-field textarea, .tpl-filter select, .tpl-filter input, .tpl-manual textarea {
+  width:100%; min-width:0; font-family:var(--font); font-size:14px; line-height:1.4; padding:9px 12px; border:1.5px solid #8A8A8A; border-radius:var(--radius-sm); background:#fff; color:var(--black); transition:border-color .15s, box-shadow .15s; }
+.tpl-field textarea { resize:vertical; min-height:66px; }
+.tpl-field input.is-filled, .tpl-field textarea.is-filled { border-color:#8FCFB2; background:#FBFEFC; }
+.tpl-field input:focus, .tpl-field textarea:focus, .tpl-filter select:focus, .tpl-filter input:focus, .tpl-manual textarea:focus { outline:none; border-color:var(--orange-dark); box-shadow:0 0 0 3px rgba(255,98,0,0.22); }
+.tpl-field input::placeholder, .tpl-field textarea::placeholder, .tpl-filter input::placeholder { color:#767676; }
+.tpl-panel-status { margin:0; font-size:13px; color:var(--gray-dark); }
+.tpl-panel-status:not(:empty) { padding:10px 20px; border-top:1px solid #F0F0F0; }
+.tpl-storage-note { margin:0; padding:10px 20px; font-size:12.5px; line-height:1.5; color:#6B4A00; background:#FFF8E1; border-top:1px solid #F3E2A8; }
+
+/* ── filters ── */
+.tpl-filters { display:flex; flex-direction:column; gap:14px; background:var(--gray-faint); border:1px solid #EBEBEB; border-radius:var(--radius); padding:16px 18px; margin-bottom:12px; }
+.tpl-seg { border:none; padding:0; margin:0; min-width:0; }
+.tpl-seg legend, .tpl-filter label { display:block; font-size:11px; font-weight:700; letter-spacing:.8px; text-transform:uppercase; color:var(--tpl-muted); margin-bottom:7px; padding:0; }
+.tpl-seg-opts { display:flex; flex-wrap:wrap; gap:6px; }
+.tpl-seg-opt { position:relative; display:inline-flex; }
+.tpl-seg-opt input { position:absolute; opacity:0; width:1px; height:1px; margin:0; }
+.tpl-seg-opt span { display:inline-block; padding:7px 15px; border-radius:20px; border:1.5px solid #D2D2D2; background:#fff; font-size:13px; font-weight:600; color:var(--gray-dark); cursor:pointer; transition:all .15s; }
+.tpl-seg-opt span:hover { border-color:var(--orange-dark); color:var(--orange-dark); }
+.tpl-seg-opt input:checked + span { background:var(--black); border-color:var(--black); color:#fff; }
+.tpl-seg-opt input:focus-visible + span { outline:3px solid var(--orange-dark); outline-offset:2px; }
+.tpl-filter-row { display:flex; flex-wrap:wrap; gap:12px 16px; }
+.tpl-filter { flex:1 1 200px; min-width:0; }
+.tpl-filter-q { flex:2 1 260px; }
+.tpl-countrow { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:8px 16px; margin:0 0 16px; font-size:13px; color:var(--tpl-muted); }
+.tpl-countrow p { margin:0; }
+.tpl-legend { display:flex; flex-wrap:wrap; align-items:center; gap:6px; }
+
+/* ── preview highlights (never colour alone: brackets + dashed borders) ── */
+mark.tpl-ph, .tpl-ph { background:var(--orange-pale); color:var(--tpl-ph-ink); border:1px dashed #E08A4F; border-radius:4px; padding:0 3px; font-weight:600; }
+.tpl-val { background:#E6F7F1; color:#0A5C3A; border-radius:3px; padding:0 2px; }
+.tpl-edit { background:var(--purple-pale); color:var(--tpl-edit-ink); border:1px dashed #B79CF0; border-radius:4px; padding:0 3px; }
+
+/* ── template cards ── */
+.tpl-list { display:flex; flex-direction:column; gap:18px; }
+.tpl-card { background:#fff; border:1px solid #E6E6E6; border-radius:var(--radius); padding:20px 22px; box-shadow:0 2px 12px rgba(0,0,0,0.04); min-width:0; scroll-margin-top:80px; transition:box-shadow .2s, border-color .2s; }
+.tpl-card:hover { border-color:rgba(255,98,0,0.28); }
+.tpl-card:target { border-color:var(--orange); box-shadow:0 0 0 3px rgba(255,98,0,0.22); }
+.tpl-tags { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:10px; }
+.tpl-chip { display:inline-flex; align-items:center; gap:4px; font-size:11px; font-weight:700; line-height:1.3; padding:3px 9px; border-radius:20px; letter-spacing:.3px; border:1px solid transparent; text-decoration:none; white-space:nowrap; }
+.tpl-chip.draft { background:#FEF3C7; color:#7A4A00; border-color:#F3D48A; text-transform:uppercase; letter-spacing:.7px; }
+.tpl-chip.kind { background:#fff; color:var(--gray-dark); border-color:#DADADA; }
+.tpl-chip.phase { background:var(--purple-pale); color:var(--tpl-edit-ink); }
+.tpl-chip.aud-customer { background:var(--green-pale); color:var(--tpl-ok-ink); }
+.tpl-chip.aud-internal { background:var(--gray-faint); color:#474747; border-color:#E0E0E0; }
+.tpl-chip.aud-mixed { background:var(--orange-pale); color:var(--tpl-ph-ink); }
+a.tpl-chip.proc { background:var(--cisco-pale); color:#0B5E80; border-color:#B5E0F3; }
+a.tpl-chip.proc:hover { text-decoration:underline; }
+.tpl-title { font-size:17px; font-weight:700; color:var(--black); line-height:1.35; margin-bottom:8px; overflow-wrap:anywhere; }
+.tpl-k { display:inline-block; font-size:10.5px; font-weight:700; letter-spacing:.7px; text-transform:uppercase; color:var(--tpl-muted); margin-right:8px; }
+.tpl-step { font-size:13px; color:var(--gray-dark); line-height:1.55; margin-bottom:10px; overflow-wrap:anywhere; }
+.tpl-step ul { margin:4px 0 0 18px; padding:0; }
+.tpl-step li { margin:2px 0; }
+.tpl-meta { display:grid; grid-template-columns:auto minmax(0,1fr); gap:3px 12px; font-size:13px; margin:0 0 14px; }
+.tpl-meta dt { font-weight:700; color:var(--tpl-muted); font-size:11px; letter-spacing:.7px; text-transform:uppercase; padding-top:2px; }
+.tpl-meta dd { margin:0; color:var(--gray-dark); min-width:0; overflow-wrap:anywhere; }
+.tpl-mail { border:1px solid #E6E6E6; border-radius:var(--radius-sm); background:#FCFCFC; overflow:hidden; }
+.tpl-subj { padding:10px 14px; border-bottom:1px solid #EFEFEF; background:#fff; font-size:13.5px; font-weight:600; color:var(--black); line-height:1.5; overflow-wrap:anywhere; }
+.tpl-body { position:relative; padding:12px 14px; font-size:13.5px; line-height:1.65; color:var(--gray-dark); white-space:pre-wrap; overflow-wrap:anywhere; word-break:break-word; max-height:260px; overflow:hidden; }
+.tpl-body.is-clipped::after { content:''; position:absolute; left:0; right:0; bottom:0; height:56px; background:linear-gradient(rgba(252,252,252,0), #FCFCFC); pointer-events:none; }
+.tpl-body.is-open { max-height:none; }
+.tpl-toggle { display:block; width:100%; background:#fff; border:none; border-top:1px solid #EFEFEF; padding:9px; font-family:var(--font); font-size:12.5px; font-weight:600; color:var(--orange-dark); cursor:pointer; }
+.tpl-toggle:hover { background:var(--orange-faint); }
+.tpl-needs { font-size:12.5px; color:var(--gray-dark); margin:12px 0 0; line-height:1.9; }
+.tpl-needs.ok { color:var(--tpl-ok-ink); }
+.tpl-needbtn { font-family:var(--font); font-size:12px; font-weight:600; line-height:1.4; background:var(--orange-pale); color:var(--tpl-ph-ink); border:1px dashed #E08A4F; border-radius:4px; padding:1px 7px; margin:0 3px 0 0; cursor:pointer; }
+.tpl-needbtn:hover { background:#FFE2CC; }
+.tpl-actions { display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+.tpl-status { font-size:12.5px; line-height:1.5; color:var(--tpl-ok-ink); margin:0; }
+.tpl-status:not(:empty) { margin-top:9px; }
+.tpl-status.warn { color:var(--tpl-ph-ink); }
+.tpl-manual { margin-top:10px; }
+.tpl-manual label { display:block; font-size:12.5px; font-weight:600; color:var(--gray-dark); margin-bottom:5px; }
+.tpl-manual textarea { font-family:var(--mono); font-size:12px; }
+.tpl-empty { text-align:center; padding:40px 20px; border:1.5px dashed #D6D6D6; border-radius:var(--radius); background:#FAFAFA; }
+.tpl-empty-title { font-size:16px; font-weight:700; color:var(--gray-dark); margin-bottom:4px; }
+.tpl-empty p { font-size:14px; color:var(--tpl-muted); margin-bottom:14px; }
+.tpl-loaderr { margin:0; }
+
+@media (max-width:720px) {
+  .tpl-card { padding:16px; }
+  .tpl-panel-head { padding:12px 16px; }
+  .tpl-panel-body { padding:14px 16px 4px; }
+  .tpl-panel-status:not(:empty), .tpl-storage-note { padding:10px 16px; }
+  .tpl-filters { padding:14px; }
+  .tpl-actions .tpl-btn { flex:1 1 auto; }
+  .tpl-body { font-size:13px; }
+}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <a href="index.html" class="topnav-brand">
+    <div class="topnav-logo">DPM</div>
+    <div class="topnav-brand-text">Knowledge <span>Base</span></div>
+  </a>
+  <div class="topnav-links">
+    <a href="index.html"          class="nav-link">Home</a>
+    <a href="lan-wan-basics.html" class="nav-link">LAN / WAN</a>
+    <a href="ip-routing.html"     class="nav-link">IP Routing</a>
+    <a href="switching.html"      class="nav-link">Switching</a>
+    <a href="wireless.html"       class="nav-link">Wireless</a>
+    <a href="firewalls.html"      class="nav-link">Firewalls</a>
+    <a href="zscaler.html"        class="nav-link">Zscaler</a>
+    <a href="devices.html"        class="nav-link">Devices</a>
+    <a href="glossary.html"       class="nav-link">Glossary</a>
+  </div>
+  <div class="topnav-badge">New Hire Guide</div>
+</nav>
+
+<div class="breadcrumb" style="background:transparent;border:none;padding:0;"></div>
+
+<div class="page-hero dark">
+  <div class="hero-content">
+    <div class="hero-tag"><span aria-hidden="true">✉️</span> DPM Tool</div>
+    <h1>Email <span>Templates</span></h1>
+    <p class="hero-sub">Copy-ready starter drafts for the emails and meeting invites you send at each step of an AP, WLC &amp; Switch or WAN delivery. Fill in your project details once and every template updates as you type.</p>
+  </div>
+</div>
+
+<div class="content">
+
+  <div class="alert orange tpl-notice" id="tpl-notice" role="note">
+    <span class="alert-icon" aria-hidden="true">⚠️</span>
+    <p><strong>Starter drafts based on the handbook's process steps — not the team's official wording. Replace them with your official templates in <code>templates-data.js</code>.</strong> Read every email through before you send it: complete or delete anything in <span class="tpl-edit">[square brackets]</span>, add the recipients and attach the documents it mentions.</p>
+  </div>
+
+  <noscript>
+    <div class="alert orange"><span class="alert-icon" aria-hidden="true">ℹ️</span><p>This page needs JavaScript to show the templates. The wording is stored in <code>templates-data.js</code> in the site's repository.</p></div>
+  </noscript>
+
+  <!-- YOUR DETAILS -->
+  <div class="section">
+    <div class="section-header">
+      <h2 id="your-details">Your details</h2>
+      <div class="divider"></div>
+      <p>Fill these in once per project — every template below updates as you type. Anything left blank shows as a highlighted <mark class="tpl-ph">[Field name]</mark> in the preview and as [Field name] in copied text.</p>
+    </div>
+
+    <div class="tpl-panel">
+      <div class="tpl-panel-head">
+        <p class="tpl-panel-meta"><strong id="tpl-filled">0 fields filled</strong> · Saved in this browser only, never sent anywhere.</p>
+        <div class="tpl-panel-actions">
+          <button type="button" class="tpl-btn" id="tpl-toggle-fields" aria-expanded="true" aria-controls="tpl-fields">Hide fields</button>
+          <button type="button" class="tpl-btn" id="tpl-clear">Clear details</button>
+        </div>
+      </div>
+      <div class="tpl-panel-body" id="tpl-fields"></div>
+      <p class="tpl-panel-status" id="tpl-fields-status" role="status" aria-live="polite"></p>
+      <p class="tpl-storage-note" id="tpl-storage-note" hidden>Your browser is blocking storage for this site, so your details will only be kept until you leave or reload this page.</p>
+    </div>
+  </div>
+
+  <!-- TEMPLATES -->
+  <div class="section">
+    <div class="section-header">
+      <h2 id="templates">Templates</h2>
+      <div class="divider"></div>
+      <p>One draft for each process step where you send, invite or notify: the ordering status and EDD request, the delivery-receipt check, the IP addressing (TDT) and Option 43 requests, the migration-date alignment and staging planning calls, the AP mounting request, the staging invitation and post-staging status, the external dry run, the UAT document, the migration-date confirmation, the support-team alignment and migration invitation, the partial-migration and success notifications, the CMDB, DNAC and HOTO hand-overs, and the WAN local validation, router installation, cutover meeting, CAB reminder and hyper-care exit emails.</p>
+    </div>
+
+    <div class="tpl-filters" role="search" aria-label="Filter templates">
+      <fieldset class="tpl-seg">
+        <legend>Process</legend>
+        <div class="tpl-seg-opts">
+          <label class="tpl-seg-opt"><input type="radio" name="tpl-proc" value="all" checked><span>All</span></label>
+          <label class="tpl-seg-opt"><input type="radio" name="tpl-proc" value="ap"><span>AP</span></label>
+          <label class="tpl-seg-opt"><input type="radio" name="tpl-proc" value="wlc"><span>WLC &amp; Switch</span></label>
+          <label class="tpl-seg-opt"><input type="radio" name="tpl-proc" value="wan"><span>WAN</span></label>
+        </div>
+      </fieldset>
+      <div class="tpl-filter-row">
+        <div class="tpl-filter">
+          <label for="tpl-phase">Phase</label>
+          <select id="tpl-phase">
+            <option value="">All phases</option>
+          </select>
+        </div>
+        <div class="tpl-filter tpl-filter-q">
+          <label for="tpl-q">Search templates</label>
+          <input type="search" id="tpl-q" placeholder="e.g. UAT, dry run, CAB, HOTO" autocomplete="off" maxlength="100">
+        </div>
+      </div>
+    </div>
+
+    <div class="tpl-countrow">
+      <p id="tpl-count" role="status" aria-live="polite">Loading templates…</p>
+      <p class="tpl-legend"><span class="sr-only">Preview key:</span><mark class="tpl-ph">[Blank field]</mark> <span class="tpl-val">your value</span> <span class="tpl-edit">[complete or delete]</span></p>
+    </div>
+
+    <div id="tpl-list" class="tpl-list"></div>
+
+    <div id="tpl-empty" class="tpl-empty" hidden>
+      <p class="tpl-empty-title">No templates match these filters.</p>
+      <p>Try another process or phase, or a shorter search.</p>
+      <button type="button" class="tpl-btn" id="tpl-reset">Reset filters</button>
+    </div>
+  </div>
+
+  <!-- BEFORE YOU SEND -->
+  <div class="section">
+    <div class="section-header">
+      <h2 id="before-you-send">Before you send</h2>
+      <div class="divider"></div>
+      <p>A few habits that keep every email accurate, complete and appropriate for its audience.</p>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-icon" style="background:var(--orange-pale);" aria-hidden="true">👥</div>
+        <h3>Recipients are roles, not addresses</h3>
+        <p>Each template lists who it is for by role — for example “Customer technical contact” or “HOTO Manager”. Add the real people yourself: <strong>Open in email</strong> starts a new email with only the subject and body filled in.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:var(--purple-pale);" aria-hidden="true">📎</div>
+        <h3>Complete the brackets, add the attachments</h3>
+        <p>Anything in <span class="tpl-edit">[square brackets]</span> is a note for you: replace it or delete it. Attach what the email mentions — the UAT document, the device list for the CMDB, or the SharePoint link for the HOTO document.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:var(--green-pale);" aria-hidden="true">🔒</div>
+        <h3>Customer-facing or internal</h3>
+        <p>Customer-facing drafts avoid internal tool names such as GOLD, MACHX, FLIP and ServiceNow, and explain terms like UAT, HOTO and CAB. Drafts tagged <strong>Internal</strong> — for example the CMDB, DNAC and HOTO requests — are for Orange Business teams only.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:var(--cisco-pale);" aria-hidden="true">📅</div>
+        <h3>Meeting invites</h3>
+        <p>Templates tagged <strong>Meeting invite</strong> are written for a Teams or Outlook meeting. Create the meeting, paste the subject as its title and the body as its description, then add the attendees — on migration invites, the PM and SC go in as optional.</p>
+      </div>
+    </div>
+
+    <div class="alert blue" style="margin-top:22px;margin-bottom:0;">
+      <span class="alert-icon" aria-hidden="true">🛠️</span>
+      <p><strong>Maintaining these templates.</strong> All the wording lives in <code>templates-data.js</code>: each template has a title, the process step it serves, its recipients by role, a subject and a body, with <code>{{placeholders}}</code> that match the fields under <a href="#your-details">Your details</a>. When the team agrees an official version, paste it in and set <code>draft: false</code> to remove its Draft tag. Each template quotes its step from the <a href="process-ap.html">AP</a>, <a href="process-wlc-switch.html">WLC &amp; Switch</a> and <a href="wan-process.html">WAN</a> process pages; the <a href="raci.html">RACI matrix</a> shows who owns each step.</p>
+    </div>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <p>DPM <span>Knowledge Base</span> &nbsp;·&nbsp; Onboarding Handbook Ed.&nbsp;1.3 &nbsp;·&nbsp; Internal Use Only</p>
+</footer>
+
+<script src="templates-data.js"></script>
+<script>
+/* ═══════════════════════════════════════════════════════════
+   Email Templates page logic.  Data: templates-data.js
+   (window.KB_TEMPLATES).  Everything inserted with innerHTML
+   is HTML-escaped first; stored values are validated on load.
+═══════════════════════════════════════════════════════════ */
+(function () {
+  "use strict";
+
+  var DATA = window.KB_TEMPLATES;
+  var STORE_KEY = "dpmkb_tpl_fields";   // the viewer's field values (convenience only)
+  var PANEL_KEY = "dpmkb_tpl_panel";    // whether the fields panel is collapsed
+  var MAILTO_WARN_LEN = 1800;           // some mail apps truncate longer mailto: links
+  var MAX_LEN = 200, MAX_LEN_MULTI = 1000;
+
+  var PROCESSES = {
+    ap:  { label: "AP",           href: "process-ap.html" },
+    wlc: { label: "WLC & Switch", href: "process-wlc-switch.html" },
+    wan: { label: "WAN",          href: "wan-process.html" }
+  };
+  var AUDIENCE = { customer: "Customer-facing", internal: "Internal", mixed: "Customer + internal" };
+  var KIND = {
+    email:  { icon: "✉️", label: "Email" },
+    invite: { icon: "📅", label: "Meeting invite" }
+  };
+
+  var PH_SRC = "\\{\\{\\s*([A-Za-z0-9_]+)\\s*\\}\\}";
+  var BRACKET_G = /\[[^\[\]\n]{1,160}\]/g;
+  var BRACKET_1 = /\[[^\[\]\n]{1,160}\]/;
+
+  var FIELDS = [], FIELD_BY_KEY = {}, TEMPLATES = [], TPL_BY_ID = {}, PHASES = [];
+  var values = {};
+  var state = { proc: "all", phase: "", q: "" };
+  var expanded = {};
+  var statusTimers = {};
+  var storageOK = true;
+
+  /* ---------- helpers ---------- */
+  function $(id) { return document.getElementById(id); }
+  function has(obj, k) { return Object.prototype.hasOwnProperty.call(obj, k); }
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+  function safeId(s) {
+    return String(s == null ? "" : s).toLowerCase().replace(/[^a-z0-9_-]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 60) || "template";
+  }
+  function asText(v) {
+    if (Array.isArray(v)) return v.map(function (x) { return x == null ? "" : String(x); }).join("\n");
+    return v == null ? "" : String(v);
+  }
+
+  /* ---------- storage (every access guarded) ---------- */
+  function storageFailed() {
+    storageOK = false;
+    var n = $("tpl-storage-note");
+    if (n) n.hidden = false;
+  }
+  function storeGet(k) {
+    try { return window.localStorage.getItem(k); } catch (e) { storageFailed(); return null; }
+  }
+  function storeSet(k, v) {
+    if (!storageOK) return false;
+    try { window.localStorage.setItem(k, v); return true; } catch (e) { storageFailed(); return false; }
+  }
+  function storeDel(k) {
+    if (!storageOK) return false;
+    try { window.localStorage.removeItem(k); return true; } catch (e) { storageFailed(); return false; }
+  }
+  function probeStorage() {
+    try {
+      var t = "dpmkb_tpl_probe";
+      window.localStorage.setItem(t, "1");
+      window.localStorage.removeItem(t);
+    } catch (e) { storageFailed(); }
+  }
+
+  /* ---------- templating ---------- */
+  function tokenize(str) {
+    var out = [], last = 0, m, re = new RegExp(PH_SRC, "g");
+    while ((m = re.exec(str)) !== null) {
+      if (m.index > last) out.push({ t: 0, v: str.slice(last, m.index) });
+      out.push({ t: 1, v: m[1] });
+      last = re.lastIndex;
+    }
+    if (last < str.length) out.push({ t: 0, v: str.slice(last) });
+    return out;
+  }
+  function keysOf(toks) {
+    var seen = {}, out = [];
+    toks.forEach(function (tk) { if (tk.t === 1 && !seen[tk.v]) { seen[tk.v] = true; out.push(tk.v); } });
+    return out;
+  }
+  function staticText(toks) {
+    return toks.filter(function (tk) { return tk.t === 0; }).map(function (tk) { return tk.v; }).join(" ");
+  }
+  function val(k) {
+    var v = has(values, k) ? values[k] : "";
+    return typeof v === "string" ? v.trim() : "";
+  }
+  function labelOf(k) { return has(FIELD_BY_KEY, k) ? FIELD_BY_KEY[k].label : k; }
+  function missingIn(toks) { return keysOf(toks).filter(function (k) { return !val(k); }); }
+
+  function toPlain(toks) {
+    var s = "";
+    for (var i = 0; i < toks.length; i++) {
+      var tk = toks[i];
+      s += tk.t === 0 ? tk.v : (val(tk.v) || "[" + labelOf(tk.v) + "]");
+    }
+    return s;
+  }
+  function markBrackets(escaped) {
+    return escaped.replace(BRACKET_G, function (m) { return '<span class="tpl-edit">' + m + "</span>"; });
+  }
+  function toHtml(toks) {
+    var h = "";
+    for (var i = 0; i < toks.length; i++) {
+      var tk = toks[i];
+      if (tk.t === 0) { h += markBrackets(esc(tk.v)); continue; }
+      var v = val(tk.v);
+      h += v ? '<span class="tpl-val">' + esc(v) + "</span>"
+             : '<mark class="tpl-ph">[' + esc(labelOf(tk.v)) + "]</mark>";
+    }
+    return h;
+  }
+  function mailtoHref(t) {
+    var subj = toPlain(t.subjTok);
+    var body = toPlain(t.bodyTok).replace(/\r?\n/g, "\r\n");
+    return "mailto:?subject=" + encodeURIComponent(subj) + "&body=" + encodeURIComponent(body);
+  }
+
+  /* ---------- data ---------- */
+  function normalise() {
+    if (!DATA || typeof DATA !== "object") return false;
+
+    (Array.isArray(DATA.fields) ? DATA.fields : []).forEach(function (f) {
+      if (!f || typeof f.key !== "string" || !/^[A-Za-z0-9_]+$/.test(f.key) || has(FIELD_BY_KEY, f.key)) return;
+      var nf = {
+        key: f.key,
+        label: String(f.label || f.key),
+        placeholder: String(f.placeholder || ""),
+        group: String(f.group || "Details"),
+        hint: f.hint ? String(f.hint) : "",
+        multiline: !!f.multiline
+      };
+      FIELDS.push(nf);
+      FIELD_BY_KEY[nf.key] = nf;
+    });
+
+    (Array.isArray(DATA.templates) ? DATA.templates : []).forEach(function (t) {
+      if (!t || !t.title) return;
+      var base = safeId(t.id || t.title), id = base, n = 2;
+      while (has(TPL_BY_ID, id)) { id = base + "-" + n; n++; }
+      var procs = (Array.isArray(t.process) ? t.process : [t.process]).filter(function (p) {
+        return typeof p === "string" && has(PROCESSES, p);
+      });
+      var subject = asText(t.subject), body = asText(t.body);
+      var nt = {
+        id: id,
+        title: String(t.title),
+        process: procs,
+        phase: String(t.phase || "Other"),
+        kind: t.kind === "invite" ? "invite" : "email",
+        audience: (typeof t.audience === "string" && has(AUDIENCE, t.audience)) ? t.audience : "",
+        step: Array.isArray(t.step) ? t.step.map(String) : (t.step ? [String(t.step)] : []),
+        to: asText(t.to),
+        cc: asText(t.cc),
+        draft: t.draft !== false,
+        subjTok: tokenize(subject),
+        bodyTok: tokenize(body)
+      };
+      nt.allTok = nt.subjTok.concat(nt.bodyTok);
+      nt.hasBrackets = BRACKET_1.test(staticText(nt.allTok));
+      nt.haystack = [
+        nt.title, nt.phase, nt.step.join(" "), nt.to, nt.cc,
+        staticText(nt.allTok),
+        nt.audience ? AUDIENCE[nt.audience] : "",
+        KIND[nt.kind].label,
+        procs.map(function (p) { return PROCESSES[p].label; }).join(" ")
+      ].join(" ").toLowerCase();
+      TEMPLATES.push(nt);
+      TPL_BY_ID[id] = nt;
+    });
+
+    var present = {};
+    TEMPLATES.forEach(function (t) { present[t.phase] = true; });
+    (Array.isArray(DATA.phases) ? DATA.phases : []).forEach(function (p) {
+      p = String(p);
+      if (present[p] && PHASES.indexOf(p) < 0) PHASES.push(p);
+    });
+    TEMPLATES.forEach(function (t) { if (PHASES.indexOf(t.phase) < 0) PHASES.push(t.phase); });
+
+    return TEMPLATES.length > 0;
+  }
+
+  /* ---------- field values ---------- */
+  function loadValues() {
+    var raw = storeGet(STORE_KEY);
+    if (!raw) return;
+    var obj = null;
+    try { obj = JSON.parse(raw); } catch (e) { obj = null; }
+    if (!obj || typeof obj !== "object" || Array.isArray(obj)) return;
+    FIELDS.forEach(function (f) {
+      if (has(obj, f.key) && typeof obj[f.key] === "string") {
+        values[f.key] = obj[f.key].slice(0, f.multiline ? MAX_LEN_MULTI : MAX_LEN);
+      }
+    });
+  }
+  var saveTimer = null;
+  function scheduleSave() { clearTimeout(saveTimer); saveTimer = setTimeout(saveValues, 300); }
+  function saveValues() {
+    var out = {}, any = false;
+    FIELDS.forEach(function (f) { if (val(f.key)) { out[f.key] = values[f.key]; any = true; } });
+    if (any) storeSet(STORE_KEY, JSON.stringify(out));
+    else storeDel(STORE_KEY);
+  }
+  function snapshot() {
+    var snap = {}, any = false;
+    FIELDS.forEach(function (f) { if (val(f.key)) { snap[f.key] = values[f.key]; any = true; } });
+    return any ? snap : null;
+  }
+
+  /* ---------- "Your details" panel ---------- */
+  function buildFields() {
+    var host = $("tpl-fields");
+    if (!host) return;
+    var groups = [], byGroup = {};
+    FIELDS.forEach(function (f) {
+      if (!has(byGroup, f.group)) { byGroup[f.group] = []; groups.push(f.group); }
+      byGroup[f.group].push(f);
+    });
+    groups.forEach(function (g) {
+      var fs = document.createElement("fieldset");
+      fs.className = "tpl-group";
+      var lg = document.createElement("legend");
+      lg.textContent = g;
+      fs.appendChild(lg);
+      var grid = document.createElement("div");
+      grid.className = "tpl-grid";
+      byGroup[g].forEach(function (f) {
+        var wrap = document.createElement("div");
+        wrap.className = "tpl-field";
+        var lab = document.createElement("label");
+        lab.htmlFor = "tplf-" + f.key;
+        lab.textContent = f.label;
+        var inp = document.createElement(f.multiline ? "textarea" : "input");
+        if (f.multiline) inp.rows = 3; else inp.type = "text";
+        inp.id = "tplf-" + f.key;
+        inp.placeholder = f.placeholder;
+        inp.maxLength = f.multiline ? MAX_LEN_MULTI : MAX_LEN;
+        inp.setAttribute("autocomplete", "off");
+        inp.setAttribute("data-key", f.key);
+        wrap.appendChild(lab);
+        wrap.appendChild(inp);
+        if (f.hint) {
+          var hint = document.createElement("span");
+          hint.className = "tpl-hint";
+          hint.id = "tplf-" + f.key + "-hint";
+          hint.textContent = f.hint;
+          inp.setAttribute("aria-describedby", hint.id);
+          wrap.appendChild(hint);
+        }
+        grid.appendChild(wrap);
+      });
+      fs.appendChild(grid);
+      host.appendChild(fs);
+    });
+
+    host.addEventListener("input", function (e) {
+      var el = e.target;
+      var k = el && el.getAttribute ? el.getAttribute("data-key") : null;
+      if (!k || !has(FIELD_BY_KEY, k)) return;
+      values[k] = el.value;
+      el.classList.toggle("is-filled", !!val(k));
+      scheduleSave();
+      scheduleUpdate();
+      updateFilledCount();
+    });
+  }
+  function syncInputs() {
+    FIELDS.forEach(function (f) {
+      var el = $("tplf-" + f.key);
+      if (!el) return;
+      el.value = has(values, f.key) ? values[f.key] : "";
+      el.classList.toggle("is-filled", !!val(f.key));
+    });
+  }
+  function updateFilledCount() {
+    var el = $("tpl-filled");
+    if (!el) return;
+    var n = FIELDS.filter(function (f) { return !!val(f.key); }).length;
+    el.textContent = n + " of " + FIELDS.length + " fields filled";
+  }
+  function setPanelOpen(open, persist) {
+    var body = $("tpl-fields"), btn = $("tpl-toggle-fields");
+    if (!body || !btn) return;
+    body.hidden = !open;
+    btn.setAttribute("aria-expanded", open ? "true" : "false");
+    btn.textContent = open ? "Hide fields" : "Show fields";
+    if (persist) storeSet(PANEL_KEY, open ? "open" : "closed");
+  }
+
+  var panelTimer = null, undoSnap = null;
+  function panelStatus(msg, withUndo) {
+    var el = $("tpl-fields-status");
+    if (!el) return;
+    el.textContent = msg;
+    if (withUndo) {
+      el.appendChild(document.createTextNode(" "));
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "tpl-linkbtn";
+      b.textContent = "Undo";
+      b.addEventListener("click", undoClear);
+      el.appendChild(b);
+    }
+    clearTimeout(panelTimer);
+    panelTimer = setTimeout(function () { el.textContent = ""; undoSnap = null; }, withUndo ? 15000 : 6000);
+  }
+  function clearDetails() {
+    var snap = snapshot();
+    if (!snap) { panelStatus("There are no details to clear.", false); return; }
+    undoSnap = snap;
+    values = {};
+    syncInputs();
+    clearTimeout(saveTimer);
+    saveValues();
+    updateFilledCount();
+    scheduleUpdate();
+    panelStatus("Your details were cleared.", true);
+  }
+  function undoClear() {
+    if (!undoSnap) return;
+    values = undoSnap;
+    undoSnap = null;
+    syncInputs();
+    saveValues();
+    updateFilledCount();
+    scheduleUpdate();
+    panelStatus("Your details were restored.", false);
+    var btn = $("tpl-clear");
+    if (btn) btn.focus();
+  }
+  function focusField(key) {
+    var el = $("tplf-" + key);
+    if (!el) return;
+    setPanelOpen(true, true);
+    try { el.focus({ preventScroll: true }); } catch (e) { el.focus(); }
+    try { el.scrollIntoView({ block: "center" }); } catch (e2) { el.scrollIntoView(); }
+  }
+
+  /* ---------- cards ---------- */
+  function cardHtml(t) {
+    var id = "tmpl-" + t.id;
+    var tags = [];
+    if (t.draft) tags.push('<span class="tpl-chip draft" title="' + esc("Starter draft - not the team's official wording") + '">Draft</span>');
+    tags.push('<span class="tpl-chip kind"><span aria-hidden="true">' + esc(KIND[t.kind].icon) + "</span>" + esc(KIND[t.kind].label) + "</span>");
+    if (t.audience) tags.push('<span class="tpl-chip aud-' + esc(t.audience) + '">' + esc(AUDIENCE[t.audience]) + "</span>");
+    tags.push('<span class="tpl-chip phase">' + esc(t.phase) + "</span>");
+    t.process.forEach(function (p) {
+      tags.push('<a class="tpl-chip proc" href="' + esc(PROCESSES[p].href) + '" title="' + esc("Open the " + PROCESSES[p].label + " process page") + '">' + esc(PROCESSES[p].label) + "</a>");
+    });
+
+    var step = "";
+    if (t.step.length === 1) {
+      step = '<div class="tpl-step"><span class="tpl-k">Process step</span>' + esc(t.step[0]) + "</div>";
+    } else if (t.step.length > 1) {
+      step = '<div class="tpl-step"><span class="tpl-k">Process steps</span><ul>' +
+        t.step.map(function (s) { return "<li>" + esc(s) + "</li>"; }).join("") + "</ul></div>";
+    }
+
+    var meta = '<dl class="tpl-meta"><dt>To</dt><dd>' + esc(t.to || "-") + "</dd>" +
+      (t.cc ? "<dt>Cc</dt><dd>" + esc(t.cc) + "</dd>" : "") + "</dl>";
+
+    var desc = ' aria-describedby="' + id + '-title"';
+    return '<article class="tpl-card" id="' + id + '" data-id="' + esc(t.id) + '" aria-labelledby="' + id + '-title">' +
+      '<div class="tpl-tags">' + tags.join("") + "</div>" +
+      '<div class="tpl-title" id="' + id + '-title" role="heading" aria-level="3">' + esc(t.title) + "</div>" +
+      step + meta +
+      '<div class="tpl-mail">' +
+        '<div class="tpl-subj"><span class="tpl-k">Subject</span><span data-role="subject"></span></div>' +
+        '<div class="tpl-body" id="' + id + '-body" data-role="body"></div>' +
+        '<button type="button" class="tpl-toggle" data-act="toggle" aria-expanded="false" aria-controls="' + id + '-body" hidden>Show full email</button>' +
+      "</div>" +
+      '<div class="tpl-needs" data-role="needs"></div>' +
+      '<div class="tpl-actions">' +
+        '<button type="button" class="tpl-btn primary" data-act="copy-all"' + desc + ">Copy subject + body</button>" +
+        '<button type="button" class="tpl-btn" data-act="copy-body"' + desc + ">Copy body</button>" +
+        '<a class="tpl-btn" data-act="mail" href="mailto:"' + desc + ">Open in email</a>" +
+      "</div>" +
+      '<p class="tpl-status" data-role="status" role="status" aria-live="polite"></p>' +
+      '<div class="tpl-manual" data-role="manual" hidden>' +
+        '<label for="' + id + '-manual">Copy this text manually (Ctrl+C, or Cmd+C on a Mac)</label>' +
+        '<textarea id="' + id + '-manual" readonly rows="8"></textarea>' +
+      "</div>" +
+    "</article>";
+  }
+
+  function writeCard(card) {
+    var t = TPL_BY_ID[card.getAttribute("data-id")];
+    if (!t) return;
+    card.querySelector('[data-role="subject"]').innerHTML = toHtml(t.subjTok);
+    card.querySelector('[data-role="body"]').innerHTML = toHtml(t.bodyTok);
+
+    var needs = card.querySelector('[data-role="needs"]');
+    var miss = missingIn(t.allTok);
+    var bracketNote = t.hasBrackets ? ' Also complete or delete the <span class="tpl-edit">[bracketed]</span> notes.' : "";
+    if (miss.length) {
+      needs.className = "tpl-needs";
+      needs.innerHTML = '<span class="tpl-k">Still blank</span>' + miss.map(function (k) {
+        if (!has(FIELD_BY_KEY, k)) return '<mark class="tpl-ph">' + esc(labelOf(k)) + "</mark> ";
+        return '<button type="button" class="tpl-needbtn" data-act="focus-field" data-key="' + esc(k) + '" title="' + esc("Go to the " + labelOf(k) + " field") + '">' + esc(labelOf(k)) + "</button>";
+      }).join("") + bracketNote;
+    } else {
+      needs.className = "tpl-needs ok";
+      needs.innerHTML = '<span aria-hidden="true">✓</span> All fields filled.' +
+        (t.hasBrackets ? ' Now complete or delete the <span class="tpl-edit">[bracketed]</span> notes.' : "");
+    }
+    card.querySelector('[data-act="mail"]').setAttribute("href", mailtoHref(t));
+  }
+
+  function measureCard(card) {
+    var t = TPL_BY_ID[card.getAttribute("data-id")];
+    var body = card.querySelector('[data-role="body"]');
+    var btn = card.querySelector('[data-act="toggle"]');
+    if (!t || !body || !btn) return;
+    var open = !!expanded[t.id];
+    body.classList.toggle("is-open", open);
+    if (open) {
+      body.classList.remove("is-clipped");
+      btn.hidden = false;
+      btn.textContent = "Show less";
+      btn.setAttribute("aria-expanded", "true");
+      return;
+    }
+    var clipped = body.scrollHeight > body.clientHeight + 2;
+    body.classList.toggle("is-clipped", clipped);
+    btn.hidden = !clipped;
+    btn.textContent = "Show full email";
+    btn.setAttribute("aria-expanded", "false");
+  }
+
+  function visibleCards() {
+    var list = $("tpl-list");
+    return list ? [].slice.call(list.querySelectorAll(".tpl-card")) : [];
+  }
+  function updateAll() {
+    var cards = visibleCards();
+    cards.forEach(writeCard);     // all writes first …
+    cards.forEach(measureCard);   // … then all layout reads
+  }
+  function measureAll() { visibleCards().forEach(measureCard); }
+
+  var updatePending = false;
+  function scheduleUpdate() {   // coalesces fast typing into one refresh
+    if (updatePending) return;
+    updatePending = true;
+    setTimeout(function () { updatePending = false; updateAll(); }, 30);
+  }
+
+  /* ---------- filtering ---------- */
+  function matches(t) {
+    if (state.proc !== "all" && t.process.indexOf(state.proc) < 0) return false;
+    if (state.phase && t.phase !== state.phase) return false;
+    if (state.q) {
+      var terms = state.q.toLowerCase().split(/\s+/);
+      for (var i = 0; i < terms.length; i++) {
+        if (terms[i] && t.haystack.indexOf(terms[i]) < 0) return false;
+      }
+    }
+    return true;
+  }
+  function renderList() {
+    var list = $("tpl-list"), empty = $("tpl-empty"), count = $("tpl-count");
+    if (!list) return;
+    Object.keys(statusTimers).forEach(function (k) { clearTimeout(statusTimers[k]); });
+    statusTimers = {};
+    var shown = TEMPLATES.filter(matches);
+    list.innerHTML = shown.map(cardHtml).join("");
+    if (empty) empty.hidden = shown.length > 0;
+    if (count) {
+      count.textContent = shown.length === TEMPLATES.length
+        ? "Showing all " + TEMPLATES.length + " templates"
+        : "Showing " + shown.length + " of " + TEMPLATES.length + " templates";
+    }
+    updateAll();
+  }
+  function applyStateToControls() {
+    [].forEach.call(document.querySelectorAll('input[name="tpl-proc"]'), function (r) { r.checked = (r.value === state.proc); });
+    var ph = $("tpl-phase"); if (ph) ph.value = state.phase;
+    var q = $("tpl-q"); if (q) q.value = state.q;
+  }
+  function buildPhaseOptions() {
+    var sel = $("tpl-phase");
+    if (!sel) return;
+    PHASES.forEach(function (p) {
+      var o = document.createElement("option");
+      o.value = p;
+      o.textContent = p;
+      sel.appendChild(o);
+    });
+  }
+  function readUrl() {
+    try {
+      if (!window.URLSearchParams || !location.search) return;
+      var p = new URLSearchParams(location.search);
+      var proc = p.get("process");
+      if (proc && (proc === "all" || has(PROCESSES, proc))) state.proc = proc;
+      var ph = p.get("phase");
+      if (ph && PHASES.indexOf(ph) >= 0) state.phase = ph;
+      var q = p.get("q");
+      if (q) state.q = q.slice(0, 100);
+    } catch (e) { /* ignore malformed URLs */ }
+  }
+  function hashTarget() {
+    var h = location.hash || "";
+    if (h.indexOf("#tmpl-") !== 0) return;
+    var id = h.slice(6);
+    var t = has(TPL_BY_ID, id) ? TPL_BY_ID[id] : null;
+    if (!t) return;
+    expanded[id] = true;
+    if (!matches(t)) state = { proc: "all", phase: "", q: "" };
+  }
+
+  /* ---------- actions ---------- */
+  function setStatus(card, msg, warn, ms) {
+    var el = card.querySelector('[data-role="status"]');
+    if (!el) return;
+    var id = card.getAttribute("data-id");
+    el.textContent = msg;
+    el.className = "tpl-status" + (warn ? " warn" : "");
+    clearTimeout(statusTimers[id]);
+    statusTimers[id] = setTimeout(function () { el.textContent = ""; }, ms || 8000);
+  }
+  function legacyCopy(text) {
+    var active = document.activeElement, ok = false;
+    var ta = document.createElement("textarea");
+    ta.value = text;
+    ta.setAttribute("readonly", "");
+    ta.setAttribute("aria-hidden", "true");
+    ta.style.cssText = "position:fixed;top:0;left:0;width:1px;height:1px;padding:0;border:0;opacity:0;pointer-events:none;";
+    document.body.appendChild(ta);
+    try {
+      ta.select();
+      ta.setSelectionRange(0, text.length);
+      ok = document.execCommand("copy");
+    } catch (e) { ok = false; }
+    document.body.removeChild(ta);
+    if (active && typeof active.focus === "function") {
+      try { active.focus({ preventScroll: true }); } catch (e2) { try { active.focus(); } catch (e3) { /* ignore */ } }
+    }
+    return !!ok;
+  }
+  function copyText(text, cb) {
+    var finished = false;
+    function finish(ok) { if (finished) return; finished = true; cb(ok); }
+    if (navigator.clipboard && typeof navigator.clipboard.writeText === "function" && window.isSecureContext !== false) {
+      try {
+        navigator.clipboard.writeText(text).then(
+          function () { finish(true); },
+          function () { finish(legacyCopy(text)); }
+        );
+        return;
+      } catch (e) { /* fall back below */ }
+    }
+    finish(legacyCopy(text));
+  }
+  function hideManual(card) {
+    var box = card.querySelector('[data-role="manual"]');
+    if (box) box.hidden = true;
+  }
+  function showManual(card, text) {
+    var box = card.querySelector('[data-role="manual"]');
+    if (!box) return;
+    var ta = box.querySelector("textarea");
+    box.hidden = false;
+    ta.value = text;
+    try { ta.focus(); ta.select(); } catch (e) { /* ignore */ }
+    setStatus(card, "Your browser blocked automatic copying. The text is selected in the box below: press Ctrl+C (or Cmd+C on a Mac) to copy it.", true, 20000);
+  }
+  function doCopy(card, t, withSubject) {
+    var body = toPlain(t.bodyTok);
+    var text = withSubject ? "Subject: " + toPlain(t.subjTok) + "\n\n" + body : body;
+    var miss = missingIn(withSubject ? t.allTok : t.bodyTok).length;
+    hideManual(card);
+    copyText(text, function (ok) {
+      if (!ok) { showManual(card, text); return; }
+      var msg = withSubject ? "Subject and body copied to the clipboard." : "Body copied to the clipboard.";
+      if (miss) msg += " " + miss + (miss === 1 ? " field is" : " fields are") + " still blank and will appear as [Field name].";
+      setStatus(card, msg, miss > 0);
+    });
+  }
+  function openMail(card, t, link) {
+    var href = mailtoHref(t);
+    link.setAttribute("href", href);   // default action then follows the fresh link
+    var msg = "Opening a new email in your mail app, with no recipients added.";
+    var warn = false;
+    if (t.kind === "invite") msg += " For a meeting, you can paste the text into a new Teams or Outlook meeting instead.";
+    if (href.length > MAILTO_WARN_LEN) { msg += " This email is long: if your mail app cuts it short, use Copy instead."; warn = true; }
+    setStatus(card, msg, warn, 12000);
+  }
+  function toggleBody(card, t) {
+    expanded[t.id] = !expanded[t.id];
+    measureCard(card);
+    if (!expanded[t.id]) {
+      var r = card.getBoundingClientRect();
+      if (r.top < 0) card.scrollIntoView({ block: "start" });
+    }
+  }
+
+  /* ---------- wiring ---------- */
+  function wire() {
+    var list = $("tpl-list");
+    if (list) {
+      list.addEventListener("click", function (e) {
+        var el = e.target && e.target.closest ? e.target.closest("[data-act]") : null;
+        if (!el || !list.contains(el)) return;
+        var card = el.closest(".tpl-card");
+        var t = card ? TPL_BY_ID[card.getAttribute("data-id")] : null;
+        if (!t) return;
+        var act = el.getAttribute("data-act");
+        if (act === "copy-all") doCopy(card, t, true);
+        else if (act === "copy-body") doCopy(card, t, false);
+        else if (act === "mail") openMail(card, t, el);
+        else if (act === "toggle") toggleBody(card, t);
+        else if (act === "focus-field") focusField(el.getAttribute("data-key"));
+      });
+    }
+
+    [].forEach.call(document.querySelectorAll('input[name="tpl-proc"]'), function (r) {
+      r.addEventListener("change", function () {
+        if (r.checked) { state.proc = r.value; renderList(); }
+      });
+    });
+    var ph = $("tpl-phase");
+    if (ph) ph.addEventListener("change", function () { state.phase = ph.value; renderList(); });
+
+    var q = $("tpl-q"), qTimer = null;
+    if (q) q.addEventListener("input", function () {
+      clearTimeout(qTimer);
+      qTimer = setTimeout(function () {
+        var v = q.value.trim().slice(0, 100);
+        if (v === state.q) return;
+        state.q = v;
+        renderList();
+      }, 180);
+    });
+
+    var reset = $("tpl-reset");
+    if (reset) reset.addEventListener("click", function () {
+      state = { proc: "all", phase: "", q: "" };
+      applyStateToControls();
+      renderList();
+      if (q) q.focus();
+    });
+
+    var clear = $("tpl-clear");
+    if (clear) clear.addEventListener("click", clearDetails);
+
+    var tog = $("tpl-toggle-fields");
+    if (tog) tog.addEventListener("click", function () {
+      var body = $("tpl-fields");
+      setPanelOpen(!!(body && body.hidden), true);
+    });
+
+    var rsTimer = null;
+    window.addEventListener("resize", function () {
+      clearTimeout(rsTimer);
+      rsTimer = setTimeout(measureAll, 200);
+    });
+    window.addEventListener("load", measureAll);
+    try { if (document.fonts && document.fonts.ready) document.fonts.ready.then(measureAll); } catch (e) { /* ignore */ }
+  }
+
+  function showLoadError() {
+    var list = $("tpl-list"), count = $("tpl-count");
+    if (count) count.textContent = "No templates loaded.";
+    if (list) {
+      list.innerHTML = '<div class="alert orange tpl-loaderr"><span class="alert-icon" aria-hidden="true">⚠️</span>' +
+        "<p><strong>The templates could not be loaded.</strong> Check that <code>templates-data.js</code> is present next to this page and has no syntax errors.</p></div>";
+    }
+  }
+
+  /* ---------- init ---------- */
+  function init() {
+    if (!normalise()) { showLoadError(); return; }
+    probeStorage();
+    loadValues();
+    buildFields();
+    syncInputs();
+    updateFilledCount();
+    setPanelOpen(storeGet(PANEL_KEY) !== "closed", false);
+
+    var notice = $("tpl-notice");
+    if (notice && !TEMPLATES.some(function (t) { return t.draft; })) notice.hidden = true;
+
+    buildPhaseOptions();
+    readUrl();
+    hashTarget();
+    applyStateToControls();
+    wire();
+    renderList();
+  }
+
+  init();
+})();
+</script>
+<script src="shared.js"></script>
+</body>
+</html>

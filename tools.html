@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tool Launcher — DPM Knowledge Base</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="stylesheet" href="shared.css">
+<style>
+/* ── quick mental model ── */
+.mm-grid { list-style:none; margin:0 0 22px; padding:0; display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+@media(max-width:760px){ .mm-grid{ grid-template-columns:1fr 1fr; } }
+@media(max-width:460px){ .mm-grid{ grid-template-columns:1fr; } }
+.mm-tile { min-width:0; display:flex; gap:12px; align-items:flex-start; background:#fff; border:1px solid #ECECEC; border-left:4px solid var(--orange); border-radius:12px; padding:14px 16px; }
+.mm-ic { font-size:22px; line-height:1; flex-shrink:0; margin-top:2px; }
+.mm-tx { min-width:0; }
+.mm-tools { font-family:var(--mono); font-weight:700; font-size:13px; color:#A33E00; overflow-wrap:anywhere; }
+.mm-means { font-size:14px; font-weight:600; color:var(--black); margin-top:3px; line-height:1.45; }
+
+/* ── privacy ── */
+.pv-list { list-style:none; margin:0; padding:0; display:grid; gap:10px; }
+.pv-list li { position:relative; padding:12px 16px 12px 44px; background:#fff; border:1px solid #ECECEC; border-radius:12px; font-size:13.5px; color:var(--gray-dark); line-height:1.6; min-width:0; overflow-wrap:anywhere; }
+.pv-list li .pv-ic { position:absolute; left:15px; top:12px; font-size:16px; line-height:1.5; }
+.pv-list code, .mt-body code { font-family:var(--mono); font-size:12px; background:var(--gray-faint); border:1px solid #E6E6E6; border-radius:5px; padding:1px 6px; color:var(--black); overflow-wrap:anywhere; }
+
+/* ── maintainers ── */
+.mt-body h3 { font-size:17px; font-weight:700; margin:26px 0 8px; }
+.mt-body h3:first-child { margin-top:0; }
+.mt-body p { font-size:14px; color:var(--gray-dark); line-height:1.7; margin-bottom:12px; }
+.mt-body ol { margin:0 0 14px 20px; padding:0; font-size:14px; color:var(--gray-dark); line-height:1.7; }
+.mt-body ol li { margin-bottom:6px; padding-left:4px; }
+.mt-body .code-block { margin-bottom:14px; }
+.mt-body .code-block .cmt { color:#A0A0A0; }
+.mt-body .alert { margin-bottom:14px; }
+.launch-wrap { min-width:0; }
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <a href="index.html" class="topnav-brand">
+    <div class="topnav-logo">DPM</div>
+    <div class="topnav-brand-text">Knowledge <span>Base</span></div>
+  </a>
+  <div class="topnav-links">
+    <a href="index.html"          class="nav-link">Home</a>
+    <a href="lan-wan-basics.html" class="nav-link">LAN / WAN</a>
+    <a href="ip-routing.html"     class="nav-link">IP Routing</a>
+    <a href="switching.html"      class="nav-link">Switching</a>
+    <a href="wireless.html"       class="nav-link">Wireless</a>
+    <a href="firewalls.html"      class="nav-link">Firewalls</a>
+    <a href="zscaler.html"        class="nav-link">Zscaler</a>
+    <a href="devices.html"        class="nav-link">Devices</a>
+    <a href="glossary.html"       class="nav-link">Glossary</a>
+  </div>
+  <div class="topnav-badge">New Hire Guide</div>
+</nav>
+
+<div class="breadcrumb" style="background:transparent;border:none;padding:0;"></div>
+
+<div class="page-hero dark">
+  <div class="hero-content">
+    <div class="hero-tag"><span aria-hidden="true">🚀</span> Launchpad</div>
+    <h1>Your tools, <span>one click</span> away</h1>
+    <p class="hero-sub">Every system a DPM uses on a delivery — from the GOLD order to the HOTO paperwork — in one place. Set your own links once and this browser remembers them.</p>
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- LAUNCHER -->
+  <div class="section">
+    <div class="section-header">
+      <h2>Launch a tool</h2>
+      <div class="divider"></div>
+      <p>Grouped the same way as the handbook's Tools &amp; Systems section. A tool marked <strong>No link yet</strong> has no team default — select <strong>⚙ Set my links</strong> and paste the address you use.</p>
+    </div>
+    <div class="launch-wrap" data-kb-launcher="full">
+      <noscript>
+        <div class="alert orange" style="margin-bottom:0;">
+          <span class="alert-icon" aria-hidden="true">⚠️</span>
+          <p>The launcher needs JavaScript. The full list of tools and what each one is for is in the <a href="index.html#tools">Tools &amp; Systems</a> section of the home page.</p>
+        </div>
+      </noscript>
+    </div>
+  </div>
+
+  <!-- MENTAL MODEL -->
+  <div class="section">
+    <div class="section-header">
+      <h2>Quick mental model</h2>
+      <div class="divider"></div>
+      <p>Six ideas that tell you which tool to open. From the DPM Onboarding Handbook, Tools &amp; Systems.</p>
+    </div>
+    <ul class="mm-grid">
+      <li class="mm-tile"><span class="mm-ic" aria-hidden="true">📦</span><div class="mm-tx"><div class="mm-tools">GOLD / SALTO</div><div class="mm-means">= the order</div></div></li>
+      <li class="mm-tile"><span class="mm-ic" aria-hidden="true">🛠️</span><div class="mm-tx"><div class="mm-tools">ServiceNow / MACHX</div><div class="mm-means">= getting the work approved &amp; done</div></div></li>
+      <li class="mm-tile"><span class="mm-ic" aria-hidden="true">👷</span><div class="mm-tx"><div class="mm-tools">FLIP</div><div class="mm-means">= people on site</div></div></li>
+      <li class="mm-tile"><span class="mm-ic" aria-hidden="true">📡</span><div class="mm-tx"><div class="mm-tools">DNAC</div><div class="mm-means">= managing the result</div></div></li>
+      <li class="mm-tile"><span class="mm-ic" aria-hidden="true">📁</span><div class="mm-tx"><div class="mm-tools">SharePoint</div><div class="mm-means">= the paperwork</div></div></li>
+      <li class="mm-tile"><span class="mm-ic" aria-hidden="true">📊</span><div class="mm-tx"><div class="mm-tools">PRIME / Power BI</div><div class="mm-means">= your time &amp; the reporting</div></div></li>
+    </ul>
+    <div class="alert blue" style="margin-bottom:0;">
+      <span class="alert-icon" aria-hidden="true">🧭</span>
+      <p>Want the detail? The <a href="index.html#tools">Tools &amp; Systems</a> section of the home page explains each tool, and the <a href="lan-process.html">LAN</a> and <a href="wan-process.html">WAN</a> process pages show where each one comes up in a delivery.</p>
+    </div>
+  </div>
+
+  <!-- PRIVACY -->
+  <div class="section">
+    <div class="section-header">
+      <h2>Your links stay in this browser</h2>
+      <div class="divider"></div>
+      <p>Links you set are saved only in this browser.</p>
+    </div>
+    <ul class="pv-list">
+      <li><span class="pv-ic" aria-hidden="true">🔒</span>They're kept in this browser's local storage on this device (under the name <code>dpmkb_tool_links</code>). They are never sent to a server, never shared with teammates and never added to the site's repository.</li>
+      <li><span class="pv-ic" aria-hidden="true">💻</span>Another browser or computer, a private window, or clearing your browsing data means setting them again. If the browser blocks storage, the launcher tells you and keeps your links only until you leave the page.</li>
+      <li><span class="pv-ic" aria-hidden="true">🚫</span>Paste the plain address of the tool only — never a link with a password, token or session ID in it. Links with a username or password in them are refused.</li>
+      <li><span class="pv-ic" aria-hidden="true">↩️</span>To remove them: <strong>⚙ Set my links</strong>, then <strong>Reset</strong> on one tool or <strong>Clear all my links</strong>.</li>
+    </ul>
+  </div>
+
+  <!-- MAINTAINERS -->
+  <div class="section">
+    <div class="section-header">
+      <h2>For maintainers</h2>
+      <div class="divider"></div>
+      <p>How the launcher is put together, for whoever looks after the Knowledge Base.</p>
+    </div>
+    <div class="mt-body">
+      <h3>Set a team default link</h3>
+      <p>Team defaults are the links everyone sees until they set their own. They live in the <code>TOOLS</code> list at the top of <code>launcher.js</code> — one entry per tool, and its <code>url</code> field is the team default:</p>
+      <div class="code-block"><pre><span class="cmt">// launcher.js — the TOOLS list at the top of the file</span>
+{
+  id: <span class="val">"gold"</span>, name: <span class="val">"GOLD"</span>, emoji: <span class="val">"📦"</span>, group: <span class="val">"Delivery"</span>,
+  purpose: <span class="val">"Order management — where the customer order lives. …"</span>,
+  url: <span class="val">""</span>   <span class="cmt">// team default — leave "" for internal tools</span>
+}</pre></div>
+      <ol>
+        <li>Open <code>launcher.js</code> and find the tool in <code>TOOLS</code>.</li>
+        <li>Put the full address in <code>url</code>, starting with <code>https://</code>. Anything that isn't http or https is ignored.</li>
+        <li>Commit the change. A viewer's own link still overrides the team default.</li>
+      </ol>
+
+      <div class="alert orange">
+        <span class="alert-icon" aria-hidden="true">⚠️</span>
+        <p><strong>This repository is public.</strong> Anything written in <code>launcher.js</code> can be read by anyone on the internet, so internal addresses (GOLD, ServiceNow, MACHX, FLIP, DNAC, SALTO, SharePoint, PRIME) are deliberately left empty. Only Power BI and Power Automate have team defaults, because their public sign-in pages are safe to publish. Fill in internal defaults only once the site is hosted privately — until then, each DPM sets their own links.</p>
+      </div>
+
+      <h3>Add or change a tool</h3>
+      <p>Add an entry to <code>TOOLS</code> with a unique lowercase <code>id</code>, a <code>name</code>, a one-line <code>purpose</code>, an <code>emoji</code> and a <code>group</code> — either <code>"Delivery"</code> or <code>"Reporting, time &amp; automation"</code>. An optional <code>short</code> name is used on the compact chips. Keep the purposes in step with the Tools &amp; Systems section on the home page.</p>
+
+      <h3>Put the launcher on another page</h3>
+      <p>Add a placeholder where it should appear, and load <code>launcher.js</code> before <code>shared.js</code>:</p>
+      <div class="code-block"><pre>&lt;div data-kb-launcher=<span class="val">"compact"</span>&gt;&lt;/div&gt;   <span class="cmt">&lt;!-- one row of chips --&gt;</span>
+&lt;div data-kb-launcher=<span class="val">"full"</span>&gt;&lt;/div&gt;      <span class="cmt">&lt;!-- grouped cards + Set my links --&gt;</span>
+
+&lt;script src=<span class="val">"launcher.js"</span>&gt;&lt;/script&gt;
+&lt;script src=<span class="val">"shared.js"</span>&gt;&lt;/script&gt;</pre></div>
+      <p style="margin-bottom:0;">In compact mode, a tool without a link shows a muted <strong>Add link</strong> chip that opens <code>tools.html#edit</code>, which starts this page in edit mode.</p>
+    </div>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <p>DPM <span>Knowledge Base</span> &nbsp;·&nbsp; Onboarding Handbook Ed.&nbsp;1.3 &nbsp;·&nbsp; Internal Use Only</p>
+</footer>
+<script src="launcher.js"></script>
+<script src="shared.js"></script>
+</body>
+</html>

@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="shared.css">
 
 <style>
-:root{--ob-orange:#FF6200;--ord:#D97706;--pre:#1B6CA8;--dur:#0E8A4A;--post:#7C3AED;--ord-p:#FEF3E2;--pre-p:#EEF5FF;--dur-p:#EDFAF4;--post-p:#F4EEFF;}
+:root{--ob-orange:#FF6200;--ord:#B45309;--pre:#1B6CA8;--dur:#0B6B3A;--post:#7C3AED;--ord-p:#FEF3E2;--pre-p:#EEF5FF;--dur-p:#EDFAF4;--post-p:#F4EEFF;}
 .proc-hero{background:linear-gradient(135deg,#0D1B2A 0%,#1A3350 60%,#0D1B2A 100%);padding:52px 40px 44px;text-align:center;}
 .proc-hero-tag{display:inline-block;background:rgba(255,98,0,0.25);border:1px solid rgba(255,98,0,0.5);color:#FFAA66;font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;padding:5px 14px;border-radius:20px;margin-bottom:16px;}
 .proc-hero h1{font-size:36px;font-weight:800;color:#fff;margin-bottom:12px;}
@@ -30,7 +30,7 @@
 
 /* role note */
 .role-note{background:#FFF8F0;border:1px solid #F5D9B0;border-radius:12px;padding:14px 18px;margin-bottom:32px;font-size:12.5px;color:#7A5A20;line-height:1.7;}
-.role-note strong{color:#C05A00;}
+.role-note strong{color:#A33E00;}
 
 /* summary grid */
 .summary-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:32px;}
@@ -47,15 +47,15 @@
 .pp-step:last-child::after{display:none;}
 .pp-phase{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:5px;}
 .pp-title{font-size:14px;font-weight:800;color:#1A1A1A;margin-bottom:4px;}
-.pp-meta{font-size:11px;color:#888;}
+.pp-meta{font-size:11px;color:#666;}
 @media(max-width:760px){.pp-step::after{content:'↓';right:50%;top:auto;bottom:-20px;transform:translateX(50%);}.pp-step{margin-right:0;}}
 
 /* step list phases */
 .phase-block{border-radius:14px;overflow:hidden;border:1px solid #E0E0E0;margin-bottom:28px;box-shadow:0 3px 18px rgba(0,0,0,0.06);}
 .phase-header{display:flex;align-items:center;gap:14px;padding:16px 24px;border-bottom:1px solid rgba(255,255,255,0.1);}
-.phase-badge{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:4px 12px;border-radius:20px;flex-shrink:0;background:rgba(255,255,255,0.2);color:#fff;}
+.phase-badge{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:4px 12px;border-radius:20px;flex-shrink:0;background:rgba(0,0,0,0.2);color:#fff;}
 .phase-title{font-size:18px;font-weight:800;color:#fff;}
-.phase-count{font-size:12px;margin-left:auto;opacity:0.75;flex-shrink:0;color:#fff;}
+.phase-count{font-size:12px;margin-left:auto;opacity:1;flex-shrink:0;color:#fff;}
 .phase-ord .phase-header{background:var(--ord);}
 .phase-pre .phase-header{background:var(--pre);}
 .phase-dur .phase-header{background:var(--dur);}
@@ -71,12 +71,12 @@
 .phase-post .step-num{color:var(--post);background:rgba(124,58,237,0.06);}
 .step-body{flex:1;padding:13px 18px;}
 .step-action{font-size:14px;font-weight:600;color:#1A1A1A;line-height:1.4;margin-bottom:3px;}
-.step-note{font-size:12px;color:#888;line-height:1.5;}
-.step-team{display:inline-block;font-size:10.5px;color:#94A3B8;font-weight:600;margin-top:4px;}
+.step-note{font-size:12px;color:#666;line-height:1.5;}
+.step-team{display:inline-block;font-size:10.5px;color:#64748B;font-weight:600;margin-top:4px;}
 .step-tools{padding:10px 14px 10px 0;display:flex;flex-wrap:wrap;gap:5px;align-items:center;justify-content:flex-end;max-width:190px;flex-shrink:0;}
 .tool-tag{font-size:11px;font-weight:700;padding:3px 8px;border-radius:5px;white-space:nowrap;border:1.5px solid;}
-.tt-snow{color:#007AC9;border-color:#A0D4F5;background:#EEF8FF;}
-.tt-machx{color:#C05A00;border-color:#F5C99A;background:#FFF4EA;}
+.tt-snow{color:#0369A1;border-color:#A0D4F5;background:#EEF8FF;}
+.tt-machx{color:#A33E00;border-color:#F5C99A;background:#FFF4EA;}
 .tt-dnac{color:#0A6BB5;border-color:#9DD0F5;background:#EEF6FF;}
 .tt-gold{color:#8A6800;border-color:#F0D87A;background:#FFFBEA;}
 .tt-salto{color:#5A0090;border-color:#D4A6F5;background:#F8F0FF;}
@@ -87,6 +87,14 @@
 /* milestone row */
 .step-milestone{display:flex;align-items:center;gap:10px;padding:11px 18px 11px 12px;background:#FbFbFb;border-top:1px dashed #E0E0E0;font-size:12px;font-weight:700;color:#64748B;}
 .step-milestone .ms-flag{font-size:14px;}
+
+/* checklist call-to-action */
+.ck-cta{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px 18px;background:#F0FAF5;border:1px solid #9FE0C3;border-radius:12px;padding:12px 18px;margin-bottom:28px;font-size:13px;color:#0A5C3A;line-height:1.6;}
+.ck-cta strong{color:#0A5C3A;}
+.ck-cta-links{display:flex;flex-wrap:wrap;gap:8px;}
+.ck-cta a{display:inline-flex;align-items:center;background:#0B7A40;color:#fff;font-weight:700;font-size:12.5px;padding:7px 14px;border-radius:8px;white-space:nowrap;text-decoration:none;}
+.ck-cta a:hover{background:#096634;color:#fff;text-decoration:none;}
+.ck-cta a:focus-visible{outline:3px solid #0B7A40;outline-offset:2px;}
 </style>
 
 </head>
@@ -117,8 +125,9 @@
   <p>Orange Business — Delivery Project Manager end-to-end process guide. Built from the MLAN (WLC &amp; Switches) project plan.</p>
 </div>
 <div class="proc-content">
+<div class="ck-cta"><span><span aria-hidden="true">✅</span> <strong>Use this as a checklist</strong> — tick off each step for your project; your progress is saved in this browser.</span><span class="ck-cta-links"><a href="checklist.html?type=wlc">Open the WLC &amp; Switch checklist →</a><a href="templates.html?process=wlc"><span aria-hidden="true">✉️</span>&nbsp;Email templates for this process</a></span></div>
 <div class="migration-intro">
-  <h3>🔌 What is a Switch / WLC Migration?</h3>
+  <h3><span aria-hidden="true">🔌</span> What is a Switch / WLC Migration?</h3>
   <p>A <strong>Switch or WLC migration</strong> replaces old network switches or Wireless LAN Controllers at a customer site with new Cisco Catalyst hardware. Unlike APs, switches are the backbone of the network — <strong>every device in the building plugs into a switch</strong>. A failed migration can take a whole floor or building offline, which is why this flavour has more steps, a formal <strong>staging session</strong>, a <strong>Field Engineer on site</strong>, an <strong>external dry run</strong>, and <strong>two MACHX raises</strong>.</p>
   <div class="migration-intro-grid">
     <div class="mig-card" style="background:#EEF5FF;border-color:#BDD6F5;">
@@ -126,15 +135,15 @@
       <p>Switches carry <strong>all traffic</strong> — phones, PCs, cameras, printers, APs, servers. Replacing one affects everything connected to it. That's why there's an external dry run with the customer, a staging session to pre-configure the hardware, a Field Engineer physically present for the cutover, and IP addresses pulled from the TDT up front.</p>
     </div>
     <div class="mig-card" style="background:#EDFAF4;border-color:#9FE0C3;">
-      <div class="mig-card-title" style="color:#0E8A4A;">✅ What does success look like?</div>
+      <div class="mig-card-title" style="color:#0B6B3A;">✅ What does success look like?</div>
       <p>All migrated switches are live and carrying traffic. The customer confirms all phones, PCs, and services work. CMDB and DNAC are updated, the GOLD and SALTO orders are closed, and the HOTO document with runbook and LLD is uploaded to SharePoint and signed off.</p>
     </div>
     <div class="mig-card" style="background:#FFF4EA;border-color:#F5C99A;">
-      <div class="mig-card-title" style="color:#C05A00;">⚠️ The most common failure points</div>
+      <div class="mig-card-title" style="color:#A33E00;">⚠️ The most common failure points</div>
       <p><strong>1. 3rd-party servers not checked</strong> during the external dry run — servers from vendors like DXC may have special VLAN or routing needs not in the standard runbook. <strong>2. Staging skipped or rushed</strong> — if the new switch isn't pre-configured to match the old one exactly, the cutover will fail.</p>
     </div>
     <div class="mig-card" style="background:#FEF3E2;border-color:#F5D9B0;">
-      <div class="mig-card-title" style="color:#D97706;">🗓️ The four phases</div>
+      <div class="mig-card-title" style="color:#B45309;">🗓️ The four phases</div>
       <p><strong>Ordering</strong> (GOLD/SALTO orders, EDD, warehouse) → <strong>Pre-Migration</strong> (IPs from TDT, external dry run, Field Engineer, staging, two MACHX raises) → <strong>During Migration</strong> (cutover &amp; testing) → <strong>Post-Migration</strong> (partial/success email, CMDB/DNAC, close orders, HOTO). Migrations usually run in maintenance windows; multi-day cutovers need a partial-migration email each day.</p>
     </div>
   </div>
@@ -147,18 +156,18 @@
 <div class="summary-grid">
   <div class="summary-card" style="background:#F8F9FA;border-color:#E0E0E0;">
     <div class="summary-card-title" style="color:#1A1A1A;">📊 At a Glance</div>
-    <span class="summary-chip" style="color:#D97706;border-color:#F5D9B0;background:#FEF3E2;">📋 40 Steps</span>
+    <span class="summary-chip" style="color:#B45309;border-color:#F5D9B0;background:#FEF3E2;">📋 40 Steps</span>
     <span class="summary-chip" style="color:#1B6CA8;border-color:#BDD6F5;background:#EEF5FF;">🔢 4 Phases</span>
     <span class="summary-chip" style="color:#7C3AED;border-color:#D4BAFF;background:#F4EEFF;">🔧 7 Tools</span>
-    <span class="summary-chip" style="color:#C05A00;border-color:#F5C99A;background:#FFF4EA;">2️⃣ Two MACHX raises</span>
+    <span class="summary-chip" style="color:#A33E00;border-color:#F5C99A;background:#FFF4EA;">2️⃣ Two MACHX raises</span>
   </div>
   <div class="summary-card" style="background:#EEF5FF;border-color:#BDD6F5;">
     <div class="summary-card-title" style="color:#1B6CA8;">🛠️ Tools</div>
     <span class="summary-chip" style="color:#8A6800;border-color:#F0D87A;background:#FFFBEA;">🏆 GOLD</span>
     <span class="summary-chip" style="color:#5A0090;border-color:#D4A6F5;background:#F8F0FF;">🔑 SALTO</span>
     <span class="summary-chip" style="color:#006B4F;border-color:#8FE0C5;background:#EDFAF5;">📋 FLIP</span>
-    <span class="summary-chip" style="color:#007AC9;border-color:#A0D4F5;background:#EEF8FF;">❄️ ServiceNow</span>
-    <span class="summary-chip" style="color:#C05A00;border-color:#F5C99A;background:#FFF4EA;">🔧 MACHX</span>
+    <span class="summary-chip" style="color:#0369A1;border-color:#A0D4F5;background:#EEF8FF;">❄️ ServiceNow</span>
+    <span class="summary-chip" style="color:#A33E00;border-color:#F5C99A;background:#FFF4EA;">🔧 MACHX</span>
     <span class="summary-chip" style="color:#0A6BB5;border-color:#9DD0F5;background:#EEF6FF;">🧠 DNAC</span>
     <span class="summary-chip" style="color:#1A4E8A;border-color:#A0C4F5;background:#EEF3FF;">📁 SharePoint</span>
   </div>
@@ -178,7 +187,7 @@
 <!-- PHASE PIPELINE -->
 <div class="phase-pipeline">
   <div class="pp-step" style="background:#FEF3E2;border-color:#F5D9B0;">
-    <div class="pp-phase" style="color:#D97706;">🟠 Phase 1</div>
+    <div class="pp-phase" style="color:#B45309;">🟠 Phase 1</div>
     <div class="pp-title">Ordering</div>
     <div class="pp-meta">10 steps · GOLD &amp; SALTO, EDD, warehouse</div>
   </div>
@@ -188,7 +197,7 @@
     <div class="pp-meta">19 steps · dry run, FE, staging, 2× MACHX</div>
   </div>
   <div class="pp-step" style="background:#EDFAF4;border-color:#9FE0C3;">
-    <div class="pp-phase" style="color:#0E8A4A;">🟢 Phase 3</div>
+    <div class="pp-phase" style="color:#0B6B3A;">🟢 Phase 3</div>
     <div class="pp-title">During Migration</div>
     <div class="pp-meta">4 steps · cutover &amp; testing</div>
   </div>
@@ -199,7 +208,7 @@
   </div>
 </div>
 
-<h2 style="font-size:20px;font-weight:800;color:#1A1A1A;margin-bottom:20px;padding-top:8px;">📋 Full Step-by-Step Checklist</h2>
+<h2 style="font-size:20px;font-weight:800;color:#1A1A1A;margin-bottom:20px;padding-top:8px;"><span aria-hidden="true">📋</span> Full Step-by-Step Checklist</h2>
 
 <!-- PHASE 1 : ORDERING -->
 <div class="phase-block phase-ord">

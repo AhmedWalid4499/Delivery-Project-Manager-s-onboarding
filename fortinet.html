@@ -10,10 +10,10 @@
 .page-subnav{position:sticky;top:61px;z-index:100;background:#fff;border-bottom:1px solid #EBEBEB;padding:0 32px;display:flex;gap:0;overflow-x:auto;scrollbar-width:none;}
 .page-subnav::-webkit-scrollbar{display:none;}
 .page-subnav a{padding:12px 18px;font-size:13px;font-weight:600;color:var(--gray-mid);text-decoration:none;white-space:nowrap;border-bottom:2px solid transparent;transition:all 0.15s;}
-.page-subnav a:hover,.page-subnav a.active{color:var(--fort-red);border-bottom-color:var(--fort-red);}
+.page-subnav a:hover,.page-subnav a.active{color:var(--fort-text);border-bottom-color:var(--fort-red);}
 .device-detail{background:#fff;border:1px solid #E8E8E8;border-radius:16px;overflow:hidden;margin-bottom:32px;box-shadow:0 2px 16px rgba(0,0,0,0.05);}
 .device-detail-header{background:linear-gradient(135deg,#2D0A0A 0%,#4A1010 100%);padding:22px 28px;display:flex;align-items:center;gap:18px;}
-.device-detail-badge{background:var(--fort-red);color:#fff;font-size:11px;font-weight:700;padding:4px 10px;border-radius:6px;letter-spacing:0.5px;flex-shrink:0;}
+.device-detail-badge{background:var(--fort-text);color:#fff;font-size:11px;font-weight:700;padding:4px 10px;border-radius:6px;letter-spacing:0.5px;flex-shrink:0;}
 .device-detail-title{font-size:22px;font-weight:700;color:#fff;}
 .device-detail-subtitle{font-size:13px;color:rgba(255,255,255,0.6);margin-top:2px;}
 .device-detail-body{padding:24px 28px;}
@@ -27,9 +27,9 @@
 .spec-table td:first-child{color:var(--gray-mid);width:42%;font-size:12px;padding-right:10px;}
 .spec-table td:last-child{font-weight:600;color:var(--gray-dark);}
 .port-diagram-wrap{background:#111;border-radius:12px;padding:18px 20px;}
-.port-diagram-title{font-family:var(--mono);font-size:10px;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:1px;margin-bottom:14px;}
+.port-diagram-title{font-family:var(--mono);font-size:10px;color:rgba(255,255,255,0.65);text-transform:uppercase;letter-spacing:1px;margin-bottom:14px;}
 .port-face{background:#1E1E1E;border-radius:8px;padding:14px 16px;border:1px solid rgba(255,255,255,0.06);margin-bottom:10px;}
-.port-face-label{font-family:var(--mono);font-size:9px;color:rgba(255,255,255,0.25);margin-bottom:10px;letter-spacing:0.5px;}
+.port-face-label{font-family:var(--mono);font-size:9px;color:rgba(255,255,255,0.65);margin-bottom:10px;letter-spacing:0.5px;}
 .port-row-g{display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin-bottom:6px;}
 .port-row-g:last-child{margin-bottom:0;}
 .p{display:inline-flex;flex-direction:column;align-items:center;gap:3px;cursor:default;}
@@ -54,9 +54,9 @@
 .c-wan{border-color:#F5A623!important;color:#F5A623!important;background:rgba(245,166,35,0.08)!important;}
 .c-fl{border-color:#EE3124!important;color:#EE3124!important;background:rgba(238,49,36,0.12)!important;border-style:dashed!important;}
 .port-divider{width:1px;height:24px;background:rgba(255,255,255,0.08);margin:0 4px;flex-shrink:0;}
-.port-group-label{font-family:var(--mono);font-size:8px;color:rgba(255,255,255,0.2);margin-right:4px;align-self:center;}
+.port-group-label{font-family:var(--mono);font-size: 9px;color:rgba(255,255,255,0.65);margin-right:4px;align-self:center;}
 .port-legend-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px;}
-.port-legend-item{display:flex;align-items:center;gap:5px;font-size:10px;color:rgba(255,255,255,0.4);font-family:var(--mono);}
+.port-legend-item{display:flex;align-items:center;gap:5px;font-size:10px;color:rgba(255,255,255,0.65);font-family:var(--mono);}
 .port-legend-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0;}
 </style>
 </head>
@@ -92,7 +92,7 @@
 
 <div class="page-hero fort-hero">
   <div class="hero-content">
-    <div class="hero-tag" style="background:rgba(238,49,36,0.2);border-color:rgba(238,49,36,0.4);color:#FF9090;">🔴 Vendor Guide</div>
+    <div class="hero-tag" style="background:rgba(238,49,36,0.2);border-color:rgba(238,49,36,0.4);color:#FF9090;"><span aria-hidden="true">🔴</span> Vendor Guide</div>
     <h1><span class="fort">Fortinet</span> Security Fabric</h1>
     <p class="hero-sub">FortiGate NGFWs, FortiSwitch, FortiAP, FortiWLC, FortiManager, and FortiAnalyzer — the fully integrated Security Fabric ecosystem.</p>
   </div>
@@ -101,7 +101,7 @@
 <div class="content-wide">
 
 <div class="alert fort" style="margin-bottom:40px;">
-  <span class="alert-icon">ℹ️</span>
+  <span class="alert-icon" aria-hidden="true">ℹ️</span>
   <p><strong>FortiOS CLI essentials:</strong> Hierarchical config: <code>config system interface / edit port1 / set ip 192.168.1.1/24 / end</code>. Key concept: <strong>FortiLink</strong> — a special aggregated trunk port connecting a FortiGate to FortiSwitches and FortiAPs, allowing the FortiGate to act as their controller. <strong>ASIC acceleration:</strong> NP (Network Processor) offloads firewall sessions; CP (Content Processor) handles crypto and inspection. Certification: NSE 1–4 (freely available online) → NSE 7/8 (expert).<br><br><strong>Current software (2026):</strong> all FortiGate / FortiSwitch / FortiAP run <strong>FortiOS</strong> — <strong>7.6</strong> is current and <strong>7.4 LTS</strong> is the recommended stable branch; FortiOS <strong>8.0</strong> is now shipping.</p>
 </div>
 
@@ -493,7 +493,7 @@
   <div class="section-header"><h2>FortiSwitch</h2><div class="divider fort"></div></div>
 
   <div class="alert fort" style="margin-bottom:20px;">
-    <span class="alert-icon">🔗</span>
+    <span class="alert-icon" aria-hidden="true">🔗</span>
     <p><strong>FortiLink:</strong> When a FortiSwitch connects to a FortiGate via FortiLink, the FortiGate becomes the switch controller. You configure VLANs, 802.1X, port policies, and QoS directly from the FortiGate GUI — no need to log into the switch separately. The dedicated FortiLink port on the FortiSwitch is marked with a dashed red border in the diagrams below.</p>
   </div>
 
@@ -829,8 +829,8 @@
   <div class="section-header"><h2>FortiManager &amp; FortiAnalyzer</h2><div class="divider fort"></div></div>
   <div class="grid-2">
     <div class="card" style="border-top:3px solid var(--fort-red);">
-      <div class="card-icon" style="background:var(--fort-pale);">🖥️</div>
-      <h3 style="color:var(--fort-red);">FortiManager</h3>
+      <div class="card-icon" aria-hidden="true" style="background:var(--fort-pale);">🖥️</div>
+      <h3 style="color:var(--fort-text);">FortiManager</h3>
       <p>Central policy management for all FortiGate, FortiSwitch, and FortiAP devices. Define policy packages and push to hundreds of devices simultaneously. Uses <strong>ADOMs</strong> (Administrative Domains) for multi-tenant isolation. Available as hardware (FMG-200G, FMG-1000G) or VM (on VMware, KVM, Azure, AWS).</p>
       <ul class="spec-list" style="margin-top:10px;">
         <li><div class="spec-dot"></div><span>ADOMs — separate environments per customer/tenant</span></li>
@@ -841,8 +841,8 @@
       </ul>
     </div>
     <div class="card" style="border-top:3px solid var(--fort-red);">
-      <div class="card-icon" style="background:var(--fort-pale);">📊</div>
-      <h3 style="color:var(--fort-red);">FortiAnalyzer</h3>
+      <div class="card-icon" aria-hidden="true" style="background:var(--fort-pale);">📊</div>
+      <h3 style="color:var(--fort-text);">FortiAnalyzer</h3>
       <p>Centralised log aggregation, analytics, and compliance reporting for all FortiGate devices. Correlates events across the Security Fabric to detect threats and provide evidence for compliance audits (GDPR, PCI-DSS, ISO 27001). Available as hardware or VM.</p>
       <ul class="spec-list" style="margin-top:10px;">
         <li><div class="spec-dot"></div><span>Receives syslog and NetFlow from all FortiGate devices</span></li>
@@ -858,7 +858,6 @@
 </div>
 
 <footer class="footer"><p>DPM <span>Knowledge Base</span> &nbsp;·&nbsp; <a href="index.html" style="color:rgba(255,255,255,0.4);">Home</a></p></footer>
-<script src="shared.js"></script>
 <script>
 (function(){
   var sections=['fg-small','fg-mid','fg-high','fsw','fap','fwlc','fmgr'];
@@ -870,5 +869,6 @@
   });
 })();
 </script>
+<script src="shared.js"></script>
 </body>
 </html>

@@ -41,7 +41,8 @@
 
   var content = $("#glossary-content");
   if (!content) return;
-  var accent = "#FF7900";
+  /* AA: white on #B34200 = 5.68:1 (the old #FF7900 gave 2.62:1) */
+  var accent = "#B34200";
 
   /* ---------- dedupe set of existing terms ---------- */
   function existingTerms() {
@@ -140,7 +141,7 @@
     ".gl-edit{font-size:12.5px;font-weight:600;color:#666;background:#F2F2F2;border:1px solid #E2E2E2;border-radius:8px;padding:9px 13px;cursor:pointer;}" +
     ".gl-edit:hover{background:#EAEAEA;}" +
     ".gl-edit.on{color:#0E7A3A;background:#E6F7EF;border-color:#A8E0C2;}" +
-    ".gl-note{font-size:12px;color:#999;margin-bottom:14px;}" +
+    ".gl-note{font-size:12px;color:#666;margin-bottom:14px;}" +
     ".gl-status{font-size:13px;font-weight:600;margin-bottom:16px;padding:11px 14px;border-radius:9px;display:none;}" +
     ".gl-status.show{display:block;}" +
     ".gl-status.ok{background:#E6F7EF;color:#0E7A3A;border:1px solid #A8E0C2;}" +
@@ -150,15 +151,18 @@
     ".gl-ov.show{display:flex;}" +
     ".gl-modal{background:#fff;border-radius:16px;max-width:460px;width:100%;padding:26px 26px 24px;box-shadow:0 24px 70px rgba(0,0,0,0.3);max-height:90vh;overflow:auto;}" +
     ".gl-modal h3{font-size:19px;font-weight:800;color:#1A1A1A;margin-bottom:4px;}" +
-    ".gl-modal .sub{font-size:13px;color:#777;margin-bottom:18px;}" +
+    ".gl-modal .sub{font-size:13px;color:#666;margin-bottom:18px;}" +
+    ".gl-merr{font-size:13px;font-weight:600;color:#C0392B;background:#FDECEC;border:1px solid #F0B6B0;border-radius:9px;padding:10px 12px;margin-bottom:14px;}" +
+    ".gl-merr:empty{display:none;}" +
+    ".gl-field [aria-invalid=true]{border-color:#C0392B;}" +
     ".gl-field{margin-bottom:14px;}" +
     ".gl-field label{display:block;font-size:12px;font-weight:700;color:#555;margin-bottom:5px;}" +
-    ".gl-field input,.gl-field textarea{width:100%;font-size:14px;padding:10px 12px;border:1px solid #DDD;border-radius:8px;font-family:inherit;}" +
+    ".gl-field input,.gl-field textarea{width:100%;font-size:14px;padding:10px 12px;border:1px solid #8A8A8A;border-radius:8px;font-family:inherit;}" +
     ".gl-field textarea{min-height:90px;resize:vertical;line-height:1.5;}" +
     ".gl-field input:focus,.gl-field textarea:focus{outline:none;border-color:" + accent + ";box-shadow:0 0 0 3px " + accent + "22;}" +
     ".gl-tokbox{background:#FFFBF0;border:1px solid #F0DCA0;border-radius:10px;padding:14px;margin-bottom:16px;}" +
     ".gl-tokbox p{font-size:12px;color:#7A5E1A;margin-bottom:9px;line-height:1.5;}" +
-    ".gl-tokbox a{color:#B5781A;font-weight:700;}" +
+    ".gl-tokbox a{color:#8A5A00;font-weight:700;}" +
     ".gl-actions{display:flex;gap:10px;margin-top:6px;}" +
     ".gl-actions button{flex:1;font-size:14px;font-weight:700;padding:11px;border-radius:9px;cursor:pointer;border:none;}" +
     ".gl-save{color:#fff;background:" + accent + ";}.gl-save:hover{filter:brightness(1.08);}" +
@@ -168,13 +172,14 @@
   /* ---------- add bar (top of glossary) ---------- */
   var bar = document.createElement("div");
   bar.className = "gl-addbar";
-  bar.innerHTML = '<button class="gl-add" id="glAdd">\u2795 Add glossary term</button>' +
-                  '<button class="gl-edit" id="glEdit"></button>';
+  bar.innerHTML = '<button type="button" class="gl-add" id="glAdd"><span aria-hidden="true">\u2795</span> Add glossary term</button>' +
+                  '<button type="button" class="gl-edit" id="glEdit"></button>';
   var note = document.createElement("div");
   note.className = "gl-note";
   note.textContent = "New terms are saved to the site for everyone and slot into the right letter automatically.";
   var status = document.createElement("div");
   status.className = "gl-status";
+  status.setAttribute("role", "status");
   content.insertBefore(bar, content.firstChild);
   bar.parentNode.insertBefore(note, bar.nextSibling);
   note.parentNode.insertBefore(status, note.nextSibling);
@@ -182,58 +187,82 @@
   function refreshBar() {
     var on = !!getToken(), b = $("#glEdit");
     b.className = "gl-edit" + (on ? " on" : "");
-    b.textContent = on ? "\uD83D\uDD13 Editor mode: on \u00B7 forget token" : "\uD83D\uDD12 Editor mode";
+    b.innerHTML = on ? "<span aria-hidden=\"true\">\uD83D\uDD13</span> Editor mode: on \u00B7 forget token" : "<span aria-hidden=\"true\">\uD83D\uDD12</span> Editor mode";
   }
   function showStatus(msg, kind) { status.className = "gl-status show " + (kind || "info"); status.innerHTML = msg; }
 
   $("#glEdit").addEventListener("click", function () {
     if (getToken()) { if (confirm("Forget the saved GitHub token on this browser?")) setToken(""); }
-    else openModal(true);
+    else openModal(true, this);
   });
-  $("#glAdd").addEventListener("click", function () { openModal(false); });
+  $("#glAdd").addEventListener("click", function () { openModal(false, this); });
   refreshBar();
 
   /* ---------- modal ---------- */
   var ov = document.createElement("div");
   ov.className = "gl-ov";
   ov.innerHTML =
-    '<div class="gl-modal" role="dialog" aria-modal="true">' +
-      '<h3>Add a glossary term</h3>' +
-      '<div class="sub">It will be placed under the correct letter automatically.</div>' +
+    '<div class="gl-modal" role="dialog" aria-modal="true" aria-labelledby="glDlgTitle" aria-describedby="glDlgSub">' +
+      '<h3 id="glDlgTitle">Add a glossary term</h3>' +
+      '<div class="sub" id="glDlgSub">It will be placed under the correct letter automatically.</div>' +
+      '<div class="gl-merr" id="glErr" role="alert"></div>' +
       '<div class="gl-tokbox" id="glTokBox">' +
-        '<p>Saving requires the one-time GitHub token (fine-grained, <b>Contents: Read &amp; write</b> on Delivery-Project-Manager-s-onboarding), stored only in this browser. ' +
+        '<p id="glTokHelp">Saving requires the one-time GitHub token (fine-grained, <b>Contents: Read &amp; write</b> on Delivery-Project-Manager-s-onboarding), stored only in this browser. ' +
         'This is the same token used for the squads. ' +
         '<a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">Create a token \u2192</a></p>' +
-        '<div class="gl-field" style="margin-bottom:0;"><label>GitHub token</label>' +
-        '<input type="password" id="glTok" placeholder="github_pat_..."></div>' +
+        '<div class="gl-field" style="margin-bottom:0;"><label for="glTok">GitHub token</label>' +
+        '<input type="password" id="glTok" autocomplete="off" aria-describedby="glTokHelp" placeholder="github_pat_..."></div>' +
       '</div>' +
-      '<div class="gl-field"><label>Term</label><input id="glTerm" placeholder="e.g. VRF (Virtual Routing and Forwarding)"></div>' +
-      '<div class="gl-field"><label>Definition</label><textarea id="glDef" placeholder="A plain-English explanation..."></textarea></div>' +
+      '<div class="gl-field"><label for="glTerm">Term</label><input id="glTerm" placeholder="e.g. VRF (Virtual Routing and Forwarding)"></div>' +
+      '<div class="gl-field"><label for="glDef">Definition</label><textarea id="glDef" placeholder="A plain-English explanation..."></textarea></div>' +
       '<div class="gl-actions">' +
-        '<button class="gl-cancel" id="glCancel">Cancel</button>' +
-        '<button class="gl-save" id="glSave">Save</button>' +
+        '<button type="button" class="gl-cancel" id="glCancel">Cancel</button>' +
+        '<button type="button" class="gl-save" id="glSave">Save</button>' +
       '</div>' +
     '</div>';
   document.body.appendChild(ov);
 
-  function openModal(tokenFocus) {
+  var opener = null;
+  function modalErr(msg, field) {
+    ["#glTok", "#glTerm", "#glDef"].forEach(function (s) { $(s).removeAttribute("aria-invalid"); });
+    $("#glErr").textContent = msg || "";
+    if (field) { field.setAttribute("aria-invalid", "true"); field.focus(); }
+  }
+  function openModal(tokenFocus, from) {
+    opener = from || document.activeElement;
     $("#glTokBox").style.display = getToken() ? "none" : "block";
     if (!getToken()) $("#glTok").value = "";
     if (!tokenFocus) { $("#glTerm").value = ""; $("#glDef").value = ""; }
+    modalErr("");
     ov.className = "gl-ov show";
     setTimeout(function () { (tokenFocus ? $("#glTok") : $("#glTerm")).focus(); }, 40);
   }
-  function closeModal() { ov.className = "gl-ov"; }
+  function closeModal() {
+    if (ov.className.indexOf("show") < 0) return;
+    ov.className = "gl-ov";
+    if (opener && document.contains(opener)) { try { opener.focus(); } catch (e) {} }
+    opener = null;
+  }
+  /* Escape closes; Tab / Shift+Tab stay inside the dialog */
+  ov.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") { e.preventDefault(); closeModal(); return; }
+    if (e.key !== "Tab") return;
+    var f = [].filter.call(ov.querySelectorAll("a[href], button:not([disabled]), input, textarea"), function (n) { return n.offsetParent !== null; });
+    if (!f.length) return;
+    if (e.shiftKey && document.activeElement === f[0]) { e.preventDefault(); f[f.length - 1].focus(); }
+    else if (!e.shiftKey && document.activeElement === f[f.length - 1]) { e.preventDefault(); f[0].focus(); }
+  });
   $("#glCancel").addEventListener("click", closeModal);
   ov.addEventListener("click", function (e) { if (e.target === ov) closeModal(); });
 
   $("#glSave").addEventListener("click", function () {
     var tokInput = $("#glTok").value.trim();
     if (tokInput) setToken(tokInput);
-    if (!getToken()) { showStatus("Enter a GitHub token first (box at the top of the form).", "err"); $("#glTokBox").style.display = "block"; return; }
+    if (!getToken()) { $("#glTokBox").style.display = "block"; modalErr("Enter a GitHub token first (box at the top of the form).", $("#glTok")); return; }
 
     var entry = { term: $("#glTerm").value.trim(), def: $("#glDef").value.trim() };
-    if (!entry.term || !entry.def) { showStatus("Please enter both a term and a definition.", "err"); return; }
+    if (!entry.term || !entry.def) { modalErr("Please enter both a term and a definition.", !entry.term ? $("#glTerm") : $("#glDef")); return; }
+    modalErr("");
 
     $("#glSave").disabled = true; $("#glSave").textContent = "Saving...";
     commit(entry).then(function (res) {
@@ -244,8 +273,8 @@
     }).catch(function (err) {
       $("#glSave").disabled = false; $("#glSave").textContent = "Save";
       var m = String(err && err.message || err);
-      if (m === "auth") { showStatus("That token was rejected. Make sure it has <b>Contents: Read &amp; write</b> on Delivery-Project-Manager-s-onboarding, then set it again via Editor mode.", "err"); setToken(""); $("#glTokBox").style.display = "block"; }
-      else { showStatus("Couldn't save: " + esc(m) + ". Check the branch name in glossary-data.js and the token permissions.", "err"); }
+      if (m === "auth") { showStatus("That token was rejected. Make sure it has <b>Contents: Read &amp; write</b> on Delivery-Project-Manager-s-onboarding, then set it again via Editor mode.", "err"); setToken(""); $("#glTokBox").style.display = "block"; modalErr("That token was rejected. Make sure it has Contents: Read & write on Delivery-Project-Manager-s-onboarding, then enter it again.", $("#glTok")); }
+      else { showStatus("Couldn't save: " + esc(m) + ". Check the branch name in glossary-data.js and the token permissions.", "err"); modalErr("Couldn't save: " + m + ". Check the branch name in glossary-data.js and the token permissions."); }
     });
   });
 

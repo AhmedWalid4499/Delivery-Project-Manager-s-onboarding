@@ -46,6 +46,9 @@
 }
 .pcc-ap.process-choice-card:hover  { outline-color:rgba(27,108,168,0.5); }
 .pcc-sw.process-choice-card:hover  { outline-color:rgba(14,138,74,0.5); }
+/* keyboard focus: an opaque ring (the transparent base outline hid the default one) */
+.pcc-ap.process-choice-card:focus-visible { outline:3px solid #1B6CA8; outline-offset:3px; }
+.pcc-sw.process-choice-card:focus-visible { outline:3px solid #0B6B3A; outline-offset:3px; }
 /* suppress any inherited link underline on all children */
 .process-choice-card *,
 .process-choice-card:hover * {
@@ -53,7 +56,7 @@
 }
 /* restore colours for specific elements */
 .pcc-title    { color:#fff !important; }
-.pcc-subtitle { color:rgba(255,255,255,0.65) !important; }
+.pcc-subtitle { color:rgba(255,255,255,0.88) !important; }
 .pcc-tag      { color:#fff !important; }
 .pcc-body p   { color:#555 !important; }
 /* body highlight on hover — covers the white section */
@@ -74,7 +77,7 @@
   background:rgba(255,255,255,0.2);
 }
 .pcc-title { font-size:22px; font-weight:800; color:#fff; margin-bottom:4px; }
-.pcc-subtitle { font-size:13px; color:rgba(255,255,255,0.65); }
+.pcc-subtitle { font-size:13px; color:rgba(255,255,255,0.88); }
 .pcc-body {
   background:#fff; padding:20px 28px 24px;
 }
@@ -98,8 +101,8 @@
 
 /* Switch/WLC card — green */
 .pcc-sw .pcc-header { background:linear-gradient(135deg,#042910 0%,#0E8A4A 100%); }
-.pcc-sw .pcc-stat   { color:#0E8A4A; border-color:#9FE0C3; background:#EDFAF4; }
-.pcc-sw .pcc-cta    { background:#0E8A4A; }
+.pcc-sw .pcc-stat   { color:#0B6B3A; border-color:#9FE0C3; background:#EDFAF4; }
+.pcc-sw .pcc-cta    { background:#0B6B3A; }
 .pcc-sw .pcc-cta:hover { background:#075C32; }
 
 /* key difference table */
@@ -110,7 +113,7 @@
 }
 .diff-table td { padding:11px 16px; border-top:1px solid #F0F0F0; vertical-align:top; }
 .diff-table tr:nth-child(even) td { background:#FAFAFA; }
-.diff-table td:first-child { color:#888; font-size:12px; width:28%; }
+.diff-table td:first-child { color:#666; font-size:12px; width:28%; }
 .diff-table thead { background:#1A1A1A; }
 .diff-table thead th { color:rgba(255,255,255,0.7); }
 .diff-table thead th:nth-child(2) { color:#7DC6FF; }
@@ -132,6 +135,22 @@
   border-radius:5px; border:1.5px solid; white-space:nowrap;
 }
 .tool-legend-desc { color:#666; }
+
+/* checklist call-to-action */
+.ck-cta {
+  display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px 18px;
+  background:#F0FAF5; border:1px solid #9FE0C3; border-radius:12px;
+  padding:12px 18px; margin-bottom:28px; font-size:13px; color:#0A5C3A; line-height:1.6;
+}
+.ck-cta strong { color:#0A5C3A; }
+.ck-cta-links { display:flex; flex-wrap:wrap; gap:8px; }
+.ck-cta a {
+  display:inline-flex; align-items:center; background:#0B7A40; color:#fff;
+  font-weight:700; font-size:12.5px; padding:7px 14px; border-radius:8px;
+  white-space:nowrap; text-decoration:none;
+}
+.ck-cta a:hover { background:#096634; color:#fff; text-decoration:none; }
+.ck-cta a:focus-visible { outline:3px solid #0B7A40; outline-offset:2px; }
 </style>
 </head>
 <body>
@@ -164,6 +183,14 @@
 </div>
 
 <div class="proc-content">
+
+  <div class="ck-cta">
+    <span><span aria-hidden="true">✅</span> <strong>Use this as a checklist</strong> — tick off each step for your project; your progress is saved in this browser.</span>
+    <span class="ck-cta-links">
+      <a href="checklist.html?type=ap">AP checklist →</a>
+      <a href="checklist.html?type=wlc">WLC &amp; Switch checklist →</a>
+    </span>
+  </div>
 
   <!-- CHOOSE A PROCESS -->
   <div class="process-choice-grid">
@@ -275,14 +302,14 @@
   </div>
 
   <!-- TOOLS LEGEND -->
-  <h3 style="font-size:15px;font-weight:700;color:#1A1A1A;margin-bottom:14px;">🛠️ Tools Reference</h3>
+  <h3 style="font-size:15px;font-weight:700;color:#1A1A1A;margin-bottom:14px;"><span aria-hidden="true">🛠️</span> Tools Reference</h3>
   <div class="tool-legend">
     <div class="tool-legend-item">
-      <span class="tool-legend-badge" style="color:#007AC9;border-color:#A0D4F5;background:#EEF8FF;">❄️ ServiceNow</span>
+      <span class="tool-legend-badge" style="color:#0369A1;border-color:#A0D4F5;background:#EEF8FF;">❄️ ServiceNow</span>
       <span class="tool-legend-desc">Change requests and CMDB updates</span>
     </div>
     <div class="tool-legend-item">
-      <span class="tool-legend-badge" style="color:#C05A00;border-color:#F5C99A;background:#FFF4EA;">🔧 MACHX</span>
+      <span class="tool-legend-badge" style="color:#A33E00;border-color:#F5C99A;background:#FFF4EA;">🔧 MACHX</span>
       <span class="tool-legend-desc">Raise and manage VPO work orders</span>
     </div>
     <div class="tool-legend-item">

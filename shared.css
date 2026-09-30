@@ -1,32 +1,58 @@
 @import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
 :root {
-  --orange:#FF6200;--orange-dark:#CC4E00;--orange-light:#FF8C42;--orange-pale:#FFF0E6;--orange-faint:#FFF8F3;
-  --black:#1A1A1A;--gray-dark:#3D3D3D;--gray-mid:#787878;--gray-light:#C8C8C8;--gray-faint:#F5F5F5;--white:#FFFFFF;
+  --orange:#FF6200;--orange-dark:#B34200;--orange-light:#FF8C42;--orange-pale:#FFF0E6;--orange-faint:#FFF8F3;
+  /* Accessible (WCAG AA) variants. Keep --orange and the bright vendor colours
+     for fills, borders, icons and large text; use these for small text and for
+     fills that carry small white text.
+     --orange-text  #B34200: 5.68:1 on white, >=5.1:1 on the pale/faint tints
+     --orange-strong #C24A00: white text on it = 4.91:1 (nav pill, buttons, badges) */
+  --orange-text:#B34200;--orange-strong:#C24A00;
+  --black:#1A1A1A;--gray-dark:#3D3D3D;--gray-mid:#666666;--gray-light:#C8C8C8;--gray-faint:#F5F5F5;--white:#FFFFFF;
   --cisco-blue:#1BA0D7;--cisco-pale:#E8F6FD;--palo-orange:#FA5A28;--palo-pale:#FFF1EE;--fort-red:#EE3124;--fort-pale:#FFF0EF;
   --green:#00A86B;--green-pale:#E6F7F1;--purple:#7C3AED;--purple-pale:#F3EEFF;
+  /* text-safe vendor/semantic inks (>=4.5:1 on white and on their -pale tint; white on them >=5.3:1) */
+  --cisco-text:#0B6A93;--palo-text:#B83A12;--fort-text:#B5231A;--green-text:#0A7A4A;
+  --focus-ring:#B34200;--focus-ring-dark:#FFB27A;
   --font:'Sora',sans-serif;--mono:'JetBrains Mono',monospace;--radius:12px;--radius-sm:8px;
   --shadow:0 4px 24px rgba(0,0,0,0.07);--shadow-hover:0 8px 40px rgba(255,98,0,0.13);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
 body{font-family:var(--font);background:var(--white);color:var(--black);line-height:1.65;font-size:15px;}
-a{color:var(--orange);text-decoration:none;}a:hover{text-decoration:underline;}
+a{color:var(--orange-text);text-decoration:none;}a:hover{text-decoration:underline;}
 img{max-width:100%;display:block;}
+
+/* ACCESSIBILITY — shared focus ring, inline-link underline, sr-only, reduced motion */
+:focus-visible{outline:3px solid var(--focus-ring);outline-offset:2px;}
+.topnav :focus-visible,.page-hero :focus-visible,.proc-hero :focus-visible,.sq-hero :focus-visible,.mgr-hero :focus-visible,
+.footer :focus-visible,.golden :focus-visible,.code-block :focus-visible,.kb-codewrap .kb-copy:focus-visible,.kb-navmenu :focus-visible{outline-color:var(--focus-ring-dark);}
+.kb-hero :focus-visible{outline-color:#FFFFFF;}
+/* links in running text are underlined, not identified by colour alone */
+.content p a:not([class]),.content-wide p a:not([class]),.proc-content p a:not([class]),
+.content li a:not([class]),.content-wide li a:not([class]),.proc-content li a:not([class]),
+.content td a:not([class]),.content-wide td a:not([class]),.proc-content td a:not([class]),
+.alert a:not([class]){text-decoration:underline;text-underline-offset:2px;}
+.sr-only{position:absolute !important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
+/* data tables: first-column row headers keep the old first-cell look */
+.data-table tbody th{background:var(--gray-faint);color:var(--gray-dark);font-weight:600;font-size:14px;text-align:left;padding:10px 14px;border-bottom:1px solid #F0F0F0;vertical-align:top;}
+.data-table tr:last-child th{border-bottom:none;}
+.data-table tr:hover th[scope=row]{background:var(--orange-faint);}
+.data-table caption{text-align:left;}
 
 /* NAV */
 .topnav{position:sticky;top:0;z-index:200;background:var(--black);display:flex;align-items:center;height:58px;border-bottom:3px solid var(--orange);padding:0 32px;}
 .topnav-brand{display:flex;align-items:center;gap:10px;text-decoration:none;margin-right:32px;flex-shrink:0;}
 .topnav-logo{width:34px;height:34px;border-radius:50%;background:var(--orange);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:var(--white);}
 .topnav-brand-text{color:var(--white);font-weight:600;font-size:14px;}.topnav-brand-text span{color:var(--orange);}
-.topnav-links{display:flex;align-items:center;gap:2px;flex:1;overflow-x:auto;scrollbar-width:none;}
+.topnav-links{display:flex;align-items:center;gap:2px;flex:1;overflow-x:auto;scrollbar-width:none;padding:6px 6px;}
 .topnav-links::-webkit-scrollbar{display:none;}
 .nav-link{color:rgba(255,255,255,0.55);font-size:13px;font-weight:500;padding:6px 13px;border-radius:var(--radius-sm);white-space:nowrap;transition:all 0.18s;text-decoration:none;}
 .nav-link:hover{background:rgba(255,255,255,0.08);color:var(--white);text-decoration:none;}
-.nav-link.active{background:var(--orange);color:var(--white);}
-.nav-link.vendor-cisco.active{background:var(--cisco-blue);}
-.nav-link.vendor-palo.active{background:var(--palo-orange);}
-.nav-link.vendor-fort.active{background:var(--fort-red);}
+.nav-link.active{background:var(--orange-strong);color:var(--white);}
+.nav-link.vendor-cisco.active{background:var(--cisco-text);}
+.nav-link.vendor-palo.active{background:var(--palo-text);}
+.nav-link.vendor-fort.active{background:var(--fort-text);}
 .topnav-badge{margin-left:auto;flex-shrink:0;background:rgba(255,98,0,0.18);border:1px solid rgba(255,98,0,0.35);color:var(--orange-light);font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;letter-spacing:0.4px;}
 
 /* BREADCRUMB — removed site-wide per request */
@@ -49,7 +75,7 @@ img{max-width:100%;display:block;}
 .page-hero h1 span.cisco{color:var(--cisco-blue);}
 .page-hero h1 span.palo{color:var(--palo-orange);}
 .page-hero h1 span.fort{color:var(--fort-red);}
-.hero-sub{font-size:16px;color:rgba(255,255,255,0.6);max-width:540px;font-weight:300;line-height:1.7;}
+.hero-sub{font-size:16px;color:rgba(255,255,255,0.78);max-width:540px;font-weight:300;line-height:1.7;}
 
 /* CONTENT */
 .content{max-width:960px;margin:0 auto;padding:48px 32px 72px;}
@@ -76,18 +102,18 @@ img{max-width:100%;display:block;}
 .card-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:14px;}
 .card h3{font-size:16px;font-weight:600;margin-bottom:8px;}
 .card p{font-size:14px;color:var(--gray-mid);line-height:1.65;}
-.card-link{display:inline-block;margin-top:14px;font-size:13px;font-weight:600;color:var(--orange);}
+.card-link{display:inline-block;margin-top:14px;font-size:13px;font-weight:600;color:var(--orange-text);}
 
 /* DEVICE CARD */
 .device-card{background:var(--white);border:1px solid #EBEBEB;border-radius:var(--radius);overflow:hidden;transition:all 0.2s;}
 .device-card:hover{box-shadow:var(--shadow);transform:translateY(-2px);}
 .device-card-head{padding:14px 18px 12px;border-bottom:1px solid #F0F0F0;display:flex;align-items:center;gap:8px;}
 .badge{font-size:10px;font-weight:700;padding:3px 7px;border-radius:4px;letter-spacing:0.4px;flex-shrink:0;}
-.badge-cisco{background:var(--cisco-pale);color:var(--cisco-blue);}
-.badge-palo{background:var(--palo-pale);color:var(--palo-orange);}
-.badge-fort{background:var(--fort-pale);color:var(--fort-red);}
+.badge-cisco{background:var(--cisco-pale);color:var(--cisco-text);}
+.badge-palo{background:var(--palo-pale);color:var(--palo-text);}
+.badge-fort{background:var(--fort-pale);color:var(--fort-text);}
 .badge-orange{background:var(--orange-pale);color:var(--orange-dark);}
-.badge-green{background:var(--green-pale);color:var(--green);}
+.badge-green{background:var(--green-pale);color:var(--green-text);}
 .badge-purple{background:var(--purple-pale);color:var(--purple);}
 .device-card-name{font-size:15px;font-weight:600;}
 .device-card-body{padding:16px 18px;}
@@ -99,7 +125,7 @@ img{max-width:100%;display:block;}
 
 /* PORT DIAGRAM */
 .port-diagram{background:#181818;border-radius:var(--radius-sm);padding:14px 16px;margin-bottom:14px;}
-.port-diagram-label{color:rgba(255,255,255,0.4);font-size:10px;font-family:var(--mono);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;}
+.port-diagram-label{color:rgba(255,255,255,0.65);font-size:10px;font-family:var(--mono);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;}
 .port-row{display:flex;gap:5px;flex-wrap:wrap;align-items:center;margin-bottom:8px;}
 .port{width:32px;height:24px;border-radius:3px;border:1.5px solid;display:flex;align-items:center;justify-content:center;font-size:8px;font-family:var(--mono);font-weight:500;cursor:default;transition:transform 0.12s;user-select:none;}
 .port:hover{transform:scale(1.12);}
@@ -112,7 +138,7 @@ img{max-width:100%;display:block;}
 .port.poe{border-color:#00E5CC;color:#00E5CC;background:rgba(0,229,204,0.08);}
 .port.ha{border-color:#FF4D6A;color:#FF4D6A;background:rgba(255,77,106,0.08);}
 .port-legend{display:flex;gap:12px;flex-wrap:wrap;margin-top:6px;}
-.legend-item{display:flex;align-items:center;gap:5px;font-size:10px;color:rgba(255,255,255,0.45);font-family:var(--mono);}
+.legend-item{display:flex;align-items:center;gap:5px;font-size:10px;color:rgba(255,255,255,0.65);font-family:var(--mono);}
 .legend-dot{width:7px;height:7px;border-radius:2px;flex-shrink:0;}
 
 /* ALERTS */
@@ -130,7 +156,7 @@ img{max-width:100%;display:block;}
 /* DIAGRAM BOX */
 .diagram-box{background:var(--gray-faint);border:1px solid #EBEBEB;border-radius:var(--radius);padding:24px;margin-bottom:28px;text-align:center;}
 .diagram-box svg{max-width:100%;}
-.diagram-caption{font-size:12px;color:var(--gray-light);margin-top:8px;}
+.diagram-caption{font-size:12px;color:var(--gray-mid);margin-top:8px;}
 
 /* CODE */
 .code-block{background:#1A1A1A;border-radius:var(--radius-sm);padding:16px 20px;margin-bottom:20px;overflow-x:auto;}
@@ -138,14 +164,14 @@ img{max-width:100%;display:block;}
 .code-block .cmd{color:#FF8C42;}
 .code-block .kw{color:#79C0FF;}
 .code-block .val{color:#A5D6A7;}
-.code-block .cmt{color:#555;font-style:italic;}
+.code-block .cmt{color:#9A9A9A;font-style:italic;}
 
 /* TABLE */
 .data-table{width:100%;border-collapse:collapse;font-size:14px;margin-bottom:28px;}
 .data-table th{background:var(--black);color:var(--white);padding:11px 14px;text-align:left;font-weight:600;font-size:12px;}
-.data-table th.c{background:var(--cisco-blue);}
-.data-table th.p{background:var(--palo-orange);}
-.data-table th.f{background:var(--fort-red);}
+.data-table th.c{background:var(--cisco-text);}
+.data-table th.p{background:var(--palo-text);}
+.data-table th.f{background:var(--fort-text);}
 .data-table td{padding:10px 14px;border-bottom:1px solid #F0F0F0;vertical-align:top;}
 .data-table tr:last-child td{border-bottom:none;}
 .data-table tr:hover td{background:var(--orange-faint);}
@@ -169,10 +195,10 @@ img{max-width:100%;display:block;}
 /* VENDOR NAV */
 .vendor-nav{display:flex;gap:8px;margin-bottom:28px;flex-wrap:wrap;}
 .vendor-btn{padding:9px 20px;border-radius:var(--radius-sm);border:1.5px solid #EBEBEB;background:var(--white);cursor:pointer;font-family:var(--font);font-size:13px;font-weight:600;transition:all 0.15s;color:var(--gray-mid);}
-.vendor-btn:hover:not(.active){border-color:var(--orange);color:var(--orange);}
-.vendor-btn.cisco.active{background:var(--cisco-blue);border-color:var(--cisco-blue);color:white;}
-.vendor-btn.palo.active{background:var(--palo-orange);border-color:var(--palo-orange);color:white;}
-.vendor-btn.fort.active{background:var(--fort-red);border-color:var(--fort-red);color:white;}
+.vendor-btn:hover:not(.active){border-color:var(--orange);color:var(--orange-text);}
+.vendor-btn.cisco.active{background:var(--cisco-text);border-color:var(--cisco-text);color:white;}
+.vendor-btn.palo.active{background:var(--palo-text);border-color:var(--palo-text);color:white;}
+.vendor-btn.fort.active{background:var(--fort-text);border-color:var(--fort-text);color:white;}
 .vendor-panel{display:none;}
 .vendor-panel.active{display:block;}
 
@@ -180,7 +206,7 @@ img{max-width:100%;display:block;}
 .steps{display:flex;flex-direction:column;gap:0;margin-bottom:28px;}
 .step{display:flex;gap:20px;align-items:flex-start;padding:20px 0;border-bottom:1px solid #F0F0F0;}
 .step:last-child{border-bottom:none;}
-.step-num{width:36px;height:36px;border-radius:50%;background:var(--orange);color:var(--white);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;flex-shrink:0;margin-top:2px;}
+.step-num{width:36px;height:36px;border-radius:50%;background:var(--orange-strong);color:var(--white);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;flex-shrink:0;margin-top:2px;}
 .step-content h4{font-size:15px;font-weight:600;margin-bottom:6px;}
 .step-content p{font-size:14px;color:var(--gray-mid);line-height:1.65;}
 
@@ -191,12 +217,12 @@ img{max-width:100%;display:block;}
 .glossary-def{font-size:13px;color:var(--gray-mid);line-height:1.5;}
 
 /* FOOTER */
-.footer{background:var(--black);color:rgba(255,255,255,0.35);text-align:center;padding:24px 32px;font-size:12px;border-top:2px solid rgba(255,98,0,0.2);}
+.footer{background:var(--black);color:rgba(255,255,255,0.7);text-align:center;padding:24px 32px;font-size:12px;border-top:2px solid rgba(255,98,0,0.2);}
 .footer span{color:var(--orange);}
 
 /* UTILS */
 .tag{display:inline-block;font-size:11px;font-weight:600;padding:3px 8px;border-radius:4px;letter-spacing:0.3px;}
-.tag.green{background:var(--green-pale);color:var(--green);}
+.tag.green{background:var(--green-pale);color:var(--green-text);}
 .tag.gray{background:var(--gray-faint);color:var(--gray-mid);}
 .mb-0{margin-bottom:0!important;}.mb-8{margin-bottom:8px;}.mb-16{margin-bottom:16px;}.mb-32{margin-bottom:32px;}.mb-48{margin-bottom:48px;}
 
@@ -229,7 +255,7 @@ img{max-width:100%;display:block;}
   white-space: nowrap; line-height: 1;
 }
 .nav-dropdown-btn:hover { background: rgba(255,255,255,0.08); color: var(--white); }
-.nav-dropdown-btn.active { background: var(--orange); color: var(--white); }
+.nav-dropdown-btn.active { background: var(--orange-strong); color: var(--white); }
 
 /* Menu — hidden by default, shown on hover OR .open class */
 .nav-dropdown-menu {
@@ -264,9 +290,9 @@ img{max-width:100%;display:block;}
 .nav-dropdown-item.vendor-cisco:hover  { background: rgba(27,160,215,0.22); color: #7DD3F0; }
 .nav-dropdown-item.vendor-palo:hover   { background: rgba(250,90,40,0.22);  color: #FFA07A; }
 .nav-dropdown-item.vendor-fort:hover   { background: rgba(238,49,36,0.22);  color: #FF9090; }
-.nav-dropdown-item.vendor-cisco.active { background: var(--cisco-blue);  color: white; }
-.nav-dropdown-item.vendor-palo.active  { background: var(--palo-orange); color: white; }
-.nav-dropdown-item.vendor-fort.active  { background: var(--fort-red);    color: white; }
+.nav-dropdown-item.vendor-cisco.active { background: var(--cisco-text);  color: white; }
+.nav-dropdown-item.vendor-palo.active  { background: var(--palo-text); color: white; }
+.nav-dropdown-item.vendor-fort.active  { background: var(--fort-text);    color: white; }
 
 /* ── DEVICE OFFICIAL LINK BUTTON ── */
 .device-official-btn {
@@ -276,9 +302,39 @@ img{max-width:100%;display:block;}
   text-decoration: none; transition: all 0.18s; border: 1.5px solid;
 }
 .device-official-btn:hover { text-decoration: none; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
-.device-official-btn.cisco { color: var(--cisco-blue); border-color: var(--cisco-blue); background: var(--cisco-pale); }
-.device-official-btn.cisco:hover { background: var(--cisco-blue); color: white; }
-.device-official-btn.palo  { color: var(--palo-orange); border-color: var(--palo-orange); background: var(--palo-pale); }
-.device-official-btn.palo:hover  { background: var(--palo-orange); color: white; }
-.device-official-btn.fort  { color: var(--fort-red); border-color: var(--fort-red); background: var(--fort-pale); }
-.device-official-btn.fort:hover  { background: var(--fort-red); color: white; }
+.device-official-btn.cisco { color: var(--cisco-text); border-color: var(--cisco-blue); background: var(--cisco-pale); }
+.device-official-btn.cisco:hover { background: var(--cisco-text); color: white; }
+.device-official-btn.palo  { color: var(--palo-text); border-color: var(--palo-orange); background: var(--palo-pale); }
+.device-official-btn.palo:hover  { background: var(--palo-text); color: white; }
+.device-official-btn.fort  { color: var(--fort-text); border-color: var(--fort-red); background: var(--fort-pale); }
+.device-official-btn.fort:hover  { background: var(--fort-text); color: white; }
+
+/* ── ACCESSIBILITY: dark surfaces + reduced motion ── */
+/* footer links carry an inline rgba(255,255,255,.4) (3.8:1); lift them to 12.8:1 and underline */
+.footer a,.footer a[style]{color:rgba(255,255,255,0.85) !important;text-decoration:underline;text-underline-offset:2px;}
+.footer a:hover{color:#FFFFFF !important;}
+/* plain links on dark heroes/panels would otherwise inherit the dark ink colour */
+.page-hero a:not([class]),.proc-hero a:not([class]),.golden a:not([class]){color:var(--orange-light);}
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto;}
+  *,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important;scroll-behavior:auto !important;}
+  .device-card:hover,.topic-nav-card:hover,.device-official-btn:hover,.port:hover,
+  .kb-herosearch:hover,.kb-hero-search:hover,.kb-hero-pop button:hover,.hb-jump a:hover,.dept-card:hover,.squad-btn:hover,.dl-banner:hover,
+  .res-card:hover,.vendor-sum:hover,.zs-pillar:hover,.scenario-card:hover,.emp-card:hover,.process-choice-card:hover,.p-body:hover,.btn-primary:hover{transform:none !important;}
+}
+
+/* ── vendor device pages: reflow at 320px (cisco / paloalto / fortinet) ── */
+.device-detail-header{flex-wrap:wrap;}
+.device-detail-header>div{min-width:0;}
+.device-detail-title{overflow-wrap:anywhere;}
+
+/* ── vendor device pages: in-page subnav (cisco / paloalto / fortinet) ──
+   On small screens the links wrap instead of hiding off-screen behind a
+   hidden scrollbar, and the bar stops being sticky so it no longer covers
+   a second strip of the viewport. Headings clear the sticky bar on desktop. */
+body:has(.page-subnav) .kb-h{scroll-margin-top:120px;}
+@media (max-width:760px){
+  html .page-subnav{position:static;flex-wrap:wrap;overflow-x:visible;padding:0 12px;}
+  html .page-subnav a{padding:10px 12px;}
+  body:has(.page-subnav) .kb-h{scroll-margin-top:80px;}
+}

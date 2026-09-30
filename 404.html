@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+/* GitHub Pages serves this page for a missing URL at ANY depth, so point
+   relative URLs at the site root before any stylesheet or script loads. */
+(function (l) {
+  if (!/^https?:$/.test(l.protocol)) return;
+  var b = "/", s = l.pathname.split("/")[1] || "";
+  if (/\.github\.io$/i.test(l.hostname) && /^[\w.~%-]+$/.test(s) && !/\.html?$/i.test(s)) b = "/" + s + "/";
+  window.__kbBase = b;
+  document.write('<base href="' + b + '">');
+})(window.location);
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Page Not Found — DPM Knowledge Base</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="stylesheet" href="shared.css">
+<style>
+/* ── hero ── */
+.nf-hero .kb-herobg { position:absolute; inset:0; pointer-events:none; overflow:hidden; opacity:.14; z-index:0; }
+.nf-hero .kb-herobg svg { position:absolute; stroke:#fff; stroke-width:1.4; fill:none; }
+.nf-hero .hero-content { position:relative; z-index:1; max-width:760px; text-align:center; }
+.nf-hero .hero-sub { margin-left:auto; margin-right:auto; }
+.nf-path { margin:18px auto 0; font-size:13.5px; color:rgba(255,255,255,0.72); max-width:640px; }
+.nf-path[hidden], .nf-alt[hidden] { display:none; }
+.nf-path code { display:inline-block; max-width:100%; margin-top:4px; padding:3px 10px; border-radius:6px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.16); color:#FFC9A3; font-family:var(--mono); font-size:13px; word-break:break-all; overflow-wrap:anywhere; }
+
+/* Big search button. It carries .kb-herosearch so kb-ui.js does not add
+   a second search bar to this hero; the rules below override its styling. */
+.nf-hero .nf-search { display:flex; align-items:center; gap:12px; width:100%; max-width:600px; margin:26px auto 0; background:#fff; border:none; border-radius:14px; padding:17px 20px; cursor:text; box-shadow:0 18px 50px rgba(0,0,0,0.35); font-family:inherit; text-align:left; transition:transform .15s, box-shadow .15s; }
+.nf-hero .nf-search:hover { transform:translateY(-2px); box-shadow:0 22px 60px rgba(0,0,0,0.42); }
+.nf-hero .nf-search:focus-visible { outline:3px solid var(--orange-light); outline-offset:3px; }
+.nf-hero .nf-search > svg { color:var(--orange); flex-shrink:0; }
+.nf-hero .nf-search span { flex:1; min-width:0; color:#616161; font-size:15.5px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.nf-hero .nf-search kbd { flex-shrink:0; background:#F3F3F3; border:1px solid #E4E4E4; border-radius:6px; color:#616161; font:600 11px/1 var(--mono); padding:6px 8px; }
+.nf-alt { margin-top:14px; font-size:13.5px; color:rgba(255,255,255,0.72); }
+.nf-alt-btn { background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.3); color:#fff; border-radius:20px; padding:5px 14px; font:600 13px/1.5 var(--font); cursor:pointer; max-width:100%; overflow-wrap:anywhere; transition:background .15s; }
+.nf-alt-btn:hover { background:rgba(255,255,255,0.2); }
+.nf-alt-btn:focus-visible { outline:3px solid var(--orange-light); outline-offset:2px; }
+@media (max-width:600px) { .nf-hero .nf-search { padding:15px 16px; } .nf-hero .nf-search span { font-size:14px; } .nf-hero .nf-search kbd { display:none; } }
+
+/* ── suggestions ── */
+.nf-sugg { min-width:0; }
+.nf-sug { display:flex; align-items:center; gap:14px; padding:15px 18px; background:#fff; border:1px solid #E6E6E6; border-radius:var(--radius); color:var(--black); text-decoration:none; min-width:0; transition:border-color .15s, box-shadow .15s, transform .15s; }
+.nf-sug + .nf-sug { margin-top:10px; }
+.nf-sug:hover { border-color:var(--orange); box-shadow:var(--shadow-hover); transform:translateY(-1px); text-decoration:none; }
+.nf-sug:focus-visible { outline:3px solid var(--orange-text); outline-offset:2px; }
+.nf-sug-ic { flex-shrink:0; width:42px; height:42px; border-radius:10px; background:var(--orange-pale); display:flex; align-items:center; justify-content:center; font-size:20px; }
+.nf-sug-main { flex:1; min-width:0; display:flex; flex-direction:column; gap:3px; }
+.nf-sug-t { font-size:15px; font-weight:600; color:var(--black); overflow-wrap:anywhere; }
+.nf-sug-m { font-size:12.5px; color:#5E5E5E; overflow-wrap:anywhere; }
+.nf-sug-m code { font-family:var(--mono); font-size:12px; }
+.nf-best { display:inline-block; margin-left:8px; vertical-align:2px; background:var(--green-pale); color:#0A6B45; font-size:10.5px; font-weight:700; letter-spacing:.4px; text-transform:uppercase; padding:2px 8px; border-radius:20px; }
+.nf-sug-go { flex-shrink:0; color:var(--orange-dark); font-size:18px; font-weight:700; }
+.nf-note { padding:18px 20px; border:1px dashed #D5D5D5; border-radius:var(--radius); background:var(--gray-faint); color:#4A4A4A; font-size:14px; line-height:1.6; overflow-wrap:anywhere; }
+
+/* ── quick links ── */
+.nf-quick { margin-bottom:0; }
+.nf-quick > * { min-width:0; }
+.nf-quick .topic-nav-card-label, .nf-quick .topic-nav-card-sub { color:#5E5E5E; }
+.nf-quick .topic-nav-card:focus-visible { outline:3px solid var(--orange-text); outline-offset:2px; }
+.nf-procs { margin-top:20px; font-size:14px; color:var(--gray-dark); line-height:1.9; }
+
+/* Orange-dark + underline keeps inline links readable on white (WCAG AA). */
+.content a:not(.topic-nav-card):not(.nf-sug):not(.kb-anchor) { color:var(--orange-dark); text-decoration:underline; text-underline-offset:2px; }
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <a href="index.html" class="topnav-brand">
+    <div class="topnav-logo">DPM</div>
+    <div class="topnav-brand-text">Knowledge <span>Base</span></div>
+  </a>
+  <div class="topnav-links">
+    <a href="index.html"          class="nav-link">Home</a>
+    <a href="lan-wan-basics.html" class="nav-link">LAN / WAN</a>
+    <a href="ip-routing.html"     class="nav-link">IP Routing</a>
+    <a href="switching.html"      class="nav-link">Switching</a>
+    <a href="wireless.html"       class="nav-link">Wireless</a>
+    <a href="firewalls.html"      class="nav-link">Firewalls</a>
+    <a href="zscaler.html"        class="nav-link">Zscaler</a>
+    <a href="devices.html"        class="nav-link">Devices</a>
+    <a href="glossary.html"       class="nav-link">Glossary</a>
+  </div>
+  <div class="topnav-badge">New Hire Guide</div>
+</nav>
+
+<div class="breadcrumb" style="background:transparent;border:none;padding:0;"></div>
+
+<div class="page-hero dark nf-hero">
+  <!-- Themed background icons are inline here: kb-ui.js picks icons by the
+       URL's file name, which on a 404 is whatever was mistyped. -->
+  <div class="kb-herobg" aria-hidden="true">
+    <svg viewBox="0 0 24 24" style="width:52px;height:52px;top:15%;left:6%;"><path d="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM15.5 8.5l-2 5-5 2 2-5z"/></svg>
+    <svg viewBox="0 0 24 24" style="width:62px;height:62px;top:22%;right:8%;"><path d="M6 4a2 2 0 1 0 0 4 2 2 0 0 0 0-4zM18 16a2 2 0 1 0 0 4 2 2 0 0 0 0-4zM8 6h6a4 4 0 0 1 0 8h-4a4 4 0 0 0 0 8h6"/></svg>
+    <svg viewBox="0 0 24 24" style="width:46px;height:46px;bottom:16%;left:15%;"><path d="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM3 12h18M12 3c2.6 2.7 2.6 15.3 0 18M12 3c-2.6 2.7-2.6 15.3 0 18"/></svg>
+    <svg viewBox="0 0 24 24" style="width:54px;height:54px;bottom:26%;right:13%;"><path d="M6 4a2 2 0 1 0 0 4 2 2 0 0 0 0-4zM18 4a2 2 0 1 0 0 4 2 2 0 0 0 0-4zM12 16a2 2 0 1 0 0 4 2 2 0 0 0 0-4zM6 8v2a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V8M12 14v-2"/></svg>
+  </div>
+  <div class="hero-content">
+    <div class="hero-tag"><span aria-hidden="true">🧭</span> 404</div>
+    <h1>We couldn't find <span>that page</span></h1>
+    <p class="hero-sub">The link may be out of date or mistyped, or the page may have moved. Search the knowledge base, or pick one of the suggestions below.</p>
+    <p class="nf-path" id="nfPathWrap" hidden>You asked for<br><code id="nfPath"></code></p>
+    <button type="button" class="kb-herosearch nf-search" data-kb-open aria-label="Search the knowledge base">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+      <span>Search the knowledge base: a topic, a process step, a tool, a term…</span>
+      <kbd>Ctrl K</kbd>
+    </button>
+    <p class="nf-alt" id="nfAltWrap" hidden>or <button type="button" class="nf-alt-btn" id="nfAlt">search for “<span id="nfAltQ"></span>”</button></p>
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- DID YOU MEAN -->
+  <div class="section">
+    <div class="section-header">
+      <h2>Did you mean…</h2>
+      <div class="divider"></div>
+      <p id="nfSuggIntro">Pages with a name close to the address you tried.</p>
+    </div>
+    <div class="nf-sugg" id="nfSugg" aria-live="polite">
+      <p class="nf-note">Looking for similar pages…</p>
+    </div>
+  </div>
+
+  <!-- QUICK LINKS -->
+  <div class="section">
+    <div class="section-header">
+      <h2>Popular destinations</h2>
+      <div class="divider"></div>
+      <p>Or jump straight to the places people use most.</p>
+    </div>
+    <div class="topic-nav nf-quick">
+      <a class="topic-nav-card" href="index.html">
+        <div class="topic-nav-card-icon" aria-hidden="true">🏠</div>
+        <div class="topic-nav-card-label">Start here</div>
+        <div class="topic-nav-card-title">Home</div>
+        <div class="topic-nav-card-sub">The handbook in full: the role, the team, the tools and how we deliver.</div>
+      </a>
+      <a class="topic-nav-card" href="index.html#processes">
+        <div class="topic-nav-card-icon" aria-hidden="true">📋</div>
+        <div class="topic-nav-card-label">How we deliver</div>
+        <div class="topic-nav-card-title">Delivery processes</div>
+        <div class="topic-nav-card-sub">AP, WLC &amp; Switch and WAN deliveries, phase by phase.</div>
+      </a>
+      <a class="topic-nav-card" href="glossary.html">
+        <div class="topic-nav-card-icon" aria-hidden="true">📖</div>
+        <div class="topic-nav-card-label">Reference</div>
+        <div class="topic-nav-card-title">Glossary</div>
+        <div class="topic-nav-card-sub">The acronyms you'll meet, from GOLD and MACHX to HOTO.</div>
+      </a>
+      <a class="topic-nav-card" href="tools.html">
+        <div class="topic-nav-card-icon" aria-hidden="true">🧰</div>
+        <div class="topic-nav-card-label">Everyday</div>
+        <div class="topic-nav-card-title">Tools</div>
+        <div class="topic-nav-card-sub">Quick access to the delivery tools and systems you use every day.</div>
+      </a>
+    </div>
+    <p class="nf-procs">Straight to a process: <a href="process-ap.html">AP migration</a> · <a href="process-wlc-switch.html">WLC &amp; Switch migration</a> · <a href="wan-process.html">WAN delivery</a> · <a href="lan-process.html">LAN overview</a></p>
+
+    <div class="alert blue" style="margin-top:24px;margin-bottom:0;">
+      <span class="alert-icon" aria-hidden="true">🔗</span>
+      <p><strong>Followed a broken link inside the Knowledge Base?</strong> Let the <a href="onboarding-squad.html">Onboarding squad</a> know which page it was on, so it can be fixed.</p>
+    </div>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <p>DPM <span>Knowledge Base</span> &nbsp;·&nbsp; Onboarding Handbook Ed.&nbsp;1.3 &nbsp;·&nbsp; Internal Use Only</p>
+</footer>
+<script>
+(function () {
+  "use strict";
+
+  var BASE = window.__kbBase || "/";
+  var CAT_ICON = { Home: "🏠", Networking: "🌐", Vendors: "🖥️", Process: "📋", Tools: "🧰", Team: "👥", Squads: "⚡", Reference: "📚", Page: "📄" };
+  var SAFE_URL = /^[a-z0-9][a-z0-9._-]*\.html$/i;
+  var MIN_SCORE = 0.3;
+
+  function byId(id) { return document.getElementById(id); }
+  function safeDecode(s) { try { return decodeURIComponent(s); } catch (e) { return s; } }
+  function has(o, k) { return Object.prototype.hasOwnProperty.call(o, k); }
+
+  /* "Raci-Matrix.HTM" -> "raci matrix" */
+  function norm(s) {
+    return safeDecode(String(s == null ? "" : s)).toLowerCase()
+      .replace(/\.(s?html?|php\d?|aspx?|jsp|md)$/, "")
+      .replace(/[^a-z0-9]+/g, " ")
+      .replace(/^\s+|\s+$/g, "");
+  }
+
+  /* ---------- similarity: bigram Dice + word overlap + substring bonus ---------- */
+  function grams(s) {
+    var m = Object.create(null), n = 0;
+    for (var i = 0; i < s.length - 1; i++) { var g = s.substr(i, 2); m[g] = (m[g] || 0) + 1; n++; }
+    return { m: m, n: n };
+  }
+  function dice(a, b) {
+    if (a === b) return a ? 1 : 0;
+    if (a.length < 2 || b.length < 2) return 0;
+    var A = grams(a), B = grams(b), hit = 0;
+    for (var g in A.m) { if (B.m[g]) hit += Math.min(A.m[g], B.m[g]); }
+    return (2 * hit) / (A.n + B.n);
+  }
+  function wordHits(q, c) {
+    var qt = q.split(" "), ct = c.split(" "), hit = 0;
+    for (var i = 0; i < qt.length; i++) {
+      var a = qt[i];
+      if (a.length < 2) continue;
+      for (var j = 0; j < ct.length; j++) {
+        var b = ct[j];
+        if (a === b || (a.length >= 3 && b.length >= 3 && (b.indexOf(a) === 0 || a.indexOf(b) === 0))) { hit++; break; }
+      }
+    }
+    return qt.length ? hit / qt.length : 0;
+  }
+  function similarity(q, c) {
+    if (!q || !c) return 0;
+    var qc = q.replace(/ /g, ""), cc = c.replace(/ /g, "");
+    var s = 0.6 * dice(qc, cc) + 0.4 * wordHits(q, c);
+    if (qc.length >= 3 && cc.length >= 3 && (cc.indexOf(qc) >= 0 || qc.indexOf(cc) >= 0)) s += 0.25;
+    return Math.min(1, s);
+  }
+
+  /* ---------- what was asked for ---------- */
+  var path = location.pathname || "/";
+  var shown = safeDecode(path + (location.search || ""));
+  if (shown.length > 160) shown = shown.slice(0, 157) + "...";
+  byId("nfPath").textContent = shown;
+  byId("nfPathWrap").hidden = false;
+
+  var rel = path;
+  if (BASE !== "/" && rel.indexOf(BASE) === 0) rel = rel.slice(BASE.length);
+  var segs = rel.split("/").filter(function (s) { return s.length > 0; });
+  var last = segs.length ? segs[segs.length - 1] : "";
+  if (/^index(\.html?)?$/i.test(last) && segs.length > 1) last = segs[segs.length - 2];
+  var query = norm(last);
+  if (query === "404") query = "";
+  if (query.length > 80) query = query.slice(0, 80);
+
+  /* Prefilled search. search.js wires [data-kbq] when it loads, which is
+     after this script, so the attribute must be set synchronously here. */
+  if (query) {
+    byId("nfAltQ").textContent = query;
+    byId("nfAlt").setAttribute("data-kbq", query);
+    byId("nfAltWrap").hidden = false;
+    byId("nfSuggIntro").textContent = "Pages with a name close to “" + query + "”, the last part of the address you tried.";
+  }
+
+  /* ---------- "Did you mean" ---------- */
+  var box = byId("nfSugg");
+  function note(text) {
+    box.innerHTML = "";
+    var p = document.createElement("p");
+    p.className = "nf-note";
+    p.textContent = text;
+    box.appendChild(p);
+  }
+
+  function rank(index, q) {
+    var pages = [], seen = Object.create(null);
+    (Array.isArray(index) ? index : []).forEach(function (e) {
+      if (!e || e.c === "Glossary" || typeof e.u !== "string") return;
+      var u = e.u;
+      if (!SAFE_URL.test(u) || u.toLowerCase() === "404.html" || seen[u]) return;
+      seen[u] = 1;
+      var best = Math.max(similarity(q, norm(u)), similarity(q, norm(e.t)));
+      var heads = Array.isArray(e.h) ? e.h : [];
+      for (var i = 0; i < heads.length && i < 60; i++) {
+        var hs = 0.7 * similarity(q, norm(heads[i]));
+        if (hs > best) best = hs;
+      }
+      pages.push({ u: u, t: String(e.t || u), c: String(e.c || "Page"), s: best });
+    });
+    pages.sort(function (a, b) { return (b.s - a.s) || (a.u < b.u ? -1 : a.u > b.u ? 1 : 0); });
+    return pages.filter(function (p) { return p.s >= MIN_SCORE; }).slice(0, 3);
+  }
+
+  function render(list) {
+    if (!list.length) {
+      note("No page names are close to “" + query + "”. Try the search above, or one of the destinations below.");
+      return;
+    }
+    box.innerHTML = "";
+    list.forEach(function (p, i) {
+      var a = document.createElement("a");
+      a.className = "nf-sug";
+      a.setAttribute("href", p.u);
+
+      var ic = document.createElement("span");
+      ic.className = "nf-sug-ic";
+      ic.setAttribute("aria-hidden", "true");
+      ic.textContent = has(CAT_ICON, p.c) ? CAT_ICON[p.c] : CAT_ICON.Page;
+
+      var main = document.createElement("span");
+      main.className = "nf-sug-main";
+      var t = document.createElement("span");
+      t.className = "nf-sug-t";
+      t.textContent = p.t;
+      if (i === 0) {
+        var best = document.createElement("span");
+        best.className = "nf-best";
+        best.textContent = "Closest match";
+        t.appendChild(best);
+      }
+      var m = document.createElement("span");
+      m.className = "nf-sug-m";
+      m.appendChild(document.createTextNode(p.c + " · "));
+      var code = document.createElement("code");
+      code.textContent = p.u;
+      m.appendChild(code);
+      main.appendChild(t);
+      main.appendChild(m);
+
+      var go = document.createElement("span");
+      go.className = "nf-sug-go";
+      go.setAttribute("aria-hidden", "true");
+      go.textContent = "→";
+
+      a.appendChild(ic);
+      a.appendChild(main);
+      a.appendChild(go);
+      box.appendChild(a);
+    });
+  }
+
+  if (!query) {
+    note("There's no page name in this address to match. Try the search above, or one of the destinations below.");
+  } else if (!window.fetch) {
+    note("Suggestions aren't available in this browser. Try the search above, or one of the destinations below.");
+  } else {
+    fetch("search-index.json")
+      .then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
+      .then(function (index) { render(rank(index, query)); })
+      .catch(function () { note("Suggestions couldn't be loaded right now. Try the search above, or one of the destinations below."); });
+  }
+
+  /* With <base href> set, "#section" links would resolve to the home page;
+     keep in-page anchors (e.g. the heading links kb-ui.js adds) on this page. */
+  document.addEventListener("click", function (e) {
+    var a = e.target && e.target.closest ? e.target.closest("a[href^='#']") : null;
+    if (!a) return;
+    var id = a.getAttribute("href").slice(1);
+    var target = id ? document.getElementById(id) : null;
+    if (!target) return;
+    e.preventDefault();
+    var still = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    target.scrollIntoView({ behavior: still ? "auto" : "smooth", block: "start" });
+    /* move keyboard focus with the jump */
+    if (!target.hasAttribute("tabindex")) target.setAttribute("tabindex", "-1");
+    try { target.focus({ preventScroll: true }); } catch (err) { /* ignore */ }
+  });
+})();
+</script>
+<script src="shared.js"></script>
+</body>
+</html>

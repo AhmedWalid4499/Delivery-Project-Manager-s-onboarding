@@ -31,14 +31,14 @@
   border-left:3px solid var(--c); border-radius:12px; padding:13px 16px;
   transition:transform .16s, box-shadow .16s; }
 .emp-card:hover { transform:translateY(-2px); box-shadow:0 8px 22px rgba(0,0,0,0.10); }
-.emp-avatar { width:44px; height:44px; border-radius:50%; background:var(--c); color:#fff;
+.emp-avatar { width:44px; height:44px; border-radius:50%; background:var(--ct, var(--c)); color:#fff;
   font-weight:700; font-size:14px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
 .emp-info { flex:1; min-width:0; }
 .emp-name { font-size:14px; font-weight:700; color:var(--black); line-height:1.3; }
-.emp-email { font-size:12px; color:#777 !important; text-decoration:none !important; word-break:break-all; }
-.emp-email:hover { color:var(--c) !important; text-decoration:underline !important; }
+.emp-email { font-size:12px; color:#595959 !important; text-decoration:none !important; word-break:break-all; }
+.emp-email:hover { color:var(--ct, var(--c)) !important; text-decoration:underline !important; }
 .emp-role { flex-shrink:0; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px;
-  padding:4px 9px; border-radius:20px; background:var(--cpale); color:var(--c); white-space:nowrap; }
+  padding:4px 9px; border-radius:20px; background:var(--cpale); color:var(--ct, var(--c)); white-space:nowrap; }
 .emp-card.sme { background:linear-gradient(180deg, var(--cpale) 0%, #fff 60%); border-left-width:4px; }
 .emp-card.sme .emp-role { background:var(--black); color:#fff; }
 </style>
@@ -71,7 +71,7 @@
 
 <div class="mgr-hero" style="background:linear-gradient(135deg,#042910 0%,#0E5C32 70%);">
   <div class="hero-content">
-    <div class="mgr-bigavatar" style="background:#00A86B;">PS</div>
+    <div class="mgr-bigavatar" aria-hidden="true" style="background:#0A7A4A;">PS</div>
     <div>
       <span class="m-cluster">GEA cluster</span>
       <h1>Peter Sabet</h1>
@@ -81,7 +81,7 @@
   </div>
 </div>
 
-<div class="content-wide" style="--c:#00A86B; --cpale:#E6F7F1;">
+<div class="content-wide" style="--c:#00A86B; --ct:#0A7A4A; --cpale:#E6F7F1;">
 
   <div class="section-header" style="margin-bottom:22px;">
     <h2>GEA Team</h2>
@@ -91,7 +91,7 @@
 
   <div class="emp-grid">
       <div class="emp-card">
-        <div class="emp-avatar">AM</div>
+        <div class="emp-avatar" aria-hidden="true">AM</div>
         <div class="emp-info">
           <div class="emp-name">Aly Maher</div>
           <a class="emp-email" href="mailto:aly.maher.ext@orange.com">aly.maher.ext@orange.com</a>
@@ -99,7 +99,7 @@
         <span class="emp-role">DPM</span>
       </div>
       <div class="emp-card">
-        <div class="emp-avatar">CD</div>
+        <div class="emp-avatar" aria-hidden="true">CD</div>
         <div class="emp-info">
           <div class="emp-name">Caroline Dib</div>
           <a class="emp-email" href="mailto:caroline.dib.ext@orange.com">caroline.dib.ext@orange.com</a>
@@ -107,7 +107,7 @@
         <span class="emp-role">DPM</span>
       </div>
       <div class="emp-card sme">
-        <div class="emp-avatar">EO</div>
+        <div class="emp-avatar" aria-hidden="true">EO</div>
         <div class="emp-info">
           <div class="emp-name">Emad Osman</div>
           <a class="emp-email" href="mailto:emad.osman@orange.com">emad.osman@orange.com</a>
@@ -115,7 +115,7 @@
         <span class="emp-role">DPM / SME</span>
       </div>
       <div class="emp-card">
-        <div class="emp-avatar">FS</div>
+        <div class="emp-avatar" aria-hidden="true">FS</div>
         <div class="emp-info">
           <div class="emp-name">Farida Sherif</div>
           <a class="emp-email" href="mailto:farida.sherief.ext@orange.com">farida.sherief.ext@orange.com</a>
@@ -123,7 +123,7 @@
         <span class="emp-role">DPM</span>
       </div>
       <div class="emp-card">
-        <div class="emp-avatar">HB</div>
+        <div class="emp-avatar" aria-hidden="true">HB</div>
         <div class="emp-info">
           <div class="emp-name">Hoda Berzan</div>
           <a class="emp-email" href="mailto:hoda.berzan@orange.com">hoda.berzan@orange.com</a>
@@ -131,7 +131,7 @@
         <span class="emp-role">DPM</span>
       </div>
       <div class="emp-card">
-        <div class="emp-avatar">KH</div>
+        <div class="emp-avatar" aria-hidden="true">KH</div>
         <div class="emp-info">
           <div class="emp-name">Karim Hafez</div>
           <a class="emp-email" href="mailto:karim.hafez@orange.com">karim.hafez@orange.com</a>
@@ -139,7 +139,7 @@
         <span class="emp-role">DPM</span>
       </div>
       <div class="emp-card">
-        <div class="emp-avatar">MM</div>
+        <div class="emp-avatar" aria-hidden="true">MM</div>
         <div class="emp-info">
           <div class="emp-name">Mai Metwally</div>
           <a class="emp-email" href="mailto:mai.metwally@orange.com">mai.metwally@orange.com</a>
@@ -147,7 +147,7 @@
         <span class="emp-role">DPM</span>
       </div>
       <div class="emp-card">
-        <div class="emp-avatar">MT</div>
+        <div class="emp-avatar" aria-hidden="true">MT</div>
         <div class="emp-info">
           <div class="emp-name">Maryam Tharwat</div>
           <a class="emp-email" href="mailto:maryam.tharwat@orange.com">maryam.tharwat@orange.com</a>
@@ -155,7 +155,7 @@
         <span class="emp-role">DPM</span>
       </div>
       <div class="emp-card">
-        <div class="emp-avatar">MY</div>
+        <div class="emp-avatar" aria-hidden="true">MY</div>
         <div class="emp-info">
           <div class="emp-name">May Yassin</div>
           <a class="emp-email" href="mailto:may.yassin@orange.com">may.yassin@orange.com</a>
@@ -163,7 +163,7 @@
         <span class="emp-role">DPM</span>
       </div>
       <div class="emp-card">
-        <div class="emp-avatar">MT</div>
+        <div class="emp-avatar" aria-hidden="true">MT</div>
         <div class="emp-info">
           <div class="emp-name">Mona Tantawi</div>
           <a class="emp-email" href="mailto:mona.tantawi.ext@orange.com">mona.tantawi.ext@orange.com</a>
@@ -171,7 +171,7 @@
         <span class="emp-role">DPM</span>
       </div>
       <div class="emp-card">
-        <div class="emp-avatar">MH</div>
+        <div class="emp-avatar" aria-hidden="true">MH</div>
         <div class="emp-info">
           <div class="emp-name">Moutassem Helmy</div>
           <a class="emp-email" href="mailto:moutassem.helmy.ext@orange.com">moutassem.helmy.ext@orange.com</a>
@@ -179,7 +179,7 @@
         <span class="emp-role">DPM</span>
       </div>
       <div class="emp-card">
-        <div class="emp-avatar">NM</div>
+        <div class="emp-avatar" aria-hidden="true">NM</div>
         <div class="emp-info">
           <div class="emp-name">Nada Megahed</div>
           <a class="emp-email" href="mailto:Nada.Megahed@orange.com">Nada.Megahed@orange.com</a>
@@ -187,7 +187,7 @@
         <span class="emp-role">DPM</span>
       </div>
       <div class="emp-card">
-        <div class="emp-avatar">NH</div>
+        <div class="emp-avatar" aria-hidden="true">NH</div>
         <div class="emp-info">
           <div class="emp-name">Nadine Hashish</div>
           <a class="emp-email" href="mailto:nadine.hashish.ext@orange.com">nadine.hashish.ext@orange.com</a>
@@ -195,7 +195,7 @@
         <span class="emp-role">DPM</span>
       </div>
       <div class="emp-card">
-        <div class="emp-avatar">NB</div>
+        <div class="emp-avatar" aria-hidden="true">NB</div>
         <div class="emp-info">
           <div class="emp-name">Noha Al Badry</div>
           <a class="emp-email" href="mailto:noha.ahmed@orange.com">noha.ahmed@orange.com</a>
@@ -203,7 +203,7 @@
         <span class="emp-role">DPM</span>
       </div>
       <div class="emp-card">
-        <div class="emp-avatar">RM</div>
+        <div class="emp-avatar" aria-hidden="true">RM</div>
         <div class="emp-info">
           <div class="emp-name">Reem Mobarak</div>
           <a class="emp-email" href="mailto:reem.mobarak.ext@orange.com">reem.mobarak.ext@orange.com</a>
@@ -211,7 +211,7 @@
         <span class="emp-role">DPM</span>
       </div>
       <div class="emp-card">
-        <div class="emp-avatar">RK</div>
+        <div class="emp-avatar" aria-hidden="true">RK</div>
         <div class="emp-info">
           <div class="emp-name">Rose Khoury</div>
           <a class="emp-email" href="mailto:rose.khoury.ext@orange.com">rose.khoury.ext@orange.com</a>
@@ -219,7 +219,7 @@
         <span class="emp-role">DPM</span>
       </div>
       <div class="emp-card">
-        <div class="emp-avatar">SA</div>
+        <div class="emp-avatar" aria-hidden="true">SA</div>
         <div class="emp-info">
           <div class="emp-name">Salma Anwar</div>
           <a class="emp-email" href="mailto:salma.anwar.ext@orange.com">salma.anwar.ext@orange.com</a>
@@ -227,7 +227,7 @@
         <span class="emp-role">DPM</span>
       </div>
       <div class="emp-card">
-        <div class="emp-avatar">SB</div>
+        <div class="emp-avatar" aria-hidden="true">SB</div>
         <div class="emp-info">
           <div class="emp-name">Sherif Basiony</div>
           <a class="emp-email" href="mailto:sherif.basiony.ext@orange.com">sherif.basiony.ext@orange.com</a>
@@ -235,7 +235,7 @@
         <span class="emp-role">DPM</span>
       </div>
       <div class="emp-card">
-        <div class="emp-avatar">YZ</div>
+        <div class="emp-avatar" aria-hidden="true">YZ</div>
         <div class="emp-info">
           <div class="emp-name">Yasmine Zaky</div>
           <a class="emp-email" href="mailto:yasmeen.zaky.ext@orange.com">yasmeen.zaky.ext@orange.com</a>
@@ -243,7 +243,7 @@
         <span class="emp-role">DPM</span>
       </div>
       <div class="emp-card">
-        <div class="emp-avatar">YN</div>
+        <div class="emp-avatar" aria-hidden="true">YN</div>
         <div class="emp-info">
           <div class="emp-name">Yomna Noureldin</div>
           <a class="emp-email" href="mailto:yomna.noureldin@orange.com">yomna.noureldin@orange.com</a>

@@ -52,8 +52,9 @@
 
   var grid = $(".emp-grid");
   if (!grid) return;
-  var accent = ((getComputedStyle($(".content-wide") || document.body)
-                 .getPropertyValue("--c")) || "#FF6200").trim() || "#FF6200";
+  /* the page's AA ink (--ct) when it has one: white text on it is >= 4.5:1 */
+  var cs = getComputedStyle($(".content-wide") || document.body);
+  var accent = ((cs.getPropertyValue("--ct") || "").trim()) || ((cs.getPropertyValue("--c") || "").trim()) || "#C24A00";
 
   /* ---------- render added cards ---------- */
   function existingEmails() {
@@ -69,7 +70,7 @@
     card.className = "emp-card";
     card.setAttribute("data-added", "1");
     card.innerHTML =
-      '<div class="emp-avatar">' + esc(initials(m.name)) + '</div>' +
+      '<div class="emp-avatar" aria-hidden="true">' + esc(initials(m.name)) + '</div>' +
       '<div class="emp-info"><div class="emp-name">' + esc(m.name) + '</div>' +
       '<a class="emp-email" href="mailto:' + esc(m.email) + '">' + esc(m.email) + '</a></div>' +
       '<span class="emp-role" title="' + esc(m.cluster || "") + '">' + esc(shortCluster(m.cluster)) + '</span>';
@@ -134,7 +135,7 @@
       "border-radius:8px;padding:9px 13px;cursor:pointer;}" +
     ".sq-edit:hover{background:#EAEAEA;}" +
     ".sq-edit.on{color:#0E7A3A;background:#E6F7EF;border-color:#A8E0C2;}" +
-    ".sq-note{font-size:12px;color:#999;margin-top:9px;}" +
+    ".sq-note{font-size:12px;color:#666;margin-top:9px;}" +
     ".sq-status{font-size:13px;font-weight:600;margin-top:12px;padding:11px 14px;border-radius:9px;display:none;}" +
     ".sq-status.show{display:block;}" +
     ".sq-status.ok{background:#E6F7EF;color:#0E7A3A;border:1px solid #A8E0C2;}" +
@@ -146,14 +147,17 @@
     ".sq-modal{background:#fff;border-radius:16px;max-width:440px;width:100%;padding:26px 26px 24px;" +
       "box-shadow:0 24px 70px rgba(0,0,0,0.3);max-height:90vh;overflow:auto;}" +
     ".sq-modal h3{font-size:19px;font-weight:800;color:#1A1A1A;margin-bottom:4px;}" +
-    ".sq-modal .sub{font-size:13px;color:#777;margin-bottom:18px;}" +
+    ".sq-modal .sub{font-size:13px;color:#666;margin-bottom:18px;}" +
+    ".sq-merr{font-size:13px;font-weight:600;color:#C0392B;background:#FDECEC;border:1px solid #F0B6B0;border-radius:9px;padding:10px 12px;margin-bottom:14px;}" +
+    ".sq-merr:empty{display:none;}" +
+    ".sq-field [aria-invalid=true]{border-color:#C0392B;}" +
     ".sq-field{margin-bottom:14px;}" +
     ".sq-field label{display:block;font-size:12px;font-weight:700;color:#555;margin-bottom:5px;}" +
-    ".sq-field input{width:100%;font-size:14px;padding:10px 12px;border:1px solid #DDD;border-radius:8px;font-family:inherit;}" +
+    ".sq-field input{width:100%;font-size:14px;padding:10px 12px;border:1px solid #8A8A8A;border-radius:8px;font-family:inherit;}" +
     ".sq-field input:focus{outline:none;border-color:" + accent + ";box-shadow:0 0 0 3px " + accent + "22;}" +
     ".sq-tokbox{background:#FFFBF0;border:1px solid #F0DCA0;border-radius:10px;padding:14px;margin-bottom:16px;}" +
     ".sq-tokbox p{font-size:12px;color:#7A5E1A;margin-bottom:9px;line-height:1.5;}" +
-    ".sq-tokbox a{color:#B5781A;font-weight:700;}" +
+    ".sq-tokbox a{color:#8A5A00;font-weight:700;}" +
     ".sq-actions{display:flex;gap:10px;margin-top:6px;}" +
     ".sq-actions button{flex:1;font-size:14px;font-weight:700;padding:11px;border-radius:9px;cursor:pointer;border:none;}" +
     ".sq-save{color:#fff;background:" + accent + ";}" +
@@ -166,13 +170,14 @@
   var bar = document.createElement("div");
   bar.className = "sq-addbar";
   bar.innerHTML =
-    '<button class="sq-add" id="sqAdd">\u2795 Add DPM to this squad</button>' +
-    '<button class="sq-edit" id="sqEdit"></button>';
+    '<button type="button" class="sq-add" id="sqAdd"><span aria-hidden="true">\u2795</span> Add DPM to this squad</button>' +
+    '<button type="button" class="sq-edit" id="sqEdit"></button>';
   var note = document.createElement("div");
   note.className = "sq-note";
   note.innerHTML = "Additions are saved to the site for everyone (they appear for other people within a minute or two).";
   var status = document.createElement("div");
   status.className = "sq-status";
+  status.setAttribute("role", "status");
 
   var cw = $(".content-wide");
   (cw || grid.parentNode).insertBefore(bar, grid.nextSibling);
@@ -183,7 +188,7 @@
     var on = !!getToken();
     var b = $("#sqEdit");
     b.className = "sq-edit" + (on ? " on" : "");
-    b.textContent = on ? "\uD83D\uDD13 Editor mode: on \u00B7 forget token" : "\uD83D\uDD12 Editor mode";
+    b.innerHTML = on ? "<span aria-hidden=\"true\">\uD83D\uDD13</span> Editor mode: on \u00B7 forget token" : "<span aria-hidden=\"true\">\uD83D\uDD12</span> Editor mode";
   }
   function showStatus(msg, kind) {
     status.className = "sq-status show " + (kind || "info");
@@ -192,32 +197,33 @@
 
   $("#sqEdit").addEventListener("click", function () {
     if (getToken()) { if (confirm("Forget the saved GitHub token on this browser?")) setToken(""); }
-    else openModal(true);
+    else openModal(true, this);
   });
-  $("#sqAdd").addEventListener("click", function () { openModal(false); });
+  $("#sqAdd").addEventListener("click", function () { openModal(false, this); });
   refreshBar();
 
   /* ---------- build modal ---------- */
   var ov = document.createElement("div");
   ov.className = "sq-ov";
   ov.innerHTML =
-    '<div class="sq-modal" role="dialog" aria-modal="true">' +
-      '<h3>Add a DPM</h3>' +
-      '<div class="sub">Type a name to pick an existing DPM (email & cluster auto-fill), or enter someone new.</div>' +
+    '<div class="sq-modal" role="dialog" aria-modal="true" aria-labelledby="sqDlgTitle" aria-describedby="sqDlgSub">' +
+      '<h3 id="sqDlgTitle">Add a DPM</h3>' +
+      '<div class="sq-merr" id="sqErr" role="alert"></div>' +
+      '<div class="sub" id="sqDlgSub">Type a name to pick an existing DPM (email & cluster auto-fill), or enter someone new.</div>' +
       '<div class="sq-tokbox" id="sqTokBox">' +
-        '<p>Saving requires a one-time GitHub token (fine-grained, <b>Contents: Read &amp; write</b> on Delivery-Project-Manager-s-onboarding). ' +
+        '<p id="sqTokHelp">Saving requires a one-time GitHub token (fine-grained, <b>Contents: Read &amp; write</b> on Delivery-Project-Manager-s-onboarding). ' +
         'It is stored only in this browser. ' +
         '<a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">Create a token \u2192</a></p>' +
-        '<div class="sq-field" style="margin-bottom:0;"><label>GitHub token</label>' +
-        '<input type="password" id="sqTok" placeholder="github_pat_..."></div>' +
+        '<div class="sq-field" style="margin-bottom:0;"><label for="sqTok">GitHub token</label>' +
+        '<input type="password" id="sqTok" autocomplete="off" aria-describedby="sqTokHelp" placeholder="github_pat_..."></div>' +
       '</div>' +
-      '<div class="sq-field"><label>Name</label><input id="sqName" list="sqPeople" autocomplete="off" placeholder="Start typing a name..."></div>' +
+      '<div class="sq-field"><label for="sqName">Name</label><input id="sqName" list="sqPeople" autocomplete="off" placeholder="Start typing a name..."></div>' +
       '<datalist id="sqPeople"></datalist>' +
-      '<div class="sq-field"><label>Email</label><input id="sqEmail" type="email" placeholder="name@orange.com"></div>' +
-      '<div class="sq-field"><label>Cluster</label><input id="sqCluster" placeholder="e.g. N&S EU (Inc. Trans), Swiss, GEA, Benelux"></div>' +
+      '<div class="sq-field"><label for="sqEmail">Email</label><input id="sqEmail" type="email" autocomplete="email" placeholder="name@orange.com"></div>' +
+      '<div class="sq-field"><label for="sqCluster">Cluster</label><input id="sqCluster" placeholder="e.g. N&S EU (Inc. Trans), Swiss, GEA, Benelux"></div>' +
       '<div class="sq-actions">' +
-        '<button class="sq-cancel" id="sqCancel">Cancel</button>' +
-        '<button class="sq-save" id="sqSave">Save</button>' +
+        '<button type="button" class="sq-cancel" id="sqCancel">Cancel</button>' +
+        '<button type="button" class="sq-save" id="sqSave">Save</button>' +
       '</div>' +
     '</div>';
   document.body.appendChild(ov);
@@ -235,21 +241,43 @@
     if (hit) { $("#sqEmail").value = hit.email; $("#sqCluster").value = hit.cluster; }
   });
 
-  function openModal(tokenFocus) {
+  var opener = null;
+  function modalErr(msg, field) {
+    ["#sqTok", "#sqName", "#sqEmail", "#sqCluster"].forEach(function (s) { $(s).removeAttribute("aria-invalid"); });
+    $("#sqErr").textContent = msg || "";
+    if (field) { field.setAttribute("aria-invalid", "true"); field.focus(); }
+  }
+  function openModal(tokenFocus, from) {
+    opener = from || document.activeElement;
     $("#sqTokBox").style.display = getToken() ? "none" : "block";
     if (!getToken()) $("#sqTok").value = "";
     if (!tokenFocus) { $("#sqName").value = ""; $("#sqEmail").value = ""; $("#sqCluster").value = ""; }
+    modalErr("");
     ov.className = "sq-ov show";
     setTimeout(function () { (tokenFocus ? $("#sqTok") : $("#sqName")).focus(); }, 40);
   }
-  function closeModal() { ov.className = "sq-ov"; }
+  function closeModal() {
+    if (ov.className.indexOf("show") < 0) return;
+    ov.className = "sq-ov";
+    if (opener && document.contains(opener)) { try { opener.focus(); } catch (e) {} }
+    opener = null;
+  }
+  /* Escape closes; Tab / Shift+Tab stay inside the dialog */
+  ov.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") { e.preventDefault(); closeModal(); return; }
+    if (e.key !== "Tab") return;
+    var f = [].filter.call(ov.querySelectorAll("a[href], button:not([disabled]), input"), function (n) { return n.offsetParent !== null; });
+    if (!f.length) return;
+    if (e.shiftKey && document.activeElement === f[0]) { e.preventDefault(); f[f.length - 1].focus(); }
+    else if (!e.shiftKey && document.activeElement === f[f.length - 1]) { e.preventDefault(); f[0].focus(); }
+  });
   $("#sqCancel").addEventListener("click", closeModal);
   ov.addEventListener("click", function (e) { if (e.target === ov) closeModal(); });
 
   $("#sqSave").addEventListener("click", function () {
     var tokInput = $("#sqTok").value.trim();
     if (tokInput) setToken(tokInput);
-    if (!getToken()) { showStatus("Enter a GitHub token first (see the box at the top of the form).", "err"); $("#sqTokBox").style.display = "block"; return; }
+    if (!getToken()) { $("#sqTokBox").style.display = "block"; modalErr("Enter a GitHub token first (see the box at the top of the form).", $("#sqTok")); return; }
 
     var member = {
       name:    $("#sqName").value.trim(),
@@ -257,8 +285,9 @@
       cluster: $("#sqCluster").value.trim()
     };
     if (!member.name || !member.email || member.email.indexOf("@") < 0) {
-      showStatus("Please enter a name and a valid email.", "err"); return;
+      modalErr("Please enter a name and a valid email.", !member.name ? $("#sqName") : $("#sqEmail")); return;
     }
+    modalErr("");
     $("#sqSave").disabled = true; $("#sqSave").textContent = "Saving...";
     commit(member).then(function (res) {
       $("#sqSave").disabled = false; $("#sqSave").textContent = "Save";
@@ -268,8 +297,8 @@
     }).catch(function (err) {
       $("#sqSave").disabled = false; $("#sqSave").textContent = "Save";
       var m = String(err && err.message || err);
-      if (m === "auth") { showStatus("That token was rejected. Check it has <b>Contents: Read &amp; write</b> on Delivery-Project-Manager-s-onboarding, then set it again via Editor mode.", "err"); setToken(""); $("#sqTokBox").style.display = "block"; }
-      else { showStatus("Couldn't save: " + esc(m) + ". Check the branch name in squad-data.js and the token permissions.", "err"); }
+      if (m === "auth") { showStatus("That token was rejected. Check it has <b>Contents: Read &amp; write</b> on Delivery-Project-Manager-s-onboarding, then set it again via Editor mode.", "err"); setToken(""); $("#sqTokBox").style.display = "block"; modalErr("That token was rejected. Check it has Contents: Read & write on Delivery-Project-Manager-s-onboarding, then enter it again.", $("#sqTok")); }
+      else { showStatus("Couldn't save: " + esc(m) + ". Check the branch name in squad-data.js and the token permissions.", "err"); modalErr("Couldn't save: " + m + ". Check the branch name in squad-data.js and the token permissions."); }
     });
   });
 

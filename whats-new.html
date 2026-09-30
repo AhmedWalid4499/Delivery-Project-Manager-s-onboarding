@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What's New — DPM Knowledge Base</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="stylesheet" href="shared.css">
+<style>
+/* ── release notes shell (timeline styles are injected by whats-new-data.js) ── */
+.wn-root { min-width:0; }
+.wn-fallback { font-size:14px; color:#5E5E5E; background:#FAFAFA; border:1px dashed #D4D4D4; border-radius:12px; padding:18px 20px; margin:0; }
+
+/* ── recently updated pages ── */
+.rp-section[hidden] { display:none !important; }
+.rp-list { list-style:none; margin:0; padding:0; background:#fff; border:1px solid #E6E6E6; border-radius:14px; overflow:hidden; }
+.rp-list li + li { border-top:1px solid #F0F0F0; }
+.rp-link { display:flex; align-items:center; flex-wrap:wrap; gap:4px 14px; padding:12px 18px; color:var(--black); text-decoration:none !important; transition:background .15s; }
+.rp-link:hover { background:var(--orange-faint); }
+.rp-link:focus-visible { outline:3px solid #B34200; outline-offset:-3px; }
+.rp-title { flex:1 1 220px; min-width:0; font-size:14px; font-weight:600; line-height:1.4; overflow-wrap:break-word; word-wrap:break-word; }
+.rp-link:hover .rp-title { color:#B34200; }
+.rp-when { flex-shrink:0; display:inline-flex; align-items:baseline; gap:8px; font-size:12.5px; color:#5E5E5E; }
+.rp-when time { font-family:var(--mono); font-weight:500; }
+.rp-ago { font-size:11.5px; font-weight:600; color:#5E5E5E; white-space:nowrap; }
+.rp-ago.is-recent { color:#0A7A4A; background:var(--green-pale); border-radius:20px; padding:2px 8px; }
+.rp-note { font-size:12.5px; color:#5E5E5E; margin:10px 2px 0; }
+@media(max-width:560px){ .rp-link { padding:12px 14px; } }
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <a href="index.html" class="topnav-brand">
+    <div class="topnav-logo">DPM</div>
+    <div class="topnav-brand-text">Knowledge <span>Base</span></div>
+  </a>
+  <div class="topnav-links">
+    <a href="index.html"          class="nav-link">Home</a>
+    <a href="lan-wan-basics.html" class="nav-link">LAN / WAN</a>
+    <a href="ip-routing.html"     class="nav-link">IP Routing</a>
+    <a href="switching.html"      class="nav-link">Switching</a>
+    <a href="wireless.html"       class="nav-link">Wireless</a>
+    <a href="firewalls.html"      class="nav-link">Firewalls</a>
+    <a href="zscaler.html"        class="nav-link">Zscaler</a>
+    <a href="devices.html"        class="nav-link">Devices</a>
+    <a href="glossary.html"       class="nav-link">Glossary</a>
+  </div>
+  <div class="topnav-badge">New Hire Guide</div>
+</nav>
+
+<div class="breadcrumb" style="background:transparent;border:none;padding:0;"></div>
+
+<div class="page-hero dark">
+  <div class="hero-content">
+    <div class="hero-tag"><span aria-hidden="true">📰</span> Updates</div>
+    <h1>What’s <span>new</span></h1>
+    <p class="hero-sub">Every change to the Knowledge Base in one place — new pages, improvements and fixes, newest first — so you always know what’s current.</p>
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- RELEASE NOTES -->
+  <div class="section">
+    <div class="section-header">
+      <h2 id="release-notes">Release notes</h2>
+      <div class="divider"></div>
+      <p>Grouped by month, newest first. Use the buttons to show only new features, improvements or fixes. A <strong>Recent</strong> dot marks anything from the last three weeks.</p>
+    </div>
+    <div class="wn-root" id="wn-root">
+      <noscript><p class="wn-fallback">Turn on JavaScript to see the list of updates.</p></noscript>
+    </div>
+  </div>
+
+  <!-- RECENTLY UPDATED PAGES (shown only when page-meta.json is available) -->
+  <div class="section rp-section" id="recently-updated-section" hidden>
+    <div class="section-header">
+      <h2 id="recently-updated">Recently updated pages</h2>
+      <div class="divider"></div>
+      <p>The ten pages whose content changed most recently — worth a re-read if you last looked a while ago.</p>
+    </div>
+    <ol class="rp-list" id="rp-list"></ol>
+    <p class="rp-note" id="rp-note"></p>
+  </div>
+
+  <!-- FEEDBACK -->
+  <div class="section">
+    <div class="section-header">
+      <h2 id="out-of-date">Spotted something out of date?</h2>
+      <div class="divider"></div>
+      <p>The Knowledge Base is only useful if it stays accurate.</p>
+    </div>
+    <div class="alert orange" style="margin-bottom:14px;">
+      <span class="alert-icon" aria-hidden="true">✍️</span>
+      <p>The site is looked after by the <a href="onboarding-squad.html">Onboarding Squad</a>. If a page looks wrong or out of date, or there is something you would like added, let them know — changes to the site are logged on this page.</p>
+    </div>
+    <div class="alert blue" style="margin-bottom:0;">
+      <span class="alert-icon" aria-hidden="true">🛠️</span>
+      <p><strong>Maintainers:</strong> add one entry to <code>whats-new-data.js</code> each time you ship a change. The instructions are at the top of that file — no other step is needed for it to appear here and on the home page.</p>
+    </div>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <p>DPM <span>Knowledge Base</span> &nbsp;·&nbsp; Onboarding Handbook Ed.&nbsp;1.3 &nbsp;·&nbsp; Internal Use Only</p>
+</footer>
+<script src="whats-new-data.js"></script>
+<script>
+/* Release notes timeline (renderer + data live in whats-new-data.js) */
+(function () {
+  var root = document.getElementById('wn-root');
+  if (!root) return;
+  var ok = false;
+  if (window.KBWhatsNew && typeof window.KBWhatsNew.renderAll === 'function') {
+    try { window.KBWhatsNew.renderAll(root); ok = true; } catch (err) { ok = false; }
+  }
+  if (!ok) {
+    root.innerHTML = '<p class="wn-fallback">The list of updates couldn’t be loaded. Try refreshing the page.</p>';
+  }
+})();
+
+/* Recently updated pages — reads page-meta.json (generated by the build script).
+   If the file is missing or unreadable, the whole section is removed quietly. */
+(function () {
+  var sec = document.getElementById('recently-updated-section');
+  var list = document.getElementById('rp-list');
+  var note = document.getElementById('rp-note');
+  if (!sec || !list) return;
+
+  var MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  var FILE_RE = /^[A-Za-z0-9][A-Za-z0-9._\/-]*\.html$/;
+
+  function parseDate(s) {
+    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(s == null ? '' : s).trim());
+    if (!m) return null;
+    var y = +m[1], mo = +m[2] - 1, d = +m[3];
+    var dt = new Date(y, mo, d);
+    if (dt.getFullYear() !== y || dt.getMonth() !== mo || dt.getDate() !== d) return null;
+    return dt;
+  }
+  function fmt(dt) { return dt.getDate() + ' ' + MON[dt.getMonth()] + ' ' + dt.getFullYear(); }
+  function ageDays(dt) {
+    var now = new Date();
+    var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    return Math.round((today.getTime() - dt.getTime()) / 86400000);
+  }
+  function ago(days) {
+    if (days < 0 || days > 30) return '';
+    if (days === 0) return 'today';
+    if (days === 1) return 'yesterday';
+    return days + ' days ago';
+  }
+  function decode(s) {
+    return s.replace(/&nbsp;/g, ' ').replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+            .replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&amp;/g, '&');
+  }
+  function cleanTitle(t, file) {
+    if (file === 'index.html') return 'Home';
+    t = decode(String(t == null ? '' : t)).replace(/\s+/g, ' ').trim();
+    t = t.replace(/\s+[—–|-]\s+DPM\b.*$/, '').trim();
+    return t || file.replace(/\.html$/, '');
+  }
+  function drop() {
+    if (sec.parentNode) sec.parentNode.removeChild(sec);
+    /* also remove its entry from the "On this page" box, if kb-ui.js already built it */
+    var links = document.querySelectorAll('.kb-toc a[href="#recently-updated"]');
+    for (var i = 0; i < links.length; i++) {
+      var li = links[i].parentNode;
+      if (li && li.parentNode) li.parentNode.removeChild(li);
+    }
+  }
+
+  if (!window.fetch) { drop(); return; }
+
+  fetch('page-meta.json?cb=' + Date.now())
+    .then(function (r) {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.json();
+    })
+    .then(function (data) {
+      var pages = data && data.pages;
+      if (!pages || typeof pages !== 'object') throw new Error('no pages');
+      var rows = [];
+      for (var k in pages) {
+        if (!Object.prototype.hasOwnProperty.call(pages, k)) continue;
+        if (!FILE_RE.test(k) || k.indexOf('..') !== -1 || k === '404.html') continue;
+        var p = pages[k];
+        if (!p || typeof p !== 'object') continue;
+        var d = parseDate(p.updated);
+        if (!d) continue;
+        rows.push({ file: k, title: cleanTitle(p.title, k), date: String(p.updated).trim(), d: d });
+      }
+      if (!rows.length) throw new Error('empty');
+
+      rows.sort(function (a, b) {
+        if (a.date !== b.date) return a.date < b.date ? 1 : -1;
+        return a.title.toLowerCase() < b.title.toLowerCase() ? -1 : (a.title.toLowerCase() > b.title.toLowerCase() ? 1 : 0);
+      });
+      rows = rows.slice(0, 10);
+
+      var frag = document.createDocumentFragment();
+      for (var i = 0; i < rows.length; i++) {
+        var r = rows[i];
+        var li = document.createElement('li');
+        var a = document.createElement('a');
+        a.className = 'rp-link';
+        a.href = r.file;
+        var t = document.createElement('span');
+        t.className = 'rp-title';
+        t.textContent = r.title;
+        var w = document.createElement('span');
+        w.className = 'rp-when';
+        var tm = document.createElement('time');
+        tm.setAttribute('datetime', r.date);
+        tm.textContent = fmt(r.d);
+        w.appendChild(document.createTextNode('Updated '));
+        w.appendChild(tm);
+        var days = ageDays(r.d);
+        var rel = ago(days);
+        if (rel) {
+          var s = document.createElement('span');
+          s.className = days <= 21 ? 'rp-ago is-recent' : 'rp-ago';
+          s.textContent = rel;
+          w.appendChild(s);
+        }
+        a.appendChild(t);
+        a.appendChild(w);
+        li.appendChild(a);
+        frag.appendChild(li);
+      }
+      list.innerHTML = '';
+      list.appendChild(frag);
+
+      var g = parseDate(data.generated);
+      if (note) note.textContent = g ? 'Page dates last refreshed ' + fmt(g) + '.' : '';
+      sec.hidden = false;
+    })
+    ['catch'](function () { drop(); });
+})();
+</script>
+<script src="shared.js"></script>
+</body>
+</html>

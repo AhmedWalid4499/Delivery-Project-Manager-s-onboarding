@@ -17,18 +17,24 @@
 .opt43 .calc-header-title{font-size:14px;font-weight:700;margin-left:8px;color:var(--black);}
 .opt43 .calc-body{padding:24px;}
 .opt43 .form-group{margin-bottom:20px;}
-.opt43 label{display:block;font-size:11px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;color:var(--gray-mid);margin-bottom:9px;}
+.opt43 fieldset{border:0;margin:0;padding:0;min-width:0;}
+.opt43 legend{padding:0;}
+.opt43 label,.opt43 legend{display:block;font-size:11px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;color:var(--gray-mid);margin-bottom:9px;}
 .opt43 .radio-group{display:flex;gap:9px;flex-wrap:wrap;}
-.opt43 .radio-btn{cursor:pointer;}
-.opt43 .radio-btn input{display:none;}
-.opt43 .radio-btn span{display:block;padding:9px 16px;border-radius:9px;border:1.5px solid #E0E0E0;font-size:13px;font-weight:600;color:var(--gray-mid);background:#fff;transition:all .15s;}
-.opt43 .radio-btn input:checked+span{border-color:var(--orange);color:var(--orange-dark);background:var(--orange-pale);}
+.opt43 .radio-btn{cursor:pointer;position:relative;}
+/* visually hidden but still focusable and in the accessibility tree */
+.opt43 .radio-btn input{position:absolute;opacity:0;width:1px;height:1px;margin:0;}
+.opt43 .radio-btn span{display:block;padding:9px 16px;border-radius:9px;border:1.5px solid #8A8A8A;font-size:13px;font-weight:600;color:var(--gray-mid);background:#fff;transition:all .15s;}
+.opt43 .radio-btn input:checked+span{border-color:var(--orange);color:var(--orange-dark);background:var(--orange-pale);box-shadow:inset 0 0 0 1px var(--orange);}
+.opt43 .radio-btn input:checked+span::before{content:"\2713\00a0";content:"\2713\00a0" / "";}
+.opt43 .radio-btn input:focus-visible+span{outline:3px solid var(--orange-dark);outline-offset:2px;}
 .opt43 .radio-btn:hover span{border-color:var(--orange-light);color:var(--gray-dark);}
-.opt43 textarea{width:100%;background:var(--gray-faint);border:1.5px solid #E0E0E0;border-radius:10px;color:var(--black);font-family:var(--mono);font-size:13px;padding:12px 14px;resize:vertical;min-height:84px;outline:none;transition:border-color .18s;}
-.opt43 textarea:focus{border-color:var(--orange);}
+.opt43 textarea{width:100%;background:#fff;border:1.5px solid #8A8A8A;border-radius:10px;color:var(--black);font-family:var(--mono);font-size:13px;padding:12px 14px;resize:vertical;min-height:84px;transition:border-color .18s;}
+.opt43 textarea:focus{border-color:var(--orange-dark);outline:3px solid var(--orange-dark);outline-offset:2px;}
+.opt43 textarea[aria-invalid="true"]{border-color:#C0392B;}
 .opt43 .btn-row{display:flex;gap:10px;flex-wrap:wrap;}
 .opt43 .btn{display:inline-flex;align-items:center;gap:7px;padding:11px 22px;border-radius:10px;border:none;cursor:pointer;font-family:var(--font);font-size:14px;font-weight:700;transition:all .18s;}
-.opt43 .btn-primary{background:var(--orange);color:#fff;}
+.opt43 .btn-primary{background:var(--orange-strong);color:#fff;}
 .opt43 .btn-primary:hover{filter:brightness(1.06);transform:translateY(-1px);box-shadow:0 8px 26px rgba(255,98,0,0.28);}
 .opt43 .btn-secondary{background:var(--gray-faint);color:var(--gray-mid);border:1px solid #E0E0E0;}
 .opt43 .btn-secondary:hover{color:var(--black);border-color:var(--gray-light);}
@@ -51,7 +57,7 @@
 .opt43 .tag-len{background:var(--green-pale);color:#0A7A4A;}
 .opt43 .tag-ip{background:#EEF3FF;color:#1A4E8A;}
 .opt43 .explanation-box{margin-top:16px;background:var(--gray-faint);border:1px solid #EDEDED;border-radius:12px;padding:18px 20px;}
-.opt43 .explanation-box h4{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--black);margin-bottom:12px;}
+.opt43 .explanation-box h3{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--black);margin-bottom:12px;}
 .opt43 .explanation-box ol{padding-left:18px;color:var(--gray-dark);font-size:13px;line-height:1.9;}
 .opt43 .mono{font-family:var(--mono);color:var(--orange-dark);font-weight:600;}
 /* TLV mini cards */
@@ -62,7 +68,8 @@
 .tlv-t{background:var(--orange-pale);color:var(--orange-dark);}
 .tlv-l{background:var(--green-pale);color:#0A7A4A;}
 .tlv-v{background:#EEF3FF;color:#1A4E8A;}
-.tlv-card h4{font-size:14px;font-weight:700;color:var(--black);margin-bottom:5px;}
+.tlv-card h3{font-size:14px;font-weight:700;color:var(--black);margin-bottom:5px;}
+.opt43 .ip-hint{font-size:12px;color:var(--gray-mid);margin:6px 0 0;}
 .tlv-card p{font-size:12.5px;color:var(--gray-mid);line-height:1.6;margin:0;}
 </style>
 </head>
@@ -88,7 +95,7 @@
 
 <div class="page-hero dark">
   <div class="hero-content">
-    <div class="hero-tag">🧮 DPM Tool</div>
+    <div class="hero-tag"><span aria-hidden="true">🧮</span> DPM Tool</div>
     <h1>Option 43 <span>Calculator</span></h1>
     <p class="hero-sub">Generate the exact DHCP Option 43 hex string your wireless controller needs to point access points at the WLC — with a full byte-by-byte breakdown of how it was built.</p>
   </div>
@@ -113,32 +120,34 @@
         </div>
         <div class="calc-body">
 
-          <div class="form-group">
-            <label>Controller Type</label>
+          <fieldset class="form-group">
+            <legend>Controller Type</legend>
             <div class="radio-group">
               <label class="radio-btn"><input type="radio" name="vendor" value="cisco" checked><span>Cisco WLC</span></label>
               <label class="radio-btn"><input type="radio" name="vendor" value="ruckus_zd"><span>Ruckus ZD</span></label>
               <label class="radio-btn"><input type="radio" name="vendor" value="ruckus_scg"><span>Ruckus SCG / vSZ</span></label>
             </div>
-          </div>
+          </fieldset>
 
           <div class="form-group">
-            <label>Controller IP Address(es)</label>
-            <textarea id="ipInput" placeholder="Separate by space, comma, or newline&#10;e.g. 192.168.1.10 192.168.1.11"></textarea>
+            <label for="ipInput">Controller IP Address(es)</label>
+            <textarea id="ipInput" aria-describedby="ipHint" placeholder="e.g. 192.168.1.10 192.168.1.11"></textarea>
+            <p class="ip-hint" id="ipHint">Separate by space, comma, or newline</p>
           </div>
 
           <div class="btn-row">
-            <button class="btn btn-primary" onclick="calculate()">⚡ Generate Option 43</button>
-            <button class="btn btn-secondary" onclick="resetCalc()">Reset</button>
+            <button type="button" class="btn btn-primary" onclick="calculate()"><span aria-hidden="true">⚡</span> Generate Option 43</button>
+            <button type="button" class="btn btn-secondary" onclick="resetCalc()">Reset</button>
           </div>
 
-          <div class="error-msg" id="errorMsg"></div>
+          <div class="error-msg" id="errorMsg" role="alert"></div>
+          <div class="sr-only" id="o43Status" role="status" aria-live="polite" aria-atomic="true"></div>
 
           <div id="result">
             <div class="result-panel">
               <div class="result-header">
                 <span class="result-header-label">Option 43 hex string</span>
-                <button class="copy-btn" onclick="copyResult()">Copy</button>
+                <button type="button" class="copy-btn" onclick="copyResult()">Copy</button>
               </div>
               <div class="result-value" id="resultValue"></div>
             </div>
@@ -146,13 +155,13 @@
             <div class="breakdown">
               <div class="breakdown-title">Byte-by-byte breakdown</div>
               <table class="breakdown-table">
-                <thead><tr><th>Byte(s)</th><th>Hex</th><th>Role</th><th>Meaning</th></tr></thead>
+                <thead><tr><th scope="col">Byte(s)</th><th scope="col">Hex</th><th scope="col">Role</th><th scope="col">Meaning</th></tr></thead>
                 <tbody id="breakdownBody"></tbody>
               </table>
             </div>
 
-            <div class="explanation-box">
-              <h4>📐 How this was calculated</h4>
+            <div class="explanation-box" data-kb-noanchor>
+              <h3><span aria-hidden="true">📐</span> How this was calculated</h3>
               <ol id="explanationSteps"></ol>
             </div>
           </div><!-- /#result -->
@@ -171,17 +180,17 @@
     </div>
     <div class="grid-3">
       <div class="card">
-        <div class="card-icon" style="background:var(--cisco-pale);">📡</div>
+        <div class="card-icon" aria-hidden="true" style="background:var(--cisco-pale);">📡</div>
         <h3>AP boots &amp; sends DHCP Discover</h3>
         <p>The AP broadcasts a request — it needs an IP address and, crucially, a path to its controller.</p>
       </div>
       <div class="card">
-        <div class="card-icon" style="background:var(--orange-pale);">🏷️</div>
+        <div class="card-icon" aria-hidden="true" style="background:var(--orange-pale);">🏷️</div>
         <h3>DHCP server includes Option 43</h3>
         <p>The DHCP scope is configured to attach a vendor-specific hex payload pointing at the WLC IP(s).</p>
       </div>
       <div class="card">
-        <div class="card-icon" style="background:var(--green-pale);">🔗</div>
+        <div class="card-icon" aria-hidden="true" style="background:var(--green-pale);">🔗</div>
         <h3>AP decodes it &amp; joins the WLC</h3>
         <p>The AP parses the hex, extracts the controller IP(s), and opens a CAPWAP tunnel to the WLC.</p>
       </div>
@@ -195,34 +204,34 @@
       <div class="divider"></div>
       <p>Cisco uses a <strong>TLV</strong> (Type · Length · Value) structure inside Option 43. Every byte is hex-encoded:</p>
     </div>
-    <div class="tlv-grid">
+    <div class="tlv-grid" data-kb-noanchor>
       <div class="tlv-card">
-        <div class="tlv-badge tlv-t">T</div>
-        <h4>Type — 0xF1</h4>
+        <div class="tlv-badge tlv-t" aria-hidden="true">T</div>
+        <h3>Type — 0xF1</h3>
         <p>Cisco sub-option <strong>0xF1</strong> (241) means "WLC address list". It tells the AP the following bytes are controller IPs.</p>
       </div>
       <div class="tlv-card">
-        <div class="tlv-badge tlv-l">L</div>
-        <h4>Length — N × 4</h4>
+        <div class="tlv-badge tlv-l" aria-hidden="true">L</div>
+        <h3>Length — N × 4</h3>
         <p>Each IPv4 address is 4 bytes. Two WLCs → length <strong>0x08</strong>. Tells the AP how many bytes to read.</p>
       </div>
       <div class="tlv-card">
-        <div class="tlv-badge tlv-v">V</div>
-        <h4>Value — IPs as hex</h4>
+        <div class="tlv-badge tlv-v" aria-hidden="true">V</div>
+        <h3>Value — IPs as hex</h3>
         <p>Each IP is converted octet-by-octet: <strong>192.168.1.100</strong> → <span style="font-family:var(--mono)">C0A80164</span>. Concatenated, no separators.</p>
       </div>
     </div>
-    <div class="code-block" style="margin-top:12px;">
+    <div class="code-block" style="margin-top:12px;"><pre>
 <span class="cmt"># Example — single WLC at 10.0.0.1</span>
 <span class="kw">F1</span> <span class="val">04</span> <span class="cmd">0A 00 00 01</span>
 <span class="cmt"># F1 = sub-option · 04 = length (1 IP × 4 bytes) · 0A000001 = 10.0.0.1 in hex</span>
 
 <span class="cmt"># Cisco IOS DHCP scope:</span>
-<span class="cmd">option 43 hex</span> <span class="val">f1040a000001</span>
+<span class="cmd">option 43 hex</span> <span class="val">f1040a000001</span></pre>
     </div>
     <div class="alert orange" style="margin-top:16px;">
-      <span class="alert-icon">💡</span>
-      <p>Verifying Option 43 is a <strong>critical pre-migration step</strong> in the <a href="process-ap.html">AP migration process</a> — if it's missing, APs get an IP but never find the WLC. See the <a href="wireless.html#kb-toc-list">Wireless</a> page for the discovery order (Option 43 → DNS → broadcast).</p>
+      <span class="alert-icon" aria-hidden="true">💡</span>
+      <p>Verifying Option 43 is a <strong>critical pre-migration step</strong> in the <a href="process-ap.html">AP migration process</a> — if it's missing, APs get an IP but never find the WLC. See the <a href="wireless.html#dhcp-option-43-wlc-discovery">Wireless</a> page for the discovery order (Option 43 → DNS → broadcast).</p>
     </div>
   </div>
 
@@ -235,7 +244,6 @@
   References: <a href="https://www.rfc-editor.org/rfc/rfc2132" target="_blank" rel="noopener" style="color:rgba(255,255,255,0.4);">RFC 2132</a></p>
 </footer>
 
-<script src="shared.js"></script>
 <script>
 /* ── Option 43 calculator (logic ported from the standalone tool) ── */
 function parseIPs(raw){ return raw.split(/[\s,;:\n]+/).map(function(s){return s.trim();}).filter(Boolean); }
@@ -251,12 +259,26 @@ function validateIP(ip){
 function ipToHex(ip){ return ip.split('.').map(function(o){return parseInt(o,10).toString(16).padStart(2,'0').toUpperCase();}).join(' '); }
 function ipToHexNS(ip){ return ip.split('.').map(function(o){return parseInt(o,10).toString(16).padStart(2,'0').toUpperCase();}).join(''); }
 
+function announce(msg){
+  var s = document.getElementById('o43Status');
+  if (!s) return;
+  s.textContent = '';
+  setTimeout(function(){ s.textContent = msg; }, 60);
+}
 function showError(msg){
   var el = document.getElementById('errorMsg');
+  var inp = document.getElementById('ipInput');
   el.style.display = 'block'; el.textContent = msg;
+  inp.setAttribute('aria-invalid', 'true');
+  inp.setAttribute('aria-describedby', 'errorMsg ipHint');
   document.getElementById('result').style.display = 'none';
 }
-function hideError(){ document.getElementById('errorMsg').style.display = 'none'; }
+function hideError(){
+  var inp = document.getElementById('ipInput');
+  document.getElementById('errorMsg').style.display = 'none';
+  inp.removeAttribute('aria-invalid');
+  inp.setAttribute('aria-describedby', 'ipHint');
+}
 
 function calculate(){
   hideError();
@@ -328,12 +350,14 @@ function calculate(){
   document.getElementById('breakdownBody').innerHTML = tbodyHTML;
   document.getElementById('explanationSteps').innerHTML = stepsHTML;
   document.getElementById('result').style.display = 'block';
-  document.getElementById('result').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  var still = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.getElementById('result').scrollIntoView({ behavior: still ? 'auto' : 'smooth', block: 'nearest' });
+  announce('Option 43 value generated: ' + formatted);
 }
 
 function row(bytes, hex, tagClass, role, meaning){
   return '<tr>'+
-    '<td style="color:var(--gray-light);font-family:var(--mono);font-size:11px">'+bytes+'</td>'+
+    '<td style="color:var(--gray-mid);font-family:var(--mono);font-size:11px">'+bytes+'</td>'+
     '<td><span class="tag '+tagClass+'">'+hex+'</span></td>'+
     '<td style="color:var(--black);font-size:12px">'+role+'</td>'+
     '<td style="font-size:12px">'+meaning+'</td>'+
@@ -342,7 +366,7 @@ function row(bytes, hex, tagClass, role, meaning){
 
 function copyResult(){
   var txt = document.getElementById('resultValue').textContent;
-  function done(){ var b=document.querySelector('.copy-btn'); if(b){ b.textContent='Copied ✓'; setTimeout(function(){b.textContent='Copy';},2000);} }
+  function done(){ var b=document.querySelector('.copy-btn'); if(b){ b.textContent='Copied ✓'; setTimeout(function(){b.textContent='Copy';},2000);} announce('Copied to clipboard'); }
   if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(done, done);
   else done();
 }
@@ -353,5 +377,6 @@ function resetCalc(){
   hideError();
 }
 </script>
+<script src="shared.js"></script>
 </body>
 </html>

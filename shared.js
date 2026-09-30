@@ -76,17 +76,15 @@ if (document.readyState === 'loading') {
 /* ── VENDOR TAB SWITCHING ───────────────────────────────── */
 function showVendor(vendor, btn) {
   document.querySelectorAll('.vendor-panel').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.vendor-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.vendor-btn').forEach(b => { b.classList.remove('active'); b.setAttribute('aria-pressed', 'false'); });
   const panel = document.getElementById('vendor-' + vendor);
   if (panel) panel.classList.add('active');
-  if (btn)   btn.classList.add('active');
+  if (btn)   { btn.classList.add('active'); btn.setAttribute('aria-pressed', 'true'); }
 }
-
-/* ── SMOOTH SCROLL ──────────────────────────────────────── */
-function scrollTo(id) {
-  const el = document.getElementById(id);
-  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
+/* expose the selected vendor tab as a pressed toggle, not by fill colour alone */
+document.addEventListener('DOMContentLoaded', function () {
+  document.querySelectorAll('.vendor-btn').forEach(b => b.setAttribute('aria-pressed', b.classList.contains('active') ? 'true' : 'false'));
+});
 
 /* ── COLLAPSIBLE SECTIONS ───────────────────────────────── */
 function toggleCollapse(id) {
@@ -126,7 +124,7 @@ document.addEventListener('DOMContentLoaded', function () {
   if (document.getElementById('kb-search-js')) return;
   var s = document.createElement('script');
   s.id = 'kb-search-js';
-  s.src = 'search.js?v=3';
+  s.src = 'search.js?v=5';
   s.defer = true;
   document.head.appendChild(s);
 })();
@@ -140,7 +138,7 @@ document.addEventListener('DOMContentLoaded', function () {
   if (document.getElementById('kb-ui-js')) return;
   var s = document.createElement('script');
   s.id = 'kb-ui-js';
-  s.src = 'kb-ui.js?v=7';
+  s.src = 'kb-ui.js?v=10';
   s.defer = true;
   document.head.appendChild(s);
 })();

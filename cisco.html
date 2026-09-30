@@ -20,8 +20,8 @@
   color: var(--gray-mid); text-decoration: none; white-space: nowrap;
   border-bottom: 2px solid transparent; transition: all 0.15s;
 }
-.page-subnav a:hover { color: var(--cisco-blue); border-bottom-color: var(--cisco-blue); }
-.page-subnav a.active { color: var(--cisco-blue); border-bottom-color: var(--cisco-blue); }
+.page-subnav a:hover { color: var(--cisco-text); border-bottom-color: var(--cisco-blue); }
+.page-subnav a.active { color: var(--cisco-text); border-bottom-color: var(--cisco-blue); }
 
 /* ── DEVICE DETAIL CARD ── */
 .device-detail {
@@ -35,7 +35,7 @@
   padding: 22px 28px; display: flex; align-items: center; gap: 18px;
 }
 .device-detail-badge {
-  background: var(--cisco-blue); color: #fff;
+  background: var(--cisco-text); color: #fff;
   font-size: 11px; font-weight: 700; padding: 4px 10px;
   border-radius: 6px; letter-spacing: 0.5px; flex-shrink: 0;
 }
@@ -59,7 +59,7 @@
   background: #111; border-radius: 12px; padding: 18px 20px;
 }
 .port-diagram-title {
-  font-family: var(--mono); font-size: 10px; color: rgba(255,255,255,0.35);
+  font-family: var(--mono); font-size: 10px; color: rgba(255,255,255,0.65);
   text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px;
 }
 .port-face {
@@ -68,7 +68,7 @@
   position: relative;
 }
 .port-face-label {
-  font-family: var(--mono); font-size: 9px; color: rgba(255,255,255,0.25);
+  font-family: var(--mono); font-size: 9px; color: rgba(255,255,255,0.65);
   margin-bottom: 10px; letter-spacing: 0.5px;
 }
 .port-row-g { display: flex; flex-wrap: wrap; gap: 5px; align-items: center; margin-bottom: 6px; }
@@ -108,11 +108,11 @@
 .c-wan  { border-color: #F5A623 !important; color: #F5A623 !important; background: rgba(245,166,35,0.08) !important; }
 
 .port-legend-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
-.port-legend-item { display: flex; align-items: center; gap: 5px; font-size: 10px; color: rgba(255,255,255,0.4); font-family: var(--mono); }
+.port-legend-item { display: flex; align-items: center; gap: 5px; font-size: 10px; color: rgba(255,255,255,0.65); font-family: var(--mono); }
 .port-legend-dot  { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
 
 .port-divider { width: 1px; height: 24px; background: rgba(255,255,255,0.08); margin: 0 4px; flex-shrink: 0; }
-.port-group-label { font-family: var(--mono); font-size: 8px; color: rgba(255,255,255,0.2); margin-right: 4px; align-self: center; }
+.port-group-label { font-family: var(--mono); font-size: 9px; color: rgba(255,255,255,0.65); margin-right: 4px; align-self: center; }
 </style>
 </head>
 <body>
@@ -150,7 +150,7 @@
 
 <div class="page-hero cisco-hero">
   <div class="hero-content">
-    <div class="hero-tag" style="background:rgba(27,160,215,0.2);border-color:rgba(27,160,215,0.4);color:#7DD3F0;">🔵 Vendor Guide</div>
+    <div class="hero-tag" style="background:rgba(27,160,215,0.2);border-color:rgba(27,160,215,0.4);color:#7DD3F0;"><span aria-hidden="true">🔵</span> Vendor Guide</div>
     <h1><span class="cisco">Cisco</span> Devices</h1>
     <p class="hero-sub">Switches, routers, firewalls, APs, WLCs, and management platforms. Detailed port diagrams and full specs for every device.</p>
   </div>
@@ -159,7 +159,7 @@
 <div class="content-wide">
 
 <div class="alert blue" style="margin-bottom:40px;">
-  <span class="alert-icon">ℹ️</span>
+  <span class="alert-icon" aria-hidden="true">ℹ️</span>
   <p><strong>Cisco IOS-XE CLI essentials:</strong> <code>show ip route</code> · <code>show interfaces status</code> · <code>show mac address-table</code> · <code>configure terminal</code> · <code>show version</code>. Certification path: CCNA → CCNP → CCIE. Platform families: <strong>Catalyst</strong> (campus switching &amp; SD-WAN edge), <strong>Nexus</strong> (data center), <strong>Catalyst 8000 / ISR</strong> (WAN), <strong>Secure Firewall / FTD</strong> (security).<br><br><strong>Current software (2026):</strong> Catalyst switches, Catalyst 8000/ISR routers &amp; 9800 WLCs run <strong>IOS&nbsp;XE 17.18.x</strong> (17.15.x is the recommended Extended-Support release); Nexus runs <strong>NX-OS 10.x</strong>; Cisco Secure Firewall runs <strong>Threat Defense (FTD) 7.x</strong>.</p>
 </div>
 
@@ -1309,9 +1309,14 @@
     .mgmt-compare-row:last-child { border-bottom: none; }
     .mgmt-compare-row:nth-child(even) { background: #FAFAFA; }
     .mgmt-compare-row span:first-child { color: var(--gray-mid); font-size: 12px; }
-    .mgmt-compare-row .cc  { color: var(--cisco-blue); font-weight: 600; }
-    .mgmt-compare-row .mer { color: #00A86B; font-weight: 600; }
-    .yes { color: #00A86B; font-weight: 700; }
+    .mgmt-compare-row .cc  { color: var(--cisco-text); font-weight: 600; }
+    .mgmt-compare-row .mer { color: var(--green-text); font-weight: 600; }
+    .yes { color: var(--green-text); font-weight: 700; }
+    /* reflow: columns may shrink below their content width and long values wrap */
+    .mgmt-compare-header, .mgmt-compare-row { grid-template-columns: minmax(0,1.5fr) minmax(0,1fr) minmax(0,1fr); column-gap: 8px; }
+    .mgmt-hw-row { grid-template-columns: repeat(3, minmax(0,1fr)); column-gap: 8px; }
+    .mgmt-compare-row span, .mgmt-hw-row span { overflow-wrap: anywhere; }
+    @media(max-width:480px){ .meraki-products { grid-template-columns: 1fr; } }
     .no  { color: #CC2200; font-weight: 700; }
 
     /* Catalyst Centre — blue theme */
@@ -1320,7 +1325,7 @@
     .cc-title   { color: var(--cisco-blue); }
     .cc-icon    { background: var(--cisco-pale); }
     .cc-pillar  { background: rgba(27,160,215,0.04); border-color: rgba(27,160,215,0.18); }
-    .cc-pillar .mgmt-pillar-title { color: var(--cisco-blue); }
+    .cc-pillar .mgmt-pillar-title { color: var(--cisco-text); }
 
     /* Meraki — green theme */
     .mr-header  { background: linear-gradient(135deg, #042910 0%, #065A20 100%); }
@@ -1328,12 +1333,12 @@
     .mr-title   { color: #00A86B; }
     .mr-icon    { background: var(--green-pale); }
     .mr-pillar  { background: rgba(0,168,107,0.04); border-color: rgba(0,168,107,0.18); }
-    .mr-pillar .mgmt-pillar-title { color: #00A86B; }
+    .mr-pillar .mgmt-pillar-title { color: var(--green-text); }
   </style>
 
   <!-- Comparison callout -->
   <div class="alert blue" style="margin-bottom:36px;">
-    <span class="alert-icon">💡</span>
+    <span class="alert-icon" aria-hidden="true">💡</span>
     <p><strong>The key distinction:</strong> <strong>Catalyst Center</strong> is a management layer you put on top of traditional IOS-XE hardware you already own — your existing Catalyst switches and 9800 WLCs. <strong>Meraki</strong> is a completely separate product line where hardware and management are inseparable — you buy Meraki devices and manage them exclusively through Cisco's Meraki cloud. You cannot manage a Meraki switch from Catalyst Center, or a Catalyst switch from the Meraki dashboard. They are two different business models sold to different types of customer.</p>
   </div>
 
@@ -1432,15 +1437,15 @@
       <div class="meraki-products">
 
         <div class="meraki-product" style="border-color:rgba(0,168,107,0.25);background:rgba(0,168,107,0.03);">
-          <div class="meraki-product-series" style="color:#00A86B;">MR</div>
-          <div class="meraki-product-name" style="color:#00A86B;">Wireless APs</div>
+          <div class="meraki-product-series" style="color:var(--green-text);">MR</div>
+          <div class="meraki-product-name" style="color:var(--green-text);">Wireless APs</div>
           <div class="meraki-product-models">MR28 · MR36 · MR46 · MR57<br>MR78 (outdoor) · MR86 (outdoor)</div>
           <div class="meraki-product-desc">WiFi 6 and 6E indoor and outdoor APs. The MR46 is the most common office AP. Dashboard shows client heatmaps, channel utilisation, and real-time client locations. Automatic RF optimisation adjusts channels and power across all APs.</div>
         </div>
 
         <div class="meraki-product" style="border-color:rgba(27,160,215,0.25);background:rgba(27,160,215,0.03);">
-          <div class="meraki-product-series" style="color:var(--cisco-blue);">MS</div>
-          <div class="meraki-product-name" style="color:var(--cisco-blue);">Switches</div>
+          <div class="meraki-product-series" style="color:var(--cisco-text);">MS</div>
+          <div class="meraki-product-name" style="color:var(--cisco-text);">Switches</div>
           <div class="meraki-product-models">MS120 · MS210 · MS250 · MS350<br>MS390 (StackWise) · MS410 · MS425</div>
           <div class="meraki-product-desc">Access to core switches, all managed from the dashboard. VLANs, port profiles, PoE scheduling, and 802.1X are all configured from the browser — no CLI. The MS390 series supports StackWise stacking and is compatible with Catalyst Center (hybrid model).</div>
         </div>
@@ -1453,8 +1458,8 @@
         </div>
 
         <div class="meraki-product" style="border-color:rgba(255,140,66,0.25);background:rgba(255,140,66,0.03);">
-          <div class="meraki-product-series" style="color:#E67300;">MG</div>
-          <div class="meraki-product-name" style="color:#E67300;">Cellular Gateways</div>
+          <div class="meraki-product-series" style="color:#A85400;">MG</div>
+          <div class="meraki-product-name" style="color:#A85400;">Cellular Gateways</div>
           <div class="meraki-product-models">MG21 · MG41<br>MG51 (5G)</div>
           <div class="meraki-product-desc">4G LTE and 5G cellular uplinks managed from the same dashboard. Used as primary WAN at locations without fixed broadband, or as automatic failover backup for the MX appliance when the main internet link goes down.</div>
         </div>
@@ -1467,8 +1472,8 @@
         </div>
 
         <div class="meraki-product" style="border-color:rgba(255,200,0,0.3);background:rgba(255,200,0,0.03);">
-          <div class="meraki-product-series" style="color:#B07D00;">MT</div>
-          <div class="meraki-product-name" style="color:#B07D00;">IoT Sensors</div>
+          <div class="meraki-product-series" style="color:#7A5700;">MT</div>
+          <div class="meraki-product-name" style="color:#7A5700;">IoT Sensors</div>
           <div class="meraki-product-models">MT10 · MT11 · MT12<br>MT14 · MT20 · MT30</div>
           <div class="meraki-product-desc">Environmental sensors (temperature, humidity, water leak detection, door open/close) that report to the Meraki dashboard. Used in server rooms, warehouses, and retail environments. Alert via email, SMS, or webhook when thresholds are exceeded.</div>
         </div>
@@ -1532,7 +1537,6 @@
 <footer class="footer">
   <p>DPM <span>Knowledge Base</span> &nbsp;·&nbsp; <a href="index.html" style="color:rgba(255,255,255,0.4);">Home</a></p>
 </footer>
-<script src="shared.js"></script>
 
 <script>
 // Highlight active in-page nav on scroll
@@ -1552,5 +1556,6 @@
   });
 })();
 </script>
+<script src="shared.js"></script>
 </body>
 </html>

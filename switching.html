@@ -34,7 +34,7 @@
 
 <div class="page-hero dark">
   <div class="hero-content">
-    <div class="hero-tag">🔌 Layer 2</div>
+    <div class="hero-tag"><span aria-hidden="true">🔌</span> Layer 2</div>
     <h1>Switching, <span>VLANs</span> &amp; Stacking</h1>
     <p class="hero-sub">How switches forward traffic, how VLANs segment networks, how STP prevents loops, and how to stack multiple switches into one logical unit.</p>
   </div>
@@ -50,22 +50,22 @@
     </div>
     <div class="grid-2">
       <div class="card">
-        <div class="card-icon" style="background:#F0F0FF;">📋</div>
+        <div class="card-icon" aria-hidden="true" style="background:#F0F0FF;">📋</div>
         <h3>MAC Address Table</h3>
         <p>When a frame arrives, the switch records the source MAC address and the port it came from. Next time a frame is destined for that MAC, the switch sends it only to that port — not all ports. This is called <strong>unicast forwarding</strong>.</p>
       </div>
       <div class="card">
-        <div class="card-icon" style="background:var(--orange-pale);">📢</div>
+        <div class="card-icon" aria-hidden="true" style="background:var(--orange-pale);">📢</div>
         <h3>Broadcast Domains</h3>
         <p>All ports on a switch are in the same broadcast domain by default — a broadcast frame goes to every port. VLANs split the switch into multiple smaller broadcast domains. A router (or Layer 3 switch) is needed to forward traffic between VLANs.</p>
       </div>
       <div class="card">
-        <div class="card-icon" style="background:var(--green-pale);">⚡</div>
+        <div class="card-icon" aria-hidden="true" style="background:var(--green-pale);">⚡</div>
         <h3>Cut-through vs Store-and-Forward</h3>
         <p><strong>Store-and-forward:</strong> Switch receives entire frame, checks for errors, then forwards. Slower but reliable — used in most enterprise switches.<br><strong>Cut-through:</strong> Forwards as soon as destination MAC is read. Faster but no error checking.</p>
       </div>
       <div class="card">
-        <div class="card-icon" style="background:var(--cisco-pale);">🔢</div>
+        <div class="card-icon" aria-hidden="true" style="background:var(--cisco-pale);">🔢</div>
         <h3>Layer 3 Switching</h3>
         <p>A Layer 3 switch (e.g. Cisco Catalyst 9300) can route traffic between VLANs at wire speed using <strong>SVIs (Switched Virtual Interfaces)</strong>. Much faster than sending traffic to a separate router. Almost all enterprise core/distribution switches are L3.</p>
       </div>
@@ -83,24 +83,24 @@
     <div class="diagram-box">
       <svg viewBox="0 0 700 240" xmlns="http://www.w3.org/2000/svg" style="font-family:'Sora',sans-serif;">
         <!-- Switch -->
-        <rect x="250" y="90" width="200" height="50" rx="8" fill="#FF6200"/>
+        <rect x="250" y="90" width="200" height="50" rx="8" fill="#C24A00"/>
         <text x="350" y="120" text-anchor="middle" font-size="13" font-weight="600" fill="white">Core Switch</text>
 
         <!-- VLAN 10 -->
         <rect x="20" y="10" width="140" height="64" rx="8" fill="#E8F6FD" stroke="#1BA0D7" stroke-width="1.5"/>
-        <text x="90" y="30" text-anchor="middle" font-size="11" font-weight="600" fill="#1BA0D7">VLAN 10 — IT</text>
+        <text x="90" y="30" text-anchor="middle" font-size="11" font-weight="600" fill="#0B6A93">VLAN 10 — IT</text>
         <text x="90" y="48" text-anchor="middle" font-size="10" fill="#555">192.168.10.0/24</text>
-        <text x="90" y="63" text-anchor="middle" font-size="9" fill="#888">PC · Server · Printer</text>
+        <text x="90" y="63" text-anchor="middle" font-size="9" fill="#595959">PC · Server · Printer</text>
 
         <!-- VLAN 20 -->
         <rect x="20" y="100" width="140" height="64" rx="8" fill="#FFF0EF" stroke="#EE3124" stroke-width="1.5"/>
-        <text x="90" y="120" text-anchor="middle" font-size="11" font-weight="600" fill="#EE3124">VLAN 20 — Guest</text>
+        <text x="90" y="120" text-anchor="middle" font-size="11" font-weight="600" fill="#B5231A">VLAN 20 — Guest</text>
         <text x="90" y="138" text-anchor="middle" font-size="10" fill="#555">192.168.20.0/24</text>
-        <text x="90" y="153" text-anchor="middle" font-size="9" fill="#888">WiFi Clients</text>
+        <text x="90" y="153" text-anchor="middle" font-size="9" fill="#595959">WiFi Clients</text>
 
         <!-- VLAN 30 -->
         <rect x="20" y="190" width="140" height="40" rx="8" fill="#E6F7F1" stroke="#00A86B" stroke-width="1.5"/>
-        <text x="90" y="210" text-anchor="middle" font-size="11" font-weight="600" fill="#00A86B">VLAN 30 — Phones</text>
+        <text x="90" y="210" text-anchor="middle" font-size="11" font-weight="600" fill="#0A7A4A">VLAN 30 — Phones</text>
         <text x="90" y="224" text-anchor="middle" font-size="9" fill="#555">10.10.30.0/24</text>
 
         <!-- Lines left -->
@@ -109,10 +109,10 @@
         <line x1="160" y1="210" x2="250" y2="125" stroke="#00A86B" stroke-width="1.5" stroke-dasharray="4,2"/>
 
         <!-- Router / L3 -->
-        <rect x="250" y="170" width="200" height="38" rx="8" fill="#1BA0D7"/>
+        <rect x="250" y="170" width="200" height="38" rx="8" fill="#0B6A93"/>
         <text x="350" y="194" text-anchor="middle" font-size="12" font-weight="600" fill="white">L3 Switch / Router</text>
         <line x1="350" y1="140" x2="350" y2="170" stroke="#aaa" stroke-width="1.5"/>
-        <text x="366" y="158" font-size="10" fill="#888">inter-VLAN</text>
+        <text x="366" y="158" font-size="10" fill="#595959">inter-VLAN</text>
 
         <!-- Right side labels -->
         <rect x="540" y="30" width="140" height="30" rx="6" fill="#F5F5F5" stroke="#DDD"/>
@@ -148,7 +148,7 @@ Switch(config-if)# <span class="kw">switchport trunk native vlan</span> <span cl
     </div>
 
     <div class="alert blue">
-      <span class="alert-icon">ℹ️</span>
+      <span class="alert-icon" aria-hidden="true">ℹ️</span>
       <p><strong>Native VLAN:</strong> On a trunk port, frames for the native VLAN are sent untagged. It's best practice to set the native VLAN to an unused VLAN (e.g. 999) to prevent VLAN hopping attacks.</p>
     </div>
   </div>
@@ -199,7 +199,7 @@ Switch(config)# <span class="kw">spanning-tree vlan 10 root primary</span></pre>
     </div>
 
     <div class="alert orange">
-      <span class="alert-icon">⚡</span>
+      <span class="alert-icon" aria-hidden="true">⚡</span>
       <p><strong>PortFast + BPDU Guard:</strong> Enable PortFast on access ports connected to end devices — it skips the 30-second listening/learning delay. Add BPDU Guard to shut down the port if a switch is accidentally connected, preventing a rogue Root Bridge election.</p>
     </div>
   </div>
@@ -214,16 +214,16 @@ Switch(config)# <span class="kw">spanning-tree vlan 10 root primary</span></pre>
 
     <!-- UPLINK / DOWNLINK EXPLAINER -->
     <div class="card mb-16" style="border-top:3px solid var(--orange);">
-      <h3 style="margin-bottom:6px;">🔼🔽 Uplinks vs Downlinks — What's the difference?</h3>
+      <h3 style="margin-bottom:6px;"><span aria-hidden="true">🔼🔽</span> Uplinks vs Downlinks — What's the difference?</h3>
       <p style="font-size:14px;color:var(--gray-mid);margin-bottom:20px;">Before understanding stacking, you need to know these two terms — you'll hear them constantly in networking.</p>
       <div class="grid-2" style="margin-bottom:0;">
         <div style="background:var(--cisco-pale);border-radius:var(--radius-sm);padding:18px;border-left:3px solid var(--cisco-blue);">
-          <p style="font-size:13px;font-weight:700;color:var(--cisco-blue);margin-bottom:8px;">🔼 UPLINK</p>
+          <p style="font-size:13px;font-weight:700;color:var(--cisco-text);margin-bottom:8px;"><span aria-hidden="true">🔼</span> UPLINK</p>
           <p style="font-size:13px;color:var(--gray-dark);line-height:1.65;">A port that connects <strong>upward</strong> toward the core of the network — toward a distribution switch, core switch, router, or firewall. Uplinks carry <em>aggregated traffic</em> from all the devices below. They are typically faster ports: <strong>10G, 25G, or 100G SFP+</strong> fibre connections, not regular copper 1G ports.</p>
           <p style="font-size:12px;color:var(--gray-mid);margin-top:8px;">Example: a Catalyst 9300 access switch has 48× 1G PoE ports (downlinks) and 4× 10G SFP+ ports at the top — those 4 SFP+ ports are the uplinks.</p>
         </div>
         <div style="background:var(--green-pale);border-radius:var(--radius-sm);padding:18px;border-left:3px solid var(--green);">
-          <p style="font-size:13px;font-weight:700;color:var(--green);margin-bottom:8px;">🔽 DOWNLINK</p>
+          <p style="font-size:13px;font-weight:700;color:var(--green-text);margin-bottom:8px;"><span aria-hidden="true">🔽</span> DOWNLINK</p>
           <p style="font-size:13px;color:var(--gray-dark);line-height:1.65;">A port that connects <strong>downward</strong> toward end devices — PCs, phones, printers, access points, and cameras. Downlinks deliver traffic to individual users or devices. They are typically <strong>1G copper RJ45</strong> ports, often with PoE to power devices over the same cable.</p>
           <p style="font-size:12px;color:var(--gray-mid);margin-top:8px;">Example: those same 48 PoE ports on the 9300 are the downlinks — each one plugs into a PC, an AP, or an IP phone on a desk.</p>
         </div>
@@ -240,58 +240,58 @@ Switch(config)# <span class="kw">spanning-tree vlan 10 root primary</span></pre>
           <text x="340" y="34" text-anchor="middle" font-size="12" font-weight="600" fill="white">Internet / Core Router</text>
 
           <!-- UPLINK arrow label -->
-          <text x="380" y="72" font-size="10" font-weight="700" fill="#1BA0D7">UPLINK</text>
-          <text x="380" y="84" font-size="9" fill="#888">10G SFP+</text>
+          <text x="380" y="72" font-size="10" font-weight="700" fill="#0B6A93">UPLINK</text>
+          <text x="380" y="84" font-size="9" fill="#595959">10G SFP+</text>
 
           <!-- DISTRIBUTION SWITCH -->
-          <rect x="200" y="90" width="280" height="38" rx="8" fill="#FF6200"/>
+          <rect x="200" y="90" width="280" height="38" rx="8" fill="#C24A00"/>
           <text x="340" y="114" text-anchor="middle" font-size="12" font-weight="600" fill="white">Distribution / Core Switch</text>
 
           <!-- Downlink label left -->
-          <text x="100" y="153" font-size="10" font-weight="700" fill="#00A86B" text-anchor="middle">DOWNLINK</text>
-          <text x="100" y="165" font-size="9" fill="#888" text-anchor="middle">to access layer</text>
+          <text x="100" y="153" font-size="10" font-weight="700" fill="#0A7A4A" text-anchor="middle">DOWNLINK</text>
+          <text x="100" y="165" font-size="9" fill="#595959" text-anchor="middle">to access layer</text>
           <!-- Downlink label right -->
-          <text x="580" y="153" font-size="10" font-weight="700" fill="#00A86B" text-anchor="middle">DOWNLINK</text>
-          <text x="580" y="165" font-size="9" fill="#888" text-anchor="middle">to access layer</text>
+          <text x="580" y="153" font-size="10" font-weight="700" fill="#0A7A4A" text-anchor="middle">DOWNLINK</text>
+          <text x="580" y="165" font-size="9" fill="#595959" text-anchor="middle">to access layer</text>
 
           <!-- ACCESS SWITCH 1 -->
-          <rect x="40" y="178" width="220" height="36" rx="8" fill="#FF8C42"/>
+          <rect x="40" y="178" width="220" height="36" rx="8" fill="#8A3300"/>
           <text x="150" y="200" text-anchor="middle" font-size="11" font-weight="600" fill="white">Access Switch 1 (Stack)</text>
           <!-- Uplink label from access -->
-          <text x="230" y="168" font-size="9" font-weight="600" fill="#1BA0D7">↑ uplink</text>
+          <text x="230" y="168" font-size="9" font-weight="600" fill="#0B6A93">↑ uplink</text>
 
           <!-- ACCESS SWITCH 2 -->
-          <rect x="420" y="178" width="220" height="36" rx="8" fill="#FF8C42"/>
+          <rect x="420" y="178" width="220" height="36" rx="8" fill="#8A3300"/>
           <text x="530" y="200" text-anchor="middle" font-size="11" font-weight="600" fill="white">Access Switch 2 (Stack)</text>
-          <text x="420" y="168" font-size="9" font-weight="600" fill="#1BA0D7">↑ uplink</text>
+          <text x="420" y="168" font-size="9" font-weight="600" fill="#0B6A93">↑ uplink</text>
 
           <!-- DOWNLINK labels to end devices -->
-          <text x="150" y="240" text-anchor="middle" font-size="9" font-weight="700" fill="#00A86B">DOWNLINKS (48× 1G PoE)</text>
-          <text x="530" y="240" text-anchor="middle" font-size="9" font-weight="700" fill="#00A86B">DOWNLINKS (48× 1G PoE)</text>
+          <text x="150" y="240" text-anchor="middle" font-size="9" font-weight="700" fill="#0A7A4A">DOWNLINKS (48× 1G PoE)</text>
+          <text x="530" y="240" text-anchor="middle" font-size="9" font-weight="700" fill="#0A7A4A">DOWNLINKS (48× 1G PoE)</text>
 
           <!-- END DEVICES left -->
           <rect x="20"  y="252" width="56" height="24" rx="5" fill="#E8F6FD" stroke="#1BA0D7" stroke-width="1"/>
-          <text x="48"  y="268" text-anchor="middle" font-size="9" fill="#1BA0D7">💻 PC</text>
+          <text x="48"  y="268" text-anchor="middle" font-size="9" fill="#0B6A93">💻 PC</text>
           <rect x="84"  y="252" width="56" height="24" rx="5" fill="#E6F7F1" stroke="#00A86B" stroke-width="1"/>
-          <text x="112" y="268" text-anchor="middle" font-size="9" fill="#00A86B">📡 AP</text>
+          <text x="112" y="268" text-anchor="middle" font-size="9" fill="#0A7A4A">📡 AP</text>
           <rect x="148" y="252" width="56" height="24" rx="5" fill="#FFF0E6" stroke="#FF6200" stroke-width="1"/>
-          <text x="176" y="268" text-anchor="middle" font-size="9" fill="#FF6200">📞 Phone</text>
+          <text x="176" y="268" text-anchor="middle" font-size="9" fill="#B34200">📞 Phone</text>
           <rect x="212" y="252" width="56" height="24" rx="5" fill="#F3EEFF" stroke="#7C3AED" stroke-width="1"/>
           <text x="240" y="268" text-anchor="middle" font-size="9" fill="#7C3AED">📷 Cam</text>
 
           <!-- END DEVICES right -->
           <rect x="400" y="252" width="56" height="24" rx="5" fill="#E8F6FD" stroke="#1BA0D7" stroke-width="1"/>
-          <text x="428" y="268" text-anchor="middle" font-size="9" fill="#1BA0D7">💻 PC</text>
+          <text x="428" y="268" text-anchor="middle" font-size="9" fill="#0B6A93">💻 PC</text>
           <rect x="464" y="252" width="56" height="24" rx="5" fill="#E6F7F1" stroke="#00A86B" stroke-width="1"/>
-          <text x="492" y="268" text-anchor="middle" font-size="9" fill="#00A86B">📡 AP</text>
+          <text x="492" y="268" text-anchor="middle" font-size="9" fill="#0A7A4A">📡 AP</text>
           <rect x="528" y="252" width="56" height="24" rx="5" fill="#FFF0E6" stroke="#FF6200" stroke-width="1"/>
-          <text x="556" y="268" text-anchor="middle" font-size="9" fill="#FF6200">📞 Phone</text>
+          <text x="556" y="268" text-anchor="middle" font-size="9" fill="#B34200">📞 Phone</text>
           <rect x="592" y="252" width="56" height="24" rx="5" fill="#F3EEFF" stroke="#7C3AED" stroke-width="1"/>
           <text x="620" y="268" text-anchor="middle" font-size="9" fill="#7C3AED">📷 Cam</text>
 
           <!-- Stack cable -->
           <path d="M 260 196 Q 340 210 420 196" fill="none" stroke="#4A9EFF" stroke-width="2" stroke-dasharray="5,3"/>
-          <text x="340" y="224" text-anchor="middle" font-size="9" fill="#4A9EFF">StackWise cable (internal ring)</text>
+          <text x="340" y="224" text-anchor="middle" font-size="9" fill="#1D5FBF">StackWise cable (internal ring)</text>
 
           <!-- STATIC LINES: distribution to access -->
           <line x1="260" y1="128" x2="180" y2="178" stroke="#ddd" stroke-width="1.5"/>
@@ -326,12 +326,12 @@ Switch(config)# <span class="kw">spanning-tree vlan 10 root primary</span></pre>
 
       <!-- Animation controls -->
       <div style="display:flex;gap:10px;justify-content:center;margin-top:16px;flex-wrap:wrap;">
-        <button onclick="setAnimMode('uplink')"   id="btn-up"   style="padding:8px 18px;border-radius:8px;border:2px solid #1BA0D7;background:#E8F6FD;color:#1BA0D7;font-family:var(--font);font-size:12px;font-weight:600;cursor:pointer;">🔼 Show Uplink traffic</button>
-        <button onclick="setAnimMode('downlink')" id="btn-down" style="padding:8px 18px;border-radius:8px;border:2px solid #00A86B;background:#E6F7F1;color:#00A86B;font-family:var(--font);font-size:12px;font-weight:600;cursor:pointer;">🔽 Show Downlink traffic</button>
-        <button onclick="setAnimMode('both')"     id="btn-both" style="padding:8px 18px;border-radius:8px;border:2px solid #FF6200;background:#FFF0E6;color:#FF6200;font-family:var(--font);font-size:12px;font-weight:600;cursor:pointer;">⚡ Show Both</button>
-        <button onclick="setAnimMode('off')"      id="btn-off"  style="padding:8px 18px;border-radius:8px;border:2px solid #C8C8C8;background:#F5F5F5;color:#787878;font-family:var(--font);font-size:12px;font-weight:600;cursor:pointer;">⏹ Stop</button>
+        <button onclick="setAnimMode('uplink')"   id="btn-up"   style="padding:8px 18px;border-radius:8px;border:2px solid #1BA0D7;background:#E8F6FD;color:var(--cisco-text);font-family:var(--font);font-size:12px;font-weight:600;cursor:pointer;"><span aria-hidden="true">🔼</span> Show Uplink traffic</button>
+        <button onclick="setAnimMode('downlink')" id="btn-down" style="padding:8px 18px;border-radius:8px;border:2px solid #00A86B;background:#E6F7F1;color:var(--green-text);font-family:var(--font);font-size:12px;font-weight:600;cursor:pointer;"><span aria-hidden="true">🔽</span> Show Downlink traffic</button>
+        <button onclick="setAnimMode('both')"     id="btn-both" style="padding:8px 18px;border-radius:8px;border:2px solid #FF6200;background:#FFF0E6;color:var(--orange-text);font-family:var(--font);font-size:12px;font-weight:600;cursor:pointer;"><span aria-hidden="true">⚡</span> Show Both</button>
+        <button onclick="setAnimMode('off')"      id="btn-off"  style="padding:8px 18px;border-radius:8px;border:2px solid #8A8A8A;background:#F5F5F5;color:var(--gray-mid);font-family:var(--font);font-size:12px;font-weight:600;cursor:pointer;"><span aria-hidden="true">⏹</span> Stop</button>
       </div>
-      <p id="anim-label" style="text-align:center;font-size:13px;color:var(--gray-mid);margin-top:10px;min-height:20px;"></p>
+      <p id="anim-label" aria-live="polite" style="text-align:center;font-size:13px;color:var(--gray-mid);margin-top:10px;min-height:20px;"></p>
     </div>
 
     <div class="grid-2">
@@ -469,11 +469,20 @@ Switch# <span class="cmd">switch 2 renumber</span> <span class="val">3</span></p
       };
       const labelEl = document.getElementById('anim-label');
       if (labelEl) labelEl.textContent = labels[m];
+      /* expose the current mode on the buttons, not only in the label text */
+      [['uplink', 'btn-up'], ['downlink', 'btn-down'], ['both', 'btn-both'], ['off', 'btn-off']].forEach(function (p) {
+        var b = document.getElementById(p[1]);
+        if (b) b.setAttribute('aria-pressed', p[0] === m ? 'true' : 'false');
+      });
       runLoop();
     };
 
     // Auto-start with both on page load
-    window.addEventListener('load', () => { window.setAnimMode('both'); });
+    /* no auto-play for people who asked for reduced motion (they can still press a button) */
+    window.addEventListener('load', () => {
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      window.setAnimMode('both');
+    });
   })();
   </script>
 
@@ -522,7 +531,7 @@ Switch(config-if)# <span class="kw">switchport mode trunk</span></pre>
         <h3>Queuing &amp; Scheduling</h3>
         <p>When a port is congested, the scheduler decides which packets to send first. Common algorithm: <strong>LLQ (Low Latency Queuing)</strong> — gives voice traffic a strict priority queue, while other classes share remaining bandwidth fairly (CBWFQ).</p>
         <div class="alert orange" style="margin-top:12px;margin-bottom:0;">
-          <span class="alert-icon">💡</span>
+          <span class="alert-icon" aria-hidden="true">💡</span>
           <p><strong>802.1p / CoS:</strong> On trunk ports, 802.1Q frames carry a 3-bit Class of Service value. Switches use CoS to prioritize frames at Layer 2, mapped to DSCP at the Layer 3 boundary.</p>
         </div>
       </div>

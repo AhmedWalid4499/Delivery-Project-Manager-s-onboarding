@@ -1,0 +1,1552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Delivery Checklist — DPM Knowledge Base</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="stylesheet" href="shared.css">
+<style>
+/* ── Delivery checklist (page-scoped) ── */
+:root{--ck-accent:#B84600;--ck-muted:#5F5F5F;--ck-line:#E6E6E6;--ck-soft:#FAFAFA;--ck-ok:#0B7A40;--ck-ok-pale:#EAF8F1;--ck-danger:#B42318;}
+.content [hidden]{display:none !important;}
+.sr-only{position:absolute !important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
+.content .section{scroll-margin-top:72px;}
+.content :focus-visible{outline:3px solid #B34200;outline-offset:2px;}
+.ck-print-only{display:none;}
+.ck-privacy{margin-bottom:28px;}
+.ck-hint{font-size:12.5px;color:var(--ck-muted);line-height:1.55;}
+.ck-hint a,.ck-proclink,.ck-steplink{color:var(--ck-accent);font-weight:600;}
+
+/* buttons */
+.ck-btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:38px;padding:8px 15px;border-radius:9px;border:1.5px solid #D6D6D6;background:#fff;color:var(--black);font:600 13px/1.2 var(--font);cursor:pointer;text-decoration:none;transition:background .15s,border-color .15s,color .15s,box-shadow .15s;}
+.ck-btn:hover{border-color:var(--orange);color:var(--ck-accent);text-decoration:none;}
+.ck-btn:disabled{opacity:.5;cursor:not-allowed;}
+.ck-btn:disabled:hover{border-color:#D6D6D6;color:var(--black);}
+.ck-btn-primary{background:var(--orange-dark);border-color:var(--orange-dark);color:#fff;}
+.ck-btn-primary:hover{background:#A94000;border-color:#A94000;color:#fff;box-shadow:0 6px 18px rgba(204,78,0,0.25);}
+.ck-btn-danger:hover{border-color:var(--ck-danger);color:var(--ck-danger);}
+.ck-btn-sm{min-height:32px;padding:6px 12px;font-size:12.5px;border-radius:8px;}
+.ck-ico{font-size:14px;line-height:1;}
+.ck-linkbtn{background:none;border:none;padding:4px 6px;font:600 12.5px/1.3 var(--font);color:var(--ck-accent);cursor:pointer;border-radius:6px;text-decoration:underline;text-decoration-color:rgba(184,70,0,0.35);text-underline-offset:3px;}
+.ck-linkbtn:hover{background:var(--orange-faint);text-decoration-color:currentColor;}
+
+/* cards + toolbar */
+.ck-card{background:#fff;border:1px solid var(--ck-line);border-radius:14px;padding:20px;box-shadow:0 2px 14px rgba(0,0,0,0.04);min-width:0;}
+.ck-toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:18px;}
+.ck-count{margin-left:auto;font-size:12.5px;color:var(--ck-muted);font-weight:600;}
+
+/* type chips */
+.ck-typechip{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;padding:3px 10px;border-radius:20px;border:1px solid;letter-spacing:.2px;max-width:100%;line-height:1.4;}
+.ck-tc-ap{color:#1B5E94;background:#EEF5FF;border-color:#BDD6F5;}
+.ck-tc-wlc{color:#0B6B3A;background:#EAF8F1;border-color:#9FE0C3;}
+.ck-tc-wan{color:#5B21B6;background:#F3EEFF;border-color:#D4BAFF;}
+.ck-tc-unknown{color:#475569;background:#F1F5F9;border-color:#CBD5E1;}
+
+/* progress bars */
+.ck-bar{height:10px;background:#EFEFEF;border-radius:6px;overflow:hidden;}
+.ck-bar>span{display:block;height:100%;background:linear-gradient(90deg,#FF8C42,#FF6200);border-radius:inherit;transition:width .35s ease;}
+.ck-bar.is-complete>span{background:linear-gradient(90deg,#2FBF7F,#0B7A40);}
+
+/* project list */
+.ck-plist{list-style:none;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;}
+.ck-pcard{display:flex;flex-direction:column;gap:7px;background:#fff;border:1px solid var(--ck-line);border-radius:14px;padding:16px 16px 14px;min-width:0;transition:border-color .15s,box-shadow .15s;}
+.ck-pcard:hover{border-color:#F3C6A5;box-shadow:0 6px 22px rgba(0,0,0,0.06);}
+.ck-pcard.is-active{border-color:var(--orange);box-shadow:0 0 0 2px rgba(255,98,0,0.18);}
+.ck-pcard-top{display:flex;flex-wrap:wrap;gap:6px;align-items:center;}
+.ck-pill{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:2px 8px;border-radius:20px;}
+.ck-pill-open{background:var(--orange-pale);color:var(--ck-accent);}
+.ck-pill-done{background:var(--ck-ok-pale);color:var(--ck-ok);}
+.ck-pcard-name{font-size:16px;font-weight:700;line-height:1.3;overflow-wrap:anywhere;word-break:break-word;}
+.ck-pcard-sub,.ck-pcard-date{font-size:12.5px;color:var(--ck-muted);overflow-wrap:anywhere;word-break:break-word;}
+.ck-pcard-sub.is-empty{font-style:italic;}
+.ck-pcard-prog{display:flex;align-items:center;gap:10px;margin-top:2px;}
+.ck-pcard-prog .ck-bar{flex:1;min-width:0;height:8px;}
+.ck-pcard-pct{font-size:12.5px;font-weight:700;color:var(--black);white-space:nowrap;}
+.ck-pcard-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;}
+
+/* empty state */
+.ck-empty{text-align:center;border:1.5px dashed #E3C4AE;background:var(--orange-faint);border-radius:16px;padding:30px 20px;}
+.ck-empty-ic{font-size:34px;line-height:1;margin-bottom:10px;}
+.ck-empty-title{font-size:18px;font-weight:700;margin-bottom:6px;}
+.ck-empty-text{font-size:14px;color:var(--gray-dark);max-width:540px;margin:0 auto 18px;}
+.ck-quick{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:0 auto 14px;max-width:780px;}
+.ck-quickbtn{display:flex;align-items:center;gap:12px;text-align:left;background:#fff;border:1.5px solid var(--ck-line);border-radius:12px;padding:14px;cursor:pointer;font-family:var(--font);min-width:0;transition:border-color .15s,box-shadow .15s,transform .15s;}
+.ck-quickbtn:hover{border-color:var(--orange);box-shadow:var(--shadow-hover);transform:translateY(-1px);}
+.ck-quick-ic{font-size:24px;line-height:1;flex-shrink:0;}
+.ck-quick-main{display:flex;flex-direction:column;min-width:0;}
+.ck-quick-title{font-size:14px;font-weight:700;color:var(--black);}
+.ck-quick-sub{font-size:12px;color:var(--ck-muted);}
+
+/* import panel */
+.ck-import{margin-bottom:18px;border-color:#F5C99A;background:var(--orange-faint);}
+.ck-import-title{font-size:15px;font-weight:700;margin-bottom:6px;}
+.ck-import p{margin-bottom:8px;font-size:14px;}
+.ck-import p.ck-hint{font-size:12.5px;}
+.ck-import-msg{align-items:center;flex-wrap:wrap;}
+.ck-import-msg p{flex:1 1 240px;min-width:0;}
+
+/* active checklist header */
+.ck-noactive{text-align:center;padding:26px 20px;color:var(--ck-muted);border:1.5px dashed #DADADA;border-radius:14px;background:var(--ck-soft);font-size:14px;}
+.ck-head{margin-bottom:14px;}
+.ck-head-top{display:flex;gap:16px;justify-content:space-between;align-items:flex-start;margin-bottom:14px;}
+.ck-head-main{flex:1;min-width:0;}
+.ck-proj-name{font-size:22px;font-weight:700;line-height:1.25;margin:8px 0 4px;overflow-wrap:anywhere;word-break:break-word;}
+.ck-proj-sub{font-size:14px;color:var(--gray-dark);overflow-wrap:anywhere;word-break:break-word;}
+.ck-proj-date{font-size:13px;color:var(--ck-muted);margin-top:4px;}
+.ck-proj-date strong{color:var(--black);}
+.ck-head-pct{text-align:right;flex-shrink:0;}
+.ck-pct-num{display:block;font-size:32px;font-weight:700;line-height:1;color:var(--ck-accent);}
+.ck-head.is-complete .ck-pct-num{color:var(--ck-ok);}
+.ck-pct-lbl{font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:var(--ck-muted);font-weight:700;}
+.ck-head-meta{font-size:13px;color:var(--ck-muted);margin:8px 0 14px;}
+.ck-actions{display:flex;flex-wrap:wrap;gap:8px;}
+.ck-proclink{display:inline-block;margin-top:14px;font-size:13px;}
+.ck-copybox,.ck-edit{margin-top:16px;border-top:1px solid var(--ck-line);padding-top:16px;}
+.ck-copybox label{display:block;font-size:13px;font-weight:600;margin-bottom:8px;}
+.ck-copybox textarea{display:block;width:100%;font:12.5px/1.6 var(--mono);border:1.5px solid #DADADA;border-radius:10px;padding:10px 12px;margin-bottom:10px;resize:vertical;background:var(--ck-soft);color:var(--black);}
+.ck-edit-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--ck-muted);margin-bottom:12px;}
+
+/* forms */
+.ck-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px 18px;}
+.ck-field{min-width:0;display:flex;flex-direction:column;gap:6px;}
+.ck-field.ck-wide{grid-column:1 / -1;}
+.ck-field label{font-size:13px;font-weight:600;color:var(--black);}
+.ck-req,.ck-opt{font-weight:500;color:var(--ck-muted);font-size:12px;}
+.ck-field input,.ck-field select{display:block;width:100%;min-width:0;max-width:100%;min-height:42px;padding:9px 12px;border:1.5px solid #8A8A8A;border-radius:10px;background:#fff;font:400 14px/1.3 var(--font);color:var(--black);transition:border-color .15s,box-shadow .15s;}
+.ck-field input:focus,.ck-field select:focus{outline:none;border-color:var(--orange-dark);box-shadow:0 0 0 3px rgba(255,98,0,0.2);}
+.ck-field input[type="date"]{-webkit-appearance:none;appearance:none;text-align:left;}
+.ck-field input[type="date"]::-webkit-date-and-time-value{text-align:left;}
+.ck-field input[aria-invalid="true"]{border-color:var(--ck-danger);}
+.ck-err{font-size:12.5px;color:var(--ck-danger);font-weight:600;}
+.ck-form-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px;}
+
+/* overview */
+.ck-overview{margin-bottom:16px;}
+.ck-nextup{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;background:var(--orange-faint);border:1px solid #F5D2B8;border-radius:12px;padding:12px 14px;margin-bottom:16px;}
+.ck-nextup-lbl,.ck-next-badge{font-size:10.5px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;background:var(--orange-dark);color:#fff;border-radius:20px;white-space:nowrap;}
+.ck-nextup-lbl{flex-shrink:0;padding:4px 9px;}
+.ck-nextup-body{flex:1 1 240px;min-width:0;}
+.ck-nextup-text{font-size:14.5px;font-weight:600;line-height:1.45;overflow-wrap:anywhere;word-break:break-word;}
+.ck-nextup-meta{font-size:12px;color:var(--ck-muted);margin-top:2px;overflow-wrap:anywhere;}
+.ck-alldone{display:flex;gap:10px;align-items:center;background:var(--ck-ok-pale);border:1px solid #9FE0C3;color:#0A5C3A;font-weight:600;border-radius:12px;padding:12px 14px;margin-bottom:16px;font-size:14px;}
+.ck-ov-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 10px;margin-bottom:10px;}
+.ck-ov-title{font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--ck-muted);}
+.ck-chips{display:flex;flex-wrap:wrap;gap:8px;}
+.ck-chip{display:inline-flex;align-items:center;gap:7px;max-width:100%;min-width:0;background:#fff;border:1px solid var(--ck-line);border-radius:20px;padding:5px 11px;font:600 12px/1.3 var(--font);color:var(--gray-dark);cursor:pointer;text-align:left;}
+.ck-chip:hover{border-color:var(--ck-c,#999);}
+.ck-chip-dot{width:8px;height:8px;border-radius:50%;background:var(--ck-c,#999);flex-shrink:0;}
+.ck-chip-name{min-width:0;overflow-wrap:anywhere;}
+.ck-chip-count{flex-shrink:0;color:var(--ck-muted);font-family:var(--mono);font-size:11px;}
+.ck-chip.is-complete{background:var(--ck-ok-pale);border-color:#9FE0C3;}
+.ck-chip.is-complete .ck-chip-count{color:var(--ck-ok);}
+
+/* phases */
+.ck-phases{margin-bottom:16px;}
+.ck-stage{display:flex;align-items:center;gap:10px;margin:22px 0 10px;font-size:12px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--gray-dark);}
+.ck-stage::after{content:"";flex:1 1 20px;height:1px;background:var(--ck-line);}
+.ck-stage-id{color:#fff;background:var(--ck-c,#5F5F5F);padding:3px 10px;border-radius:20px;flex-shrink:0;}
+.ck-stage-txt{min-width:0;}
+.ck-phase{background:#fff;border:1px solid var(--ck-line);border-left:4px solid var(--ck-c,#999);border-radius:12px;margin-bottom:12px;overflow:hidden;scroll-margin-top:80px;}
+.ck-phase-head{display:flex;flex-wrap:wrap;align-items:center;gap:2px 10px;padding:6px 10px 10px 6px;background:var(--ck-soft);}
+.ck-phase-h{flex:1 1 260px;min-width:0;}
+.ck-phase-toggle{width:100%;display:flex;align-items:center;flex-wrap:wrap;gap:4px 10px;background:none;border:0;padding:8px;border-radius:8px;text-align:left;font:inherit;color:inherit;cursor:pointer;}
+.ck-phase-toggle:hover{background:rgba(0,0,0,0.04);}
+.ck-chev{width:9px;height:9px;border-right:2px solid var(--gray-dark);border-bottom:2px solid var(--gray-dark);transform:rotate(45deg);margin:0 4px 4px 2px;flex-shrink:0;transition:transform .18s;}
+.ck-phase.is-collapsed .ck-chev{transform:rotate(-45deg);margin-bottom:0;}
+.ck-phase-idx{font-size:10.5px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;color:var(--ck-muted);flex-shrink:0;}
+.ck-phase-name{font-size:15.5px;font-weight:700;color:var(--black);min-width:0;overflow-wrap:anywhere;}
+.ck-phase-count{margin-left:auto;font-size:12px;font-weight:600;color:var(--ck-muted);white-space:nowrap;}
+.ck-phase.is-complete .ck-phase-count{color:var(--ck-ok);}
+.ck-phase-actions{display:flex;flex-wrap:wrap;gap:2px 6px;}
+.ck-phase-bar{flex-basis:100%;height:4px;background:#E9E9E9;border-radius:2px;overflow:hidden;margin:2px 4px 0 8px;}
+.ck-phase-bar>span{display:block;height:100%;background:var(--ck-c,#999);border-radius:inherit;}
+.ck-phase.is-collapsed .ck-steps{display:none;}
+
+/* steps */
+.ck-steps{list-style:none;margin:0;padding:0;}
+.ck-step{display:flex;align-items:flex-start;gap:12px;padding:12px 16px 12px 14px;border-top:1px solid #EFEFEF;scroll-margin-top:90px;}
+.ck-step:hover{background:#FCFCFC;}
+.ck-cb{width:20px;height:20px;margin:2px 0 0;flex-shrink:0;accent-color:var(--orange-dark);cursor:pointer;}
+.ck-step-body{flex:1;min-width:0;}
+.ck-step-label{display:flex;align-items:baseline;gap:10px;cursor:pointer;}
+.ck-step-num{width:34px;flex-shrink:0;font-family:var(--mono);font-size:11.5px;font-weight:600;color:var(--ck-muted);}
+.ck-step-main{flex:1;min-width:0;font-size:14px;font-weight:500;line-height:1.5;color:var(--black);overflow-wrap:anywhere;word-break:break-word;}
+.ck-next-badge{display:inline-block;margin-left:8px;padding:2px 8px;font-size:10px;vertical-align:2px;}
+.ck-step.is-next{background:var(--orange-faint);box-shadow:inset 3px 0 0 var(--orange);}
+.ck-step.is-done{background:#FCFDFC;}
+.ck-step.is-done .ck-step-text{color:#666;text-decoration:line-through;text-decoration-color:rgba(0,0,0,0.35);}
+.ck-step-extra{margin:6px 0 0 44px;}
+.ck-step-note{font-size:12.5px;color:var(--gray-dark);line-height:1.55;margin-bottom:6px;}
+.ck-step-meta{display:flex;flex-wrap:wrap;align-items:center;gap:6px;}
+.ck-own,.ck-team,.ck-tool{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;padding:2px 9px;border-radius:20px;border:1px solid;line-height:1.5;max-width:100%;overflow-wrap:anywhere;}
+.ck-team{color:#4A4A4A;background:#F4F4F4;border-color:#E2E2E2;}
+.ck-tool{font-family:var(--mono);font-size:10.5px;color:#4A4A4A;background:#fff;border-color:#D6D6D6;border-radius:5px;}
+.ck-own-ob{color:#9A3F00;background:#FFF1E6;border-color:#F5C99A;}
+.ck-own-carrier{color:#005A94;background:#EAF6FE;border-color:#A0D4F5;}
+.ck-own-cust{color:#0B6B3A;background:#EAF8F1;border-color:#9FE0C3;}
+.ck-own-courier{color:#475569;background:#F1F5F9;border-color:#CBD5E1;}
+.ck-steplink{font-size:12px;}
+
+/* notes */
+.ck-notes-lbl{display:block;font-size:14px;font-weight:700;margin-bottom:2px;}
+.ck-notes textarea{display:block;width:100%;margin-top:10px;min-height:110px;padding:11px 13px;border:1.5px solid #8A8A8A;border-radius:10px;font:400 14px/1.6 var(--font);color:var(--black);resize:vertical;background:#fff;}
+.ck-notes textarea:focus{outline:none;border-color:var(--orange-dark);box-shadow:0 0 0 3px rgba(255,98,0,0.2);}
+.ck-notes-foot{min-height:18px;margin-top:4px;}
+.ck-notes-print{white-space:pre-wrap;margin-top:8px;}
+
+/* type cards */
+.ck-typecard{display:flex;flex-direction:column;}
+.ck-typecard-title{font-size:16px;font-weight:700;margin-bottom:4px;}
+.ck-typecard p{color:var(--ck-muted);}
+.ck-typecard .ck-typecard-count{font-size:11.5px;font-weight:700;color:var(--ck-accent);margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px;}
+.ck-typecard-actions{margin-top:auto;padding-top:14px;display:flex;flex-direction:column;align-items:flex-start;gap:8px;}
+.ck-typecard .card-link{margin-top:0;color:var(--ck-accent);}
+.ck-ic-ap{background:#EEF5FF;}.ck-ic-wlc{background:#EAF8F1;}.ck-ic-wan{background:#F3EEFF;}
+
+/* toast */
+.ck-toast{position:fixed;left:50%;bottom:24px;z-index:300;max-width:calc(100% - 32px);background:#1A1A1A;color:#fff;font-size:13.5px;line-height:1.45;padding:11px 18px;border-radius:10px;box-shadow:0 12px 34px rgba(0,0,0,0.3);opacity:0;visibility:hidden;transform:translate(-50%,12px);transition:opacity .2s,transform .2s,visibility .2s;pointer-events:none;}
+@media(min-width:600px){.ck-toast{max-width:520px;}}
+.ck-toast.show{opacity:1;visibility:visible;transform:translate(-50%,0);}
+
+@media(max-width:720px){.ck-quick{grid-template-columns:1fr;}}
+@media(max-width:640px){.ck-form-grid{grid-template-columns:1fr;}}
+@media(max-width:600px){
+  .ck-card{padding:16px;}
+  .ck-proj-name{font-size:19px;}
+  .ck-pct-num{font-size:26px;}
+  .ck-step{padding:12px 12px 12px 10px;gap:10px;}
+  .ck-step-extra{margin-left:0;}
+  .ck-count{margin-left:0;width:100%;}
+}
+@media(prefers-reduced-motion:reduce){.ck-bar>span,.ck-toast,.ck-chev,.ck-quickbtn{transition:none;}}
+
+/* print — only the open checklist */
+@media print{
+  @page{margin:14mm;}
+  html,body{background:#fff !important;}
+  .topnav,.page-hero,.breadcrumb,.footer,.kb-toc,.kb-progress,.kb-top,.kb-navmenu,.kb-hamburger,.kbso,.ck-toast,.ck-noprint,.ck-privacy,#ck-storage-warn,#ck-projects-sec,#ck-new-sec,#ck-types-sec,#ck-checklist-sec>.section-header{display:none !important;}
+  .content{max-width:none !important;padding:0 !important;margin:0 !important;}
+  .section{margin:0 !important;}
+  .kb-reveal{opacity:1 !important;transform:none !important;}
+  .ck-print-only{display:block !important;}
+  .ck-card,.ck-phase{box-shadow:none !important;}
+  .ck-phase.is-collapsed .ck-steps{display:block !important;}
+  .ck-chev{display:none !important;}
+  .ck-phase-head{break-after:avoid;page-break-after:avoid;}
+  .ck-step{break-inside:avoid;page-break-inside:avoid;}
+  .ck-step.is-next{box-shadow:none;}
+  .ck-notes textarea{display:none !important;}
+  .ck-bar,.ck-bar>span,.ck-phase,.ck-phase-bar>span,.ck-next-badge,.ck-nextup-lbl,.ck-chip-dot,.ck-stage-id{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .ck-print-meta{font-size:10pt;color:#555;margin-top:10px;}
+  a{color:inherit !important;text-decoration:none !important;}
+}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <a href="index.html" class="topnav-brand">
+    <div class="topnav-logo">DPM</div>
+    <div class="topnav-brand-text">Knowledge <span>Base</span></div>
+  </a>
+  <div class="topnav-links">
+    <a href="index.html"          class="nav-link">Home</a>
+    <a href="lan-wan-basics.html" class="nav-link">LAN / WAN</a>
+    <a href="ip-routing.html"     class="nav-link">IP Routing</a>
+    <a href="switching.html"      class="nav-link">Switching</a>
+    <a href="wireless.html"       class="nav-link">Wireless</a>
+    <a href="firewalls.html"      class="nav-link">Firewalls</a>
+    <a href="zscaler.html"        class="nav-link">Zscaler</a>
+    <a href="devices.html"        class="nav-link">Devices</a>
+    <a href="glossary.html"       class="nav-link">Glossary</a>
+  </div>
+  <div class="topnav-badge">New Hire Guide</div>
+</nav>
+
+<div class="breadcrumb" style="background:transparent;border:none;padding:0;"></div>
+
+<div class="page-hero dark">
+  <div class="hero-content">
+    <div class="hero-tag"><span aria-hidden="true">✅</span> DPM Tool</div>
+    <h1>Delivery <span>Checklist</span></h1>
+    <p class="hero-sub">Turn the AP, WLC &amp; Switch and WAN processes into a live checklist for each delivery — tick steps as you go, see what's next, and copy a status update in one click.</p>
+  </div>
+</div>
+
+<div class="content">
+
+  <noscript>
+    <div class="alert orange"><span class="alert-icon" aria-hidden="true">⚠️</span><p>The delivery checklist needs JavaScript. You can still follow the steps on the <a href="process-ap.html">AP</a>, <a href="process-wlc-switch.html">WLC &amp; Switch</a> and <a href="wan-process.html">WAN</a> process pages.</p></div>
+  </noscript>
+
+  <div class="alert green ck-privacy">
+    <span class="alert-icon" aria-hidden="true">🔒</span>
+    <p><strong>Private to you.</strong> Your projects are stored only in this browser on this device — nothing is sent anywhere. Export a backup to move them.</p>
+  </div>
+
+  <div class="alert orange" id="ck-storage-warn" role="status" hidden>
+    <span class="alert-icon" aria-hidden="true">⚠️</span>
+    <p id="ck-storage-msg"></p>
+  </div>
+
+  <!-- PROJECTS -->
+  <div class="section" id="ck-projects-sec">
+    <div class="section-header">
+      <h2>Your projects</h2>
+      <div class="divider"></div>
+      <p>One checklist per delivery, each with its own ticks, notes and target date. Projects in progress are listed soonest target date first; completed ones move to the end.</p>
+    </div>
+    <div class="ck-toolbar">
+      <button type="button" class="ck-btn ck-btn-primary" id="ck-new-btn">+ New project</button>
+      <button type="button" class="ck-btn" id="ck-export"><span class="ck-ico" aria-hidden="true">📤</span> Export backup</button>
+      <button type="button" class="ck-btn" id="ck-import-btn"><span class="ck-ico" aria-hidden="true">📥</span> Import backup</button>
+      <input type="file" id="ck-import-file" class="sr-only" accept=".json,application/json" tabindex="-1" aria-hidden="true" aria-label="Backup file to import">
+      <span class="ck-count" id="ck-count"></span>
+    </div>
+    <div id="ck-import"></div>
+    <div id="ck-list"></div>
+  </div>
+
+  <!-- ACTIVE CHECKLIST -->
+  <div class="section" id="ck-checklist-sec">
+    <div class="section-header">
+      <h2>Checklist</h2>
+      <div class="divider"></div>
+      <p>Work top to bottom — the first open step is highlighted as <strong>Next up</strong>. Ticks are saved as you go.</p>
+    </div>
+    <div id="ck-active"></div>
+  </div>
+
+  <!-- NEW PROJECT -->
+  <div class="section" id="ck-new-sec">
+    <div class="section-header">
+      <h2>New project</h2>
+      <div class="divider"></div>
+      <p>Name it after the customer site or order so it's easy to find again. Only the name is required — you can edit everything later.</p>
+    </div>
+    <div id="ck-new-host"></div>
+  </div>
+
+  <!-- THE THREE CHECKLISTS -->
+  <div class="section" id="ck-types-sec">
+    <div class="section-header">
+      <h2>The three checklists</h2>
+      <div class="divider"></div>
+      <p>Each checklist mirrors its process page step for step, with the teams, owners and tools shown on every step.</p>
+    </div>
+    <div class="grid-3" id="ck-types"></div>
+    <div class="alert blue" style="margin-top:22px;margin-bottom:0;">
+      <span class="alert-icon" aria-hidden="true">💡</span>
+      <p><strong>Good to know.</strong> <strong>Copy status update</strong> puts a plain-text summary — progress by phase and the next three open steps — on your clipboard, ready for an email or Teams post. <strong>Print</strong> gives a clean paper or PDF copy of the open checklist. Step wording follows the process pages; if a step is reworded later, your ticks stay put.</p>
+    </div>
+  </div>
+
+</div>
+
+<div id="ck-live" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></div>
+<div id="ck-toast" class="ck-toast" aria-hidden="true"></div>
+
+<footer class="footer">
+  <p>DPM <span>Knowledge Base</span> &nbsp;·&nbsp; Onboarding Handbook Ed.&nbsp;1.3 &nbsp;·&nbsp; Internal Use Only</p>
+</footer>
+<script src="checklist-data.js"></script>
+<script>
+/* ═══════════════════════════════════════════════════════════
+   Delivery Checklist — per-project progress for the AP,
+   WLC & Switch and WAN processes. Steps come from
+   checklist-data.js; progress lives only in this browser
+   (localStorage key "dpmkb_checklists_v1").
+═══════════════════════════════════════════════════════════ */
+(function () {
+  "use strict";
+
+  var DATA = window.KB_CHECKLISTS;
+  var KEY = "dpmkb_checklists_v1";
+  var APP_ID = "dpmkb-checklists";
+  var MAX_PROJECTS = 500;
+  var TYPES = (DATA && DATA.types) || {};
+  var TYPE_ORDER = ["ap", "wlc", "wan"].filter(function (k) { return !!TYPES[k]; });
+  var STEP_RE = /^[a-z]{2,8}\.p\d{1,3}\.s\d{1,3}$/;
+  var PHASE_RE = /^[a-z]{2,8}\.p\d{1,3}$/;
+  var PID_RE = /^[A-Za-z0-9_-]{1,40}$/;
+  var TYPE_RE = /^[a-z]{2,8}$/;
+  var DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
+  var PAGE_RE = /^[a-z0-9-]+\.html(#[A-Za-z0-9_-]+)?$/i;
+  var PHASE_COLORS = ["#B45309", "#1B6CA8", "#0B7A40", "#7C3AED"];
+  var STAGE_COLORS = { A: "#B45309", B: "#1B6CA8", C: "#0B7A40", D: "#7C3AED" };
+  var hasOwn = Object.prototype.hasOwnProperty;
+  var reduceMotion = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+
+  var storageOK = true;
+  var storageNote = "";
+  var state = { version: 1, activeId: null, projects: [] };
+  var openState = Object.create(null);
+  var editing = false;
+  var editDraft = null;
+  var copyBoxText = null;
+  var pendingImport = null;
+  var importMsg = null;
+  var notesTimer = null;
+  var toastTimer = null;
+
+  /* ---------- tiny DOM helpers ---------- */
+  function $(id) { return document.getElementById(id); }
+  function h(tag, props, kids) {
+    var el = document.createElement(tag), deferred = [], k, v, i;
+    if (props) {
+      for (k in props) {
+        if (!hasOwn.call(props, k)) continue;
+        v = props[k];
+        if (v === null || v === undefined || v === false) continue;
+        if (k === "class") el.className = v;
+        else if (k === "value" || k === "checked" || k === "selected") deferred.push([k, v]);
+        else if (k.slice(0, 2) === "on" && typeof v === "function") el.addEventListener(k.slice(2), v);
+        else el.setAttribute(k, v === true ? "" : String(v));
+      }
+    }
+    add(el, kids);
+    for (i = 0; i < deferred.length; i++) el[deferred[i][0]] = deferred[i][1];
+    return el;
+  }
+  function add(el, kids) {
+    var i;
+    if (kids === null || kids === undefined || kids === false) return;
+    if (Array.isArray(kids)) { for (i = 0; i < kids.length; i++) add(el, kids[i]); return; }
+    if (typeof kids === "string" || typeof kids === "number") { el.appendChild(document.createTextNode(String(kids))); return; }
+    el.appendChild(kids);
+  }
+  function clear(el) { while (el && el.firstChild) el.removeChild(el.firstChild); }
+  function ico(e) { return h("span", { "class": "ck-ico", "aria-hidden": "true" }, e); }
+  function focusEl(el) {
+    if (!el || !el.focus) return;
+    try { el.focus({ preventScroll: true }); } catch (e) { el.focus(); }
+  }
+  function scrollEl(el, block) {
+    if (!el || !el.scrollIntoView) return;
+    try { el.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: block || "start" }); }
+    catch (e) { el.scrollIntoView(true); }
+  }
+  function goTo(el, focusTarget) { scrollEl(el, "start"); focusEl(focusTarget); }
+  function domId(id) { return String(id).replace(/[^A-Za-z0-9_-]/g, "-"); }
+  function safePage(href) { return typeof href === "string" && PAGE_RE.test(href); }
+  function plural(n, w) { return n + " " + w + (n === 1 ? "" : "s"); }
+  function pad2(n) { return (n < 10 ? "0" : "") + n; }
+
+  /* ---------- text + date helpers ---------- */
+  function cleanLine(v, max) {
+    if (typeof v !== "string") return "";
+    return v.replace(/[\u0000-\u001F\u007F]+/g, " ").replace(/\s+/g, " ").trim().slice(0, max);
+  }
+  function cleanText(v, max) {
+    if (typeof v !== "string") return "";
+    return v.replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, "").slice(0, max);
+  }
+  function nowIso() { return new Date().toISOString(); }
+  function validIso(s) { return (typeof s === "string" && s.length <= 40 && !isNaN(Date.parse(s))) ? s : ""; }
+  function parseDate(s) { var p = s.split("-"); return new Date(+p[0], +p[1] - 1, +p[2]); }
+  function validDate(s) {
+    if (typeof s !== "string" || !DATE_RE.test(s)) return false;
+    var p = s.split("-"), d = parseDate(s);
+    return d.getFullYear() === +p[0] && d.getMonth() === +p[1] - 1 && d.getDate() === +p[2];
+  }
+  function isoDay(d) { return d.getFullYear() + "-" + pad2(d.getMonth() + 1) + "-" + pad2(d.getDate()); }
+  function fmtDate(d) {
+    if (!d || isNaN(d.getTime())) return "";
+    try { return d.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" }); }
+    catch (e) { return isoDay(d); }
+  }
+  function relDays(s) {
+    var n = new Date();
+    var today = new Date(n.getFullYear(), n.getMonth(), n.getDate());
+    var diff = Math.round((parseDate(s).getTime() - today.getTime()) / 86400000);
+    if (diff === 0) return "today";
+    if (diff === 1) return "tomorrow";
+    if (diff === -1) return "yesterday";
+    return diff > 0 ? "in " + diff + " days" : Math.abs(diff) + " days ago";
+  }
+
+  /* ---------- checklist data helpers ---------- */
+  function typeOf(p) { return (p && hasOwn.call(TYPES, p.type)) ? TYPES[p.type] : null; }
+  function typeCounts(t) {
+    var steps = 0;
+    t.phases.forEach(function (ph) { steps += ph.steps.length; });
+    return { steps: steps, phases: t.phases.length };
+  }
+  function findPhase(t, phId) {
+    for (var i = 0; i < t.phases.length; i++) if (t.phases[i].id === phId) return t.phases[i];
+    return null;
+  }
+  function phaseOfStep(t, stepId) {
+    for (var i = 0; i < t.phases.length; i++) {
+      for (var j = 0; j < t.phases[i].steps.length; j++) if (t.phases[i].steps[j].id === stepId) return t.phases[i];
+    }
+    return null;
+  }
+  function stepNum(t, pi, si) { return t.numbering === "dotted" ? (pi + 1) + "." + (si + 1) : pad2(si + 1); }
+  function colorFor(ph, pi) {
+    if (ph.stage && STAGE_COLORS[ph.stage]) return STAGE_COLORS[ph.stage];
+    return PHASE_COLORS[pi % PHASE_COLORS.length];
+  }
+  function ownerClass(o) {
+    var s = String(o).toLowerCase();
+    if (s.indexOf("carrier") === 0) return "ck-own-carrier";
+    if (s.indexOf("customer") === 0) return "ck-own-cust";
+    if (s.indexOf("courier") === 0) return "ck-own-courier";
+    return "ck-own-ob";
+  }
+  function stats(p) {
+    var t = typeOf(p);
+    var out = { total: 0, done: 0, pct: 0, phases: [], next: [], phasesDone: 0 };
+    if (!t) return out;
+    t.phases.forEach(function (ph, pi) {
+      var d = 0;
+      ph.steps.forEach(function (st, si) {
+        if (p.done[st.id]) d++;
+        else out.next.push({ phase: ph, pi: pi, step: st, si: si });
+      });
+      out.total += ph.steps.length;
+      out.done += d;
+      if (d === ph.steps.length) out.phasesDone++;
+      out.phases.push({ phase: ph, pi: pi, done: d, total: ph.steps.length });
+    });
+    out.pct = out.total ? Math.floor(out.done / out.total * 100) : 0;
+    return out;
+  }
+  function isComplete(s) { return s.total > 0 && s.done === s.total; }
+  function hasTicks(p, type) {
+    return Object.keys(p.done).some(function (k) { return k.indexOf(type + ".") === 0; });
+  }
+
+  /* ---------- state: storage + validation ---------- */
+  function findProject(id) {
+    for (var i = 0; i < state.projects.length; i++) if (state.projects[i].id === id) return state.projects[i];
+    return null;
+  }
+  function activeProject() { return state.activeId ? findProject(state.activeId) : null; }
+  function newId() { return "p" + Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
+  function freshId(taken) {
+    var id;
+    do { id = newId(); } while ((taken && taken[id]) || findProject(id));
+    return id;
+  }
+  function touch(p) { p.updated = nowIso(); }
+
+  function sanitizeProject(src) {
+    if (!src || typeof src !== "object" || Array.isArray(src)) return null;
+    var type = typeof src.type === "string" ? src.type : "";
+    if (!TYPE_RE.test(type)) return null;
+    var name = cleanLine(src.name, 120);
+    if (!name) return null;
+    var ts = nowIso();
+    var p = {
+      id: (typeof src.id === "string" && PID_RE.test(src.id)) ? src.id : "",
+      name: name,
+      customer: cleanLine(src.customer, 120),
+      site: cleanLine(src.site, 120),
+      type: type,
+      target: validDate(src.target) ? src.target : "",
+      notes: cleanText(src.notes, 20000),
+      created: validIso(src.created) || ts,
+      updated: validIso(src.updated) || ts,
+      done: {},
+      collapsed: {}
+    };
+    if (src.done && typeof src.done === "object" && !Array.isArray(src.done)) {
+      Object.keys(src.done).slice(0, 3000).forEach(function (k) {
+        var v = src.done[k];
+        if (STEP_RE.test(k) && v) p.done[k] = (typeof v === "number" && isFinite(v) && v > 0) ? v : 1;
+      });
+    }
+    if (src.collapsed && typeof src.collapsed === "object" && !Array.isArray(src.collapsed)) {
+      Object.keys(src.collapsed).slice(0, 500).forEach(function (k) {
+        if (PHASE_RE.test(k) && typeof src.collapsed[k] === "boolean") p.collapsed[k] = src.collapsed[k];
+      });
+    }
+    return p;
+  }
+  function normaliseState(obj) {
+    var st = { version: 1, activeId: null, projects: [] };
+    if (!obj || typeof obj !== "object" || !Array.isArray(obj.projects)) return st;
+    var seen = Object.create(null);
+    for (var i = 0; i < obj.projects.length && st.projects.length < MAX_PROJECTS; i++) {
+      var p = sanitizeProject(obj.projects[i]);
+      if (!p) continue;
+      if (!p.id || seen[p.id]) p.id = freshId(seen);
+      seen[p.id] = true;
+      st.projects.push(p);
+    }
+    if (typeof obj.activeId === "string" && seen[obj.activeId]) st.activeId = obj.activeId;
+    return st;
+  }
+  function readStore() {
+    var raw = null;
+    try { raw = window.localStorage.getItem(KEY); }
+    catch (e) { storageOK = false; return null; }
+    if (!raw) return null;
+    try { return JSON.parse(raw); }
+    catch (e) {
+      try { window.localStorage.setItem(KEY + "_unreadable", raw); } catch (e2) { /* ignore */ }
+      storageNote = "Checklist data saved in this browser couldn't be read, so the page started fresh. A copy of the unreadable data was kept in this browser in case it can be recovered.";
+      return null;
+    }
+  }
+  function save() {
+    try { window.localStorage.setItem(KEY, JSON.stringify(state)); }
+    catch (e) {
+      if (storageOK) { storageOK = false; renderStorageNotice(); }
+    }
+  }
+  function renderStorageNotice() {
+    var box = $("ck-storage-warn"), msg = $("ck-storage-msg");
+    if (!box || !msg) return;
+    if (storageOK && !storageNote) { box.hidden = true; return; }
+    msg.textContent = !storageOK
+      ? "This browser isn't letting the page save (for example a private window, blocked site data or full storage). The checklist still works, but changes only last until you close this tab — use Export backup to keep them."
+      : storageNote;
+    box.hidden = false;
+  }
+
+  /* ---------- announcements ---------- */
+  function announce(msg) {
+    var live = $("ck-live"), toast = $("ck-toast");
+    if (live) {
+      live.textContent = "";
+      setTimeout(function () { live.textContent = msg; }, 60);
+    }
+    if (toast) {
+      toast.textContent = msg;
+      toast.classList.add("show");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(function () { toast.classList.remove("show"); }, 3400);
+    }
+  }
+
+  /* ---------- open/closed phases ---------- */
+  function initOpenState() { openState = Object.create(null); }
+  function isOpen(p, ph, doneCount) {
+    if (ph.id in openState) return openState[ph.id];
+    var v;
+    if (typeof p.collapsed[ph.id] === "boolean") v = !p.collapsed[ph.id];
+    else v = doneCount < ph.steps.length;          /* completed phases start folded */
+    openState[ph.id] = v;
+    return v;
+  }
+
+  /* ---------- rendering ---------- */
+  function renderAll() {
+    renderStorageNotice();
+    renderImport();
+    renderList();
+    renderActive();
+  }
+
+  function typeChip(k, shortLabel) {
+    var t = TYPES[k];
+    return h("span", { "class": "ck-typechip ck-tc-" + k }, [
+      h("span", { "aria-hidden": "true" }, t.icon || "✅"),
+      shortLabel ? t.short : t.title
+    ]);
+  }
+
+  function cmpProjects(a, b) {
+    var ca = isComplete(stats(a)) ? 1 : 0, cb = isComplete(stats(b)) ? 1 : 0;
+    if (ca !== cb) return ca - cb;
+    if (a.target !== b.target) {
+      if (!a.target) return 1;
+      if (!b.target) return -1;
+      return a.target < b.target ? -1 : 1;
+    }
+    var na = a.name.toLowerCase(), nb = b.name.toLowerCase();
+    return na < nb ? -1 : (na > nb ? 1 : 0);
+  }
+
+  function renderList() {
+    var host = $("ck-list");
+    if (!host) return;
+    clear(host);
+    var n = state.projects.length;
+    var count = $("ck-count");
+    if (count) count.textContent = n ? plural(n, "project") + " in this browser" : "";
+    var exp = $("ck-export");
+    if (exp) exp.disabled = !n;
+    if (!n) { host.appendChild(emptyState()); return; }
+    var ul = h("ul", { "class": "ck-plist", role: "list", "aria-label": "Your projects" });
+    state.projects.slice().sort(cmpProjects).forEach(function (p) { ul.appendChild(projectCard(p)); });
+    host.appendChild(ul);
+  }
+
+  function projectCard(p) {
+    var t = typeOf(p), s = stats(p), active = p.id === state.activeId;
+    var complete = !!t && isComplete(s);
+    var sub = [p.customer, p.site].filter(Boolean).join(" · ");
+    var kids = [
+      h("div", { "class": "ck-pcard-top" }, [
+        t ? typeChip(p.type, true) : h("span", { "class": "ck-typechip ck-tc-unknown" }, "Unknown type"),
+        active ? h("span", { "class": "ck-pill ck-pill-open" }, "Open") : null,
+        complete ? h("span", { "class": "ck-pill ck-pill-done" }, "✓ Complete") : null
+      ]),
+      h("div", { "class": "ck-pcard-name", role: "heading", "aria-level": "3" }, p.name),
+      h("div", { "class": "ck-pcard-sub" + (sub ? "" : " is-empty") }, sub || "No customer or site yet"),
+      h("div", { "class": "ck-pcard-date" }, p.target
+        ? [h("span", { "aria-hidden": "true" }, "🗓️ "), "Target " + fmtDate(parseDate(p.target)) + " · " + relDays(p.target)]
+        : "No target date")
+    ];
+    if (t) {
+      kids.push(h("div", { "class": "ck-pcard-prog" }, [
+        h("div", { "class": "ck-bar" + (complete ? " is-complete" : ""), "aria-hidden": "true" }, h("span", { style: "width:" + s.pct + "%" })),
+        h("span", { "class": "ck-pcard-pct" }, s.pct + "% · " + s.done + "/" + s.total)
+      ]));
+    } else {
+      kids.push(h("p", { "class": "ck-hint" }, "This page doesn't recognise this project's checklist type, so it can't be opened. It is kept in your backups."));
+    }
+    kids.push(h("div", { "class": "ck-pcard-actions" }, [
+      t ? h("button", { type: "button", "class": "ck-btn ck-btn-sm" + (active ? "" : " ck-btn-primary"), "aria-label": (active ? "Go to checklist: " : "Open checklist: ") + p.name, onclick: function () { openProject(p.id); } }, active ? "Go to checklist" : "Open") : null,
+      t ? h("button", { type: "button", "class": "ck-btn ck-btn-sm", "aria-label": "Edit details: " + p.name, onclick: function () { editFromList(p.id); } }, "Edit") : null,
+      h("button", { type: "button", "class": "ck-btn ck-btn-sm ck-btn-danger", "aria-label": "Delete project: " + p.name, onclick: function () { deleteProject(p.id); } }, "Delete")
+    ]));
+    return h("li", { "class": "ck-pcard" + (active ? " is-active" : "") + (complete ? " is-complete" : "") }, kids);
+  }
+
+  function emptyState() {
+    return h("div", { "class": "ck-empty" }, [
+      h("div", { "class": "ck-empty-ic", "aria-hidden": "true" }, "✅"),
+      h("p", { "class": "ck-empty-title" }, "No projects yet"),
+      h("p", { "class": "ck-empty-text" }, "Start a checklist for the delivery you're working on — pick its type below. You can add the name, customer, site and target date at any time."),
+      h("div", { "class": "ck-quick" }, TYPE_ORDER.map(function (k) {
+        var t = TYPES[k], c = typeCounts(t);
+        var article = /^[AEIOU]/i.test(t.short) ? "an " : "a ";
+        return h("button", { type: "button", "class": "ck-quickbtn", onclick: function () { quickStart(k); } }, [
+          h("span", { "class": "ck-quick-ic", "aria-hidden": "true" }, t.icon || "✅"),
+          h("span", { "class": "ck-quick-main" }, [
+            h("span", { "class": "ck-quick-title" }, "Start " + article + t.short + " checklist"),
+            h("span", { "class": "ck-quick-sub" }, c.steps + " steps · " + c.phases + " phases")
+          ])
+        ]);
+      })),
+      h("p", { "class": "ck-hint" }, [
+        "Prefer to fill in the details first? ",
+        h("a", { href: "#ck-new-sec", onclick: function (e) { e.preventDefault(); openNewForm(); } }, "Use the New project form"),
+        "."
+      ])
+    ]);
+  }
+
+  function renderActive(focusOverride) {
+    var host = $("ck-active");
+    if (!host) return;
+    var ae = document.activeElement;
+    var fid = focusOverride || ((ae && ae.id && host.contains(ae)) ? ae.id : null);
+    clear(host);
+    var p = activeProject();
+    if (!p) {
+      host.appendChild(h("div", { "class": "ck-noactive" }, state.projects.length
+        ? "Pick a project above to see its checklist."
+        : "Your checklist appears here once you start a project."));
+      return;
+    }
+    var t = typeOf(p);
+    if (!t) {
+      host.appendChild(h("div", { "class": "ck-noactive" }, "This project's checklist type isn't available on this page."));
+      return;
+    }
+    var s = stats(p);
+    host.appendChild(headerCard(p, t, s));
+    host.appendChild(overviewCard(p, t, s));
+    host.appendChild(phasesBlock(p, t, s));
+    host.appendChild(notesCard(p));
+    if (fid) focusEl($(fid));
+  }
+
+  function progressBar(pct, complete, label) {
+    return h("div", { "class": "ck-bar" + (complete ? " is-complete" : ""), role: "progressbar", "aria-valuemin": "0", "aria-valuemax": "100", "aria-valuenow": String(pct), "aria-label": label },
+      h("span", { style: "width:" + pct + "%" }));
+  }
+
+  function headerCard(p, t, s) {
+    var complete = isComplete(s);
+    var sub = [p.customer, p.site].filter(Boolean).join(" · ");
+    var dateLine = p.target
+      ? ["Target migration: ", h("strong", null, fmtDate(parseDate(p.target))), " (" + relDays(p.target) + ")"]
+      : "No target migration date set";
+    return h("div", { "class": "ck-card ck-head" + (complete ? " is-complete" : "") }, [
+      h("div", { "class": "ck-head-top" }, [
+        h("div", { "class": "ck-head-main" }, [
+          typeChip(p.type, false),
+          h("div", { "class": "ck-proj-name", id: "ck-proj-title", role: "heading", "aria-level": "3", tabindex: "-1" }, p.name),
+          sub ? h("div", { "class": "ck-proj-sub" }, sub) : null,
+          h("div", { "class": "ck-proj-date" }, [h("span", { "aria-hidden": "true" }, "🗓️ "), dateLine])
+        ]),
+        h("div", { "class": "ck-head-pct" }, [
+          h("span", { "class": "ck-pct-num" }, s.pct + "%"),
+          h("span", { "class": "ck-pct-lbl" }, complete ? "complete" : "done")
+        ])
+      ]),
+      progressBar(s.pct, complete, "Overall progress"),
+      h("p", { "class": "ck-head-meta" }, s.done + " of " + s.total + " steps done · " + s.phasesDone + " of " + t.phases.length + " phases complete"),
+      h("div", { "class": "ck-actions ck-noprint" }, [
+        h("button", { type: "button", "class": "ck-btn ck-btn-primary", id: "ck-copy-btn", onclick: copyStatus }, [ico("📋"), "Copy status update"]),
+        h("button", { type: "button", "class": "ck-btn", id: "ck-print-btn", onclick: doPrint }, [ico("🖨️"), "Print"]),
+        h("button", { type: "button", "class": "ck-btn", id: "ck-edit-btn", "aria-expanded": String(editing), "aria-controls": editing ? "ck-edit-panel" : null, onclick: toggleEdit }, [ico("✏️"), "Edit details"]),
+        h("button", { type: "button", "class": "ck-btn ck-btn-danger", id: "ck-del-btn", onclick: function () { deleteProject(p.id); } }, [ico("🗑️"), "Delete"])
+      ]),
+      copyBoxText !== null ? copyBox() : null,
+      editing ? editPanel(p) : null,
+      safePage(t.sourcePage) ? h("a", { "class": "ck-proclink ck-noprint", href: t.sourcePage }, "See the full process with owners & tools →") : null,
+      h("p", { "class": "ck-print-only ck-print-meta" }, "Printed " + fmtDate(new Date()) + " from the DPM Knowledge Base delivery checklist · " + t.title)
+    ]);
+  }
+
+  function copyBox() {
+    return h("div", { "class": "ck-copybox ck-noprint" }, [
+      h("label", { "for": "ck-copy-ta" }, "Your browser blocked automatic copying — select the text below and copy it (Ctrl+C, or ⌘C on a Mac):"),
+      h("textarea", { id: "ck-copy-ta", rows: "10", readonly: true, value: copyBoxText }),
+      h("button", { type: "button", "class": "ck-btn ck-btn-sm", onclick: function () { copyBoxText = null; renderActive("ck-copy-btn"); } }, "Close")
+    ]);
+  }
+
+  function editPanel(p) {
+    var v = editDraft || { name: p.name, customer: p.customer, site: p.site, type: p.type, target: p.target };
+    return h("div", { "class": "ck-edit ck-noprint", id: "ck-edit-panel" }, [
+      h("p", { "class": "ck-edit-title" }, "Edit project details"),
+      buildForm("edit", v)
+    ]);
+  }
+
+  function overviewCard(p, t, s) {
+    var first = s.next[0];
+    var who = first ? (first.step.owner || first.step.team || "") : "";
+    var nextBlock = first
+      ? h("div", { "class": "ck-nextup" }, [
+          h("span", { "class": "ck-nextup-lbl" }, "Next up"),
+          h("div", { "class": "ck-nextup-body" }, [
+            h("div", { "class": "ck-nextup-text" }, first.step.text),
+            h("div", { "class": "ck-nextup-meta" }, "Phase " + (first.pi + 1) + ": " + first.phase.name + (who ? " — " + who : ""))
+          ]),
+          h("button", { type: "button", "class": "ck-btn ck-btn-sm ck-noprint", id: "ck-goto-next", onclick: function () { goToStep(first.step.id); } }, "Go to step")
+        ])
+      : h("div", { "class": "ck-alldone" }, [ico("🎉"), h("span", null, "All " + s.total + " steps are ticked — this checklist is complete.")]);
+    var chips = h("div", { "class": "ck-chips" }, s.phases.map(function (ps) {
+      var done = ps.done === ps.total;
+      return h("button", {
+        type: "button",
+        "class": "ck-chip" + (done ? " is-complete" : ""),
+        style: "--ck-c:" + colorFor(ps.phase, ps.pi),
+        "aria-label": ps.phase.name + ": " + ps.done + " of " + ps.total + " steps done. Go to phase.",
+        onclick: function () { goToPhase(ps.phase.id); }
+      }, [
+        h("span", { "class": "ck-chip-dot", "aria-hidden": "true" }),
+        h("span", { "class": "ck-chip-name" }, ps.phase.name),
+        h("span", { "class": "ck-chip-count" }, (done ? "✓ " : "") + ps.done + "/" + ps.total)
+      ]);
+    }));
+    return h("div", { "class": "ck-card ck-overview" }, [
+      nextBlock,
+      h("div", { "class": "ck-ov-row" }, [
+        h("span", { "class": "ck-ov-title" }, "Progress by phase"),
+        h("span", { "class": "ck-ov-tools ck-noprint" }, [
+          h("button", { type: "button", "class": "ck-linkbtn", id: "ck-expand-all", onclick: function () { setAll(true); } }, "Expand all"),
+          h("button", { type: "button", "class": "ck-linkbtn", id: "ck-collapse-all", onclick: function () { setAll(false); } }, "Collapse all")
+        ])
+      ]),
+      chips
+    ]);
+  }
+
+  function phasesBlock(p, t, s) {
+    var wrap = h("div", { "class": "ck-phases" });
+    var nextId = s.next.length ? s.next[0].step.id : null;
+    var stages = Object.create(null), lastStage = null;
+    (t.stages || []).forEach(function (sg) { stages[sg.id] = sg; });
+    var level = t.stages ? "5" : "4";
+    s.phases.forEach(function (ps) {
+      var ph = ps.phase;
+      if (ph.stage && ph.stage !== lastStage && stages[ph.stage]) {
+        lastStage = ph.stage;
+        var sg = stages[ph.stage];
+        wrap.appendChild(h("div", { "class": "ck-stage", role: "heading", "aria-level": "4", style: "--ck-c:" + (STAGE_COLORS[sg.id] || "#5F5F5F") }, [
+          h("span", { "class": "ck-stage-id" }, "Stage " + sg.id),
+          h("span", { "class": "ck-stage-txt" }, sg.name + (sg.note ? " · " + sg.note : ""))
+        ]));
+      }
+      wrap.appendChild(phaseBlock(p, t, ps, nextId, level));
+    });
+    return wrap;
+  }
+
+  function phaseBlock(p, t, ps, nextId, level) {
+    var ph = ps.phase, open = isOpen(p, ph, ps.done), complete = ps.done === ps.total;
+    var did = domId(ph.id), bodyId = "ck-pb-" + did, togId = "ck-pt-" + did;
+    var pct = ps.total ? Math.floor(ps.done / ps.total * 100) : 0;
+    var list = h("ol", { "class": "ck-steps", id: bodyId, role: "list", "aria-label": ph.name + " steps" });
+    ph.steps.forEach(function (st, si) { list.appendChild(stepRow(p, t, ps.pi, st, si, st.id === nextId)); });
+    return h("div", { "class": "ck-phase" + (open ? "" : " is-collapsed") + (complete ? " is-complete" : ""), id: "ck-ph-" + did, style: "--ck-c:" + colorFor(ph, ps.pi) }, [
+      h("div", { "class": "ck-phase-head" }, [
+        h("div", { "class": "ck-phase-h", role: "heading", "aria-level": level },
+          h("button", { type: "button", "class": "ck-phase-toggle", id: togId, "aria-expanded": String(open), "aria-controls": bodyId, onclick: function () { togglePhase(ph.id); } }, [
+            h("span", { "class": "ck-chev", "aria-hidden": "true" }),
+            h("span", { "class": "ck-phase-idx" }, "Phase " + (ps.pi + 1)),
+            h("span", { "class": "ck-phase-name" }, ph.name),
+            h("span", { "class": "ck-phase-count" }, complete ? "✓ Complete · " + ps.done + "/" + ps.total : ps.done + "/" + ps.total + " done")
+          ])),
+        h("div", { "class": "ck-phase-actions ck-noprint" }, [
+          !complete ? h("button", { type: "button", "class": "ck-linkbtn", id: "ck-pm-" + did, "aria-label": "Mark phase complete: " + ph.name, onclick: function () { markPhase(ph.id, true); } }, "Mark phase complete") : null,
+          ps.done > 0 ? h("button", { type: "button", "class": "ck-linkbtn", id: "ck-pc-" + did, "aria-label": "Clear phase: " + ph.name, onclick: function () { markPhase(ph.id, false); } }, "Clear phase") : null
+        ]),
+        h("div", { "class": "ck-phase-bar", "aria-hidden": "true" }, h("span", { style: "width:" + pct + "%" }))
+      ]),
+      list
+    ]);
+  }
+
+  function stepRow(p, t, pi, st, si, isNext) {
+    var did = domId(st.id), cbId = "ck-cb-" + did, exId = "ck-ex-" + did;
+    var done = !!p.done[st.id];
+    var extras = [], meta = [];
+    if (st.note) extras.push(h("p", { "class": "ck-step-note" }, st.note));
+    if (st.owner) meta.push(h("span", { "class": "ck-own " + ownerClass(st.owner) }, [h("span", { "class": "sr-only" }, "Done by: "), st.owner]));
+    if (st.team) meta.push(h("span", { "class": "ck-team" }, [h("span", { "aria-hidden": "true" }, "👥"), h("span", { "class": "sr-only" }, "Teams: "), st.team]));
+    (st.tools || []).forEach(function (tool) {
+      meta.push(h("span", { "class": "ck-tool" }, [h("span", { "class": "sr-only" }, "Tool: "), tool]));
+    });
+    if (st.link && safePage(st.link.href)) meta.push(h("a", { "class": "ck-steplink", href: st.link.href }, st.link.label || "More →"));
+    if (meta.length) extras.push(h("div", { "class": "ck-step-meta" }, meta));
+    var cb = h("input", {
+      type: "checkbox", "class": "ck-cb", id: cbId, checked: done,
+      "aria-describedby": extras.length ? exId : null,
+      onchange: function (e) { toggleStep(st.id, !!e.target.checked); }
+    });
+    return h("li", { "class": "ck-step" + (done ? " is-done" : "") + (isNext ? " is-next" : ""), id: "ck-st-" + did }, [
+      cb,
+      h("div", { "class": "ck-step-body" }, [
+        h("label", { "for": cbId, "class": "ck-step-label" }, [
+          h("span", { "class": "ck-step-num", "aria-hidden": "true" }, stepNum(t, pi, si)),
+          h("span", { "class": "ck-step-main" }, [
+            h("span", { "class": "ck-step-text" }, st.text),
+            isNext ? h("span", { "class": "ck-next-badge" }, "Next up") : null
+          ])
+        ]),
+        extras.length ? h("div", { "class": "ck-step-extra", id: exId }, extras) : null
+      ])
+    ]);
+  }
+
+  function notesCard(p) {
+    var status = h("span", { "class": "ck-hint", id: "ck-notes-status" }, "");
+    var ta = h("textarea", { id: "ck-notes", rows: "5", maxlength: "20000", "aria-describedby": "ck-notes-hint", placeholder: "Contacts, references, blockers, decisions…", value: p.notes || "" });
+    ta.addEventListener("input", function () {
+      var q = findProject(p.id);
+      if (!q) return;
+      q.notes = cleanText(ta.value, 20000);
+      touch(q);
+      status.textContent = "Saving…";
+      clearTimeout(notesTimer);
+      notesTimer = setTimeout(flushNotes, 500);
+    });
+    ta.addEventListener("blur", flushNotes);
+    return h("div", { "class": "ck-card ck-notes" + (p.notes ? "" : " ck-noprint") }, [
+      h("label", { "for": "ck-notes", "class": "ck-notes-lbl" }, "Project notes"),
+      h("p", { "class": "ck-hint", id: "ck-notes-hint" }, "Saved with this project in this browser. Not included in the status update."),
+      ta,
+      h("div", { "class": "ck-notes-foot ck-noprint" }, status),
+      p.notes ? h("div", { "class": "ck-print-only ck-notes-print" }, p.notes) : null
+    ]);
+  }
+  function flushNotes() {
+    if (!notesTimer) return;
+    clearTimeout(notesTimer);
+    notesTimer = null;
+    save();
+    var st = $("ck-notes-status");
+    if (st) st.textContent = storageOK ? "Saved" : "Not saved — browser storage unavailable";
+  }
+
+  /* ---------- forms (new + edit) ---------- */
+  function field(pre, key, labelKids, input, wide) {
+    return h("div", { "class": "ck-field" + (wide ? " ck-wide" : "") }, [
+      h("label", { "for": pre + key }, labelKids),
+      input,
+      h("p", { "class": "ck-err", id: pre + key + "-err", hidden: true })
+    ]);
+  }
+  function fillTypeHint(el, k) {
+    if (!el) return;
+    clear(el);
+    var t = hasOwn.call(TYPES, k) ? TYPES[k] : null;
+    if (!t) return;
+    var c = typeCounts(t);
+    add(el, c.steps + " steps in " + c.phases + " phases. ");
+    if (safePage(t.sourcePage)) add(el, h("a", { href: t.sourcePage }, "See the full process →"));
+  }
+  function buildForm(mode, v) {
+    var pre = mode === "edit" ? "cke-" : "ckn-";
+    var typeSel = h("select", { id: pre + "type", name: "type", "aria-describedby": pre + "type-hint" },
+      TYPE_ORDER.map(function (k) { return h("option", { value: k }, TYPES[k].title); }));
+    typeSel.value = hasOwn.call(TYPES, v.type) ? v.type : TYPE_ORDER[0];
+    var typeHint = h("p", { "class": "ck-hint", id: pre + "type-hint" });
+    fillTypeHint(typeHint, typeSel.value);
+    typeSel.addEventListener("change", function () { fillTypeHint(typeHint, typeSel.value); });
+
+    var form = h("form", { "class": "ck-form", id: pre + "form", novalidate: true }, [
+      h("div", { "class": "ck-form-grid" }, [
+        field(pre, "name", ["Project name ", h("span", { "class": "ck-req" }, "(required)")],
+          h("input", { type: "text", id: pre + "name", name: "name", maxlength: "120", autocomplete: "off", required: true, placeholder: mode === "new" ? "e.g. Acme Lyon — AP refresh" : null, value: v.name || "" }), true),
+        field(pre, "customer", "Customer",
+          h("input", { type: "text", id: pre + "customer", name: "customer", maxlength: "120", autocomplete: "off", value: v.customer || "" })),
+        field(pre, "site", "Site",
+          h("input", { type: "text", id: pre + "site", name: "site", maxlength: "120", autocomplete: "off", value: v.site || "" })),
+        h("div", { "class": "ck-field" }, [h("label", { "for": pre + "type" }, "Delivery type"), typeSel, typeHint]),
+        field(pre, "target", ["Target migration date ", h("span", { "class": "ck-opt" }, "(optional)")],
+          h("input", { type: "date", id: pre + "target", name: "target", placeholder: "YYYY-MM-DD", value: v.target || "" }))
+      ]),
+      h("div", { "class": "ck-form-actions" }, mode === "edit"
+        ? [
+            h("button", { type: "submit", "class": "ck-btn ck-btn-primary" }, "Save details"),
+            h("button", { type: "button", "class": "ck-btn", onclick: cancelEdit }, "Cancel")
+          ]
+        : [
+            h("button", { type: "submit", "class": "ck-btn ck-btn-primary" }, "Create project"),
+            h("button", { type: "reset", "class": "ck-btn" }, "Clear form")
+          ])
+    ]);
+
+    if (mode === "edit") {
+      var keepDraft = function () { editDraft = readRaw(pre); };
+      form.addEventListener("input", keepDraft);
+      form.addEventListener("change", keepDraft);
+      form.addEventListener("submit", onEditSubmit);
+    } else {
+      form.addEventListener("submit", onNewSubmit);
+      form.addEventListener("reset", function () {
+        setTimeout(function () {
+          setErr(pre, "name", "");
+          setErr(pre, "target", "");
+          fillTypeHint(typeHint, typeSel.value);
+        }, 0);
+      });
+    }
+    return form;
+  }
+  function readRaw(pre) {
+    function val(key) { var el = $(pre + key); return el ? String(el.value || "") : ""; }
+    return { name: val("name"), customer: val("customer"), site: val("site"), type: val("type"), target: val("target") };
+  }
+  function readForm(pre) {
+    return {
+      name: cleanLine(($(pre + "name") || {}).value, 120),
+      customer: cleanLine(($(pre + "customer") || {}).value, 120),
+      site: cleanLine(($(pre + "site") || {}).value, 120),
+      type: ($(pre + "type") || {}).value || "",
+      target: String(($(pre + "target") || {}).value || "").trim()
+    };
+  }
+  function setErr(pre, key, msg) {
+    var input = $(pre + key), err = $(pre + key + "-err");
+    if (!input || !err) return;
+    err.textContent = msg;
+    err.hidden = !msg;
+    if (msg) { input.setAttribute("aria-invalid", "true"); input.setAttribute("aria-describedby", err.id); }
+    else { input.removeAttribute("aria-invalid"); input.removeAttribute("aria-describedby"); }
+  }
+  function validate(pre) {
+    var v = readForm(pre), bad = null;
+    setErr(pre, "name", v.name ? "" : "Give the project a name — for example the customer site or order.");
+    if (!v.name) bad = $(pre + "name");
+    var dateEl = $(pre + "target");
+    /* a half-typed date reports value "" — treat it as an error, not as "no date" */
+    var dateBad = !!(dateEl && dateEl.validity && dateEl.validity.badInput);
+    var dateOk = !dateBad && (!v.target || validDate(v.target));
+    setErr(pre, "target", dateOk ? "" : "Use a real date in the format YYYY-MM-DD, or leave it empty.");
+    if (!dateOk && !bad) bad = $(pre + "target");
+    if (!hasOwn.call(TYPES, v.type)) v.type = TYPE_ORDER[0];
+    if (bad) { bad.focus(); return null; }
+    return v;
+  }
+
+  /* ---------- actions: projects ---------- */
+  function createProject(v) {
+    var ts = nowIso();
+    var p = { id: freshId(null), name: v.name, customer: v.customer || "", site: v.site || "", type: v.type, target: v.target || "", notes: "", created: ts, updated: ts, done: {}, collapsed: {} };
+    state.projects.push(p);
+    state.activeId = p.id;
+    editing = false; editDraft = null; copyBoxText = null;
+    initOpenState();
+    save();
+    renderAll();
+    return p;
+  }
+  function onNewSubmit(e) {
+    e.preventDefault();
+    var v = validate("ckn-");
+    if (!v) return;
+    var p = createProject(v);
+    var form = $("ckn-form");
+    if (form) form.reset();
+    announce("Created “" + p.name + "” — its checklist is open.");
+    goTo($("ck-checklist-sec"), $("ck-proj-title"));
+  }
+  function quickStart(k) {
+    var t = TYPES[k];
+    if (!t) return;
+    var p = createProject({ name: "New " + t.short + " delivery", customer: "", site: "", type: k, target: "" });
+    announce("Started “" + p.name + "”. Use Edit details to rename it and add the customer, site and date.");
+    goTo($("ck-checklist-sec"), $("ck-proj-title"));
+  }
+  function openNewForm(typeKey) {
+    var sel = $("ckn-type");
+    if (sel && typeKey && hasOwn.call(TYPES, typeKey)) {
+      sel.value = typeKey;
+      fillTypeHint($("ckn-type-hint"), typeKey);
+    }
+    goTo($("ck-new-sec"), $("ckn-name"));
+  }
+  function openProject(id) {
+    var p = findProject(id);
+    if (!p || !typeOf(p)) return;
+    if (state.activeId !== id) {
+      state.activeId = id;
+      editing = false; editDraft = null; copyBoxText = null;
+      initOpenState();
+      save();
+      renderList();
+      renderActive();
+    }
+    goTo($("ck-checklist-sec"), $("ck-proj-title"));
+  }
+  function editFromList(id) {
+    var p = findProject(id);
+    if (!p || !typeOf(p)) return;
+    if (state.activeId !== id) {
+      state.activeId = id;
+      copyBoxText = null;
+      initOpenState();
+      save();
+    }
+    editing = true; editDraft = null;
+    renderList();
+    renderActive();
+    goTo($("ck-checklist-sec"), $("cke-name"));
+  }
+  function toggleEdit() {
+    editing = !editing;
+    editDraft = null;
+    renderActive(editing ? "cke-name" : "ck-edit-btn");
+  }
+  function cancelEdit() {
+    editing = false;
+    editDraft = null;
+    renderActive("ck-edit-btn");
+  }
+  function onEditSubmit(e) {
+    e.preventDefault();
+    var p = activeProject();
+    if (!p) return;
+    var v = validate("cke-");
+    if (!v) return;
+    var typeChanged = v.type !== p.type;
+    if (typeChanged && hasTicks(p, p.type)) {
+      if (!window.confirm("Switch “" + p.name + "” to the " + TYPES[v.type].title + " checklist?\n\nTicks on the current checklist are kept in the background and come back if you switch back.")) return;
+    }
+    p.name = v.name; p.customer = v.customer; p.site = v.site; p.type = v.type; p.target = v.target;
+    touch(p);
+    if (typeChanged) initOpenState();
+    editing = false; editDraft = null; copyBoxText = null;
+    save();
+    renderList();
+    renderActive("ck-proj-title");
+    announce("Project details saved.");
+  }
+  function deleteProject(id) {
+    var p = findProject(id);
+    if (!p) return;
+    if (!window.confirm("Delete “" + p.name + "”?\n\nIts ticks and notes will be removed from this browser. This can't be undone — export a backup first if you might need it.")) return;
+    state.projects = state.projects.filter(function (q) { return q.id !== id; });
+    if (state.activeId === id) {
+      state.activeId = null;
+      editing = false; editDraft = null; copyBoxText = null;
+      initOpenState();
+    }
+    save();
+    renderAll();
+    announce("Deleted “" + p.name + "”.");
+    focusEl($("ck-new-btn"));
+  }
+
+  /* ---------- actions: steps + phases ---------- */
+  function toggleStep(stepId, on) {
+    var p = activeProject(), t = typeOf(p);
+    if (!t) return;
+    if (on) p.done[stepId] = Date.now();
+    else delete p.done[stepId];
+    touch(p);
+    copyBoxText = null;
+    save();
+    renderActive();
+    renderList();
+    if (on) {
+      var s = stats(p), ph = phaseOfStep(t, stepId);
+      if (isComplete(s)) announce("All " + s.total + " steps done — this checklist is complete.");
+      else if (ph && ph.steps.every(function (st) { return !!p.done[st.id]; })) announce("Phase complete: " + ph.name + ".");
+    }
+  }
+  function togglePhase(phId) {
+    var p = activeProject();
+    if (!p) return;
+    var open = !openState[phId];
+    openState[phId] = open;
+    p.collapsed[phId] = !open;
+    save();
+    renderActive();
+  }
+  function setAll(open) {
+    var p = activeProject(), t = typeOf(p);
+    if (!t) return;
+    t.phases.forEach(function (ph) { openState[ph.id] = open; p.collapsed[ph.id] = !open; });
+    save();
+    renderActive();
+  }
+  function markPhase(phId, on) {
+    var p = activeProject(), t = typeOf(p);
+    if (!t) return;
+    var ph = findPhase(t, phId);
+    if (!ph) return;
+    var ticked = ph.steps.filter(function (st) { return !!p.done[st.id]; }).length;
+    if (!on && ticked && !window.confirm("Untick " + plural(ticked, "step") + " in “" + ph.name + "”?")) return;
+    var ts = Date.now();
+    ph.steps.forEach(function (st) {
+      if (on) { if (!p.done[st.id]) p.done[st.id] = ts; }
+      else delete p.done[st.id];
+    });
+    touch(p);
+    copyBoxText = null;
+    save();
+    renderActive("ck-pt-" + domId(ph.id));
+    renderList();
+    announce(on ? "Marked “" + ph.name + "” complete." : "Cleared all ticks in “" + ph.name + "”.");
+  }
+  function goToStep(stepId) {
+    var p = activeProject(), t = typeOf(p);
+    if (!t) return;
+    var ph = phaseOfStep(t, stepId);
+    if (!ph) return;
+    if (!openState[ph.id]) { openState[ph.id] = true; p.collapsed[ph.id] = false; save(); }
+    renderActive();
+    scrollEl($("ck-st-" + domId(stepId)), "center");
+    focusEl($("ck-cb-" + domId(stepId)));
+  }
+  function goToPhase(phId) {
+    var p = activeProject();
+    if (!p) return;
+    if (!openState[phId]) { openState[phId] = true; p.collapsed[phId] = false; save(); }
+    renderActive();
+    scrollEl($("ck-ph-" + domId(phId)), "start");
+    focusEl($("ck-pt-" + domId(phId)));
+  }
+
+  /* ---------- actions: status update, print ---------- */
+  function statusText(p) {
+    var t = typeOf(p), s = stats(p), L = [];
+    L.push("Delivery status: " + p.name);
+    if (p.customer) L.push("Customer: " + p.customer);
+    if (p.site) L.push("Site: " + p.site);
+    L.push("Type: " + t.title);
+    if (p.target) L.push("Target migration date: " + fmtDate(parseDate(p.target)) + " (" + relDays(p.target) + ")");
+    L.push("Progress: " + s.pct + "% (" + s.done + " of " + s.total + " steps done)");
+    L.push("");
+    L.push("By phase:");
+    s.phases.forEach(function (ps) {
+      L.push("- " + (ps.pi + 1) + ". " + ps.phase.name + ": " + ps.done + "/" + ps.total + (ps.done === ps.total ? " (complete)" : ""));
+    });
+    L.push("");
+    if (s.next.length) {
+      L.push("Next steps:");
+      s.next.slice(0, 3).forEach(function (n, i) {
+        var who = n.step.owner ? " [" + n.step.owner + "]" : "";
+        L.push((i + 1) + ". " + n.step.text + who + " (" + n.phase.name + ")");
+      });
+    } else {
+      L.push("All steps are complete.");
+    }
+    L.push("");
+    L.push("As of " + fmtDate(new Date()) + ".");
+    return L.join("\n");
+  }
+  function legacyCopy(txt) {
+    var ta = document.createElement("textarea"), ok = false, prev = document.activeElement;
+    ta.value = txt;
+    ta.setAttribute("readonly", "");
+    ta.style.position = "fixed"; ta.style.top = "0"; ta.style.left = "0";
+    ta.style.width = "1px"; ta.style.height = "1px"; ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.select();
+    try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+    document.body.removeChild(ta);
+    focusEl(prev);
+    return !!ok;
+  }
+  function copyStatus() {
+    var p = activeProject();
+    if (!typeOf(p)) return;
+    flushNotes();
+    var txt = statusText(p);
+    var done = function () {
+      if (copyBoxText !== null) { copyBoxText = null; renderActive("ck-copy-btn"); }
+      announce("Status update copied — paste it into an email or Teams message.");
+    };
+    var fallback = function () {
+      if (legacyCopy(txt)) { done(); return; }
+      copyBoxText = txt;
+      renderActive();
+      var box = $("ck-copy-ta");
+      if (box) { focusEl(box); box.select(); }
+      announce("Copying was blocked — the status update is shown so you can copy it yourself.");
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      try { navigator.clipboard.writeText(txt).then(done, fallback); }
+      catch (e) { fallback(); }
+    } else {
+      fallback();
+    }
+  }
+  function doPrint() {
+    flushNotes();
+    renderActive("ck-print-btn");
+    try { window.print(); } catch (e) { announce("Printing isn't available in this browser."); }
+  }
+
+  /* ---------- backup: export + import ---------- */
+  function exportBackup() {
+    flushNotes();
+    var n = state.projects.length;
+    if (!n) return;
+    var name = "dpm-checklists-backup-" + isoDay(new Date()) + ".json";
+    var json = JSON.stringify({ app: APP_ID, version: 1, exported: nowIso(), projects: state.projects }, null, 2);
+    try {
+      var blob = new Blob([json], { type: "application/json" });
+      if (window.navigator && typeof window.navigator.msSaveOrOpenBlob === "function") {
+        window.navigator.msSaveOrOpenBlob(blob, name);
+      } else {
+        var url = URL.createObjectURL(blob);
+        var a = h("a", { href: url, download: name, style: "display:none" });
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(function () { URL.revokeObjectURL(url); if (a.parentNode) a.parentNode.removeChild(a); }, 2000);
+      }
+      announce("Backup downloaded: " + name + " (" + plural(n, "project") + ").");
+    } catch (e) {
+      announce("Sorry — this browser couldn't create the backup file.");
+    }
+  }
+  function importError(msg) {
+    pendingImport = null;
+    importMsg = msg;
+    renderImport();
+  }
+  function onImportFile(e) {
+    var input = e.target, f = input.files && input.files[0];
+    if (!f) return;
+    input.value = "";
+    if (f.size > 5 * 1024 * 1024) { importError("That file is too large to be a checklist backup (over 5 MB)."); return; }
+    if (typeof FileReader === "undefined") { importError("This browser can't read files, so backups can't be imported here."); return; }
+    var r = new FileReader();
+    r.onload = function () { handleImportText(String(r.result || ""), f.name || "backup.json"); };
+    r.onerror = function () { importError("Couldn't read that file. Try exporting the backup again."); };
+    r.readAsText(f);
+  }
+  function handleImportText(txt, fname) {
+    var obj = null;
+    var shortName = cleanLine(fname, 80) || "backup.json";
+    try { obj = JSON.parse(txt); } catch (e) { importError("“" + shortName + "” isn't a valid backup file (it isn't readable JSON)."); return; }
+    if (!obj || typeof obj !== "object" || Array.isArray(obj) || !Array.isArray(obj.projects)) {
+      importError("“" + shortName + "” doesn't look like a Delivery Checklist backup — no project list was found."); return;
+    }
+    if (obj.app !== undefined && obj.app !== APP_ID) {
+      importError("“" + shortName + "” was made by a different tool, so it can't be imported here."); return;
+    }
+    var incoming = normaliseState(obj).projects;
+    if (!incoming.length) { importError("No valid projects were found in “" + shortName + "”."); return; }
+    importMsg = null;
+    pendingImport = {
+      projects: incoming,
+      skipped: Math.max(0, obj.projects.length - incoming.length),
+      file: shortName,
+      exported: validIso(obj.exported)
+    };
+    renderImport();
+    var title = $("ck-import-title");
+    scrollEl($("ck-import"), "center");
+    focusEl(title);
+  }
+  function cancelImport() {
+    pendingImport = null;
+    importMsg = null;
+    renderImport();
+    focusEl($("ck-import-btn"));
+    announce("Import cancelled — nothing was changed.");
+  }
+  function applyImport(mode) {
+    if (!pendingImport) return;
+    var incoming = pendingImport.projects, n = state.projects.length, msg;
+    if (mode === "replace") {
+      if (n && !window.confirm("Replace all " + plural(n, "project") + " in this browser with the " + plural(incoming.length, "project") + " from the backup?\n\nYour current projects will be removed. This can't be undone.")) return;
+      state.projects = incoming;
+      state.activeId = incoming.length === 1 ? incoming[0].id : null;
+      msg = "Imported " + plural(incoming.length, "project") + " from the backup.";
+    } else {
+      var index = Object.create(null), added = 0, updated = 0, kept = 0;
+      state.projects.forEach(function (q, i) { index[q.id] = i; });
+      incoming.forEach(function (ip) {
+        if (!(ip.id in index)) {
+          if (state.projects.length >= MAX_PROJECTS) { kept++; return; }
+          index[ip.id] = state.projects.length;
+          state.projects.push(ip);
+          added++;
+        } else {
+          var i = index[ip.id];
+          if (Date.parse(ip.updated) > Date.parse(state.projects[i].updated)) { state.projects[i] = ip; updated++; }
+          else kept++;
+        }
+      });
+      msg = "Backup merged: " + added + " added, " + updated + " updated, " + kept + " unchanged.";
+    }
+    if (state.activeId && !findProject(state.activeId)) state.activeId = null;
+    pendingImport = null; importMsg = null;
+    editing = false; editDraft = null; copyBoxText = null;
+    initOpenState();
+    save();
+    renderAll();
+    focusEl($("ck-import-btn"));
+    announce(msg);
+  }
+  function renderImport() {
+    var host = $("ck-import");
+    if (!host) return;
+    clear(host);
+    if (importMsg) {
+      host.appendChild(h("div", { "class": "alert orange ck-import-msg", role: "alert" }, [
+        h("span", { "class": "alert-icon", "aria-hidden": "true" }, "⚠️"),
+        h("p", null, importMsg),
+        h("button", { type: "button", "class": "ck-btn ck-btn-sm", onclick: function () { importMsg = null; renderImport(); focusEl($("ck-import-btn")); } }, "Dismiss")
+      ]));
+      return;
+    }
+    if (!pendingImport) return;
+    var n = state.projects.length, m = pendingImport.projects.length;
+    var info = "“" + pendingImport.file + "” contains " + plural(m, "project") +
+      (pendingImport.exported ? " (exported " + fmtDate(new Date(pendingImport.exported)) + ")" : "") + "." +
+      (pendingImport.skipped ? " " + plural(pendingImport.skipped, "item") + " couldn't be read and will be skipped." : "");
+    var kids = [
+      h("p", { "class": "ck-import-title", id: "ck-import-title", tabindex: "-1" }, "Restore from backup"),
+      h("p", null, info)
+    ];
+    if (n) {
+      kids.push(h("p", { "class": "ck-hint" }, "You have " + plural(n, "project") + " in this browser. Merge adds the backup's projects and, where a project is in both, keeps the more recently updated copy. Replace removes your current projects first."));
+      kids.push(h("div", { "class": "ck-actions" }, [
+        h("button", { type: "button", "class": "ck-btn ck-btn-primary", onclick: function () { applyImport("merge"); } }, "Merge into my projects"),
+        h("button", { type: "button", "class": "ck-btn ck-btn-danger", onclick: function () { applyImport("replace"); } }, "Replace my projects"),
+        h("button", { type: "button", "class": "ck-btn", onclick: cancelImport }, "Cancel")
+      ]));
+    } else {
+      kids.push(h("div", { "class": "ck-actions" }, [
+        h("button", { type: "button", "class": "ck-btn ck-btn-primary", onclick: function () { applyImport("replace"); } }, "Import " + plural(m, "project")),
+        h("button", { type: "button", "class": "ck-btn", onclick: cancelImport }, "Cancel")
+      ]));
+    }
+    host.appendChild(h("div", { "class": "ck-card ck-import", role: "region", "aria-labelledby": "ck-import-title" }, kids));
+  }
+
+  /* ---------- static bits: type cards, new form, toolbar ---------- */
+  function buildTypeCards() {
+    var host = $("ck-types");
+    if (!host) return;
+    TYPE_ORDER.forEach(function (k) {
+      var t = TYPES[k], c = typeCounts(t);
+      host.appendChild(h("div", { "class": "card ck-typecard" }, [
+        h("div", { "class": "card-icon ck-ic-" + k, "aria-hidden": "true" }, t.icon || "✅"),
+        h("div", { "class": "ck-typecard-title", role: "heading", "aria-level": "3" }, t.title),
+        h("p", { "class": "ck-typecard-count" }, c.steps + " steps · " + c.phases + " phases"),
+        h("p", null, t.blurb || ""),
+        h("div", { "class": "ck-typecard-actions" }, [
+          h("button", { type: "button", "class": "ck-btn ck-btn-sm", onclick: function () { openNewForm(k); } }, "Start a project"),
+          safePage(t.sourcePage) ? h("a", { "class": "card-link", href: t.sourcePage }, "See the full process with owners & tools →") : null
+        ])
+      ]));
+    });
+  }
+  function buildNewForm() {
+    var host = $("ck-new-host");
+    if (!host) return;
+    host.appendChild(h("div", { "class": "ck-card" }, buildForm("new", { type: TYPE_ORDER[0] })));
+  }
+  function wireToolbar() {
+    var nb = $("ck-new-btn"), ex = $("ck-export"), ib = $("ck-import-btn"), fi = $("ck-import-file");
+    if (nb) nb.addEventListener("click", function () { openNewForm(); });
+    if (ex) ex.addEventListener("click", exportBackup);
+    if (ib && fi) ib.addEventListener("click", function () { fi.click(); });
+    if (fi) fi.addEventListener("change", onImportFile);
+  }
+
+  /* ---------- deep link: checklist.html?type=ap|wlc|wan ---------- */
+  function deepLink() {
+    var m = /[?&]type=([A-Za-z]+)/.exec(location.search || "");
+    if (!m) return;
+    var k = m[1].toLowerCase();
+    if (!hasOwn.call(TYPES, k)) return;
+    var sel = $("ckn-type");
+    if (sel) { sel.value = k; fillTypeHint($("ckn-type-hint"), k); }
+    var go = function () { setTimeout(function () { openNewForm(k); }, 80); };
+    if (document.readyState === "complete") go();
+    else window.addEventListener("load", go);
+  }
+
+  /* ---------- keep tabs in sync ---------- */
+  function onStorage(e) {
+    if (e.key !== null && e.key !== KEY) return;
+    var raw = null, parsed = null;
+    try { raw = window.localStorage.getItem(KEY); } catch (x) { return; }
+    if (raw) { try { parsed = JSON.parse(raw); } catch (x) { return; } }
+    var keep = state.activeId;
+    /* notes typed here but not yet saved (debounce pending) must survive the reload */
+    var cur = activeProject();
+    var pendingNotes = (notesTimer && cur) ? { id: cur.id, notes: cur.notes } : null;
+    state = normaliseState(parsed);
+    if (keep && findProject(keep)) state.activeId = keep;
+    if (pendingNotes) {
+      var pq = findProject(pendingNotes.id);
+      if (pq) { pq.notes = pendingNotes.notes; touch(pq); }
+    }
+    if (!activeProject()) { editing = false; editDraft = null; copyBoxText = null; }
+    renderAll();
+  }
+
+  /* ---------- boot ---------- */
+  function init() {
+    if (!DATA || !TYPE_ORDER.length) {
+      var a = $("ck-active");
+      if (a) a.appendChild(h("div", { "class": "alert orange" }, [
+        h("span", { "class": "alert-icon", "aria-hidden": "true" }, "⚠️"),
+        h("p", null, "The checklist data (checklist-data.js) didn't load, so the checklist can't be shown. Refresh the page — if it keeps happening, let the Onboarding squad know.")
+      ]));
+      return;
+    }
+    state = normaliseState(readStore());
+    if (!state.activeId && state.projects.length === 1 && typeOf(state.projects[0])) state.activeId = state.projects[0].id;
+    initOpenState();
+    buildNewForm();
+    buildTypeCards();
+    wireToolbar();
+    renderAll();
+    deepLink();
+    window.addEventListener("storage", onStorage);
+    window.addEventListener("pagehide", flushNotes);
+    window.addEventListener("beforeprint", function () { flushNotes(); renderActive(); });
+    document.addEventListener("visibilitychange", function () { if (document.visibilityState === "hidden") flushNotes(); });
+  }
+
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
+  else init();
+})();
+</script>
+<script src="shared.js"></script>
+</body>
+</html>

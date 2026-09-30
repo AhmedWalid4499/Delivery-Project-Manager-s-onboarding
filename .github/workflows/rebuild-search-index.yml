@@ -1,0 +1,86 @@
+# Rebuilds search-index.json and page-meta.json on every push to main, so
+# site search and the per-page "last updated" dates never go stale.
+# The builder is build-search-index.ps1 (runs here on PowerShell 7).
+#
+# Loop safety: the bot's own commit only touches the two generated files,
+# which are in paths-ignore, and it is pushed with GITHUB_TOKEN (which does
+# not start new push-triggered workflow runs). Either guard alone stops a loop.
+# The commit message deliberately does NOT contain "[skip ci]": a branch-
+# published GitHub Pages site builds through the "pages-build-deployment"
+# Actions workflow, and "[skip ci]" can stop that build, which would leave
+# the freshly rebuilt index committed but never published.
+name: Rebuild search index
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - search-index.json
+      - page-meta.json
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: rebuild-search-index
+  cancel-in-progress: false
+
+jobs:
+  rebuild:
+    name: Rebuild search index and page metadata
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      COMMIT_MSG: "chore: rebuild search index"
+    steps:
+      # Check out the tip of main (not just the triggering commit) with full
+      # history: git log gives each page its real "last updated" date, and a
+      # queued run always builds from the newest content.
+      - name: Check out main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Build search-index.json and page-meta.json
+        run: pwsh -NoProfile -File build-search-index.ps1
+
+      - name: Commit and push if anything changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add -- search-index.json page-meta.json
+          if git diff --cached --quiet; then
+            echo "search-index.json and page-meta.json are already up to date."
+            exit 0
+          fi
+          git commit -m "$COMMIT_MSG"
+
+          # The live page editors (squads, glossary) also commit to main, so
+          # main can move while this job runs: rebase onto it and retry.
+          for attempt in 1 2 3; do
+            if git pull --rebase origin main && git push origin HEAD:main; then
+              echo "Pushed the rebuilt index (attempt $attempt)."
+              exit 0
+            fi
+            echo "Push attempt $attempt failed."
+            git rebase --abort 2>/dev/null || true
+            if [ "$attempt" -lt 3 ]; then
+              # Rebuild on top of the newest main, so a conflict in the
+              # generated files can never wedge the job, then try again.
+              sleep $((attempt * 5))
+              git fetch origin main
+              git reset --hard origin/main
+              pwsh -NoProfile -File build-search-index.ps1
+              git add -- search-index.json page-meta.json
+              if git diff --cached --quiet; then
+                echo "main already has an up-to-date index."
+                exit 0
+              fi
+              git commit -m "$COMMIT_MSG"
+            fi
+          done
+          echo "::error::Could not push the rebuilt search index after 3 attempts."
+          exit 1

@@ -14,23 +14,25 @@
 /* ── in-this-handbook quick jump ── */
 .hb-jump { display:flex; flex-wrap:wrap; gap:8px; margin:2px 0 0; }
 .hb-jump a { font-size:12.5px; font-weight:600; color:var(--gray-dark); background:#fff; border:1px solid #E6E6E6; border-radius:20px; padding:6px 13px; text-decoration:none; transition:all .15s; }
-.hb-jump a:hover { border-color:var(--orange); color:var(--orange); text-decoration:none; transform:translateY(-1px); }
-.hb-jump a b { color:var(--orange); font-family:var(--mono); margin-right:5px; }
+.hb-jump { list-style:none; }
+.hb-jump a:hover { border-color:var(--orange); color:var(--orange-text); text-decoration:none; transform:translateY(-1px); }
+.hb-jump a b { color:var(--orange-text); font-family:var(--mono); margin-right:5px; }
 
 /* ── lifecycle strip ── */
 .lifecycle { display:flex; align-items:stretch; gap:0; flex-wrap:wrap; margin-bottom:4px; }
 .lc-step { flex:1; min-width:150px; background:#fff; border:1px solid #ECECEC; border-radius:12px; padding:16px 18px; position:relative; }
 .lc-step + .lc-step { margin-left:30px; }
-.lc-step + .lc-step::before { content:'→'; position:absolute; left:-23px; top:50%; transform:translateY(-50%); color:var(--orange); font-size:18px; font-weight:700; }
+.lc-step + .lc-step::before { content:'→'; content:'→' / ''; position:absolute; left:-23px; top:50%; transform:translateY(-50%); color:var(--orange); font-size:18px; font-weight:700; }
 .lc-step .lc-tag { font-size:10.5px; font-weight:700; letter-spacing:0.6px; text-transform:uppercase; color:var(--orange-dark); background:var(--orange-pale); padding:2px 9px; border-radius:20px; }
-.lc-step h4 { font-size:14px; font-weight:700; margin:10px 0 4px; }
+.lc-step h3 { font-size:14px; font-weight:700; margin:10px 0 4px; }
 .lc-step p { font-size:12.5px; color:var(--gray-mid); line-height:1.55; }
 @media(max-width:680px){
   .lc-step + .lc-step { margin-left:0; margin-top:28px; }
-  .lc-step + .lc-step::before { left:50%; top:-22px; transform:translateX(-50%); content:'↓'; }
+  .lc-step + .lc-step::before { left:50%; top:-22px; transform:translateX(-50%); content:'↓'; content:'↓' / ''; }
 }
 
 /* ── what good looks like ── */
+.good-list, .raci-legend, .roles-grid, .team-stats, .help-grid { list-style:none; }
 .good-list { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
 @media(max-width:680px){ .good-list{ grid-template-columns:1fr; } }
 .good-item { display:flex; gap:11px; align-items:flex-start; background:var(--green-pale); border:1px solid #D6EFE4; border-radius:12px; padding:14px 16px; }
@@ -56,7 +58,7 @@
 /* ── leadership strip ── */
 .lead-strip { display:flex; align-items:center; gap:14px; flex-wrap:wrap; margin-bottom:22px; }
 .lead-chip { display:flex; align-items:center; gap:12px; background:var(--orange-faint); border:1px solid var(--orange-pale); border-radius:14px; padding:11px 18px 11px 12px; }
-.lead-av { width:44px; height:44px; border-radius:50%; background:var(--orange); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:15px; flex-shrink:0; }
+.lead-av { width:44px; height:44px; border-radius:50%; background:var(--orange-strong); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:15px; flex-shrink:0; }
 .lead-nm { font-size:15px; font-weight:800; color:var(--black); }
 .lead-ttl { font-size:12px; color:var(--gray-mid); margin-top:1px; }
 .lead-arrow { color:var(--orange); font-size:20px; font-weight:700; }
@@ -68,17 +70,17 @@
 .dept-card { display:flex; flex-direction:column; background:#fff; border:1px solid #ECECEC; border-top:4px solid var(--c); border-radius:16px; padding:22px; text-decoration:none !important; color:inherit; transition:transform .16s, box-shadow .16s; }
 .dept-card:hover { transform:translateY(-3px); box-shadow:0 14px 34px rgba(0,0,0,0.12); }
 .dept-head { display:flex; align-items:center; gap:14px; margin-bottom:13px; }
-.dept-av { width:52px; height:52px; border-radius:50%; background:var(--c); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:17px; flex-shrink:0; letter-spacing:0.5px; }
+.dept-av { width:52px; height:52px; border-radius:50%; background:var(--ct, var(--c)); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:17px; flex-shrink:0; letter-spacing:0.5px; }
 .dept-mgr { font-size:17px; font-weight:800; color:var(--black); line-height:1.2; }
 .dept-mgr-ttl { font-size:12px; color:var(--gray-mid); margin-top:2px; }
-.dept-region { align-self:flex-start; font-size:10.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.6px; color:var(--c); background:var(--cp); padding:3px 11px; border-radius:20px; margin-bottom:11px; }
+.dept-region { align-self:flex-start; font-size:10.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.6px; color:var(--ct, var(--c)); background:var(--cp); padding:3px 11px; border-radius:20px; margin-bottom:11px; }
 .dept-note { font-size:13px; color:#555; line-height:1.65; margin-bottom:13px; flex:1; }
 .dept-sme { font-size:11.5px; color:var(--gray-mid); margin-bottom:13px; }
 .dept-sme b { color:var(--gray-dark); font-weight:600; }
 .dept-foot { display:flex; align-items:center; justify-content:space-between; border-top:1px solid #F2F2F2; padding-top:13px; margin-top:auto; }
 .dept-count { font-size:16px; font-weight:800; color:var(--black); }
 .dept-count span { font-size:12px; font-weight:500; color:var(--gray-mid); }
-.dept-link { font-size:12.5px; font-weight:700; color:var(--c); }
+.dept-link { font-size:12.5px; font-weight:700; color:var(--ct, var(--c)); }
 
 /* ── team summary stats ── */
 .team-stats { display:flex; gap:12px; flex-wrap:wrap; margin-bottom:22px; }
@@ -95,11 +97,12 @@
 .squad-tx { flex:1; min-width:0; }
 .squad-nm { font-size:17px; font-weight:800; color:var(--black); }
 .squad-sub { font-size:12.5px; color:var(--gray-mid); margin-top:3px; line-height:1.5; }
-.squad-meta { flex-shrink:0; font-size:12px; font-weight:700; color:var(--c); display:flex; align-items:center; gap:8px; }
+.squad-meta { flex-shrink:0; font-size:12px; font-weight:700; color:var(--ct, var(--c)); display:flex; align-items:center; gap:8px; }
 .squad-meta span { font-size:18px; line-height:1; }
 
 /* ── tools tables ── */
 .tbl-sub { font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.7px; color:var(--gray-mid); margin:0 0 10px; }
+caption.tbl-sub { caption-side:top; text-align:left; padding:0; }
 
 /* ── vendor mini ── */
 .vend-you { font-size:12px; color:var(--gray-mid); margin-top:10px; line-height:1.55; }
@@ -109,8 +112,8 @@
 .weeks-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
 @media(max-width:760px){ .weeks-grid{ grid-template-columns:1fr; } }
 .week-card { background:#fff; border:1px solid #ECECEC; border-top:4px solid var(--c); border-radius:16px; padding:20px 22px; }
-.week-tag { font-size:11px; font-weight:700; letter-spacing:0.6px; text-transform:uppercase; color:var(--c); }
-.week-card h4 { font-size:16px; font-weight:800; margin:4px 0 13px; color:var(--black); }
+.week-tag { font-size:11px; font-weight:700; letter-spacing:0.6px; text-transform:uppercase; color:var(--ct, var(--c)); }
+.week-card h3 { font-size:16px; font-weight:800; margin:4px 0 13px; color:var(--black); }
 .week-card ul { list-style:none; margin:0; padding:0; }
 .week-card li { position:relative; padding:0 0 11px 25px; font-size:13px; color:var(--gray-dark); line-height:1.55; }
 .week-card li::before { content:''; position:absolute; left:0; top:2px; width:14px; height:14px; border:2px solid var(--c); border-radius:4px; }
@@ -134,9 +137,24 @@
 .dl-tx{flex:1;min-width:0;}
 .dl-title{font-size:18px;font-weight:800;}
 .dl-sub{font-size:13px;color:rgba(255,255,255,0.72);margin-top:3px;line-height:1.5;}
-.dl-btn{flex-shrink:0;background:var(--orange);color:#fff;font-weight:700;font-size:14px;padding:11px 20px;border-radius:10px;white-space:nowrap;}
+.dl-btn{flex-shrink:0;background:var(--orange-strong);color:#fff;font-weight:700;font-size:14px;padding:11px 20px;border-radius:10px;white-space:nowrap;}
 .dl-banner:hover .dl-btn{filter:brightness(1.08);}
 @media(max-width:640px){.dl-banner{flex-direction:column;align-items:flex-start;gap:14px;}.dl-btn{width:100%;text-align:center;}}
+
+/* ── daily toolkit, what's new + in-page tool links ── */
+#toolkit { margin-top:40px; }
+.tk-more { margin:12px 0 22px; font-size:13px; }
+.tk-grid { margin-bottom:0; }
+.tk-grid .topic-nav-card-label, .tk-grid .topic-nav-card-sub { color:#5E5E5E; }
+.ink-link { color:#A33E00; font-weight:600; text-decoration:underline; text-underline-offset:2px; }
+.ink-link:hover { color:#7A2F00; }
+.ink-cta { margin:0 0 22px; font-size:13.5px; }
+
+/* ── LAN process card: one primary link, stretched over the card ── */
+.lan-card { position:relative; }
+.lan-card .lan-card-link::after { content:""; position:absolute; inset:0; border-radius:inherit; }
+.lan-card p a { position:relative; z-index:1; }
+.lan-card:focus-within { box-shadow:var(--shadow-hover); border-color:rgba(255,98,0,0.25); }
 </style>
 </head>
 <body>
@@ -163,23 +181,25 @@
 <div class="breadcrumb" style="background:transparent;border:none;padding:0;"></div>
 
 <style>
-.kb-hero{position:relative;overflow:hidden;padding:64px 24px 70px;background:linear-gradient(135deg,#FF7A1A 0%,#FF6200 44%,#D24E00 100%);text-align:center;}
-.kb-hero::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 28% 18%,rgba(255,255,255,0.20),transparent 55%);pointer-events:none;}
+.kb-hero{position:relative;overflow:hidden;padding:64px 24px 70px;background:linear-gradient(135deg,#BF4800 0%,#B34200 44%,#963700 100%);text-align:center;}
+/* Darker orange stops + a much softer highlight keep white text >= 4.6:1 at the
+   lightest point under the text (was 2.2-2.6:1 on #FF7A1A with a 20% white glow) */
+.kb-hero::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 28% 18%,rgba(255,255,255,0.06),transparent 55%);pointer-events:none;}
 .kb-hero-bg{position:absolute;inset:0;pointer-events:none;opacity:.15;}
 .kb-hero-bg svg{position:absolute;stroke:#fff;stroke-width:1.5;fill:none;}
 .kb-hero-inner{position:relative;max-width:720px;margin:0 auto;}
-.kb-hero-tag{display:inline-block;background:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.38);color:#fff;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:5px 14px;border-radius:20px;margin-bottom:20px;}
+.kb-hero-tag{display:inline-block;background:rgba(0,0,0,0.18);border:1px solid rgba(255,255,255,0.45);color:#fff;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:5px 14px;border-radius:20px;margin-bottom:20px;}
 .kb-hero-h1{font-size:clamp(30px,5vw,46px);font-weight:800;color:#fff;margin:0 0 12px;line-height:1.12;}
-.kb-hero-sub{font-size:16px;color:rgba(255,255,255,0.92);max-width:580px;margin:0 auto 26px;line-height:1.6;}
+.kb-hero-sub{font-size:16px;color:#fff;max-width:580px;margin:0 auto 26px;line-height:1.6;}
 .kb-hero-search{display:flex;align-items:center;gap:12px;width:100%;max-width:600px;margin:0 auto;background:#fff;border:none;border-radius:14px;padding:16px 18px;box-shadow:0 18px 50px rgba(120,40,0,0.30);cursor:text;transition:transform .15s,box-shadow .15s;text-align:left;font-family:inherit;}
 .kb-hero-search:hover{transform:translateY(-2px);box-shadow:0 22px 62px rgba(120,40,0,0.36);}
 .kb-hero-search>svg{color:#FF6200;flex-shrink:0;}
-.kb-hero-search-ph{flex:1;min-width:0;color:#9A9A9A;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.kb-hero-search kbd{flex-shrink:0;background:#F3F3F3;border:1px solid #E4E4E4;border-radius:6px;color:#999;font:600 11px/1 var(--mono,monospace);padding:6px 8px;}
+.kb-hero-search-ph{flex:1;min-width:0;color:#616161;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.kb-hero-search kbd{flex-shrink:0;background:#F3F3F3;border:1px solid #E4E4E4;border-radius:6px;color:#616161;font:600 11px/1 var(--mono,monospace);padding:6px 8px;}
 .kb-hero-pop{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:9px;margin-top:22px;}
-.kb-hero-pop-label{color:rgba(255,255,255,0.9);font-size:13px;font-weight:600;}
-.kb-hero-pop button{background:rgba(255,255,255,0.16);border:1px solid rgba(255,255,255,0.32);color:#fff;font-size:12.5px;font-weight:600;padding:5px 13px;border-radius:20px;cursor:pointer;transition:background .15s,transform .15s;font-family:inherit;}
-.kb-hero-pop button:hover{background:rgba(255,255,255,0.3);transform:translateY(-1px);}
+.kb-hero-pop-label{color:#fff;font-size:13px;font-weight:600;}
+.kb-hero-pop button{background:rgba(0,0,0,0.22);border:1px solid rgba(255,255,255,0.45);color:#fff;font-size:12.5px;font-weight:600;padding:5px 13px;border-radius:20px;cursor:pointer;transition:background .15s,transform .15s;font-family:inherit;}
+.kb-hero-pop button:hover{background:rgba(0,0,0,0.34);transform:translateY(-1px);}
 @media(max-width:600px){.kb-hero{padding:44px 16px 50px;}.kb-hero-search-ph{font-size:13px;}.kb-hero-search kbd{display:none;}}
 </style>
 <div class="kb-hero">
@@ -191,11 +211,11 @@
     <svg style="top:44%;left:3%;width:40px;height:40px" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.6 9a2.4 2.4 0 1 1 3.4 2.2c-.8.4-1 .8-1 1.6M12 16h.01"/></svg>
   </div>
   <div class="kb-hero-inner">
-    <div class="kb-hero-tag">📘 DPM Onboarding Handbook · Edition 1.3</div>
+    <div class="kb-hero-tag"><span aria-hidden="true">📘</span> DPM Onboarding Handbook · Edition 1.3</div>
     <h1 class="kb-hero-h1">How can we help?</h1>
     <p class="kb-hero-sub">Everything a new Delivery Project Manager needs to understand — the role, the team, the tools, and how we deliver, end to end. Read it straight through, or search anything.</p>
-    <button class="kb-hero-search" data-kb-open type="button" aria-label="Search the knowledge base">
-      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+    <button class="kb-hero-search" data-kb-open type="button" aria-label="Search anything in the knowledge base (Ctrl K)">
+      <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
       <span class="kb-hero-search-ph">Search anything — “Option 43”, “MACHX”, “AP process”, a person…</span>
       <kbd>Ctrl K</kbd>
     </button>
@@ -215,21 +235,68 @@
 
   <!-- HANDBOOK DOWNLOAD -->
   <a href="DPM-Onboarding-Handbook.pdf" download class="dl-banner">
-    <div class="dl-ic">📘</div>
+    <div class="dl-ic" aria-hidden="true">📘</div>
     <div class="dl-tx">
       <div class="dl-title">DPM Onboarding Handbook — Edition 1.3</div>
       <div class="dl-sub">The complete onboarding guide in one PDF — role, team, tools, the full LAN &amp; WAN processes, and your first weeks. Grab it to read offline.</div>
     </div>
-    <span class="dl-btn">⬇ Download PDF</span>
+    <span class="dl-btn"><span aria-hidden="true">⬇</span> Download PDF</span>
   </a>
+
+  <!-- YOUR DAILY TOOLKIT -->
+  <div class="section" id="toolkit">
+    <div class="section-header">
+      <h2>Your daily toolkit</h2>
+      <div class="divider"></div>
+      <p>The tools you'll open every day. Set your own links once in the launcher — they're saved only in your browser.</p>
+    </div>
+    <div data-kb-launcher="compact"></div>
+    <p class="tk-more"><a class="ink-link" href="tools.html">Open the full launcher →</a></p>
+    <div class="topic-nav tk-grid">
+      <a href="checklist.html" class="topic-nav-card">
+        <div class="topic-nav-card-icon" aria-hidden="true">✅</div>
+        <div class="topic-nav-card-label">Tool</div>
+        <div class="topic-nav-card-title">Delivery Checklist</div>
+        <div class="topic-nav-card-sub">Tick off AP, WLC &amp; Switch or WAN steps — progress saved per project.</div>
+      </a>
+      <a href="templates.html" class="topic-nav-card">
+        <div class="topic-nav-card-icon" aria-hidden="true">✉️</div>
+        <div class="topic-nav-card-label">Tool</div>
+        <div class="topic-nav-card-title">Email Templates</div>
+        <div class="topic-nav-card-sub">Starter drafts for every send / invite / notify step.</div>
+      </a>
+      <a href="option43.html" class="topic-nav-card">
+        <div class="topic-nav-card-icon" aria-hidden="true">🧮</div>
+        <div class="topic-nav-card-label">Tool</div>
+        <div class="topic-nav-card-title">Option 43 Calculator</div>
+        <div class="topic-nav-card-sub">Generate the WLC-discovery hex string, with a byte-by-byte breakdown.</div>
+      </a>
+      <a href="raci.html" class="topic-nav-card">
+        <div class="topic-nav-card-icon" aria-hidden="true">📋</div>
+        <div class="topic-nav-card-label">Reference</div>
+        <div class="topic-nav-card-title">RACI Matrix</div>
+        <div class="topic-nav-card-sub">Who's accountable &amp; responsible for each delivery activity.</div>
+      </a>
+    </div>
+  </div>
+
+  <!-- WHAT'S NEW -->
+  <div class="section" id="whats-new">
+    <div class="section-header">
+      <h2 id="whats-new-title">What's new</h2>
+      <div class="divider"></div>
+      <p>The latest changes to the Knowledge Base.</p>
+    </div>
+    <div data-kb-whatsnew-latest="4"></div>
+  </div>
 
   <!-- HOW TO USE + CONTENTS -->
   <div class="section" style="margin-bottom:40px;">
     <div class="alert orange" style="margin-bottom:18px;">
-      <span class="alert-icon">💡</span>
+      <span class="alert-icon" aria-hidden="true">💡</span>
       <p><strong>How to use this guide.</strong> This home page is the handbook, in full — written for someone brand new to the team, no prior knowledge assumed. Read it top to bottom once, then keep it as a reference. It gives you the big picture; the rest of the Knowledge Base goes deeper on each topic with diagrams, CLI examples, the full process flowcharts, the live team directory and a searchable glossary. Use them together — press <strong>Ctrl&nbsp;K</strong> to search anytime.</p>
     </div>
-    <div class="hb-jump">
+    <nav class="hb-jump" aria-label="In this handbook">
       <a href="#what-is-dpm"><b>01</b>What is a DPM?</a>
       <a href="#team"><b>02</b>The Team</a>
       <a href="#squads"><b>03</b>The Squads</a>
@@ -239,7 +306,7 @@
       <a href="#vendors"><b>07</b>Vendor Hardware</a>
       <a href="#first-weeks"><b>08</b>Your First Weeks</a>
       <a href="#key-terms"><b>09</b>Key Terms &amp; Help</a>
-    </div>
+    </nav>
   </div>
 
   <!-- ★ SECTION 1 — WHAT IS A DPM -->
@@ -255,22 +322,22 @@
 
     <div class="grid-2" style="margin-bottom:28px;">
       <div class="card">
-        <div class="card-icon" style="background:var(--orange-pale);">🗂️</div>
+        <div class="card-icon" aria-hidden="true" style="background:var(--orange-pale);">🗂️</div>
         <h3>Own the delivery</h3>
         <p>Drive each project from kickoff to HOTO sign-off — plan the timeline, track milestones, and keep order records accurate in GOLD, ServiceNow and SALTO.</p>
       </div>
       <div class="card">
-        <div class="card-icon" style="background:var(--cisco-pale);">🤝</div>
+        <div class="card-icon" aria-hidden="true" style="background:var(--cisco-pale);">🤝</div>
         <h3>Coordinate the teams</h3>
         <p>Orchestrate everyone the delivery depends on — VPOs/TIMs and engineering, Field Engineers booked through FLIP, logistics, and the customer's own technical contacts.</p>
       </div>
       <div class="card">
-        <div class="card-icon" style="background:var(--green-pale);">📊</div>
+        <div class="card-icon" aria-hidden="true" style="background:var(--green-pale);">📊</div>
         <h3>Manage scope &amp; risk</h3>
         <p>Confirm prerequisites, flag blockers early, run staging and dry runs, and document decisions so nothing is lost or disputed later.</p>
       </div>
       <div class="card">
-        <div class="card-icon" style="background:var(--purple-pale);">🔧</div>
+        <div class="card-icon" aria-hidden="true" style="background:var(--purple-pale);">🔧</div>
         <h3>Run the migration</h3>
         <p>Execute LAN/WAN cutovers — switches, WLCs and access points — support UAT with the customer, then close out every system once the site is live.</p>
       </div>
@@ -279,33 +346,33 @@
     <div class="section-header" style="margin-bottom:14px;">
       <h3 style="font-size:16px;">What good looks like</h3>
     </div>
-    <div class="good-list" style="margin-bottom:28px;">
-      <div class="good-item"><span class="gi-check">✓</span><p>The customer is <strong>never surprised</strong> — they always know the plan, the date, and the status.</p></div>
-      <div class="good-item"><span class="gi-check">✓</span><p>Prerequisites are confirmed <strong>before</strong> the migration window, not discovered during it.</p></div>
-      <div class="good-item"><span class="gi-check">✓</span><p>Every migrated service is tested and signed off, and every system is closed cleanly at the end.</p></div>
-      <div class="good-item"><span class="gi-check">✓</span><p>Issues are put on record factually and escalated early, while there's still time to act.</p></div>
-    </div>
+    <ul class="good-list" role="list" style="margin-bottom:28px;">
+      <li class="good-item"><span class="gi-check" aria-hidden="true">✓</span><p>The customer is <strong>never surprised</strong> — they always know the plan, the date, and the status.</p></li>
+      <li class="good-item"><span class="gi-check" aria-hidden="true">✓</span><p>Prerequisites are confirmed <strong>before</strong> the migration window, not discovered during it.</p></li>
+      <li class="good-item"><span class="gi-check" aria-hidden="true">✓</span><p>Every migrated service is tested and signed off, and every system is closed cleanly at the end.</p></li>
+      <li class="good-item"><span class="gi-check" aria-hidden="true">✓</span><p>Issues are put on record factually and escalated early, while there's still time to act.</p></li>
+    </ul>
 
     <div class="section-header" style="margin-bottom:14px;">
       <h3 style="font-size:16px;">Who does what — roles &amp; the golden rule</h3>
       <p style="font-size:13px;color:var(--gray-mid);">Delivery is a team sport, but ownership must be unambiguous. In a typical delivery, responsibility is shared as R&nbsp;/&nbsp;A&nbsp;/&nbsp;C&nbsp;/&nbsp;I — see the full <a href="raci.html">RACI matrix →</a></p>
     </div>
-    <div class="raci-legend">
-      <span><b>R</b> — Responsible, does the work</span>
-      <span><b>A</b> — Accountable, owns the outcome</span>
-      <span><b>C</b> — Consulted</span>
-      <span><b>I</b> — Informed</span>
-    </div>
-    <div class="roles-grid">
-      <div class="role-item"><div class="role-code">DPM — you</div><div class="role-desc">Accountable for the delivery end-to-end.</div></div>
-      <div class="role-item"><div class="role-code">PM</div><div class="role-desc">Project Manager — scope &amp; commercial owner.</div></div>
-      <div class="role-item"><div class="role-code">SC</div><div class="role-desc">Solution Consultant — technical design owner.</div></div>
-      <div class="role-item"><div class="role-code">VPO / TIM</div><div class="role-desc">Engineering &amp; staging, requested via MACHX.</div></div>
-      <div class="role-item"><div class="role-code">FE</div><div class="role-desc">Field Engineer — hands on site.</div></div>
-      <div class="role-item"><div class="role-code">Supply Chain</div><div class="role-desc">Hardware &amp; logistics.</div></div>
-    </div>
+    <ul class="raci-legend" role="list">
+      <li><span><b>R</b> — Responsible, does the work</span></li>
+      <li><span><b>A</b> — Accountable, owns the outcome</span></li>
+      <li><span><b>C</b> — Consulted</span></li>
+      <li><span><b>I</b> — Informed</span></li>
+    </ul>
+    <ul class="roles-grid" role="list">
+      <li class="role-item"><div class="role-code">DPM — you</div><div class="role-desc">Accountable for the delivery end-to-end.</div></li>
+      <li class="role-item"><div class="role-code">PM</div><div class="role-desc">Project Manager — scope &amp; commercial owner.</div></li>
+      <li class="role-item"><div class="role-code">SC</div><div class="role-desc">Solution Consultant — technical design owner.</div></li>
+      <li class="role-item"><div class="role-code">VPO / TIM</div><div class="role-desc">Engineering &amp; staging, requested via MACHX.</div></li>
+      <li class="role-item"><div class="role-code">FE</div><div class="role-desc">Field Engineer — hands on site.</div></li>
+      <li class="role-item"><div class="role-code">Supply Chain</div><div class="role-desc">Hardware &amp; logistics.</div></li>
+    </ul>
     <div class="golden">
-      <div class="g-ic">⭐</div>
+      <div class="g-ic" aria-hidden="true">⭐</div>
       <div>
         <h4>The DPM golden rule</h4>
         <p>The DPM is accountable for the delivery end-to-end — the <strong>dates</strong>, the <strong>MACHX raises</strong>, the <strong>Field Engineer dispatch</strong>, and the <strong>HOTO package</strong> are yours. The PM owns <strong>scope, BOM and the commercial relationship</strong>. Keeping these boundaries clear is what keeps a delivery calm.</p>
@@ -323,39 +390,40 @@
 
     <div class="lead-strip">
       <div class="lead-chip">
-        <div class="lead-av">KK</div>
+        <div class="lead-av" aria-hidden="true">KK</div>
         <div><div class="lead-nm">Khaled Khattab</div><div class="lead-ttl">Head of Order to Bill</div></div>
       </div>
-      <div class="lead-arrow">→</div>
+      <div class="lead-arrow" aria-hidden="true">→</div>
       <div class="lead-chip">
-        <div class="lead-av">MT</div>
+        <div class="lead-av" aria-hidden="true">MT</div>
         <div><div class="lead-nm">Mona Tamimy</div><div class="lead-ttl">Head of Europe Delivery Project Managers</div></div>
       </div>
     </div>
+    <p class="ink-cta"><a class="ink-link" href="org-chart.html">See the management chart →</a></p>
 
-    <div class="team-stats">
-      <div class="team-stat"><b>77</b><span>Delivery Project Managers</span></div>
-      <div class="team-stat"><b>4</b><span>Regional clusters</span></div>
-      <div class="team-stat"><b>4</b><span>Subject Matter Experts</span></div>
-      <div class="team-stat"><b>5</b><span>Cross-team squads</span></div>
-    </div>
+    <ul class="team-stats" role="list">
+      <li class="team-stat"><b>77</b><span>Delivery Project Managers</span></li>
+      <li class="team-stat"><b>4</b><span>Regional clusters</span></li>
+      <li class="team-stat"><b>4</b><span>Subject Matter Experts</span></li>
+      <li class="team-stat"><b>5</b><span>Cross-team squads</span></li>
+    </ul>
 
     <div class="dept-grid">
-      <a class="dept-card" href="karim-elzarka.html" style="--c:var(--cisco-blue);--cp:var(--cisco-pale);">
+      <a class="dept-card" href="karim-elzarka.html" style="--c:var(--cisco-blue);--ct:var(--cisco-text);--cp:var(--cisco-pale);">
         <div class="dept-head">
-          <div class="dept-av">KE</div>
-          <div><div class="dept-mgr">Karim El-Zarka</div><div class="dept-mgr-ttl">Cluster Manager</div></div>
+          <div class="dept-av" aria-hidden="true">KE</div>
+          <div><div class="dept-mgr">Karim El Zarka</div><div class="dept-mgr-ttl">Team Manager</div></div>
         </div>
-        <span class="dept-region">NSEU · Inc. Trans</span>
+        <span class="dept-region">N&amp;S EU · Inc. Trans</span>
         <p class="dept-note">North &amp; South Europe transversal delivery — the broadest cluster.</p>
-        <div class="dept-sme">SMEs · <b>Abanoub Wasfy</b>, <b>Salma El-Shazly</b></div>
+        <div class="dept-sme">SMEs · <b>Abanoub Wasfy</b>, <b>Salma El Shazly</b></div>
         <div class="dept-foot"><div class="dept-count">30 <span>DPMs</span></div><div class="dept-link">View team →</div></div>
       </a>
 
-      <a class="dept-card" href="peter-sabet.html" style="--c:var(--green);--cp:var(--green-pale);">
+      <a class="dept-card" href="peter-sabet.html" style="--c:var(--green);--ct:var(--green-text);--cp:var(--green-pale);">
         <div class="dept-head">
-          <div class="dept-av">PS</div>
-          <div><div class="dept-mgr">Peter Sabet</div><div class="dept-mgr-ttl">Cluster Manager</div></div>
+          <div class="dept-av" aria-hidden="true">PS</div>
+          <div><div class="dept-mgr">Peter Sabet</div><div class="dept-mgr-ttl">Team Manager</div></div>
         </div>
         <span class="dept-region">GEA</span>
         <p class="dept-note">Southern Europe transversal delivery.</p>
@@ -363,10 +431,10 @@
         <div class="dept-foot"><div class="dept-count">20 <span>DPMs</span></div><div class="dept-link">View team →</div></div>
       </a>
 
-      <a class="dept-card" href="maryam-etry.html" style="--c:var(--palo-orange);--cp:var(--palo-pale);">
+      <a class="dept-card" href="maryam-etry.html" style="--c:var(--palo-orange);--ct:var(--palo-text);--cp:var(--palo-pale);">
         <div class="dept-head">
-          <div class="dept-av">ME</div>
-          <div><div class="dept-mgr">Maryam Etry</div><div class="dept-mgr-ttl">Cluster Manager</div></div>
+          <div class="dept-av" aria-hidden="true">ME</div>
+          <div><div class="dept-mgr">Maryam Etry</div><div class="dept-mgr-ttl">Europe DPMs Manager</div></div>
         </div>
         <span class="dept-region">Benelux</span>
         <p class="dept-note">Delivery across Belgium, the Netherlands &amp; Luxembourg.</p>
@@ -376,18 +444,18 @@
 
       <a class="dept-card" href="mona-tantawy.html" style="--c:var(--purple);--cp:var(--purple-pale);">
         <div class="dept-head">
-          <div class="dept-av">MT</div>
-          <div><div class="dept-mgr">Mona Tantawy</div><div class="dept-mgr-ttl">Cluster Manager</div></div>
+          <div class="dept-av" aria-hidden="true">MT</div>
+          <div><div class="dept-mgr">Mona Tantawy</div><div class="dept-mgr-ttl">Head of DPMs — DACH</div></div>
         </div>
         <span class="dept-region">Swiss · DACH</span>
         <p class="dept-note">DACH / Switzerland territory.</p>
-        <div class="dept-sme" style="color:var(--gray-light);">—</div>
+        <div class="dept-sme" aria-hidden="true">—</div>
         <div class="dept-foot"><div class="dept-count">13 <span>DPMs</span></div><div class="dept-link">View team →</div></div>
       </a>
     </div>
 
     <div class="alert blue" style="margin-top:20px;margin-bottom:0;">
-      <span class="alert-icon">👥</span>
+      <span class="alert-icon" aria-hidden="true">👥</span>
       <p>Some DPMs also act as <strong>Subject Matter Experts (SMEs)</strong> — go-to people for deeper technical or process questions, shown with a <em>DPM / SME</em> tag on the cluster pages. The live directory is kept current on the Knowledge Base: every cluster page lists all its DPMs with name, email and cluster.</p>
     </div>
   </div>
@@ -400,45 +468,45 @@
       <p>Alongside delivery work, DPMs join cross-team <strong>squads</strong> — small working groups that keep the function running and improving. They're how we share the load on things that benefit the whole team rather than a single customer, and a great way to make an impact early. Click a squad to see its members.</p>
     </div>
     <div class="squad-grid">
-      <a href="automation-squad.html" class="squad-btn" style="--c:#0E8AA6;--cp:#E6F6FA;">
-        <div class="squad-ic">⚙️</div>
+      <a href="automation-squad.html" class="squad-btn" style="--c:#0E8AA6;--ct:#0B6F87;--cp:#E6F6FA;">
+        <div class="squad-ic" aria-hidden="true">⚙️</div>
         <div class="squad-tx">
           <div class="squad-nm">Automation</div>
           <div class="squad-sub">Builds the automations &amp; dashboards that save the team manual effort and give visibility into delivery.</div>
         </div>
-        <div class="squad-meta">4 <span>→</span></div>
+        <div class="squad-meta">4 <span aria-hidden="true">→</span></div>
       </a>
       <a href="marketing-squad.html" class="squad-btn" style="--c:#D6336C;--cp:#FDEAF1;">
-        <div class="squad-ic">📣</div>
+        <div class="squad-ic" aria-hidden="true">📣</div>
         <div class="squad-tx">
           <div class="squad-nm">Marketing</div>
           <div class="squad-sub">Internal marketing &amp; communications for the DPM function — telling the story of what we deliver.</div>
         </div>
-        <div class="squad-meta">3 <span>→</span></div>
+        <div class="squad-meta">3 <span aria-hidden="true">→</span></div>
       </a>
-      <a href="hiring-squad.html" class="squad-btn" style="--c:#0E8A4A;--cp:#E6F7EF;">
-        <div class="squad-ic">🎯</div>
+      <a href="hiring-squad.html" class="squad-btn" style="--c:#0E8A4A;--ct:#0A7A4A;--cp:#E6F7EF;">
+        <div class="squad-ic" aria-hidden="true">🎯</div>
         <div class="squad-tx">
           <div class="squad-nm">Hiring</div>
           <div class="squad-sub">CV screening and interviews — helping grow the team with the right people.</div>
         </div>
-        <div class="squad-meta">1 <span>→</span></div>
+        <div class="squad-meta">1 <span aria-hidden="true">→</span></div>
       </a>
       <a href="onboarding-squad.html" class="squad-btn" style="--c:#4F46E5;--cp:#ECEBFD;">
-        <div class="squad-ic">🚀</div>
+        <div class="squad-ic" aria-hidden="true">🚀</div>
         <div class="squad-tx">
           <div class="squad-nm">Onboarding</div>
           <div class="squad-sub">Welcomes and ramps up new joiners — this handbook is part of that effort.</div>
         </div>
-        <div class="squad-meta">2 <span>→</span></div>
+        <div class="squad-meta">2 <span aria-hidden="true">→</span></div>
       </a>
-      <a href="presales-squad.html" class="squad-btn" style="--c:#C77700;--cp:#FFF4E0;grid-column:1/-1;">
-        <div class="squad-ic">💼</div>
+      <a href="presales-squad.html" class="squad-btn" style="--c:#C77700;--ct:#8A5200;--cp:#FFF4E0;grid-column:1/-1;">
+        <div class="squad-ic" aria-hidden="true">💼</div>
         <div class="squad-tx">
           <div class="squad-nm">Pre-Sales</div>
           <div class="squad-sub">Solution input, scoping &amp; bid support — helping shape deals before they become deliveries.</div>
         </div>
-        <div class="squad-meta">3 <span>→</span></div>
+        <div class="squad-meta">3 <span aria-hidden="true">→</span></div>
       </a>
     </div>
   </div>
@@ -450,37 +518,38 @@
       <div class="divider"></div>
       <p>The systems you'll use most. You don't need to master them on day one — learn them as they come up in your first deliveries.</p>
     </div>
+    <p class="ink-cta"><a class="ink-link" href="tools.html">Open any of these in one click from the tool launcher →</a></p>
 
-    <p class="tbl-sub">Core delivery tools</p>
     <div class="kb-tablewrap">
       <table class="data-table">
-        <thead><tr><th style="width:190px;">Tool</th><th>What you use it for</th></tr></thead>
+        <caption class="tbl-sub">Core delivery tools</caption>
+        <thead><tr><th scope="col" style="width:190px;">Tool</th><th scope="col">What you use it for</th></tr></thead>
         <tbody>
-          <tr><td>GOLD</td><td>Order management. Where the customer order lives; you track and ultimately <strong>close the GOLD order</strong> at the end of delivery.</td></tr>
-          <tr><td>ServiceNow (SNOW)</td><td>Raising change requests and updating the <strong>CMDB</strong> (the record of what's installed) — change control around migration windows.</td></tr>
-          <tr><td>MACHX</td><td>Raising and managing <strong>TIM / VPO work orders</strong> — the requests that get engineering &amp; staging work done. An AP job needs one raise; a Switch/WLC job needs two.</td></tr>
-          <tr><td>FLIP</td><td>Booking <strong>Field Engineers</strong> to attend site — used on Switch/WLC deliveries where hardware is handled on-site.</td></tr>
-          <tr><td>DNAC / Catalyst Center</td><td>Cisco's network management platform. Post-migration you send the DNAC update so the new devices are managed and monitored.</td></tr>
-          <tr><td>SALTO</td><td>A second order system, closed post-migration alongside GOLD.</td></tr>
-          <tr><td>SharePoint</td><td>Where delivery documents live — you upload the <strong>HOTO document, runbook and LLD</strong> (Low-Level Design) for each project.</td></tr>
+          <tr><th scope="row">GOLD</th><td>Order management. Where the customer order lives; you track and ultimately <strong>close the GOLD order</strong> at the end of delivery.</td></tr>
+          <tr><th scope="row">ServiceNow (SNOW)</th><td>Raising change requests and updating the <strong>CMDB</strong> (the record of what's installed) — change control around migration windows.</td></tr>
+          <tr><th scope="row">MACHX</th><td>Raising and managing <strong>TIM / VPO work orders</strong> — the requests that get engineering &amp; staging work done. An AP job needs one raise; a Switch/WLC job needs two.</td></tr>
+          <tr><th scope="row">FLIP</th><td>Booking <strong>Field Engineers</strong> to attend site — used on Switch/WLC deliveries where hardware is handled on-site.</td></tr>
+          <tr><th scope="row">DNAC / Catalyst Center</th><td>Cisco's network management platform. Post-migration you send the DNAC update so the new devices are managed and monitored.</td></tr>
+          <tr><th scope="row">SALTO</th><td>A second order system, closed post-migration alongside GOLD.</td></tr>
+          <tr><th scope="row">SharePoint</th><td>Where delivery documents live — you upload the <strong>HOTO document, runbook and LLD</strong> (Low-Level Design) for each project.</td></tr>
         </tbody>
       </table>
     </div>
 
-    <p class="tbl-sub" style="margin-top:26px;">Reporting, time &amp; automation</p>
-    <div class="kb-tablewrap">
+    <div class="kb-tablewrap" style="margin-top:26px;">
       <table class="data-table">
-        <thead><tr><th style="width:190px;">Tool</th><th>What you use it for</th></tr></thead>
+        <caption class="tbl-sub">Reporting, time &amp; automation</caption>
+        <thead><tr><th scope="col" style="width:190px;">Tool</th><th scope="col">What you use it for</th></tr></thead>
         <tbody>
-          <tr><td>Oracle PRIME</td><td>Time entry — logging hours against projects.</td></tr>
-          <tr><td>Power BI</td><td>Dashboards and reporting on delivery status and KPIs.</td></tr>
-          <tr><td>Power Automate / Office Scripts</td><td>Automating repetitive steps (reminders, data prep) — much of it built by the Automation squad.</td></tr>
+          <tr><th scope="row">Oracle PRIME</th><td>Time entry — logging hours against projects.</td></tr>
+          <tr><th scope="row">Power BI</th><td>Dashboards and reporting on delivery status and KPIs.</td></tr>
+          <tr><th scope="row">Power Automate / Office Scripts</th><td>Automating repetitive steps (reminders, data prep) — much of it built by the Automation squad.</td></tr>
         </tbody>
       </table>
     </div>
 
     <div class="alert blue" style="margin-top:22px;margin-bottom:0;">
-      <span class="alert-icon">🧠</span>
+      <span class="alert-icon" aria-hidden="true">🧠</span>
       <p><strong>Quick mental model.</strong> GOLD / SALTO = <em>the order</em> · ServiceNow / MACHX = <em>getting the work approved &amp; done</em> · FLIP = <em>people on site</em> · DNAC = <em>managing the result</em> · SharePoint = <em>the paperwork</em> · PRIME / Power BI = <em>your time &amp; the reporting</em>.</p>
     </div>
   </div>
@@ -490,59 +559,64 @@
     <div class="section-header">
       <h2>The Delivery Process</h2>
       <div class="divider"></div>
-      <p>Every delivery follows the same three phases. The Knowledge Base process pages present these steps as interactive, phase-by-phase flowcharts — use them as your live checklist on a delivery.</p>
+      <p>Every delivery follows the same three phases. The Knowledge Base process pages present these steps as interactive, phase-by-phase flowcharts — use them as your <a class="ink-link" href="checklist.html">live checklist</a> on a delivery.</p>
     </div>
 
-    <div class="lifecycle" style="margin-bottom:26px;">
+    <div class="lifecycle" data-kb-noanchor style="margin-bottom:26px;">
       <div class="lc-step">
         <span class="lc-tag">Phase 1</span>
-        <h4>Pre-migration</h4>
+        <h3>Pre-migration</h3>
         <p>Confirm supply, raise MACHX, validate prerequisites, stage hardware, and run dry runs with the customer.</p>
       </div>
       <div class="lc-step">
         <span class="lc-tag">Phase 2</span>
-        <h4>Migration</h4>
+        <h3>Migration</h3>
         <p>Execute the cutover in the agreed window, support the field / VPO teams, and run UAT on every migrated service.</p>
       </div>
       <div class="lc-step">
         <span class="lc-tag">Phase 3</span>
-        <h4>Post-migration / HOTO</h4>
+        <h3>Post-migration / HOTO</h3>
         <p>Send the success notification, update DNAC/CMDB, upload the HOTO pack, and close the GOLD and SALTO orders.</p>
       </div>
     </div>
 
     <div class="grid-2" style="margin-bottom:24px;">
-      <a href="lan-process.html" class="card" style="border-top:3px solid #FF6200;text-decoration:none;">
-        <div class="card-icon" style="background:#FFF3EA;">🏢</div>
-        <h3 style="color:#FF6200;">LAN Process</h3>
+      <div class="card lan-card" data-kb-noanchor style="border-top:3px solid #FF6200;">
+        <div class="card-icon" aria-hidden="true" style="background:#FFF3EA;">🏢</div>
+        <h3 style="color:var(--orange-text);">LAN Process</h3>
         <p>Local-site delivery in two flavours — the <a href="process-ap.html">AP (wireless) process</a> and the <a href="process-wlc-switch.html">WLC &amp; Switch process</a> — each with its full step list and Gantt timeline.</p>
-        <span class="card-link" style="color:#FF6200;">View LAN Process →</span>
-      </a>
+        <a href="lan-process.html" class="card-link lan-card-link">View LAN Process →</a>
+      </div>
       <a href="wan-process.html" class="card" style="border-top:3px solid #1BA0D7;text-decoration:none;">
-        <div class="card-icon" style="background:#E8F6FD;">🌐</div>
-        <h3 style="color:#1BA0D7;">WAN Process</h3>
+        <div class="card-icon" aria-hidden="true" style="background:#E8F6FD;">🌐</div>
+        <h3 style="color:var(--cisco-text);">WAN Process</h3>
         <p>SD-WAN, MPLS &amp; circuit delivery — adds a <strong>carrier</strong> and the <strong>customer's local site team</strong>: circuit ordering, survey, install, router install and cutover.</p>
-        <span class="card-link" style="color:#1BA0D7;">View WAN Process →</span>
+        <span class="card-link" style="color:var(--cisco-text);">View WAN Process →</span>
       </a>
     </div>
 
-    <p class="tbl-sub">LAN — AP vs WLC / Switch: key differences</p>
+    <div class="alert green" style="margin-bottom:24px;">
+      <span class="alert-icon" aria-hidden="true">✅</span>
+      <p><strong>Working a delivery?</strong> Open the <a class="ink-link" href="checklist.html">Delivery Checklist</a> to tick off each step per project and copy a status update in one click — and grab a starter email from the <a class="ink-link" href="templates.html">Email Templates</a>.</p>
+    </div>
+
     <div class="kb-tablewrap">
       <table class="data-table">
-        <thead><tr><th style="width:150px;">Topic</th><th>AP process</th><th>WLC / Switch process</th></tr></thead>
+        <caption class="tbl-sub">LAN — AP vs WLC / Switch: key differences</caption>
+        <thead><tr><th scope="col" style="width:150px;">Topic</th><th scope="col">AP process</th><th scope="col">WLC / Switch process</th></tr></thead>
         <tbody>
-          <tr><td>Physical install</td><td>Customer mounts the APs</td><td>Field Engineer booked via FLIP</td></tr>
-          <tr><td>Staging</td><td>VPOs stage remotely</td><td>Formal staging session + post-staging email</td></tr>
-          <tr><td>Dry run</td><td>Internal — VPO &amp; SC only</td><td>External — VPO, SC &amp; customer; check 3rd-party servers</td></tr>
-          <tr><td>Unique pre-check</td><td>Option 43 must be verified</td><td>Second MACHX raise before migration</td></tr>
-          <tr><td>UAT</td><td>Test all SSIDs, then per-AP</td><td>Test all services on each migrated switch</td></tr>
-          <tr><td>MACHX raises</td><td>One</td><td>Two (pre-staging + pre-migration)</td></tr>
+          <tr><th scope="row">Physical install</th><td>Customer mounts the APs</td><td>Field Engineer booked via FLIP</td></tr>
+          <tr><th scope="row">Staging</th><td>VPOs stage remotely</td><td>Formal staging session + post-staging email</td></tr>
+          <tr><th scope="row">Dry run</th><td>Internal — VPO &amp; SC only</td><td>External — VPO, SC &amp; customer; check 3rd-party servers</td></tr>
+          <tr><th scope="row">Unique pre-check</th><td>Option 43 must be verified</td><td>Second MACHX raise before migration</td></tr>
+          <tr><th scope="row">UAT</th><td>Test all SSIDs, then per-AP</td><td>Test all services on each migrated switch</td></tr>
+          <tr><th scope="row">MACHX raises</th><td>One</td><td>Two (pre-staging + pre-migration)</td></tr>
         </tbody>
       </table>
     </div>
 
     <div class="alert orange" style="margin-top:8px;margin-bottom:0;">
-      <span class="alert-icon">🌐</span>
+      <span class="alert-icon" aria-hidden="true">🌐</span>
       <p><strong>Two things make WAN different from LAN:</strong> much of the timeline depends on the <strong>carrier</strong> (survey &amp; circuit-installation dates), and the <strong>customer's local team</strong> must actively support — validating scope, granting site access, completing in-house wiring, and escorting engineers. Keep both moving and the plan stays on track. The Option 43 hex string APs need to find their WLC? <a href="option43.html">Generate it here →</a></p>
     </div>
   </div>
@@ -556,64 +630,52 @@
     </div>
     <div class="topic-nav">
       <a href="lan-wan-basics.html" class="topic-nav-card">
-        <div class="topic-nav-card-icon">🌐</div>
+        <div class="topic-nav-card-icon" aria-hidden="true">🌐</div>
         <div class="topic-nav-card-label">Foundation</div>
         <div class="topic-nav-card-title">LAN &amp; WAN</div>
         <div class="topic-nav-card-sub">A LAN is the local network at a site; a WAN connects sites over distance.</div>
       </a>
       <a href="ip-routing.html" class="topic-nav-card">
-        <div class="topic-nav-card-icon">🗺️</div>
+        <div class="topic-nav-card-icon" aria-hidden="true">🗺️</div>
         <div class="topic-nav-card-label">Layer 3</div>
         <div class="topic-nav-card-title">IP Routing</div>
         <div class="topic-nav-card-sub">How traffic finds its way between networks — addresses, subnets, OSPF &amp; BGP.</div>
       </a>
       <a href="switching.html" class="topic-nav-card">
-        <div class="topic-nav-card-icon">🔌</div>
+        <div class="topic-nav-card-icon" aria-hidden="true">🔌</div>
         <div class="topic-nav-card-label">Layer 2</div>
         <div class="topic-nav-card-title">Switching</div>
         <div class="topic-nav-card-sub">Moving traffic within a site — VLANs separate, STP prevents loops, trunks carry many VLANs.</div>
       </a>
       <a href="wireless.html" class="topic-nav-card">
-        <div class="topic-nav-card-icon">📡</div>
+        <div class="topic-nav-card-icon" aria-hidden="true">📡</div>
         <div class="topic-nav-card-label">WiFi</div>
         <div class="topic-nav-card-title">Wireless</div>
         <div class="topic-nav-card-sub">APs broadcast Wi-Fi; a controller (WLC) manages them; SSIDs are the names users see.</div>
       </a>
       <a href="firewalls.html" class="topic-nav-card">
-        <div class="topic-nav-card-icon">🛡️</div>
+        <div class="topic-nav-card-icon" aria-hidden="true">🛡️</div>
         <div class="topic-nav-card-label">Security</div>
         <div class="topic-nav-card-title">Firewalls</div>
         <div class="topic-nav-card-sub">Control what's allowed between zones; next-gen firewalls also inspect apps &amp; threats.</div>
       </a>
       <a href="zscaler.html" class="topic-nav-card">
-        <div class="topic-nav-card-icon">☁️</div>
+        <div class="topic-nav-card-icon" aria-hidden="true">☁️</div>
         <div class="topic-nav-card-label">Cloud Security</div>
         <div class="topic-nav-card-title">Zscaler</div>
         <div class="topic-nav-card-sub">Cloud-delivered security (ZIA/ZPA) on Zero-Trust &amp; SASE — no backhauling traffic.</div>
       </a>
       <a href="glossary.html" class="topic-nav-card">
-        <div class="topic-nav-card-icon">📖</div>
+        <div class="topic-nav-card-icon" aria-hidden="true">📖</div>
         <div class="topic-nav-card-label">Reference</div>
         <div class="topic-nav-card-title">Glossary</div>
         <div class="topic-nav-card-sub">80+ networking &amp; DPM terms, explained in plain English.</div>
       </a>
-      <a href="option43.html" class="topic-nav-card">
-        <div class="topic-nav-card-icon">🧮</div>
-        <div class="topic-nav-card-label">Tool</div>
-        <div class="topic-nav-card-title">Option 43 Calculator</div>
-        <div class="topic-nav-card-sub">Generate the WLC-discovery hex string, with a byte-by-byte breakdown.</div>
-      </a>
       <a href="resources.html" class="topic-nav-card">
-        <div class="topic-nav-card-icon">🔗</div>
+        <div class="topic-nav-card-icon" aria-hidden="true">🔗</div>
         <div class="topic-nav-card-label">Learn more</div>
         <div class="topic-nav-card-title">External Resources</div>
         <div class="topic-nav-card-sub">Vendor docs, free training, standards &amp; tools to go deeper.</div>
-      </a>
-      <a href="raci.html" class="topic-nav-card">
-        <div class="topic-nav-card-icon">📋</div>
-        <div class="topic-nav-card-label">Reference</div>
-        <div class="topic-nav-card-title">RACI Matrix</div>
-        <div class="topic-nav-card-sub">Who's accountable &amp; responsible for each delivery activity.</div>
       </a>
     </div>
   </div>
@@ -627,25 +689,25 @@
     </div>
     <div class="grid-3">
       <a href="cisco.html" class="card" style="border-top:3px solid var(--cisco-blue);text-decoration:none;">
-        <div class="card-icon" style="background:var(--cisco-pale);">🔷</div>
-        <h3 style="color:var(--cisco-blue);">Cisco</h3>
+        <div class="card-icon" aria-hidden="true" style="background:var(--cisco-pale);">🔷</div>
+        <h3 style="color:var(--cisco-text);">Cisco</h3>
         <p>The broadest portfolio — switching, routing, security and wireless.</p>
         <div class="vend-you">You'll meet: <b>Catalyst switches, WLCs, Catalyst APs, ASA/FTD firewalls, Catalyst Center</b></div>
-        <span class="card-link" style="color:var(--cisco-blue);">Cisco guide →</span>
+        <span class="card-link" style="color:var(--cisco-text);">Cisco guide →</span>
       </a>
       <a href="paloalto.html" class="card" style="border-top:3px solid var(--palo-orange);text-decoration:none;">
-        <div class="card-icon" style="background:var(--palo-pale);">🔶</div>
-        <h3 style="color:var(--palo-orange);">Palo Alto</h3>
+        <div class="card-icon" aria-hidden="true" style="background:var(--palo-pale);">🔶</div>
+        <h3 style="color:var(--palo-text);">Palo Alto</h3>
         <p>Security specialist — next-generation firewalls and cloud security.</p>
         <div class="vend-you">You'll meet: <b>PA-Series firewalls, Panorama, Prisma, GlobalProtect</b></div>
-        <span class="card-link" style="color:var(--palo-orange);">Palo Alto guide →</span>
+        <span class="card-link" style="color:var(--palo-text);">Palo Alto guide →</span>
       </a>
       <a href="fortinet.html" class="card" style="border-top:3px solid var(--fort-red);text-decoration:none;">
-        <div class="card-icon" style="background:var(--fort-pale);">🔻</div>
-        <h3 style="color:var(--fort-red);">Fortinet</h3>
+        <div class="card-icon" aria-hidden="true" style="background:var(--fort-pale);">🔻</div>
+        <h3 style="color:var(--fort-text);">Fortinet</h3>
         <p>An integrated “Security Fabric” where the firewall manages the whole stack.</p>
         <div class="vend-you">You'll meet: <b>FortiGate, FortiSwitch, FortiAP, FortiManager</b></div>
-        <span class="card-link" style="color:var(--fort-red);">Fortinet guide →</span>
+        <span class="card-link" style="color:var(--fort-text);">Fortinet guide →</span>
       </a>
     </div>
   </div>
@@ -657,10 +719,10 @@
       <div class="divider"></div>
       <p>A simple path to getting productive. Tick these off with your manager and buddy.</p>
     </div>
-    <div class="weeks-grid">
-      <div class="week-card" style="--c:var(--orange);">
+    <div class="weeks-grid" data-kb-noanchor>
+      <div class="week-card" style="--c:var(--orange);--ct:var(--orange-text);">
         <div class="week-tag">Week 1</div>
-        <h4>Orient</h4>
+        <h3>Orient</h3>
         <ul>
           <li>Read this handbook end-to-end and browse the Knowledge Base.</li>
           <li>Meet your manager and find out which cluster and customers you'll support.</li>
@@ -668,9 +730,9 @@
           <li>Learn who your SMEs are and how to reach them.</li>
         </ul>
       </div>
-      <div class="week-card" style="--c:var(--cisco-blue);">
+      <div class="week-card" style="--c:var(--cisco-blue);--ct:var(--cisco-text);">
         <div class="week-tag">Weeks 2–3</div>
-        <h4>Shadow</h4>
+        <h3>Shadow</h3>
         <ul>
           <li>Shadow an experienced DPM through a live delivery — sit in on staging and dry-run calls.</li>
           <li>Follow one project through the phases using the LAN / WAN step lists.</li>
@@ -678,9 +740,9 @@
           <li>Start logging your time in Oracle PRIME.</li>
         </ul>
       </div>
-      <div class="week-card" style="--c:var(--green);">
+      <div class="week-card" style="--c:var(--green);--ct:var(--green-text);">
         <div class="week-tag">Weeks 4+</div>
-        <h4>Contribute</h4>
+        <h3>Contribute</h3>
         <ul>
           <li>Take ownership of a small delivery (or a workstream within a larger one) with support.</li>
           <li>Run a UAT session and prepare a HOTO pack for SharePoint.</li>
@@ -715,27 +777,27 @@
     <div class="section-header" style="margin-bottom:14px;">
       <h3 style="font-size:16px;">Where to get help</h3>
     </div>
-    <div class="help-grid">
-      <div class="help-card">
-        <div class="help-ic">🧭</div>
+    <ul class="help-grid" role="list">
+      <li class="help-card">
+        <div class="help-ic" aria-hidden="true">🧭</div>
         <div class="help-tx"><b>Your manager</b><p>Your first stop for anything about your deliveries, priorities or access.</p></div>
-      </div>
-      <div class="help-card">
-        <div class="help-ic">🧠</div>
+      </li>
+      <li class="help-card">
+        <div class="help-ic" aria-hidden="true">🧠</div>
         <div class="help-tx"><b>Your cluster SMEs</b><p>For technical and process questions — find them on your cluster page.</p></div>
-      </div>
-      <div class="help-card">
-        <div class="help-ic">📚</div>
+      </li>
+      <li class="help-card">
+        <div class="help-ic" aria-hidden="true">📚</div>
         <div class="help-tx"><b>The Knowledge Base</b><p>Process flowcharts, tool references, vendor guides, the team directory and glossary.</p></div>
-      </div>
-      <div class="help-card">
-        <div class="help-ic">🤝</div>
+      </li>
+      <li class="help-card">
+        <div class="help-ic" aria-hidden="true">🤝</div>
         <div class="help-tx"><b>Your buddy / fellow DPMs</b><p>No question is too small in your first weeks.</p></div>
-      </div>
-    </div>
+      </li>
+    </ul>
 
     <div class="closer">
-      <h3>Welcome aboard 🎉</h3>
+      <h3>Welcome aboard <span aria-hidden="true">🎉</span></h3>
       <p>Nobody expects you to know everything on day one. Ask questions, shadow generously, and lean on the team and the Knowledge Base — you'll be running your own deliveries before long.</p>
     </div>
   </div>
@@ -745,6 +807,8 @@
 <footer class="footer">
   <p>DPM <span>Knowledge Base</span> &nbsp;·&nbsp; Onboarding Handbook Ed.&nbsp;1.3 &nbsp;·&nbsp; Internal Use Only</p>
 </footer>
+<script src="launcher.js"></script>
+<script src="whats-new-data.js"></script>
 <script src="shared.js"></script>
 </body>
 </html>

@@ -8,6 +8,7 @@
    • an "On this page" TOC + scroll-spy    • back-to-top button
    • deep-linkable section anchors          • code copy buttons
    • responsive tables + mobile nav menu    • reveal-on-scroll
+   • an "Updated <date>" stamp in the hero (from page-meta.json)
    All additive & defensive — if this script fails, pages still
    work exactly as before.
 ═══════════════════════════════════════════════════════════ */
@@ -82,7 +83,13 @@
     "process-wlc-switch": ["sw", "check", "server", "eth"],
     "wan-process":        ["globe", "cloud", "route", "check"],
     "option43":           ["wifi", "nodes", "route", "list"],
-    "resources":          ["book", "list", "globe", "nodes"]
+    "resources":          ["book", "list", "globe", "nodes"],
+    "raci":               ["check", "list", "nodes", "key"],
+    "checklist":          ["check", "list", "wifi", "globe"],
+    "templates":          ["list", "check", "book", "nodes"],
+    "tools":              ["key", "server", "list", "nodes"],
+    "whats-new":          ["list", "signal", "check", "book"],
+    "org-chart":          ["nodes", "globe", "list", "book"]
   };
   function heroDecor() {
     var page = (location.pathname.split("/").pop() || "index.html").replace(".html", "");
@@ -107,20 +114,34 @@
   function slug(s) {
     return (s || "").toLowerCase().replace(/[^\w\s-]/g, "").trim().replace(/\s+/g, "-").replace(/-+/g, "-").slice(0, 60) || "section";
   }
+  /* visible heading text without decorative (aria-hidden) parts such as emoji */
+  function headingText(h) {
+    var c = h.cloneNode(true);
+    [].forEach.call(c.querySelectorAll("[aria-hidden='true'], .kb-anchor"), function (n) { n.parentNode.removeChild(n); });
+    return (c.textContent || "").replace(/\s+/g, " ").trim();
+  }
   function anchorsAndHeadings(wrap) {
     if (!wrap) return [];
-    var hs = [].slice.call(wrap.querySelectorAll("h2, h3"));
+    /* card titles inside links/buttons (and opted-out blocks) are not sections:
+       no nested interactive anchor, and no TOC entry */
+    var hs = [].slice.call(wrap.querySelectorAll("h2, h3")).filter(function (h) {
+      return !h.closest("a, button, [role='link'], [role='button'], [data-kb-noanchor]");
+    });
     var used = {};
     hs.forEach(function (h) {
-      var text = (h.textContent || "").trim();
+      var text = headingText(h);
       h.setAttribute("data-kb-title", text);
       var id = h.id;
       if (!id) { id = slug(text); if (used[id]) { var n = 2; while (used[id + "-" + n]) n++; id = id + "-" + n; } h.id = id; }
       used[id] = 1;
       h.classList.add("kb-h");
+      /* Mouse convenience only: kept out of the tab order and the accessibility
+         tree so it neither adds invisible tab stops nor pollutes the heading's
+         name. Keyboard users get the same deep links from the TOC. */
       var a = el("a", "kb-anchor", "#");
       a.href = "#" + id;
-      a.setAttribute("aria-label", "Link to this section");
+      a.tabIndex = -1;
+      a.setAttribute("aria-hidden", "true");
       h.appendChild(a);
     });
     return hs;
@@ -136,6 +157,8 @@
       '<span>On this page</span><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>');
     head.type = "button";
     var list = el("ol", "kb-toc-list");
+    list.id = "kb-toc-list";
+    head.setAttribute("aria-controls", list.id);
     headings.forEach(function (h) {
       var li = el("li", "kb-toc-" + h.tagName.toLowerCase());
       var a = el("a", null, "");
@@ -147,14 +170,28 @@
       tocLinks.push({ a: a, h: h });
     });
     toc.appendChild(head); toc.appendChild(list);
-    if (window.innerWidth <= 760) toc.classList.add("collapsed");
-    head.addEventListener("click", function () { toc.classList.toggle("collapsed"); });
+    /* collapsed = list hidden from keyboard and AT too (CSS visibility), with the
+       state exposed on the toggle */
+    function setCollapsed(c) {
+      toc.classList.toggle("collapsed", c);
+      head.setAttribute("aria-expanded", c ? "false" : "true");
+    }
+    setCollapsed(window.innerWidth <= 760);
+    head.addEventListener("click", function () { setCollapsed(!toc.classList.contains("collapsed")); });
     // insert after the hero-adjacent first block: at top of content wrap
     wrap.insertBefore(toc, wrap.firstChild);
+  }
+  /* move keyboard focus along with the scroll, so the next Tab continues from
+     the chosen section rather than from the control that was activated */
+  function focusNoScroll(t) {
+    if (!t) return;
+    if (!t.hasAttribute("tabindex")) t.setAttribute("tabindex", "-1");
+    try { t.focus({ preventScroll: true }); } catch (e) { try { t.focus(); } catch (e2) { /* ignore */ } }
   }
   function go(h) {
     h.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
     if (history.replaceState) history.replaceState(null, "", "#" + h.id);
+    focusNoScroll(h);
   }
 
   /* ---------- responsive tables ---------- */
@@ -179,8 +216,22 @@
       w.appendChild(btn);
     });
   }
+  /* one shared, visually hidden live region for short confirmations */
+  var liveEl;
+  function announce(msg) {
+    if (!liveEl) {
+      liveEl = el("div", "kb-sr kb-live");
+      liveEl.setAttribute("role", "status");
+      liveEl.setAttribute("aria-live", "polite");
+      liveEl.setAttribute("aria-atomic", "true");
+      document.body.appendChild(liveEl);
+    }
+    liveEl.textContent = "";
+    setTimeout(function () { liveEl.textContent = msg; }, 60);
+  }
+  window.KBAnnounce = function (msg) { try { announce(String(msg || "")); } catch (e) { /* optional */ } };
   function copyText(txt, btn) {
-    function done() { btn.textContent = "Copied!"; btn.classList.add("done"); setTimeout(function () { btn.textContent = "Copy"; btn.classList.remove("done"); }, 1400); }
+    function done() { btn.textContent = "Copied!"; btn.classList.add("done"); announce("Code copied to clipboard"); setTimeout(function () { btn.textContent = "Copy"; btn.classList.remove("done"); }, 1400); }
     function fb() { try { var ta = el("textarea"); ta.value = txt; ta.style.position = "fixed"; ta.style.opacity = "0"; document.body.appendChild(ta); ta.select(); document.execCommand("copy"); ta.remove(); } catch (e) {} done(); }
     if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(done, fb); else fb();
   }
@@ -210,8 +261,46 @@
       '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"></polyline></svg>');
     topBtn.type = "button";
     topBtn.setAttribute("aria-label", "Back to top");
-    topBtn.addEventListener("click", function () { window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" }); });
+    topBtn.addEventListener("click", function () {
+      window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
+      /* keyboard focus goes back to the top as well */
+      focusNoScroll(document.querySelector(".kb-main h1, .page-hero h1, .proc-hero h1, .kb-hero h1, h1") || mainEl);
+    });
     document.body.appendChild(topBtn);
+  }
+
+  /* ---------- landmarks: skip link, main, labelled primary nav, current page ---------- */
+  var mainEl = null;
+  function landmarks(wrap) {
+    var nav = document.querySelector(".topnav");
+    if (nav && !nav.hasAttribute("aria-label")) nav.setAttribute("aria-label", "Primary");
+    if (nav) {
+      var file = currentFile();
+      [].forEach.call(nav.querySelectorAll(".topnav-links a[href]"), function (a) {
+        /* "page" only for a link to this very page; a highlighted parent section
+           (e.g. Devices while on cisco.html) is the current location, not the page */
+        if (a.getAttribute("href") === file) a.setAttribute("aria-current", "page");
+        else if (a.classList.contains("active")) a.setAttribute("aria-current", "true");
+      });
+    }
+    mainEl = document.querySelector("main, [role='main']");
+    if (!mainEl && wrap) {
+      mainEl = wrap;
+      if (wrap.tagName !== "MAIN") wrap.setAttribute("role", "main");
+    }
+    if (!mainEl) return;
+    if (!mainEl.id) mainEl.id = "main";
+    if (!mainEl.hasAttribute("tabindex")) mainEl.setAttribute("tabindex", "-1");
+    mainEl.classList.add("kb-main");
+    if (document.querySelector(".kb-skip")) return;
+    var skip = el("a", "kb-skip", "Skip to main content");
+    skip.href = "#" + mainEl.id;
+    skip.addEventListener("click", function (e) {
+      e.preventDefault();
+      mainEl.scrollIntoView({ block: "start" });
+      focusNoScroll(mainEl);
+    });
+    document.body.insertBefore(skip, document.body.firstChild);
   }
 
   /* ---------- mobile nav ---------- */
@@ -223,20 +312,43 @@
       '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>');
     btn.type = "button"; btn.setAttribute("aria-label", "Menu"); btn.setAttribute("aria-expanded", "false");
     var menu = el("nav", "kb-navmenu"); menu.setAttribute("aria-label", "Site");
+    menu.id = "kb-navmenu";
+    btn.setAttribute("aria-controls", menu.id);
     var file = location.pathname.split("/").pop() || "index.html";
     [].forEach.call(links.querySelectorAll("a[href]"), function (a) {
-      var m = el("a", a.getAttribute("href") === file ? "active" : null, a.textContent);
+      var cur = a.getAttribute("href") === file;
+      /* the section the page belongs to (e.g. Devices on cisco.html) is marked too */
+      var sect = !cur && a.classList.contains("active");
+      var m = el("a", cur || sect ? "active" : null, a.textContent);
       m.href = a.getAttribute("href");
+      if (cur) m.setAttribute("aria-current", "page");
+      else if (sect) m.setAttribute("aria-current", "true");
       m.addEventListener("click", function () { closeMenu(); });
       menu.appendChild(m);
     });
-    function openMenu() { menu.classList.add("open"); btn.setAttribute("aria-expanded", "true"); }
-    function closeMenu() { menu.classList.remove("open"); btn.setAttribute("aria-expanded", "false"); }
-    btn.addEventListener("click", function (e) { e.stopPropagation(); menu.classList.contains("open") ? closeMenu() : openMenu(); });
-    document.addEventListener("click", function (e) { if (menu.classList.contains("open") && !menu.contains(e.target) && e.target !== btn) closeMenu(); });
-    document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeMenu(); });
+    function isOpen() { return menu.classList.contains("open"); }
+    function openMenu(focusFirst) {
+      menu.classList.add("open"); btn.setAttribute("aria-expanded", "true");
+      if (focusFirst) { var f = menu.querySelector("a"); if (f) f.focus(); }
+    }
+    function closeMenu(returnFocus) {
+      if (!isOpen()) return;
+      menu.classList.remove("open"); btn.setAttribute("aria-expanded", "false");
+      if (returnFocus) btn.focus();
+    }
+    /* e.detail === 0 means keyboard activation: move focus into the menu */
+    btn.addEventListener("click", function (e) { e.stopPropagation(); isOpen() ? closeMenu() : openMenu(e.detail === 0); });
+    document.addEventListener("click", function (e) { if (isOpen() && !menu.contains(e.target) && !btn.contains(e.target)) closeMenu(); });
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape" && isOpen()) closeMenu(menu.contains(document.activeElement) || document.activeElement === btn); });
+    /* close when keyboard focus leaves the toggle + menu pair */
+    menu.addEventListener("focusout", function (e) {
+      var to = e.relatedTarget;
+      if (to && !menu.contains(to) && to !== btn) closeMenu();
+    });
     nav.appendChild(btn);
-    document.body.appendChild(menu);
+    /* straight after the toggle in the DOM (it is position:fixed, so layout is
+       unchanged) so Tab goes from the button into the menu */
+    btn.parentNode.insertBefore(menu, btn.nextSibling);
   }
 
   /* ---------- hash scroll on load ---------- */
@@ -244,6 +356,67 @@
     if (!location.hash) return;
     var t = document.getElementById(location.hash.slice(1));
     if (t) setTimeout(function () { t.scrollIntoView(); }, 60);
+  }
+
+  /* ---------- "Updated <date> · What's new" stamp in the hero ----------
+     Dates come from page-meta.json (written by build-search-index.ps1).
+     Optional: if the file, the page entry or the hero is missing, or
+     fetch is unavailable, nothing is shown and nothing throws. */
+  var MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  function currentFile() {
+    var seg = (location.pathname || "").split("/").pop() || "";
+    try { seg = decodeURIComponent(seg); } catch (e) { /* keep it as typed */ }
+    return seg || "index.html";
+  }
+  /* "YYYY-MM-DD" as a LOCAL calendar date (new Date("YYYY-MM-DD") would be UTC) */
+  function localDate(s) {
+    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(typeof s === "string" ? s.trim() : "");
+    if (!m) return null;
+    var y = +m[1], mo = +m[2] - 1, d = +m[3], dt = new Date(y, mo, d);
+    if (dt.getFullYear() !== y || dt.getMonth() !== mo || dt.getDate() !== d) return null;
+    return dt;
+  }
+  function stampHost(hero) {
+    if (hero.classList.contains("kb-hero")) return hero.querySelector(".kb-hero-inner") || hero;
+    /* squad / manager heroes lay .hero-content out as a row: join the text column */
+    if (hero.classList.contains("sq-hero") || hero.classList.contains("mgr-hero")) {
+      var h1 = hero.querySelector("h1");
+      if (h1 && h1.parentNode) return h1.parentNode;
+    }
+    return hero.querySelector(".hero-content") || hero;
+  }
+  function addStamp(hero, file, meta) {
+    var pages = meta && meta.pages;
+    if (!pages || typeof pages !== "object" || !Object.prototype.hasOwnProperty.call(pages, file)) return;
+    var info = pages[file], iso = info && typeof info.updated === "string" ? info.updated.trim() : "";
+    var dt = localDate(iso);
+    if (!dt || hero.querySelector(".kb-updated")) return;
+    var p = el("p", "kb-updated");
+    p.appendChild(document.createTextNode("Updated "));
+    var t = document.createElement("time");
+    t.setAttribute("datetime", iso);
+    t.textContent = dt.getDate() + " " + MONTHS[dt.getMonth()] + " " + dt.getFullYear();
+    p.appendChild(t);
+    if (file !== "whats-new.html") {
+      p.appendChild(document.createTextNode(" · "));
+      var a = el("a", null, "What's new <span aria-hidden=\"true\">→</span>");
+      a.href = "whats-new.html";
+      p.appendChild(a);
+    }
+    stampHost(hero).appendChild(p);
+  }
+  function updatedStamp() {
+    var file = currentFile();
+    if (file === "404.html" || document.querySelector(".nf-hero")) return;
+    if (!window.fetch) return;
+    var hero = document.querySelector(".kb-hero, .page-hero, .proc-hero, .sq-hero, .mgr-hero");
+    if (!hero) return;
+    try {
+      window.fetch("page-meta.json", { cache: "no-cache" })
+        .then(function (r) { return r && r.ok ? r.json() : null; })
+        .then(function (meta) { try { addStamp(hero, file, meta); } catch (e) { /* optional */ } })
+        ["catch"](function () { /* no stamp */ });
+    } catch (e) { /* no stamp */ }
   }
 
   /* ---------- unified scroll handler (progress + back-to-top + scroll-spy) ---------- */
@@ -260,8 +433,18 @@
         if (bar) bar.style.width = Math.max(0, Math.min(100, (st / max) * 100)) + "%";
         if (topBtn) topBtn.classList.toggle("show", st > 420);
         if (tocLinks.length) {
+          /* Measure each heading's page position now, from its on-screen box.
+             offsetTop is relative to the offsetParent, and a section that is
+             still waiting to reveal (.kb-reveal carries a transform) becomes
+             that offsetParent, so headings inside it reported ~0 and the last
+             TOC entry lit up at the top of the page. Hidden headings (e.g.
+             filtered out) have an empty box and are skipped. */
           var offset = st + 96, cur = -1;
-          for (var i = 0; i < spy.length; i++) { if (spy[i].offsetTop <= offset) cur = i; else break; }
+          for (var i = 0; i < spy.length; i++) {
+            var r = spy[i].getBoundingClientRect();
+            if (!r.width && !r.height) continue;
+            if (r.top + st <= offset) cur = i; else break;
+          }
           if (cur < 0) cur = 0;
           for (var j = 0; j < tocLinks.length; j++) tocLinks[j].a.classList.toggle("active", j === cur);
         }
@@ -282,28 +465,47 @@
       ".kb-herosearch{display:inline-flex;align-items:center;gap:10px;margin-top:22px;max-width:460px;width:100%;background:rgba(255,255,255,0.97);border:none;border-radius:11px;padding:12px 15px;cursor:text;box-shadow:0 10px 30px rgba(0,0,0,0.18);transition:transform .15s,box-shadow .15s;text-align:left;font-family:inherit;vertical-align:middle;}",
       ".kb-herosearch:hover{transform:translateY(-1px);box-shadow:0 14px 38px rgba(0,0,0,0.26);}",
       ".kb-herosearch>svg{color:#FF6200;flex-shrink:0;}",
-      ".kb-herosearch span{flex:1;min-width:0;color:#8A8A8A;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}",
-      ".kb-herosearch kbd{flex-shrink:0;background:#F0F0F0;border:1px solid #E0E0E0;border-radius:5px;color:#999;font:600 10.5px/1 var(--mono,monospace);padding:5px 7px;}",
+      ".kb-herosearch span{flex:1;min-width:0;color:#616161;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}",
+      ".kb-herosearch kbd{flex-shrink:0;background:#F3F3F3;border:1px solid #E0E0E0;border-radius:5px;color:#616161;font:600 10.5px/1 var(--mono,monospace);padding:5px 7px;}",
       "@media(max-width:600px){.kb-herosearch kbd{display:none;}.kb-herosearch{margin-top:18px;}}",
+      /* "Updated … · What's new" stamp: its own dark translucent backing keeps
+         white text >= 4.5:1 on every hero, including the orange home hero */
+      "html.kb-enh .kb-updated{display:table;max-width:100%;margin:16px auto 0;padding:5px 13px;border-radius:999px;background:rgba(0,0,0,0.38);border:1px solid rgba(255,255,255,0.16);color:#fff;font:400 12.5px/1.5 var(--font,sans-serif);text-align:center;}",
+      "html.kb-enh .sq-hero .kb-updated,html.kb-enh .mgr-hero .kb-updated{margin:14px 0 0;}",
+      "html.kb-enh .kb-updated time{font-weight:600;}",
+      "html.kb-enh .kb-updated a{color:#fff;font-weight:600;text-decoration:underline;text-decoration-color:rgba(255,255,255,0.6);text-underline-offset:2px;}",
+      "html.kb-enh .kb-updated a:hover{text-decoration-color:#fff;}",
+      "html.kb-enh .kb-updated a:focus-visible{outline:2px solid #fff;outline-offset:2px;border-radius:3px;}",
       /* heading anchors */
       ".kb-h{scroll-margin-top:80px;}",
-      ".kb-anchor{opacity:0;margin-left:8px;color:#FF6200;text-decoration:none;font-weight:700;font-size:.82em;transition:opacity .12s;}",
-      ".kb-h:hover .kb-anchor{opacity:.55;}",
-      ".kb-anchor:hover{opacity:1;}",
+      ".kb-anchor{opacity:0;margin-left:8px;color:#B34200;text-decoration:none;font-weight:700;font-size:.82em;transition:opacity .12s;}",
+      ".kb-h:hover .kb-anchor{opacity:.75;}",
+      ".kb-anchor:hover,.kb-anchor:focus,.kb-anchor:focus-visible{opacity:1;}",
+      ".kb-anchor:focus-visible{outline:2px solid #B34200;outline-offset:2px;border-radius:3px;}",
+      /* programmatic focus targets (TOC jumps, skip link, back-to-top) */
+      ".kb-h[tabindex=\"-1\"]:focus,.kb-main:focus,h1[tabindex=\"-1\"]:focus{outline:none;}",
+      /* skip link + shared live region */
+      ".kb-skip{position:absolute;left:12px;top:-60px;z-index:10000;background:#1A1A1A;color:#fff !important;font:600 14px/1 var(--font,sans-serif);padding:12px 16px;border-radius:0 0 8px 8px;border:2px solid #FFB27A;border-top:none;text-decoration:none !important;}",
+      ".kb-skip:focus{top:0;outline:3px solid #FFB27A;outline-offset:0;}",
+      ".kb-sr{position:absolute !important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}",
       /* TOC */
       ".kb-toc{margin:0 0 30px;border:1px solid #E7E7E9;border-radius:12px;background:#FAFAFB;overflow:hidden;}",
       ".kb-toc-head{width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;background:none;border:none;padding:13px 18px;cursor:pointer;font:700 11.5px/1 var(--font,sans-serif);letter-spacing:.7px;text-transform:uppercase;color:#555;}",
-      ".kb-toc-head svg{transition:transform .2s;color:#FF6200;flex-shrink:0;}",
+      ".kb-toc-head svg{transition:transform .2s;color:#B34200;flex-shrink:0;}",
       ".kb-toc.collapsed .kb-toc-head svg{transform:rotate(-90deg);}",
-      ".kb-toc-list{list-style:none;margin:0;padding:2px 12px 12px;max-height:60vh;overflow:auto;transition:max-height .25s ease,padding .25s ease;}",
-      ".kb-toc.collapsed .kb-toc-list{max-height:0;padding-top:0;padding-bottom:0;}",
+      ".kb-toc-list{list-style:none;margin:0;padding:2px 12px 12px;max-height:60vh;overflow:auto;visibility:visible;transition:max-height .25s ease,padding .25s ease,visibility 0s linear 0s;}",
+      /* collapsed: hidden from Tab and screen readers once the close animation ends */
+      ".kb-toc.collapsed .kb-toc-list{max-height:0;padding-top:0;padding-bottom:0;visibility:hidden;transition:max-height .25s ease,padding .25s ease,visibility 0s linear .25s;}",
       ".kb-toc-list li{margin:0;}",
       ".kb-toc-list a{display:block;padding:6px 12px;border-left:2px solid transparent;color:#5A5A5A;text-decoration:none;font-size:13px;line-height:1.35;border-radius:0 6px 6px 0;transition:color .12s,background .12s,border-color .12s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}",
-      ".kb-toc-list a:hover{color:#FF6200;background:#FFF3EA;}",
-      ".kb-toc-list li.kb-toc-h3 a{padding-left:26px;font-size:12.5px;color:#8A8A8A;}",
-      ".kb-toc-list a.active{color:#CC4E00;border-left-color:#FF6200;background:#FFF3EA;font-weight:600;}",
+      ".kb-toc-list a:hover{color:#B34200;background:#FFF3EA;}",
+      ".kb-toc-list li.kb-toc-h3 a{padding-left:26px;font-size:12.5px;color:#666;}",
+      ".kb-toc-list a.active{color:#A33E00;border-left-color:#FF6200;background:#FFF3EA;font-weight:600;}",
+      ".kb-toc-list a{text-decoration:none !important;}",
+      ".kb-toc-list a:focus-visible{outline:2px solid #B34200;outline-offset:-2px;}",
+      "@media(max-width:760px){.kb-toc-list a{white-space:normal;overflow:visible;}}",
       /* tables */
-      ".kb-tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%;min-width:0;margin:0 0 4px;}",
+      ".kb-tablewrap{position:relative;overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%;min-width:0;margin:0 0 4px;}",
       ".kb-enh .grid-2>*,.kb-enh .grid-3>*,.kb-enh .grid-auto>*{min-width:0;}",
       ".kb-enh .content pre,.kb-enh .content-wide pre,.kb-enh .proc-content pre{max-width:100%;overflow-x:auto;}",
       /* code copy */
@@ -328,6 +530,9 @@
       ".kb-navmenu.open{display:flex;}",
       ".kb-navmenu a{color:rgba(255,255,255,0.82);padding:13px 16px;border-radius:9px;text-decoration:none;font-size:15px;font-weight:500;}",
       ".kb-navmenu a:hover,.kb-navmenu a.active{background:rgba(255,98,0,0.16);color:#fff;}",
+      /* current page: a non-colour marker (left bar + weight) as well as the tint */
+      ".kb-navmenu a.active{box-shadow:inset 4px 0 0 #FF6200;font-weight:700;}",
+      ".kb-navmenu a:focus-visible{outline:3px solid #FFB27A;outline-offset:-3px;}",
       "@media(max-width:1024px){html.kb-enh .topnav-links{display:none;}html.kb-enh .kb-hamburger{display:inline-flex;}}",
       "@media(min-width:1025px){.kb-navmenu{display:none !important;}}",
       /* nav crowding on small laptops */
@@ -354,21 +559,26 @@
     document.head.appendChild(s);
   }
 
-  /* ---------- init (after all declarations & module vars) ---------- */
+  /* ---------- init (after all declarations & module vars) ----------
+     Each step is isolated so one failing (e.g. an unexpected page
+     structure) never stops the others or throws to the page. */
+  function safe(fn, arg, arg2) { try { return fn(arg, arg2); } catch (e) { return undefined; } }
   ready(function () {
-    injectCSS();
-    heroSearch();
-    heroDecor();
+    safe(injectCSS);
+    safe(heroSearch);
+    safe(heroDecor);
     var wrap = document.querySelector(".content, .content-wide, .proc-content");
-    var headings = anchorsAndHeadings(wrap);
-    buildTOC(wrap, headings);
-    wrapTables(wrap);
-    codeCopy(wrap);
-    revealSections(wrap);
-    progressBar();
-    backToTop();
-    mobileNav();
-    hashScroll();
-    scrollSpyInit(headings);
+    safe(landmarks, wrap);
+    var headings = safe(anchorsAndHeadings, wrap) || [];
+    safe(buildTOC, wrap, headings);
+    safe(wrapTables, wrap);
+    safe(codeCopy, wrap);
+    safe(revealSections, wrap);
+    safe(progressBar);
+    safe(backToTop);
+    safe(mobileNav);
+    safe(hashScroll);
+    safe(scrollSpyInit, headings);
+    safe(updatedStamp);
   });
 })();

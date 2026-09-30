@@ -34,7 +34,7 @@
 
 <div class="page-hero dark">
   <div class="hero-content">
-    <div class="hero-tag">🌐 Foundation</div>
+    <div class="hero-tag"><span aria-hidden="true">🌐</span> Foundation</div>
     <h1>LAN &amp; <span>WAN</span> Basics</h1>
     <p class="hero-sub">Understand how networks are structured, how data travels, and what each device's role is — from a single office to a global enterprise.</p>
   </div>
@@ -50,22 +50,22 @@
     </div>
     <div class="grid-2">
       <div class="card">
-        <div class="card-icon" style="background:#EAF3FF;">🏢</div>
+        <div class="card-icon" aria-hidden="true" style="background:#EAF3FF;">🏢</div>
         <h3>LAN — Local Area Network</h3>
         <p>A LAN covers a single building, floor, or campus. All devices are under your control, connected by switches and access points. Speeds are fast — 1 Gbps to 100 Gbps. Examples: an office floor, a data center, a university campus.</p>
       </div>
       <div class="card">
-        <div class="card-icon" style="background:var(--orange-pale);">🌍</div>
+        <div class="card-icon" aria-hidden="true" style="background:var(--orange-pale);">🌍</div>
         <h3>WAN — Wide Area Network</h3>
         <p>A WAN connects multiple LANs across cities, countries, or continents. It uses leased lines, MPLS circuits, or the internet. Orange Business manages WAN services — this is a core part of our business. The internet itself is the world's largest WAN.</p>
       </div>
       <div class="card">
-        <div class="card-icon" style="background:var(--green-pale);">🏙️</div>
+        <div class="card-icon" aria-hidden="true" style="background:var(--green-pale);">🏙️</div>
         <h3>MAN — Metropolitan Area Network</h3>
         <p>A MAN spans a city or metropolitan area — larger than a LAN but smaller than a WAN. Often used to connect multiple offices in the same city over fibre. Sometimes called a campus WAN.</p>
       </div>
       <div class="card">
-        <div class="card-icon" style="background:var(--purple-pale);">☁️</div>
+        <div class="card-icon" aria-hidden="true" style="background:var(--purple-pale);">☁️</div>
         <h3>Cloud / SD-WAN</h3>
         <p>Modern enterprises extend their networks into cloud providers (AWS, Azure, GCP). SD-WAN intelligently routes traffic across multiple WAN links. Orange Business provides managed SD-WAN services to enterprise customers.</p>
       </div>
@@ -83,20 +83,20 @@
       <svg viewBox="0 0 840 320" xmlns="http://www.w3.org/2000/svg" style="font-family:'Sora',sans-serif;">
         <!-- WAN Cloud -->
         <ellipse cx="420" cy="160" rx="95" ry="58" fill="#FFF0E6" stroke="#FF6200" stroke-width="2" stroke-dasharray="6,3"/>
-        <text x="420" y="154" text-anchor="middle" font-size="13" font-weight="600" fill="#CC4E00">INTERNET</text>
-        <text x="420" y="172" text-anchor="middle" font-size="11" fill="#FF8C42">WAN / MPLS</text>
+        <text x="420" y="154" text-anchor="middle" font-size="13" font-weight="600" fill="#B34200">INTERNET</text>
+        <text x="420" y="172" text-anchor="middle" font-size="11" fill="#B34200">WAN / MPLS</text>
 
         <!-- Left LAN -->
         <rect x="15" y="80" width="250" height="180" rx="12" fill="#F5F5F5" stroke="#DCDCDC" stroke-width="1.5"/>
         <text x="140" y="102" text-anchor="middle" font-size="12" font-weight="600" fill="#3D3D3D">Site A — LAN</text>
         <!-- Firewall A -->
-        <rect x="95" y="112" width="90" height="30" rx="6" fill="#EE3124"/>
+        <rect x="95" y="112" width="90" height="30" rx="6" fill="#B5231A"/>
         <text x="140" y="131" text-anchor="middle" font-size="11" font-weight="600" fill="white">Firewall</text>
         <!-- Router A -->
-        <rect x="95" y="155" width="90" height="28" rx="6" fill="#1BA0D7"/>
+        <rect x="95" y="155" width="90" height="28" rx="6" fill="#0B6A93"/>
         <text x="140" y="173" text-anchor="middle" font-size="11" font-weight="600" fill="white">Router</text>
         <!-- Switch A -->
-        <rect x="95" y="196" width="90" height="26" rx="6" fill="#FF6200"/>
+        <rect x="95" y="196" width="90" height="26" rx="6" fill="#C24A00"/>
         <text x="140" y="213" text-anchor="middle" font-size="11" font-weight="600" fill="white">Switch</text>
         <!-- End devices A -->
         <rect x="22" y="238" width="46" height="20" rx="4" fill="#E8E8E8" stroke="#C8C8C8"/>
@@ -117,17 +117,17 @@
 
         <!-- WAN lines -->
         <line x1="185" y1="127" x2="328" y2="150" stroke="#FF6200" stroke-width="2" stroke-dasharray="5,3"/>
-        <text x="260" y="130" text-anchor="middle" font-size="10" fill="#FF8C42">WAN Link</text>
+        <text x="260" y="130" text-anchor="middle" font-size="10" fill="#B34200">WAN Link</text>
         <line x1="655" y1="127" x2="513" y2="150" stroke="#FF6200" stroke-width="2" stroke-dasharray="5,3"/>
 
         <!-- Right LAN -->
         <rect x="575" y="80" width="250" height="180" rx="12" fill="#F5F5F5" stroke="#DCDCDC" stroke-width="1.5"/>
         <text x="700" y="102" text-anchor="middle" font-size="12" font-weight="600" fill="#3D3D3D">Site B — LAN</text>
-        <rect x="655" y="112" width="90" height="30" rx="6" fill="#EE3124"/>
+        <rect x="655" y="112" width="90" height="30" rx="6" fill="#B5231A"/>
         <text x="700" y="131" text-anchor="middle" font-size="11" font-weight="600" fill="white">Firewall</text>
-        <rect x="655" y="155" width="90" height="28" rx="6" fill="#1BA0D7"/>
+        <rect x="655" y="155" width="90" height="28" rx="6" fill="#0B6A93"/>
         <text x="700" y="173" text-anchor="middle" font-size="11" font-weight="600" fill="white">Router</text>
-        <rect x="655" y="196" width="90" height="26" rx="6" fill="#FF6200"/>
+        <rect x="655" y="196" width="90" height="26" rx="6" fill="#C24A00"/>
         <text x="700" y="213" text-anchor="middle" font-size="11" font-weight="600" fill="white">Switch</text>
         <rect x="582" y="238" width="46" height="20" rx="4" fill="#E8E8E8" stroke="#C8C8C8"/>
         <text x="605" y="252" text-anchor="middle" font-size="9" fill="#555">PC</text>
@@ -145,14 +145,14 @@
         <line x1="700" y1="222" x2="769" y2="238" stroke="#aaa" stroke-width="1.2"/>
 
         <!-- Legend -->
-        <rect x="15" y="280" width="10" height="8" rx="2" fill="#EE3124"/>
-        <text x="30" y="289" font-size="10" fill="#787878">Firewall</text>
-        <rect x="90" y="280" width="10" height="8" rx="2" fill="#1BA0D7"/>
-        <text x="105" y="289" font-size="10" fill="#787878">Router</text>
-        <rect x="165" y="280" width="10" height="8" rx="2" fill="#FF6200"/>
-        <text x="180" y="289" font-size="10" fill="#787878">Switch</text>
+        <rect x="15" y="280" width="10" height="8" rx="2" fill="#B5231A"/>
+        <text x="30" y="289" font-size="10" fill="#666666">Firewall</text>
+        <rect x="90" y="280" width="10" height="8" rx="2" fill="#0B6A93"/>
+        <text x="105" y="289" font-size="10" fill="#666666">Router</text>
+        <rect x="165" y="280" width="10" height="8" rx="2" fill="#C24A00"/>
+        <text x="180" y="289" font-size="10" fill="#666666">Switch</text>
         <line x1="240" y1="284" x2="258" y2="284" stroke="#FF6200" stroke-width="2" stroke-dasharray="4,2"/>
-        <text x="263" y="289" font-size="10" fill="#787878">WAN Link</text>
+        <text x="263" y="289" font-size="10" fill="#666666">WAN Link</text>
       </svg>
       <p class="diagram-caption">Two enterprise sites connected via WAN — each with firewall, router, switch, and end devices</p>
     </div>
@@ -166,22 +166,22 @@
     </div>
     <div class="grid-2">
       <div class="card">
-        <div class="card-icon" style="background:#EAF3FF;">🔀</div>
+        <div class="card-icon" aria-hidden="true" style="background:#EAF3FF;">🔀</div>
         <h3>Router</h3>
         <p>Connects different networks and routes traffic between them using IP addresses. Every packet going from your LAN to the internet passes through a router. Operates at <strong>Layer 3</strong>. Runs routing protocols like OSPF and BGP. See <a href="ip-routing.html">IP Routing →</a></p>
       </div>
       <div class="card">
-        <div class="card-icon" style="background:#F0F0FF;">🔌</div>
+        <div class="card-icon" aria-hidden="true" style="background:#F0F0FF;">🔌</div>
         <h3>Switch</h3>
         <p>Connects devices within the same LAN using MAC addresses. Learns which device is on which port and forwards traffic only where needed. Operates at <strong>Layer 2</strong>. Supports VLANs to logically segment traffic. See <a href="switching.html">Switching →</a></p>
       </div>
       <div class="card">
-        <div class="card-icon" style="background:var(--fort-pale);">🛡️</div>
+        <div class="card-icon" aria-hidden="true" style="background:var(--fort-pale);">🛡️</div>
         <h3>Firewall</h3>
         <p>Guards the network perimeter, permitting or blocking traffic based on security policy. Modern Next-Generation Firewalls (NGFW) inspect application-layer traffic, not just ports and IPs. See <a href="firewalls.html">Firewalls →</a></p>
       </div>
       <div class="card">
-        <div class="card-icon" style="background:var(--green-pale);">📡</div>
+        <div class="card-icon" aria-hidden="true" style="background:var(--green-pale);">📡</div>
         <h3>Access Point (AP)</h3>
         <p>Broadcasts a WiFi signal so wireless devices can join the network. In enterprise environments, APs are centrally managed by a Wireless LAN Controller (WLC) or cloud system. See <a href="wireless.html">Wireless →</a></p>
       </div>
@@ -204,10 +204,16 @@
         gap: 24px;
         align-items: start;
       }
-      @media (max-width: 760px) { .osi-wrap { grid-template-columns: 1fr; } }
+      @media (max-width: 760px) { .osi-wrap { grid-template-columns: minmax(0, 1fr); } .osi-layer-hint { white-space: normal; } }
 
       /* Stack of layers */
-      .osi-stack { display: flex; flex-direction: column; gap: 5px; }
+      .osi-stack { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+      .osi-layer:focus-visible { outline: 3px solid var(--orange-dark); outline-offset: 2px; }
+      /* layer text: dark ink on the pale tints (the pastel hues only reached 1.3-2.2:1);
+         the hue stays in the row tint, the number tile and the active border */
+      /* .osi-stack prefix: must outrank the later per-layer .osi-lN .osi-layer-num colours */
+      .osi-stack .osi-layer .osi-layer-name, .osi-stack .osi-layer .osi-layer-num { color: #1A1A1A; }
+      .osi-layer .osi-layer-hint { color: #3D3D3D; opacity: 1; }
 
       .osi-layer {
         border-radius: 10px;
@@ -250,6 +256,7 @@
 
       /* Detail panel on the right */
       .osi-detail {
+        min-width: 0;
         position: sticky;
         top: 80px;
         background: #1A1A1A;
@@ -264,7 +271,7 @@
         height: 260px; text-align: center;
       }
       .osi-detail-placeholder .big-icon { font-size: 44px; margin-bottom: 12px; opacity: 0.3; }
-      .osi-detail-placeholder p { color: rgba(255,255,255,0.25); font-size: 13px; }
+      .osi-detail-placeholder p { color: rgba(255,255,255,0.6); font-size: 13px; }
 
       .osi-detail-content { display: none; }
       .osi-detail-content.visible { display: block; }
@@ -291,7 +298,7 @@
       .osi-detail-examples { margin-bottom: 16px; }
       .osi-detail-examples-label {
         font-size: 10px; font-weight: 700; letter-spacing: 1px;
-        text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 8px;
+        text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px;
       }
       .osi-chips-row { display: flex; flex-wrap: wrap; gap: 7px; }
       .osi-chip {
@@ -303,7 +310,7 @@
 
       .osi-devices-label {
         font-size: 10px; font-weight: 700; letter-spacing: 1px;
-        text-transform: uppercase; color: rgba(255,255,255,0.3);
+        text-transform: uppercase; color: rgba(255,255,255,0.6);
         margin-top: 14px; margin-bottom: 8px;
       }
       .osi-device-chip {
@@ -323,7 +330,7 @@
       }
       .osi-packet-demo-label {
         font-size: 10px; font-weight: 700; letter-spacing: 1px;
-        text-transform: uppercase; color: rgba(255,255,255,0.25); margin-bottom: 8px;
+        text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px;
       }
       .osi-packet-track {
         display: flex; align-items: center; gap: 0;
@@ -439,11 +446,11 @@
       </div>
 
       <!-- RIGHT: Detail panel -->
-      <div class="osi-detail" id="osi-detail">
+      <div class="osi-detail" id="osi-detail" aria-live="polite">
 
         <!-- Placeholder when nothing selected -->
         <div class="osi-detail-placeholder" id="osi-placeholder">
-          <div class="big-icon">🔍</div>
+          <div class="big-icon" aria-hidden="true">🔍</div>
           <p>Click any layer on the left<br>to see a full explanation</p>
         </div>
 
@@ -475,7 +482,7 @@
           <div class="osi-packet-demo">
             <div class="osi-packet-demo-label">Data at this layer is called a "Message"</div>
             <div class="osi-packet-track">
-              <div class="osi-packet-seg lit" style="background:#FF8C42;color:#fff;">DATA</div>
+              <div class="osi-packet-seg lit" style="background:#FF8C42;color:#1A1A1A;">DATA</div>
             </div>
           </div>
         </div>
@@ -506,7 +513,7 @@
           <div class="osi-packet-demo">
             <div class="osi-packet-demo-label">Data at this layer is "encrypted &amp; formatted"</div>
             <div class="osi-packet-track">
-              <div class="osi-packet-seg lit" style="background:#FFB347;color:#fff;">🔒 DATA</div>
+              <div class="osi-packet-seg lit" style="background:#FFB347;color:#1A1A1A;">🔒 DATA</div>
             </div>
           </div>
         </div>
@@ -677,7 +684,7 @@
 
     <!-- Memory trick -->
     <div class="alert orange" style="margin-top:24px;">
-      <span class="alert-icon">💡</span>
+      <span class="alert-icon" aria-hidden="true">💡</span>
       <p><strong>Memory trick:</strong> <em>"All People Seem To Need Data Processing"</em> — Application · Presentation · Session · Transport · Network · Data Link · Physical (layers 7 → 1).</p>
     </div>
 
@@ -690,7 +697,7 @@
         if (current !== null) {
           var prevLayer = document.getElementById('osi-layer-' + current);
           var prevContent = document.getElementById('osi-content-' + current);
-          if (prevLayer)   prevLayer.classList.remove('active');
+          if (prevLayer)   { prevLayer.classList.remove('active'); prevLayer.setAttribute('aria-expanded', 'false'); }
           if (prevContent) prevContent.classList.remove('visible');
         }
 
@@ -708,16 +715,32 @@
         var content = document.getElementById('osi-content-' + n);
         var placeholder = document.getElementById('osi-placeholder');
 
-        if (layer)   layer.classList.add('active');
+        if (layer)   { layer.classList.add('active'); layer.setAttribute('aria-expanded', 'true'); }
         if (content) { content.classList.add('visible'); }
         if (placeholder) placeholder.style.display = 'none';
 
         // Scroll detail panel into view on mobile
         if (window.innerWidth < 760) {
           var detail = document.getElementById('osi-detail');
-          if (detail) detail.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          var still = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          if (detail) detail.scrollIntoView({ behavior: still ? 'auto' : 'smooth', block: 'start' });
         }
       };
+
+      // Keyboard + screen-reader support: each layer row is a disclosure button
+      // for its explanation panel (Enter / Space toggle it, like a click).
+      [].forEach.call(document.querySelectorAll('.osi-layer'), function (row) {
+        var n = parseInt(row.id.replace('osi-layer-', ''), 10);
+        row.setAttribute('role', 'button');
+        row.setAttribute('tabindex', '0');
+        row.setAttribute('aria-expanded', 'false');
+        row.setAttribute('aria-controls', 'osi-content-' + n);
+        var arrow = row.querySelector('.osi-layer-arrow');
+        if (arrow) arrow.setAttribute('aria-hidden', 'true');
+        row.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') { e.preventDefault(); osiSelect(n); }
+        });
+      });
 
       // Auto-select layer 7 on load so it's not empty
       window.addEventListener('load', function() {
@@ -736,19 +759,19 @@
     </div>
     <div class="grid-3">
       <a href="ip-routing.html" class="card" style="text-decoration:none;">
-        <div class="card-icon" style="background:var(--orange-pale);">🗺️</div>
+        <div class="card-icon" aria-hidden="true" style="background:var(--orange-pale);">🗺️</div>
         <h3>IP Routing</h3>
         <p>Learn how routers decide where to send packets using routing tables, protocols, and subnetting.</p>
         <span class="card-link">Continue →</span>
       </a>
       <a href="switching.html" class="card" style="text-decoration:none;">
-        <div class="card-icon" style="background:#F0F0FF;">🔌</div>
+        <div class="card-icon" aria-hidden="true" style="background:#F0F0FF;">🔌</div>
         <h3>Switching &amp; VLANs</h3>
         <p>Dive into how switches work, how VLANs segment traffic, and how to stack switches.</p>
         <span class="card-link">Continue →</span>
       </a>
       <a href="cisco.html" class="card" style="text-decoration:none;">
-        <div class="card-icon" style="background:var(--cisco-pale);">🔵</div>
+        <div class="card-icon" aria-hidden="true" style="background:var(--cisco-pale);">🔵</div>
         <h3>Cisco Devices</h3>
         <p>See the actual hardware: Catalyst switches, ISR routers, ASA firewalls, Aironet APs.</p>
         <span class="card-link">Continue →</span>

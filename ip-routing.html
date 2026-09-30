@@ -34,7 +34,7 @@
 
 <div class="page-hero dark">
   <div class="hero-content">
-    <div class="hero-tag">🗺️ Layer 3</div>
+    <div class="hero-tag"><span aria-hidden="true">🗺️</span> Layer 3</div>
     <h1>IP <span>Routing</span></h1>
     <p class="hero-sub">How routers make forwarding decisions using IP addresses, routing tables, and dynamic protocols like OSPF, BGP, and EIGRP.</p>
   </div>
@@ -50,12 +50,12 @@
     </div>
     <div class="grid-2">
       <div class="card">
-        <div class="card-icon" style="background:var(--orange-pale);">🏷️</div>
+        <div class="card-icon" aria-hidden="true" style="background:var(--orange-pale);">🏷️</div>
         <h3>IPv4 Address Structure</h3>
         <p>An IPv4 address is 32 bits written as four octets: <strong>192.168.10.5</strong>. It has two parts: the <strong>network portion</strong> (identifies the subnet) and the <strong>host portion</strong> (identifies the device). The subnet mask defines the split.</p>
       </div>
       <div class="card">
-        <div class="card-icon" style="background:var(--cisco-pale);">📐</div>
+        <div class="card-icon" aria-hidden="true" style="background:var(--cisco-pale);">📐</div>
         <h3>Subnet Mask / CIDR</h3>
         <p>A /24 mask (255.255.255.0) means 24 bits are network, 8 bits are hosts — giving 254 usable addresses. A /30 gives only 2 usable hosts, used for point-to-point links. CIDR notation (e.g. <strong>10.0.1.0/24</strong>) is the modern standard.</p>
       </div>
@@ -85,7 +85,7 @@
     </table>
 
     <div class="alert orange">
-      <span class="alert-icon">💡</span>
+      <span class="alert-icon" aria-hidden="true">💡</span>
       <p><strong>Private IP ranges (RFC 1918):</strong> 10.0.0.0/8 · 172.16.0.0/12 · 192.168.0.0/16. These are never routed on the public internet — NAT converts them at the firewall.</p>
     </div>
   </div>
@@ -257,7 +257,7 @@ interface GigE0/1 → <span class="val">ip nat inside</span></pre>
       <div class="divider"></div>
     </div>
     <div class="alert purple">
-      <span class="alert-icon">ℹ️</span>
+      <span class="alert-icon" aria-hidden="true">ℹ️</span>
       <p><strong>IPv6</strong> uses 128-bit addresses written as eight groups of hex: <code>2001:0db8:85a3::8a2e:0370:7334</code>. No more NAT needed — every device gets a globally unique address. Orange Business customer networks increasingly run dual-stack (IPv4 + IPv6). Key prefix to know: <strong>/64</strong> = standard subnet, <strong>/128</strong> = single host.</p>
     </div>
   </div>

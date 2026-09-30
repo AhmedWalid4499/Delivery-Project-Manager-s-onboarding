@@ -21,14 +21,14 @@
 .emp-card { display:flex; align-items:center; gap:14px; background:#fff; border:1px solid #ECECEC;
   border-left:3px solid var(--c); border-radius:12px; padding:13px 16px; transition:transform .16s, box-shadow .16s; }
 .emp-card:hover { transform:translateY(-2px); box-shadow:0 8px 22px rgba(0,0,0,0.10); }
-.emp-avatar { width:44px; height:44px; border-radius:50%; background:var(--c); color:#fff; font-weight:700;
+.emp-avatar { width:44px; height:44px; border-radius:50%; background:var(--ct, var(--c)); color:#fff; font-weight:700;
   font-size:14px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
 .emp-info { flex:1; min-width:0; }
 .emp-name { font-size:14px; font-weight:700; color:var(--black); line-height:1.3; }
-.emp-email { font-size:12px; color:#777 !important; text-decoration:none !important; word-break:break-all; }
-.emp-email:hover { color:var(--c) !important; text-decoration:underline !important; }
+.emp-email { font-size:12px; color:#595959 !important; text-decoration:none !important; word-break:break-all; }
+.emp-email:hover { color:var(--ct, var(--c)) !important; text-decoration:underline !important; }
 .emp-role { flex-shrink:0; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px;
-  padding:4px 9px; border-radius:20px; background:var(--cpale); color:var(--c); white-space:nowrap; }
+  padding:4px 9px; border-radius:20px; background:var(--cpale); color:var(--ct, var(--c)); white-space:nowrap; }
 .sq-pending { margin-top:18px; display:flex; align-items:center; gap:10px; font-size:13px; color:#8A6D3B;
   background:#FFF8EC; border:1px dashed #E8C98A; border-radius:10px; padding:13px 16px; }
 </style>
@@ -69,7 +69,7 @@
   </div>
 </div>
 
-<div class="content-wide" style="--c:#C77700; --cpale:#FFF4E0;">
+<div class="content-wide" style="--c:#C77700; --ct:#8A5200; --cpale:#FFF4E0;">
   <div class="section-header" style="margin-bottom:22px;">
     <h2>Squad Members</h2>
     <div class="divider" style="background:#C77700;"></div>
@@ -77,7 +77,7 @@
   </div>
   <div class="emp-grid">
       <div class="emp-card">
-        <div class="emp-avatar">MT</div>
+        <div class="emp-avatar" aria-hidden="true">MT</div>
         <div class="emp-info">
           <div class="emp-name">Mohab Tawila</div>
           <a class="emp-email" href="mailto:mohab.tawila.ext@orange.com">mohab.tawila.ext@orange.com</a>
@@ -85,7 +85,7 @@
         <span class="emp-role" title="Swiss">Swiss</span>
       </div>
       <div class="emp-card">
-        <div class="emp-avatar">IY</div>
+        <div class="emp-avatar" aria-hidden="true">IY</div>
         <div class="emp-info">
           <div class="emp-name">Islam Youssef</div>
           <a class="emp-email" href="mailto:Islam.youssef.ext@orange.com">Islam.youssef.ext@orange.com</a>
@@ -93,7 +93,7 @@
         <span class="emp-role" title="N&amp;S EU (Inc. Trans)">N&amp;S EU</span>
       </div>
       <div class="emp-card">
-        <div class="emp-avatar">AE</div>
+        <div class="emp-avatar" aria-hidden="true">AE</div>
         <div class="emp-info">
           <div class="emp-name">Ahmed Elbourgy</div>
           <a class="emp-email" href="mailto:ahmed.elbourgy.ext@orange.com">ahmed.elbourgy.ext@orange.com</a>
@@ -109,8 +109,8 @@
   <a href="index.html" style="color:rgba(255,255,255,0.4);">Home</a> &nbsp;·&nbsp;
   <a href="index.html#squads" style="color:rgba(255,255,255,0.4);">Squads</a></p>
 </footer>
-<script src="shared.js"></script>
 <script>window.SQUAD_KEY="presales";</script>
 <script src="squad-data.js"></script>
+<script src="shared.js"></script>
 </body>
 </html>

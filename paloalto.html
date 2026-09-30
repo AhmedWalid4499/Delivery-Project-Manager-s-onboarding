@@ -10,10 +10,10 @@
 .page-subnav{position:sticky;top:61px;z-index:100;background:#fff;border-bottom:1px solid #EBEBEB;padding:0 32px;display:flex;gap:0;overflow-x:auto;scrollbar-width:none;}
 .page-subnav::-webkit-scrollbar{display:none;}
 .page-subnav a{padding:12px 18px;font-size:13px;font-weight:600;color:var(--gray-mid);text-decoration:none;white-space:nowrap;border-bottom:2px solid transparent;transition:all 0.15s;}
-.page-subnav a:hover,.page-subnav a.active{color:var(--palo-orange);border-bottom-color:var(--palo-orange);}
+.page-subnav a:hover,.page-subnav a.active{color:var(--palo-text);border-bottom-color:var(--palo-orange);}
 .device-detail{background:#fff;border:1px solid #E8E8E8;border-radius:16px;overflow:hidden;margin-bottom:32px;box-shadow:0 2px 16px rgba(0,0,0,0.05);}
 .device-detail-header{background:linear-gradient(135deg,#2D1208 0%,#4A1E0C 100%);padding:22px 28px;display:flex;align-items:center;gap:18px;}
-.device-detail-badge{background:var(--palo-orange);color:#fff;font-size:11px;font-weight:700;padding:4px 10px;border-radius:6px;letter-spacing:0.5px;flex-shrink:0;}
+.device-detail-badge{background:var(--palo-text);color:#fff;font-size:11px;font-weight:700;padding:4px 10px;border-radius:6px;letter-spacing:0.5px;flex-shrink:0;}
 .device-detail-title{font-size:22px;font-weight:700;color:#fff;}
 .device-detail-subtitle{font-size:13px;color:rgba(255,255,255,0.6);margin-top:2px;}
 .device-detail-body{padding:24px 28px;}
@@ -27,9 +27,9 @@
 .spec-table td:first-child{color:var(--gray-mid);width:42%;font-size:12px;padding-right:10px;}
 .spec-table td:last-child{font-weight:600;color:var(--gray-dark);}
 .port-diagram-wrap{background:#111;border-radius:12px;padding:18px 20px;}
-.port-diagram-title{font-family:var(--mono);font-size:10px;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:1px;margin-bottom:14px;}
+.port-diagram-title{font-family:var(--mono);font-size:10px;color:rgba(255,255,255,0.65);text-transform:uppercase;letter-spacing:1px;margin-bottom:14px;}
 .port-face{background:#1E1E1E;border-radius:8px;padding:14px 16px;border:1px solid rgba(255,255,255,0.06);margin-bottom:10px;}
-.port-face-label{font-family:var(--mono);font-size:9px;color:rgba(255,255,255,0.25);margin-bottom:10px;letter-spacing:0.5px;}
+.port-face-label{font-family:var(--mono);font-size:9px;color:rgba(255,255,255,0.65);margin-bottom:10px;letter-spacing:0.5px;}
 .port-row-g{display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin-bottom:6px;}
 .port-row-g:last-child{margin-bottom:0;}
 .p{display:inline-flex;flex-direction:column;align-items:center;gap:3px;cursor:default;}
@@ -53,9 +53,9 @@
 .c-psu{border-color:#78C800!important;color:#78C800!important;background:rgba(120,200,0,0.1)!important;}
 .c-wan{border-color:#F5A623!important;color:#F5A623!important;background:rgba(245,166,35,0.08)!important;}
 .port-divider{width:1px;height:24px;background:rgba(255,255,255,0.08);margin:0 4px;flex-shrink:0;}
-.port-group-label{font-family:var(--mono);font-size:8px;color:rgba(255,255,255,0.2);margin-right:4px;align-self:center;}
+.port-group-label{font-family:var(--mono);font-size: 9px;color:rgba(255,255,255,0.65);margin-right:4px;align-self:center;}
 .port-legend-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px;}
-.port-legend-item{display:flex;align-items:center;gap:5px;font-size:10px;color:rgba(255,255,255,0.4);font-family:var(--mono);}
+.port-legend-item{display:flex;align-items:center;gap:5px;font-size:10px;color:rgba(255,255,255,0.65);font-family:var(--mono);}
 .port-legend-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0;}
 </style>
 </head>
@@ -90,7 +90,7 @@
 
 <div class="page-hero palo-hero">
   <div class="hero-content">
-    <div class="hero-tag" style="background:rgba(250,90,40,0.2);border-color:rgba(250,90,40,0.4);color:#FFA07A;">🔶 Vendor Guide</div>
+    <div class="hero-tag" style="background:rgba(250,90,40,0.2);border-color:rgba(250,90,40,0.4);color:#FFA07A;"><span aria-hidden="true">🔶</span> Vendor Guide</div>
     <h1><span class="palo">Palo Alto</span> Networks</h1>
     <p class="hero-sub">PA-Series NGFWs from desktop to hyperscale data center, Panorama management, and Prisma cloud security.</p>
   </div>
@@ -99,7 +99,7 @@
 <div class="content-wide">
 
 <div class="alert palo" style="margin-bottom:40px;">
-  <span class="alert-icon">ℹ️</span>
+  <span class="alert-icon" aria-hidden="true">ℹ️</span>
   <p><strong>PAN-OS essentials:</strong> All devices run PAN-OS. Key concepts: <strong>Zones</strong> (group interfaces — untrust, trust, DMZ), <strong>Security Policy</strong> (zone-to-zone rules using App-ID), <strong>Commit</strong> (changes sit in candidate config until you commit — nothing takes effect until then). CLI entry: <code>ssh admin@x.x.x.x</code>. GUI: <code>https://mgmt-ip</code>. Certification: PCNSA (associate) → PCNSE (engineer).<br><br><strong>Current software (2026):</strong> all PA-Series NGFWs &amp; Panorama run <strong>PAN-OS</strong> — <strong>11.1</strong> is the widely-deployed maintenance branch and <strong>12.x</strong> is the latest release.</p>
 </div>
 
@@ -486,18 +486,18 @@
 <div id="pa-cloud" class="section">
   <div class="section-header"><h2>Cloud Security — Prisma</h2><div class="divider palo"></div></div>
   <div class="alert palo">
-    <span class="alert-icon">☁️</span>
+    <span class="alert-icon" aria-hidden="true">☁️</span>
     <p><strong>Palo Alto does not make APs or physical switches.</strong> Their wireless and LAN strategy is cloud-based. <strong>Prisma Access</strong> secures users on any WiFi or internet connection by routing traffic through Palo Alto cloud PoPs for inspection — regardless of which physical AP they're connected to. <strong>Prisma SD-WAN</strong> (formerly CloudGenix) provides SD-WAN with Palo Alto security integrated. For AP hardware at PA customers, Cisco or Fortinet APs are typically deployed alongside the PA firewalls.</p>
   </div>
   <div class="grid-2">
     <div class="card" style="border-top:3px solid var(--palo-orange);">
-      <div class="card-icon" style="background:var(--palo-pale);">🌐</div>
-      <h3 style="color:var(--palo-orange);">Prisma Access</h3>
+      <div class="card-icon" aria-hidden="true" style="background:var(--palo-pale);">🌐</div>
+      <h3 style="color:var(--palo-text);">Prisma Access</h3>
       <p>Cloud-delivered SASE platform. Every user — whether in the office, home, or travelling — tunnels through Prisma Access for internet security (ZIA equivalent) and private app access (ZPA equivalent). Managed from Panorama or Prisma Cloud portal. 150+ PoP locations globally.</p>
     </div>
     <div class="card" style="border-top:3px solid var(--palo-orange);">
-      <div class="card-icon" style="background:var(--palo-pale);">🔀</div>
-      <h3 style="color:var(--palo-orange);">Prisma SD-WAN</h3>
+      <div class="card-icon" aria-hidden="true" style="background:var(--palo-pale);">🔀</div>
+      <h3 style="color:var(--palo-text);">Prisma SD-WAN</h3>
       <p>Intelligent WAN with integrated Palo Alto security. Branch appliances (ION series) connect to cloud PoPs for centrally-managed WAN optimisation and security — an alternative to deploying separate SD-WAN + firewall hardware at each branch.</p>
     </div>
   </div>
@@ -506,7 +506,6 @@
 </div>
 
 <footer class="footer"><p>DPM <span>Knowledge Base</span> &nbsp;·&nbsp; <a href="index.html" style="color:rgba(255,255,255,0.4);">Home</a></p></footer>
-<script src="shared.js"></script>
 <script>
 (function(){
   var sections=['pa-entry','pa-mid','pa-high','pa-dc','pa-mgmt','pa-cloud'];
@@ -518,5 +517,6 @@
   });
 })();
 </script>
+<script src="shared.js"></script>
 </body>
 </html>

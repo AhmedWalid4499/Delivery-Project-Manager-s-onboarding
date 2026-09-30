@@ -34,39 +34,44 @@
 
 <div class="page-hero dark">
   <div class="hero-content">
-    <div class="hero-tag">📖 Reference</div>
+    <div class="hero-tag"><span aria-hidden="true">📖</span> Reference</div>
     <h1>Network <span>Glossary</span></h1>
     <p class="hero-sub">Plain-English definitions for the networking terms you'll encounter most at Orange Business. Bookmark this page.</p>
   </div>
 </div>
 
 <!-- SEARCH BAR -->
+<main id="main">
 <div style="background:var(--gray-faint);border-bottom:1px solid #EBEBEB;padding:20px 32px;">
   <div style="max-width:960px;margin:0 auto;position:relative;">
-    <span style="position:absolute;left:16px;top:50%;transform:translateY(-50%);font-size:16px;pointer-events:none;">🔍</span>
+    <span aria-hidden="true" style="position:absolute;left:16px;top:50%;transform:translateY(-50%);font-size:16px;pointer-events:none;">🔍</span>
+    <label for="glossary-search" class="sr-only">Search the glossary</label>
     <input
       id="glossary-search"
       type="text"
       placeholder="Search terms and definitions… e.g. OSPF, VPN, firewall"
       autocomplete="off"
-      style="width:100%;padding:13px 44px 13px 44px;border:1.5px solid #DCDCDC;border-radius:10px;font-family:var(--font);font-size:14px;background:var(--white);outline:none;transition:border-color 0.18s;box-sizing:border-box;"
+      aria-describedby="search-count"
+      style="width:100%;padding:13px 44px 13px 44px;border:1.5px solid #8A8A8A;border-radius:10px;font-family:var(--font);font-size:14px;background:var(--white);transition:border-color 0.18s;box-sizing:border-box;"
       oninput="glossarySearch(this.value)"
-      onfocus="this.style.borderColor='var(--orange)'"
-      onblur="this.style.borderColor='#DCDCDC'"
+      onfocus="this.style.borderColor='var(--orange-dark)'"
+      onblur="this.style.borderColor='#8A8A8A'"
     >
     <button
       id="search-clear"
       onclick="clearSearch()"
-      style="display:none;position:absolute;right:12px;top:50%;transform:translateY(-50%);background:var(--gray-light);border:none;border-radius:50%;width:22px;height:22px;cursor:pointer;font-size:12px;color:var(--white);line-height:1;"
+      aria-label="Clear search"
+      type="button"
+      style="display:none;position:absolute;right:12px;top:50%;transform:translateY(-50%);background:var(--gray-mid);border:none;border-radius:50%;width:22px;height:22px;cursor:pointer;font-size:12px;color:var(--white);line-height:1;"
       title="Clear search"
     >✕</button>
   </div>
-  <div id="search-count" style="max-width:960px;margin:8px auto 0;font-size:12px;color:var(--gray-mid);min-height:18px;padding:0 4px;"></div>
+  <div id="search-count" role="status" aria-live="polite" aria-atomic="true" style="max-width:960px;margin:8px auto 0;font-size:12px;color:var(--gray-mid);min-height:18px;padding:0 4px;"></div>
 </div>
 
 <!-- NO RESULTS -->
 <div id="no-results" style="display:none;text-align:center;padding:56px 32px;">
-  <div style="font-size:40px;margin-bottom:12px;">🔎</div>
+  <div aria-hidden="true" style="font-size:40px;margin-bottom:12px;">🔎</div>
   <p style="font-size:16px;font-weight:600;color:var(--gray-dark);margin-bottom:6px;">No matching terms found</p>
   <p style="font-size:14px;color:var(--gray-mid);">Try a shorter search or a different keyword</p>
 </div>
@@ -492,6 +497,7 @@
   </div>
 
 </div>
+</main>
 
 <footer class="footer">
   <p>DPM <span>Knowledge Base</span> &nbsp;·&nbsp; <a href="index.html" style="color:rgba(255,255,255,0.4);">Home</a></p>
@@ -556,7 +562,7 @@ function highlight(el, query) {
   const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   const regex = new RegExp(`(${escaped})`, 'gi');
   el.innerHTML = el.textContent.replace(regex,
-    '<mark style="background:#FFE0B2;color:#CC4E00;border-radius:2px;padding:0 1px;">$1</mark>'
+    '<mark style="background:#FFE0B2;color:#8A3300;border-radius:2px;padding:0 1px;">$1</mark>'
   );
 }
 
@@ -571,7 +577,7 @@ function clearSearch() {
   input.focus();
 }
 </script>
-<script src="shared.js"></script>
 <script src="glossary-data.js"></script>
+<script src="shared.js"></script>
 </body>
 </html>
