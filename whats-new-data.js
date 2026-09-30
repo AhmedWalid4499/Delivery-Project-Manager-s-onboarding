@@ -36,6 +36,12 @@ window.KB_WHATS_NEW = [
 
   /* ── 30 Sep 2026 ─────────────────────────────────────────── */
   {
+    date: '2026-09-30', tag: 'Improved',
+    title: 'Device front panels rebuilt from the vendor datasheets',
+    desc: 'Every Cisco, Palo Alto and Fortinet device panel is now drawn from the official hardware guide: the real port counts, types and speeds, uplink and module slots, management, console and USB ports, PSUs and fans — with two-row ports numbered the way the hardware is (odd on top, even below). Hover any port for its interface name, and each panel links to the datasheet it was built from.',
+    links: [{ href: 'cisco.html', label: 'Cisco devices' }, { href: 'paloalto.html', label: 'Palo Alto devices' }, { href: 'fortinet.html', label: 'Fortinet devices' }]
+  },
+  {
     date: '2026-09-30', tag: 'New',
     title: 'Export your checklist to Excel — with a Gantt chart',
     desc: 'One click on “Export to Excel” gives you a workbook for the project: an overview dashboard, every step with a plain-English explanation of what it means and why it matters, a day-by-day Gantt chart built from the team’s MS Project plans, a one-page guide to the service, and the RACI matrix. Change the kick-off date in the workbook and the whole plan moves.',

@@ -127,35 +127,7 @@
             <tr><td>Management</td><td>WebUI, CLI (SSH), Panorama</td></tr>
           </table>
         </div>
-        <div class="port-diagram-wrap">
-          <div class="port-diagram-title">Front Panel — Desktop</div>
-          <div class="port-face">
-            <div class="port-face-label">8× GE RJ45 data + 2× SFP + OOB Management</div>
-            <div class="port-row-g">
-              <div class="p p-rj45"><div class="p-body c-wan">E1/1</div></div>
-              <div class="p p-rj45"><div class="p-body c-eth">E1/2</div></div>
-              <div class="p p-rj45"><div class="p-body c-eth">E1/3</div></div>
-              <div class="p p-rj45"><div class="p-body c-eth">E1/4</div></div>
-              <div class="p p-rj45"><div class="p-body c-eth">E1/5</div></div>
-              <div class="p p-rj45"><div class="p-body c-eth">E1/6</div></div>
-              <div class="p p-rj45"><div class="p-body c-eth">E1/7</div></div>
-              <div class="p p-rj45"><div class="p-body c-eth">E1/8</div></div>
-              <div class="port-divider"></div>
-              <div class="p p-sfp"><div class="p-body c-sfp">SFP1</div></div>
-              <div class="p p-sfp"><div class="p-body c-sfp">SFP2</div></div>
-              <div class="port-divider"></div>
-              <div class="p p-con"><div class="p-body c-mgmt">MGT</div></div>
-              <div class="p p-con"><div class="p-body c-con">CON</div></div>
-              <div class="p p-usb"><div class="p-body c-usb">USB</div></div>
-            </div>
-          </div>
-          <div class="port-legend-row">
-            <div class="port-legend-item"><div class="port-legend-dot" style="background:#F5A623;"></div>E1/1 = Untrust (WAN)</div>
-            <div class="port-legend-item"><div class="port-legend-dot" style="background:#4A9EFF;"></div>E1/2–8 = Trust / DMZ</div>
-            <div class="port-legend-item"><div class="port-legend-dot" style="background:#FF8C42;"></div>SFP optional</div>
-            <div class="port-legend-item"><div class="port-legend-dot" style="background:#00CC6A;"></div>OOB management</div>
-          </div>
-        </div>
+        <div class="port-diagram-wrap" data-panel="paloalto-pa-220"></div>
       </div>
     </div>
   </div>
@@ -179,36 +151,7 @@
             <tr><td>Max sessions (PA-450)</td><td>200,000</td></tr>
           </table>
         </div>
-        <div class="port-diagram-wrap">
-          <div class="port-diagram-title">PA-450 Front Panel</div>
-          <div class="port-face">
-            <div class="port-face-label">8× GE + 2× SFP + 2× HA + OOB</div>
-            <div class="port-row-g">
-              <div class="p p-rj45"><div class="p-body c-wan">E1/1</div></div>
-              <div class="p p-rj45"><div class="p-body c-wan">E1/2</div></div>
-              <div class="p p-rj45"><div class="p-body c-eth">E1/3</div></div>
-              <div class="p p-rj45"><div class="p-body c-eth">E1/4</div></div>
-              <div class="p p-rj45"><div class="p-body c-eth">E1/5</div></div>
-              <div class="p p-rj45"><div class="p-body c-eth">E1/6</div></div>
-              <div class="p p-rj45"><div class="p-body c-eth">E1/7</div></div>
-              <div class="p p-rj45"><div class="p-body c-eth">E1/8</div></div>
-              <div class="port-divider"></div>
-              <div class="p p-sfp"><div class="p-body c-sfp">SFP1</div></div>
-              <div class="p p-sfp"><div class="p-body c-sfp">SFP2</div></div>
-              <div class="port-divider"></div>
-              <div class="p p-rj45"><div class="p-body c-ha">HA1</div></div>
-              <div class="p p-rj45"><div class="p-body c-ha">HA2</div></div>
-              <div class="port-divider"></div>
-              <div class="p p-con"><div class="p-body c-mgmt">MGT</div></div>
-              <div class="p p-con"><div class="p-body c-con">CON</div></div>
-            </div>
-          </div>
-          <div class="port-legend-row">
-            <div class="port-legend-item"><div class="port-legend-dot" style="background:#F5A623;"></div>Untrust (WAN)</div>
-            <div class="port-legend-item"><div class="port-legend-dot" style="background:#4A9EFF;"></div>Trust / DMZ</div>
-            <div class="port-legend-item"><div class="port-legend-dot" style="background:#FF4D6A;"></div>Dedicated HA</div>
-          </div>
-        </div>
+        <div class="port-diagram-wrap" data-panel="paloalto-pa-450"></div>
       </div>
     </div>
   </div>
@@ -239,44 +182,7 @@
             <tr><td>HA</td><td>Active/active or active/passive</td></tr>
           </table>
         </div>
-        <div class="port-diagram-wrap">
-          <div class="port-diagram-title">PA-3440 Front Panel — 1U Rack</div>
-          <div class="port-face">
-            <div class="port-face-label">8× GE + 4× SFP + 2× 10G SFP+ + HA + OOB</div>
-            <div class="port-row-g">
-              <div class="p p-rj45"><div class="p-body c-wan">E1/1</div></div>
-              <div class="p p-rj45"><div class="p-body c-wan">E1/2</div></div>
-              <div class="p p-rj45"><div class="p-body c-eth">E1/3</div></div>
-              <div class="p p-rj45"><div class="p-body c-eth">E1/4</div></div>
-              <div class="p p-rj45"><div class="p-body c-eth">E1/5</div></div>
-              <div class="p p-rj45"><div class="p-body c-eth">E1/6</div></div>
-              <div class="p p-rj45"><div class="p-body c-eth">E1/7</div></div>
-              <div class="p p-rj45"><div class="p-body c-eth">E1/8</div></div>
-            </div>
-            <div class="port-row-g">
-              <div class="p p-sfp"><div class="p-body c-sfp">SFP1</div></div>
-              <div class="p p-sfp"><div class="p-body c-sfp">SFP2</div></div>
-              <div class="p p-sfp"><div class="p-body c-sfp">SFP3</div></div>
-              <div class="p p-sfp"><div class="p-body c-sfp">SFP4</div></div>
-              <div class="port-divider"></div>
-              <div class="p p-sfp"><div class="p-body c-sfp28">10G-1</div></div>
-              <div class="p p-sfp"><div class="p-body c-sfp28">10G-2</div></div>
-              <div class="port-divider"></div>
-              <div class="p p-rj45"><div class="p-body c-ha">HA1</div></div>
-              <div class="p p-rj45"><div class="p-body c-ha">HA2</div></div>
-              <div class="port-divider"></div>
-              <div class="p p-con"><div class="p-body c-mgmt">MGT</div></div>
-              <div class="p p-con"><div class="p-body c-con">CON</div></div>
-            </div>
-          </div>
-          <div class="port-legend-row">
-            <div class="port-legend-item"><div class="port-legend-dot" style="background:#F5A623;"></div>Untrust</div>
-            <div class="port-legend-item"><div class="port-legend-dot" style="background:#4A9EFF;"></div>Trust / DMZ</div>
-            <div class="port-legend-item"><div class="port-legend-dot" style="background:#FF8C42;"></div>1G SFP</div>
-            <div class="port-legend-item"><div class="port-legend-dot" style="background:#FFD700;"></div>10G SFP+</div>
-            <div class="port-legend-item"><div class="port-legend-dot" style="background:#FF4D6A;"></div>HA</div>
-          </div>
-        </div>
+        <div class="port-diagram-wrap" data-panel="paloalto-pa-3440"></div>
       </div>
     </div>
   </div>
@@ -306,60 +212,7 @@
             <tr><td>Form factor</td><td>2U rack</td></tr>
           </table>
         </div>
-        <div class="port-diagram-wrap">
-          <div class="port-diagram-title">PA-5440 Front Panel — 2U Rack</div>
-          <div class="port-face">
-            <div class="port-face-label">Built-in 100G + 10G + GE interfaces</div>
-            <div class="port-row-g">
-              <div class="p p-qsfp"><div class="p-body c-qsfp">C1</div></div>
-              <div class="p p-qsfp"><div class="p-body c-qsfp">C2</div></div>
-              <div class="p p-qsfp"><div class="p-body c-qsfp">C3</div></div>
-              <div class="p p-qsfp"><div class="p-body c-qsfp">C4</div></div>
-              <div class="port-divider"></div>
-              <div class="p p-sfp"><div class="p-body c-sfp28">10G-1</div></div>
-              <div class="p p-sfp"><div class="p-body c-sfp28">10G-2</div></div>
-              <div class="p p-sfp"><div class="p-body c-sfp28">10G-3</div></div>
-              <div class="p p-sfp"><div class="p-body c-sfp28">10G-4</div></div>
-              <div class="p p-sfp"><div class="p-body c-sfp28">10G-5</div></div>
-              <div class="p p-sfp"><div class="p-body c-sfp28">10G-6</div></div>
-              <div class="p p-sfp"><div class="p-body c-sfp28">10G-7</div></div>
-              <div class="p p-sfp"><div class="p-body c-sfp28">10G-8</div></div>
-            </div>
-            <div class="port-row-g">
-              <div class="p p-rj45"><div class="p-body c-eth">GE1</div></div>
-              <div class="p p-rj45"><div class="p-body c-eth">GE2</div></div>
-              <div class="p p-rj45"><div class="p-body c-eth">GE3</div></div>
-              <div class="p p-rj45"><div class="p-body c-eth">GE4</div></div>
-              <div class="p p-rj45"><div class="p-body c-eth">GE5</div></div>
-              <div class="p p-rj45"><div class="p-body c-eth">GE6</div></div>
-              <div class="p p-rj45"><div class="p-body c-eth">GE7</div></div>
-              <div class="p p-rj45"><div class="p-body c-eth">GE8</div></div>
-              <div class="p p-rj45"><div class="p-body c-eth">GE9</div></div>
-              <div class="p p-rj45"><div class="p-body c-eth">GE10</div></div>
-              <div class="p p-rj45"><div class="p-body c-eth">GE11</div></div>
-              <div class="p p-rj45"><div class="p-body c-eth">GE12</div></div>
-              <div class="port-divider"></div>
-              <div class="p p-rj45"><div class="p-body c-ha">HA1</div></div>
-              <div class="p p-rj45"><div class="p-body c-ha">HA2</div></div>
-              <div class="port-divider"></div>
-              <div class="p p-con"><div class="p-body c-mgmt">MGT</div></div>
-              <div class="p p-con"><div class="p-body c-con">CON</div></div>
-            </div>
-          </div>
-          <div class="port-face">
-            <div class="port-face-label">Expansion / additional interface slots (model-dependent)</div>
-            <div class="port-row-g">
-              <div class="p p-sfp" style="width:80px;"><div class="p-body c-sfp28" style="width:76px;font-size:8px;">NPC Slot 1</div></div>
-              <div class="p p-sfp" style="width:80px;"><div class="p-body c-sfp28" style="width:76px;font-size:8px;">NPC Slot 2</div></div>
-            </div>
-          </div>
-          <div class="port-legend-row">
-            <div class="port-legend-item"><div class="port-legend-dot" style="background:#DA70D6;"></div>100G QSFP28</div>
-            <div class="port-legend-item"><div class="port-legend-dot" style="background:#FFD700;"></div>10G SFP+</div>
-            <div class="port-legend-item"><div class="port-legend-dot" style="background:#4A9EFF;"></div>1G GE</div>
-            <div class="port-legend-item"><div class="port-legend-dot" style="background:#FF4D6A;"></div>HA</div>
-          </div>
-        </div>
+        <div class="port-diagram-wrap" data-panel="paloalto-pa-5440"></div>
       </div>
     </div>
   </div>
@@ -390,47 +243,7 @@
             <tr><td>Management</td><td>Panorama required for practical management</td></tr>
           </table>
         </div>
-        <div class="port-diagram-wrap">
-          <div class="port-diagram-title">PA-7050 Chassis — Front View (5 line card slots)</div>
-          <div class="port-face">
-            <div class="port-face-label">SMC (Switch Management Cards) — top slots</div>
-            <div class="port-row-g">
-              <div class="p p-sfp" style="width:80px;"><div class="p-body c-mgmt" style="width:76px;">SMC-A</div></div>
-              <div class="p p-sfp" style="width:80px;"><div class="p-body c-mgmt" style="width:76px;">SMC-B</div></div>
-            </div>
-          </div>
-          <div class="port-face">
-            <div class="port-face-label">Line Card slots 1–5 (100G LPC-A shown)</div>
-            <div class="port-row-g">
-              <span class="port-group-label">Slot 1</span>
-              <div class="p p-qsfp"><div class="p-body c-qsfp">C1</div></div>
-              <div class="p p-qsfp"><div class="p-body c-qsfp">C2</div></div>
-              <div class="p p-qsfp"><div class="p-body c-qsfp">C3</div></div>
-              <div class="p p-qsfp"><div class="p-body c-qsfp">C4</div></div>
-              <div class="p p-qsfp"><div class="p-body c-qsfp">C5</div></div>
-              <div class="p p-qsfp"><div class="p-body c-qsfp">C6</div></div>
-            </div>
-            <div class="port-row-g">
-              <span class="port-group-label">Slot 2</span>
-              <div class="p p-qsfp"><div class="p-body c-qsfp">C1</div></div>
-              <div class="p p-qsfp"><div class="p-body c-qsfp">C2</div></div>
-              <div class="p p-qsfp"><div class="p-body c-qsfp">C3</div></div>
-              <div class="p p-qsfp"><div class="p-body c-qsfp">C4</div></div>
-              <div class="p p-qsfp"><div class="p-body c-qsfp">C5</div></div>
-              <div class="p p-qsfp"><div class="p-body c-qsfp">C6</div></div>
-            </div>
-            <div class="port-row-g">
-              <span class="port-group-label">3-5</span>
-              <div class="p p-sfp" style="width:80px;"><div class="p-body c-sfp28" style="width:76px;font-size:8px;">LPC Slot 3</div></div>
-              <div class="p p-sfp" style="width:80px;"><div class="p-body c-sfp28" style="width:76px;font-size:8px;">LPC Slot 4</div></div>
-              <div class="p p-sfp" style="width:80px;"><div class="p-body c-sfp28" style="width:76px;font-size:8px;">LPC Slot 5</div></div>
-            </div>
-          </div>
-          <div class="port-legend-row">
-            <div class="port-legend-item"><div class="port-legend-dot" style="background:#DA70D6;"></div>100G QSFP28 (LPC-A)</div>
-            <div class="port-legend-item"><div class="port-legend-dot" style="background:#00CC6A;"></div>SMC (management plane)</div>
-          </div>
-        </div>
+        <div class="port-diagram-wrap" data-panel="paloalto-pa-7050"></div>
       </div>
     </div>
   </div>
@@ -459,24 +272,7 @@
             <tr><td>Log aggregation</td><td>Centralised logs from all firewalls</td></tr>
           </table>
         </div>
-        <div class="port-diagram-wrap">
-          <div class="port-diagram-title">M-500 Front Panel — 1U Rack</div>
-          <div class="port-face">
-            <div class="port-face-label">Management + Data interfaces</div>
-            <div class="port-row-g">
-              <div class="p p-rj45"><div class="p-body c-eth">GE1</div></div>
-              <div class="p p-rj45"><div class="p-body c-eth">GE2</div></div>
-              <div class="port-divider"></div>
-              <div class="p p-con"><div class="p-body c-mgmt">MGT</div></div>
-              <div class="p p-con"><div class="p-body c-con">CON</div></div>
-              <div class="p p-usb"><div class="p-body c-usb">USB</div></div>
-            </div>
-          </div>
-          <div class="port-legend-row">
-            <div class="port-legend-item"><div class="port-legend-dot" style="background:#4A9EFF;"></div>Log collector / network connectivity</div>
-            <div class="port-legend-item"><div class="port-legend-dot" style="background:#00CC6A;"></div>OOB management</div>
-          </div>
-        </div>
+        <div class="port-diagram-wrap" data-panel="paloalto-m-500"></div>
       </div>
     </div>
   </div>
@@ -517,6 +313,8 @@
   });
 })();
 </script>
+<script src="panel-data.js"></script>
+<script src="panels.js"></script>
 <script src="shared.js"></script>
 </body>
 </html>
