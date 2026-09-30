@@ -34,6 +34,20 @@
 ═══════════════════════════════════════════════════════════ */
 window.KB_WHATS_NEW = [
 
+  /* ── 30 Sep 2026 ─────────────────────────────────────────── */
+  {
+    date: '2026-09-30', tag: 'New',
+    title: 'Export your checklist to Excel — with a Gantt chart',
+    desc: 'One click on “Export to Excel” gives you a workbook for the project: an overview dashboard, every step with a plain-English explanation of what it means and why it matters, a day-by-day Gantt chart built from the team’s MS Project plans, a one-page guide to the service, and the RACI matrix. Change the kick-off date in the workbook and the whole plan moves.',
+    links: [{ href: 'checklist.html', label: 'Open the checklists' }]
+  },
+  {
+    date: '2026-09-30', tag: 'Improved',
+    title: 'Checklist starts with your project details',
+    desc: 'The “Start a new project” form now sits at the top of the page, so you enter the customer, site, kick-off date, target migration date and the people involved first — then the checklist opens straight away.',
+    links: [{ href: 'checklist.html', label: 'Open the checklists' }]
+  },
+
   /* ── 29 Sep 2026 ─────────────────────────────────────────── */
   {
     date: '2026-09-29', tag: 'New',

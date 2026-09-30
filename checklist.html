@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="shared.css">
 <style>
 /* ── Delivery checklist (page-scoped) ── */
-:root{--ck-accent:#B84600;--ck-muted:#5F5F5F;--ck-line:#E6E6E6;--ck-soft:#FAFAFA;--ck-ok:#0B7A40;--ck-ok-pale:#EAF8F1;--ck-danger:#B42318;}
+:root{--ck-accent:var(--orange-text);--ck-muted:#5F5F5F;--ck-line:#E6E6E6;--ck-soft:#FAFAFA;--ck-ok:#0B7A40;--ck-ok-pale:#EAF8F1;--ck-danger:#B42318;}
 .content [hidden]{display:none !important;}
 .sr-only{position:absolute !important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
 .content .section{scroll-margin-top:72px;}
@@ -119,7 +119,55 @@
 .ck-field input[type="date"]::-webkit-date-and-time-value{text-align:left;}
 .ck-field input[aria-invalid="true"]{border-color:var(--ck-danger);}
 .ck-err{font-size:12.5px;color:var(--ck-danger);font-weight:600;}
+.ck-field .ck-hint{margin:0;}
 .ck-form-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px;}
+.ck-fieldset{grid-column:1 / -1;min-width:0;margin:4px 0 0;padding:12px 16px 16px;border:1px solid var(--ck-line);border-radius:12px;background:var(--ck-soft);}
+.ck-fieldset legend{padding:0 6px;font-size:13px;font-weight:700;color:var(--black);}
+.ck-fieldset>.ck-hint{margin:0 0 12px;}
+.ck-fieldset .ck-form-grid{gap:14px 18px;}
+
+/* start a new project (top of the page) */
+.ck-newsec{margin-bottom:44px;}
+.ck-newcard{background:#fff;border:1.5px solid #F3C6A5;border-radius:16px;padding:18px 22px 22px;box-shadow:0 4px 22px rgba(179,66,0,0.07);}
+.ck-newcard.is-collapsed{background:var(--orange-faint);border-style:dashed;border-color:#E3B28E;padding:12px 14px;box-shadow:none;}
+.ck-new-head{display:flex;flex-wrap:wrap;align-items:center;gap:6px 16px;}
+.ck-new-h{font-size:20px;font-weight:700;line-height:1.3;margin:0;min-width:0;max-width:100%;}
+.ck-new-toggle{display:inline-flex;align-items:center;gap:12px;max-width:100%;background:none;border:1.5px solid transparent;border-radius:12px;padding:6px 12px 6px 6px;margin-left:-8px;font:inherit;color:var(--black);text-align:left;cursor:pointer;transition:background .15s,border-color .15s,box-shadow .15s;}
+.ck-new-toggle:hover{background:var(--orange-faint);}
+.ck-new-toggle:hover .ck-new-title{color:var(--orange-text);}
+.ck-new-title{min-width:0;overflow-wrap:anywhere;}
+.ck-new-plus{position:relative;flex-shrink:0;width:30px;height:30px;border-radius:50%;background:var(--orange-strong);}
+.ck-new-plus::before,.ck-new-plus::after{content:"";position:absolute;left:50%;top:50%;width:12px;height:2px;margin:-1px 0 0 -6px;border-radius:2px;background:#fff;transition:transform .2s;}
+.ck-new-plus::after{transform:rotate(90deg);}
+.ck-new-toggle[aria-expanded="true"] .ck-new-plus::after{transform:rotate(0deg);}
+.ck-new-lead{flex:1 1 100%;font-size:14px;color:var(--gray-mid);line-height:1.55;margin:0;}
+.ck-new-panel{margin-top:16px;padding-top:18px;border-top:1px solid var(--ck-line);}
+.is-collapsed .ck-new-h{font-size:15px;}
+.is-collapsed .ck-new-toggle{background:#fff;border-color:var(--orange-strong);border-radius:999px;padding:5px 16px 5px 5px;margin-left:0;box-shadow:0 2px 10px rgba(179,66,0,0.10);}
+.is-collapsed .ck-new-toggle:hover{background:var(--orange-pale);}
+.is-collapsed .ck-new-plus{width:26px;height:26px;}
+.is-collapsed .ck-new-lead{flex:1 1 220px;font-size:13px;}
+@media(forced-colors:active){
+  .ck-new-plus{background:ButtonText;}
+  .ck-new-plus::before,.ck-new-plus::after{background:ButtonFace;}
+  .ck-new-toggle{border-color:ButtonText;}
+}
+
+/* people, plan + Excel bits */
+.ck-proj-people{list-style:none;display:flex;flex-wrap:wrap;gap:4px 16px;margin:6px 0 0;padding:0;font-size:13px;color:var(--gray-dark);}
+.ck-proj-people li{min-width:0;overflow-wrap:anywhere;}
+.ck-pk{font-size:10.5px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--ck-muted);margin-right:5px;}
+.ck-xlsx-hint{margin-top:10px;}
+.ck-xlsx-err{margin-top:8px;}
+.ck-phase-plan{flex-basis:100%;padding-left:25px;font-size:12px;font-weight:600;color:var(--ck-muted);}
+.ck-nextup-why{font-size:12.5px;color:var(--gray-dark);line-height:1.5;margin-top:4px;overflow-wrap:anywhere;}
+.ck-why{margin:6px 0 0 44px;}
+.ck-why-sum{display:inline-flex;align-items:center;gap:7px;padding:2px 6px 2px 2px;border-radius:6px;cursor:pointer;list-style:none;font-size:12px;font-weight:600;color:var(--orange-text);}
+.ck-why-sum::-webkit-details-marker{display:none;}
+.ck-why-sum::before{content:"";width:6px;height:6px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(-45deg);transition:transform .15s;margin-left:2px;}
+.ck-why[open]>.ck-why-sum::before{transform:rotate(45deg);}
+.ck-why-sum:hover{background:var(--orange-faint);}
+.ck-why-text{font-size:12.5px;color:var(--gray-dark);line-height:1.55;margin-top:4px;padding:8px 12px;background:var(--gray-faint);border-left:3px solid var(--orange-light);border-radius:0 8px 8px 0;overflow-wrap:anywhere;}
 
 /* overview */
 .ck-overview{margin-bottom:16px;}
@@ -213,13 +261,17 @@
 @media(max-width:640px){.ck-form-grid{grid-template-columns:1fr;}}
 @media(max-width:600px){
   .ck-card{padding:16px;}
+  .ck-newcard{padding:14px 16px 18px;}
+  .ck-newcard.is-collapsed{padding:12px;}
+  .ck-new-h{font-size:18px;}
+  .ck-fieldset{padding:10px 12px 14px;}
   .ck-proj-name{font-size:19px;}
   .ck-pct-num{font-size:26px;}
   .ck-step{padding:12px 12px 12px 10px;gap:10px;}
-  .ck-step-extra{margin-left:0;}
+  .ck-step-extra,.ck-why{margin-left:0;}
   .ck-count{margin-left:0;width:100%;}
 }
-@media(prefers-reduced-motion:reduce){.ck-bar>span,.ck-toast,.ck-chev,.ck-quickbtn{transition:none;}}
+@media(prefers-reduced-motion:reduce){.ck-bar>span,.ck-toast,.ck-chev,.ck-quickbtn,.ck-new-plus::before,.ck-new-plus::after,.ck-new-toggle,.ck-why-sum::before{transition:none;}}
 
 /* print — only the open checklist */
 @media print{
@@ -236,7 +288,7 @@
   .ck-phase-head{break-after:avoid;page-break-after:avoid;}
   .ck-step{break-inside:avoid;page-break-inside:avoid;}
   .ck-step.is-next{box-shadow:none;}
-  .ck-notes textarea{display:none !important;}
+  .ck-notes textarea,.ck-why{display:none !important;}
   .ck-bar,.ck-bar>span,.ck-phase,.ck-phase-bar>span,.ck-next-badge,.ck-nextup-lbl,.ck-chip-dot,.ck-stage-id{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
   .ck-print-meta{font-size:10pt;color:#555;margin-top:10px;}
   a{color:inherit !important;text-decoration:none !important;}
@@ -270,7 +322,7 @@
   <div class="hero-content">
     <div class="hero-tag"><span aria-hidden="true">✅</span> DPM Tool</div>
     <h1>Delivery <span>Checklist</span></h1>
-    <p class="hero-sub">Turn the AP, WLC &amp; Switch and WAN processes into a live checklist for each delivery — tick steps as you go, see what's next, and copy a status update in one click.</p>
+    <p class="hero-sub">Turn the AP, WLC &amp; Switch and WAN processes into a live checklist for each delivery — enter the project details, tick steps as you go, see what's next, and export a formatted Excel plan with a Gantt chart.</p>
   </div>
 </div>
 
@@ -282,7 +334,7 @@
 
   <div class="alert green ck-privacy">
     <span class="alert-icon" aria-hidden="true">🔒</span>
-    <p><strong>Private to you.</strong> Your projects are stored only in this browser on this device — nothing is sent anywhere. Export a backup to move them.</p>
+    <p><strong>Private to you.</strong> Your projects are stored only in this browser on this device — nothing is sent anywhere. Use <strong>Back up (JSON)</strong> to move them to another browser.</p>
   </div>
 
   <div class="alert orange" id="ck-storage-warn" role="status" hidden>
@@ -290,17 +342,35 @@
     <p id="ck-storage-msg"></p>
   </div>
 
+  <!-- START A NEW PROJECT — details first, then the checklist -->
+  <div class="section ck-newsec" id="ck-new-sec" hidden>
+    <div class="ck-newcard" id="ck-newcard">
+      <div class="ck-new-head">
+        <h2 class="ck-new-h" id="ck-new-h">
+          <button type="button" class="ck-new-toggle" id="ck-new-toggle" aria-expanded="true" aria-controls="ck-new-panel">
+            <span class="ck-new-plus" aria-hidden="true"></span>
+            <span class="ck-new-title">Start a new project</span>
+          </button>
+        </h2>
+        <p class="ck-new-lead" id="ck-new-lead">Enter the project details first — then work through its checklist below. Only the name is required; you can edit everything later.</p>
+      </div>
+      <div class="ck-new-panel" id="ck-new-panel" role="region" aria-labelledby="ck-new-toggle">
+        <div id="ck-new-host"></div>
+      </div>
+    </div>
+  </div>
+
   <!-- PROJECTS -->
   <div class="section" id="ck-projects-sec">
     <div class="section-header">
       <h2>Your projects</h2>
       <div class="divider"></div>
-      <p>One checklist per delivery, each with its own ticks, notes and target date. Projects in progress are listed soonest target date first; completed ones move to the end.</p>
+      <p>One checklist per delivery, each with its own ticks, notes and dates. Projects in progress are listed soonest target date first; completed ones move to the end.</p>
     </div>
     <div class="ck-toolbar">
       <button type="button" class="ck-btn ck-btn-primary" id="ck-new-btn">+ New project</button>
-      <button type="button" class="ck-btn" id="ck-export"><span class="ck-ico" aria-hidden="true">📤</span> Export backup</button>
-      <button type="button" class="ck-btn" id="ck-import-btn"><span class="ck-ico" aria-hidden="true">📥</span> Import backup</button>
+      <button type="button" class="ck-btn" id="ck-export"><span class="ck-ico" aria-hidden="true">📤</span> Back up (JSON)</button>
+      <button type="button" class="ck-btn" id="ck-import-btn"><span class="ck-ico" aria-hidden="true">📥</span> Restore backup</button>
       <input type="file" id="ck-import-file" class="sr-only" accept=".json,application/json" tabindex="-1" aria-hidden="true" aria-label="Backup file to import">
       <span class="ck-count" id="ck-count"></span>
     </div>
@@ -313,19 +383,9 @@
     <div class="section-header">
       <h2>Checklist</h2>
       <div class="divider"></div>
-      <p>Work top to bottom — the first open step is highlighted as <strong>Next up</strong>. Ticks are saved as you go.</p>
+      <p>Work top to bottom — the first open step is highlighted as <strong>Next up</strong>. Ticks are saved as you go. Open <strong>Why this step?</strong> under a step for a plain-English explanation.</p>
     </div>
     <div id="ck-active"></div>
-  </div>
-
-  <!-- NEW PROJECT -->
-  <div class="section" id="ck-new-sec">
-    <div class="section-header">
-      <h2>New project</h2>
-      <div class="divider"></div>
-      <p>Name it after the customer site or order so it's easy to find again. Only the name is required — you can edit everything later.</p>
-    </div>
-    <div id="ck-new-host"></div>
   </div>
 
   <!-- THE THREE CHECKLISTS -->
@@ -338,7 +398,7 @@
     <div class="grid-3" id="ck-types"></div>
     <div class="alert blue" style="margin-top:22px;margin-bottom:0;">
       <span class="alert-icon" aria-hidden="true">💡</span>
-      <p><strong>Good to know.</strong> <strong>Copy status update</strong> puts a plain-text summary — progress by phase and the next three open steps — on your clipboard, ready for an email or Teams post. <strong>Print</strong> gives a clean paper or PDF copy of the open checklist. Step wording follows the process pages; if a step is reworded later, your ticks stay put.</p>
+      <p><strong>Good to know.</strong> <strong>Export to Excel</strong> downloads a formatted workbook for the open project — its details, every step with an explanation, and a plan with a Gantt chart that starts on the kick-off date. <strong>Copy status update</strong> puts a plain-text summary — progress by phase and the next three open steps — on your clipboard, ready for an email or Teams post. <strong>Print</strong> gives a clean paper or PDF copy of the open checklist. Step wording follows the process pages; if a step is reworded later, your ticks stay put.</p>
     </div>
   </div>
 
@@ -351,12 +411,17 @@
   <p>DPM <span>Knowledge Base</span> &nbsp;·&nbsp; Onboarding Handbook Ed.&nbsp;1.3 &nbsp;·&nbsp; Internal Use Only</p>
 </footer>
 <script src="checklist-data.js"></script>
+<script src="xlsx-writer.js"></script>
+<script src="checklist-export.js"></script>
 <script>
 /* ═══════════════════════════════════════════════════════════
    Delivery Checklist — per-project progress for the AP,
    WLC & Switch and WAN processes. Steps come from
    checklist-data.js; progress lives only in this browser
    (localStorage key "dpmkb_checklists_v1").
+   Excel export: xlsx-writer.js (window.KBXlsx) +
+   checklist-export.js (window.KBChecklistExport) — both
+   optional here; the page degrades gracefully without them.
 ═══════════════════════════════════════════════════════════ */
 (function () {
   "use strict";
@@ -375,6 +440,22 @@
   var PAGE_RE = /^[a-z0-9-]+\.html(#[A-Za-z0-9_-]+)?$/i;
   var PHASE_COLORS = ["#B45309", "#1B6CA8", "#0B7A40", "#7C3AED"];
   var STAGE_COLORS = { A: "#B45309", B: "#1B6CA8", C: "#0B7A40", D: "#7C3AED" };
+  /* free-text project fields → max length (dates, type, notes are handled separately) */
+  var TEXT_FIELDS = { name: 120, customer: 120, site: 120, dpm: 80, pm: 80, sc: 80, orderRef: 60 };
+  var FORM_KEYS = ["name", "type", "customer", "site", "start", "target", "dpm", "pm", "sc", "orderRef"];
+  /* the Service select: short label + one-line hint per delivery type */
+  var SERVICE_LABELS = {
+    ap: "AP — wireless access points",
+    wlc: "WLC & Switch — controllers and switches",
+    wan: "WAN — carrier circuit and routers"
+  };
+  var SERVICE_HINTS = {
+    ap: "The customer mounts the APs and the VPO stages them remotely.",
+    wlc: "Staged with a Field Engineer on site, with an external dry run and two MACHX raises.",
+    wan: "The carrier delivers the circuit first, then OB installs the routers and migrates."
+  };
+  var LEAD_OPEN = "Enter the project details first — then work through its checklist below. Only the name is required; you can edit everything later.";
+  var LEAD_CLOSED = "Details first — its checklist opens right after.";
   var hasOwn = Object.prototype.hasOwnProperty;
   var reduceMotion = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
 
@@ -382,9 +463,12 @@
   var storageNote = "";
   var state = { version: 1, activeId: null, projects: [] };
   var openState = Object.create(null);
+  var whyOpen = Object.create(null);
+  var newOpen = false;
   var editing = false;
   var editDraft = null;
   var copyBoxText = null;
+  var xlsxErr = null;
   var pendingImport = null;
   var importMsg = null;
   var notesTimer = null;
@@ -455,6 +539,18 @@
     if (!d || isNaN(d.getTime())) return "";
     try { return d.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" }); }
     catch (e) { return isoDay(d); }
+  }
+  function isDateObj(d) { return Object.prototype.toString.call(d) === "[object Date]" && !isNaN(d.getTime()); }
+  function fmtShort(d, withYear) {
+    try { return d.toLocaleDateString("en-GB", withYear ? { day: "numeric", month: "short", year: "numeric" } : { day: "numeric", month: "short" }); }
+    catch (e) { return isoDay(d); }
+  }
+  /* "5 Oct – 6 Nov" this year, "5 Oct – 6 Nov 2027" another year, "28 Dec 2026 – 8 Jan 2027" across years */
+  function fmtRange(a, b) {
+    var sameYear = a.getFullYear() === b.getFullYear();
+    var showYear = !sameYear || a.getFullYear() !== new Date().getFullYear();
+    if (isoDay(a) === isoDay(b)) return fmtShort(a, showYear);
+    return fmtShort(a, !sameYear) + " – " + fmtShort(b, showYear);
   }
   function relDays(s) {
     var n = new Date();
@@ -539,13 +635,19 @@
     var name = cleanLine(src.name, 120);
     if (!name) return null;
     var ts = nowIso();
+    /* start, dpm, pm, sc, orderRef were added later — older projects/backups simply get "" */
     var p = {
       id: (typeof src.id === "string" && PID_RE.test(src.id)) ? src.id : "",
       name: name,
-      customer: cleanLine(src.customer, 120),
-      site: cleanLine(src.site, 120),
+      customer: cleanLine(src.customer, TEXT_FIELDS.customer),
+      site: cleanLine(src.site, TEXT_FIELDS.site),
       type: type,
+      start: validDate(src.start) ? src.start : "",
       target: validDate(src.target) ? src.target : "",
+      dpm: cleanLine(src.dpm, TEXT_FIELDS.dpm),
+      pm: cleanLine(src.pm, TEXT_FIELDS.pm),
+      sc: cleanLine(src.sc, TEXT_FIELDS.sc),
+      orderRef: cleanLine(src.orderRef, TEXT_FIELDS.orderRef),
       notes: cleanText(src.notes, 20000),
       created: validIso(src.created) || ts,
       updated: validIso(src.updated) || ts,
@@ -602,7 +704,7 @@
     if (!box || !msg) return;
     if (storageOK && !storageNote) { box.hidden = true; return; }
     msg.textContent = !storageOK
-      ? "This browser isn't letting the page save (for example a private window, blocked site data or full storage). The checklist still works, but changes only last until you close this tab — use Export backup to keep them."
+      ? "This browser isn't letting the page save (for example a private window, blocked site data or full storage). The checklist still works, but changes only last until you close this tab — use Back up (JSON) to keep them."
       : storageNote;
     box.hidden = false;
   }
@@ -636,9 +738,58 @@
   /* ---------- rendering ---------- */
   function renderAll() {
     renderStorageNotice();
+    renderNewSec();
     renderImport();
     renderList();
     renderActive();
+  }
+
+  /* "Start a new project" at the top: expanded form, or a compact bar */
+  function renderNewSec() {
+    var card = $("ck-newcard"), panel = $("ck-new-panel"), tog = $("ck-new-toggle"), lead = $("ck-new-lead");
+    if (panel) panel.hidden = !newOpen;
+    if (tog) tog.setAttribute("aria-expanded", String(newOpen));
+    if (card) card.classList.toggle("is-collapsed", !newOpen);
+    if (lead) lead.textContent = newOpen ? LEAD_OPEN : LEAD_CLOSED;
+  }
+  function setNewOpen(open) {
+    newOpen = !!open;
+    renderNewSec();
+  }
+
+  /* planned dates from the service template (checklist-export.js) — only with a kick-off date */
+  function planFor(p) {
+    var api = window.KBChecklistExport;
+    if (!p || !p.start || !api || typeof api.schedule !== "function") return null;
+    try {
+      var s = api.schedule(p);
+      return (s && typeof s === "object" && s.phases && typeof s.phases === "object") ? s : null;
+    } catch (e) { return null; }
+  }
+  function phasePlanText(plan, phId) {
+    if (!plan || !hasOwn.call(plan.phases, phId)) return "";
+    var r = plan.phases[phId];
+    if (!r || !isDateObj(r.start) || !isDateObj(r.finish)) return "";
+    return "Planned " + fmtRange(r.start, r.finish);
+  }
+  function serviceLabel(k) { return SERVICE_LABELS[k] || (TYPES[k] && TYPES[k].title) || k; }
+
+  /* "Kick-off 5 Oct 2026 → Target 6 Nov 2026 · in 37 days" (parts only when set) */
+  function datesKids(p, long) {
+    var kids = [];
+    if (p.start) {
+      kids.push(long ? "Kick-off: " : "Kick-off ");
+      kids.push(long ? h("strong", null, fmtDate(parseDate(p.start))) : fmtDate(parseDate(p.start)));
+    }
+    if (p.target) {
+      if (kids.length) kids.push(h("span", { "aria-hidden": "true" }, " → "), h("span", { "class": "sr-only" }, ", "));
+      kids.push(long ? "Target migration: " : "Target ");
+      kids.push(long ? h("strong", null, fmtDate(parseDate(p.target))) : fmtDate(parseDate(p.target)));
+      kids.push(long ? " (" + relDays(p.target) + ")" : " · " + relDays(p.target));
+    } else if (p.start) {
+      kids.push(long ? " · no target migration date set" : " · no target date");
+    }
+    return kids;
   }
 
   function typeChip(k, shortLabel) {
@@ -688,9 +839,9 @@
       ]),
       h("div", { "class": "ck-pcard-name", role: "heading", "aria-level": "3" }, p.name),
       h("div", { "class": "ck-pcard-sub" + (sub ? "" : " is-empty") }, sub || "No customer or site yet"),
-      h("div", { "class": "ck-pcard-date" }, p.target
-        ? [h("span", { "aria-hidden": "true" }, "🗓️ "), "Target " + fmtDate(parseDate(p.target)) + " · " + relDays(p.target)]
-        : "No target date")
+      h("div", { "class": "ck-pcard-date" }, (p.start || p.target)
+        ? [h("span", { "aria-hidden": "true" }, "🗓️ "), datesKids(p, false)]
+        : "No dates yet")
     ];
     if (t) {
       kids.push(h("div", { "class": "ck-pcard-prog" }, [
@@ -712,23 +863,18 @@
     return h("div", { "class": "ck-empty" }, [
       h("div", { "class": "ck-empty-ic", "aria-hidden": "true" }, "✅"),
       h("p", { "class": "ck-empty-title" }, "No projects yet"),
-      h("p", { "class": "ck-empty-text" }, "Start a checklist for the delivery you're working on — pick its type below. You can add the name, customer, site and target date at any time."),
+      h("p", { "class": "ck-empty-text" }, "Fill in “Start a new project” at the top of the page — its checklist opens as soon as you create it. Or pick a service here to start the form with it:"),
       h("div", { "class": "ck-quick" }, TYPE_ORDER.map(function (k) {
         var t = TYPES[k], c = typeCounts(t);
         var article = /^[AEIOU]/i.test(t.short) ? "an " : "a ";
-        return h("button", { type: "button", "class": "ck-quickbtn", onclick: function () { quickStart(k); } }, [
+        return h("button", { type: "button", "class": "ck-quickbtn", onclick: function () { openNewForm(k); } }, [
           h("span", { "class": "ck-quick-ic", "aria-hidden": "true" }, t.icon || "✅"),
           h("span", { "class": "ck-quick-main" }, [
-            h("span", { "class": "ck-quick-title" }, "Start " + article + t.short + " checklist"),
+            h("span", { "class": "ck-quick-title" }, "Start " + article + t.short + " project"),
             h("span", { "class": "ck-quick-sub" }, c.steps + " steps · " + c.phases + " phases")
           ])
         ]);
-      })),
-      h("p", { "class": "ck-hint" }, [
-        "Prefer to fill in the details first? ",
-        h("a", { href: "#ck-new-sec", onclick: function (e) { e.preventDefault(); openNewForm(); } }, "Use the New project form"),
-        "."
-      ])
+      }))
     ]);
   }
 
@@ -750,10 +896,10 @@
       host.appendChild(h("div", { "class": "ck-noactive" }, "This project's checklist type isn't available on this page."));
       return;
     }
-    var s = stats(p);
-    host.appendChild(headerCard(p, t, s));
+    var s = stats(p), plan = planFor(p);
+    host.appendChild(headerCard(p, t, s, plan));
     host.appendChild(overviewCard(p, t, s));
-    host.appendChild(phasesBlock(p, t, s));
+    host.appendChild(phasesBlock(p, t, s, plan));
     host.appendChild(notesCard(p));
     if (fid) focusEl($(fid));
   }
@@ -763,19 +909,38 @@
       h("span", { style: "width:" + pct + "%" }));
   }
 
-  function headerCard(p, t, s) {
+  function peopleList(p) {
+    var rows = [["DPM", p.dpm], ["Project Manager", p.pm], ["Solution Consultant", p.sc], ["GOLD order", p.orderRef]]
+      .filter(function (r) { return !!r[1]; });
+    if (!rows.length) return null;
+    return h("ul", { "class": "ck-proj-people", role: "list", "aria-label": "People and order reference" }, rows.map(function (r) {
+      return h("li", null, [h("span", { "class": "ck-pk" }, r[0]), r[1]]);
+    }));
+  }
+
+  function xlsxHint(p, plan) {
+    var api = window.KBChecklistExport;
+    if (!api || typeof api.download !== "function") return null;
+    var txt = p.start
+      ? "Export to Excel gives a formatted workbook: every step with an explanation, plus a plan and Gantt chart from the kick-off date" +
+        (plan && isDateObj(plan.finish) ? " (template plan ends " + fmtDate(plan.finish) + ")." : ".")
+      : "No kick-off date yet — the Excel plan and Gantt will start today. Add one with Edit details.";
+    return h("p", { "class": "ck-hint ck-xlsx-hint ck-noprint", id: "ck-xlsx-hint" }, txt);
+  }
+
+  function headerCard(p, t, s, plan) {
     var complete = isComplete(s);
     var sub = [p.customer, p.site].filter(Boolean).join(" · ");
-    var dateLine = p.target
-      ? ["Target migration: ", h("strong", null, fmtDate(parseDate(p.target))), " (" + relDays(p.target) + ")"]
-      : "No target migration date set";
+    var dateLine = (p.start || p.target) ? datesKids(p, true) : "No kick-off or target migration date set";
+    var showErr = xlsxErr && xlsxErr.id === p.id;
     return h("div", { "class": "ck-card ck-head" + (complete ? " is-complete" : "") }, [
       h("div", { "class": "ck-head-top" }, [
         h("div", { "class": "ck-head-main" }, [
           typeChip(p.type, false),
           h("div", { "class": "ck-proj-name", id: "ck-proj-title", role: "heading", "aria-level": "3", tabindex: "-1" }, p.name),
           sub ? h("div", { "class": "ck-proj-sub" }, sub) : null,
-          h("div", { "class": "ck-proj-date" }, [h("span", { "aria-hidden": "true" }, "🗓️ "), dateLine])
+          h("div", { "class": "ck-proj-date" }, [h("span", { "aria-hidden": "true" }, "🗓️ "), dateLine]),
+          peopleList(p)
         ]),
         h("div", { "class": "ck-head-pct" }, [
           h("span", { "class": "ck-pct-num" }, s.pct + "%"),
@@ -785,11 +950,13 @@
       progressBar(s.pct, complete, "Overall progress"),
       h("p", { "class": "ck-head-meta" }, s.done + " of " + s.total + " steps done · " + s.phasesDone + " of " + t.phases.length + " phases complete"),
       h("div", { "class": "ck-actions ck-noprint" }, [
-        h("button", { type: "button", "class": "ck-btn ck-btn-primary", id: "ck-copy-btn", onclick: copyStatus }, [ico("📋"), "Copy status update"]),
+        h("button", { type: "button", "class": "ck-btn ck-btn-primary", id: "ck-xlsx-btn", "aria-describedby": showErr ? "ck-xlsx-err" : null, onclick: exportExcel }, [ico("⬇"), "Export to Excel"]),
+        h("button", { type: "button", "class": "ck-btn", id: "ck-copy-btn", onclick: copyStatus }, [ico("📋"), "Copy status update"]),
         h("button", { type: "button", "class": "ck-btn", id: "ck-print-btn", onclick: doPrint }, [ico("🖨️"), "Print"]),
         h("button", { type: "button", "class": "ck-btn", id: "ck-edit-btn", "aria-expanded": String(editing), "aria-controls": editing ? "ck-edit-panel" : null, onclick: toggleEdit }, [ico("✏️"), "Edit details"]),
         h("button", { type: "button", "class": "ck-btn ck-btn-danger", id: "ck-del-btn", onclick: function () { deleteProject(p.id); } }, [ico("🗑️"), "Delete"])
       ]),
+      showErr ? h("p", { "class": "ck-err ck-xlsx-err ck-noprint", id: "ck-xlsx-err" }, xlsxErr.msg) : xlsxHint(p, plan),
       copyBoxText !== null ? copyBox() : null,
       editing ? editPanel(p) : null,
       safePage(t.sourcePage) ? h("a", { "class": "ck-proclink ck-noprint", href: t.sourcePage }, "See the full process with owners & tools →") : null,
@@ -806,7 +973,8 @@
   }
 
   function editPanel(p) {
-    var v = editDraft || { name: p.name, customer: p.customer, site: p.site, type: p.type, target: p.target };
+    var v = editDraft;
+    if (!v) { v = {}; FORM_KEYS.forEach(function (k) { v[k] = p[k] || ""; }); }
     return h("div", { "class": "ck-edit ck-noprint", id: "ck-edit-panel" }, [
       h("p", { "class": "ck-edit-title" }, "Edit project details"),
       buildForm("edit", v)
@@ -821,7 +989,8 @@
           h("span", { "class": "ck-nextup-lbl" }, "Next up"),
           h("div", { "class": "ck-nextup-body" }, [
             h("div", { "class": "ck-nextup-text" }, first.step.text),
-            h("div", { "class": "ck-nextup-meta" }, "Phase " + (first.pi + 1) + ": " + first.phase.name + (who ? " — " + who : ""))
+            h("div", { "class": "ck-nextup-meta" }, "Phase " + (first.pi + 1) + ": " + first.phase.name + (who ? " — " + who : "")),
+            whyText(first.step) ? h("div", { "class": "ck-nextup-why ck-noprint" }, whyText(first.step)) : null
           ]),
           h("button", { type: "button", "class": "ck-btn ck-btn-sm ck-noprint", id: "ck-goto-next", onclick: function () { goToStep(first.step.id); } }, "Go to step")
         ])
@@ -853,7 +1022,7 @@
     ]);
   }
 
-  function phasesBlock(p, t, s) {
+  function phasesBlock(p, t, s, plan) {
     var wrap = h("div", { "class": "ck-phases" });
     var nextId = s.next.length ? s.next[0].step.id : null;
     var stages = Object.create(null), lastStage = null;
@@ -869,15 +1038,16 @@
           h("span", { "class": "ck-stage-txt" }, sg.name + (sg.note ? " · " + sg.note : ""))
         ]));
       }
-      wrap.appendChild(phaseBlock(p, t, ps, nextId, level));
+      wrap.appendChild(phaseBlock(p, t, ps, nextId, level, plan));
     });
     return wrap;
   }
 
-  function phaseBlock(p, t, ps, nextId, level) {
+  function phaseBlock(p, t, ps, nextId, level, plan) {
     var ph = ps.phase, open = isOpen(p, ph, ps.done), complete = ps.done === ps.total;
     var did = domId(ph.id), bodyId = "ck-pb-" + did, togId = "ck-pt-" + did;
     var pct = ps.total ? Math.floor(ps.done / ps.total * 100) : 0;
+    var planTxt = phasePlanText(plan, ph.id);
     var list = h("ol", { "class": "ck-steps", id: bodyId, role: "list", "aria-label": ph.name + " steps" });
     ph.steps.forEach(function (st, si) { list.appendChild(stepRow(p, t, ps.pi, st, si, st.id === nextId)); });
     return h("div", { "class": "ck-phase" + (open ? "" : " is-collapsed") + (complete ? " is-complete" : ""), id: "ck-ph-" + did, style: "--ck-c:" + colorFor(ph, ps.pi) }, [
@@ -887,7 +1057,8 @@
             h("span", { "class": "ck-chev", "aria-hidden": "true" }),
             h("span", { "class": "ck-phase-idx" }, "Phase " + (ps.pi + 1)),
             h("span", { "class": "ck-phase-name" }, ph.name),
-            h("span", { "class": "ck-phase-count" }, complete ? "✓ Complete · " + ps.done + "/" + ps.total : ps.done + "/" + ps.total + " done")
+            h("span", { "class": "ck-phase-count" }, complete ? "✓ Complete · " + ps.done + "/" + ps.total : ps.done + "/" + ps.total + " done"),
+            planTxt ? h("span", { "class": "ck-phase-plan" }, [h("span", { "class": "sr-only" }, ", "), planTxt]) : null
           ])),
         h("div", { "class": "ck-phase-actions ck-noprint" }, [
           !complete ? h("button", { type: "button", "class": "ck-linkbtn", id: "ck-pm-" + did, "aria-label": "Mark phase complete: " + ph.name, onclick: function () { markPhase(ph.id, true); } }, "Mark phase complete") : null,
@@ -896,6 +1067,20 @@
         h("div", { "class": "ck-phase-bar", "aria-hidden": "true" }, h("span", { style: "width:" + pct + "%" }))
       ]),
       list
+    ]);
+  }
+
+  function whyText(st) { return (st && typeof st.why === "string") ? cleanLine(st.why, 600) : ""; }
+  /* "Why this step?" — native disclosure; its open state survives re-renders */
+  function whyBlock(st, did) {
+    var txt = whyText(st);
+    if (!txt) return null;
+    return h("details", {
+      "class": "ck-why", open: !!whyOpen[st.id],
+      ontoggle: function (e) { whyOpen[st.id] = !!e.target.open; }
+    }, [
+      h("summary", { "class": "ck-why-sum", id: "ck-why-" + did }, "Why this step?"),
+      h("p", { "class": "ck-why-text" }, txt)
     ]);
   }
 
@@ -926,7 +1111,8 @@
             isNext ? h("span", { "class": "ck-next-badge" }, "Next up") : null
           ])
         ]),
-        extras.length ? h("div", { "class": "ck-step-extra", id: exId }, extras) : null
+        extras.length ? h("div", { "class": "ck-step-extra", id: exId }, extras) : null,
+        whyBlock(st, did)
       ])
     ]);
   }
@@ -962,12 +1148,26 @@
   }
 
   /* ---------- forms (new + edit) ---------- */
-  function field(pre, key, labelKids, input, wide) {
-    return h("div", { "class": "ck-field" + (wide ? " ck-wide" : "") }, [
+  /* one labelled field; an optional hint is linked with aria-describedby
+     (kept in data-desc so validation errors can be added and removed) */
+  function field(pre, key, labelKids, input, opts) {
+    opts = opts || {};
+    var hintId = pre + key + "-hint";
+    if (opts.hint) {
+      input.setAttribute("aria-describedby", hintId);
+      input.setAttribute("data-desc", hintId);
+    }
+    return h("div", { "class": "ck-field" + (opts.wide ? " ck-wide" : "") }, [
       h("label", { "for": pre + key }, labelKids),
       input,
+      opts.hint ? h("p", { "class": "ck-hint", id: hintId }, opts.hint) : null,
       h("p", { "class": "ck-err", id: pre + key + "-err", hidden: true })
     ]);
+  }
+  function textInput(pre, key, v, extra) {
+    var props = { type: "text", id: pre + key, name: key, maxlength: String(TEXT_FIELDS[key] || 120), autocomplete: "off", value: v[key] || "" }, k;
+    if (extra) for (k in extra) if (hasOwn.call(extra, k)) props[k] = extra[k];
+    return h("input", props);
   }
   function fillTypeHint(el, k) {
     if (!el) return;
@@ -975,29 +1175,41 @@
     var t = hasOwn.call(TYPES, k) ? TYPES[k] : null;
     if (!t) return;
     var c = typeCounts(t);
-    add(el, c.steps + " steps in " + c.phases + " phases. ");
+    add(el, (SERVICE_HINTS[k] ? SERVICE_HINTS[k] + " " : "") + c.steps + " steps in " + c.phases + " phases. ");
     if (safePage(t.sourcePage)) add(el, h("a", { href: t.sourcePage }, "See the full process →"));
   }
   function buildForm(mode, v) {
     var pre = mode === "edit" ? "cke-" : "ckn-";
     var typeSel = h("select", { id: pre + "type", name: "type", "aria-describedby": pre + "type-hint" },
-      TYPE_ORDER.map(function (k) { return h("option", { value: k }, TYPES[k].title); }));
+      TYPE_ORDER.map(function (k) { return h("option", { value: k }, serviceLabel(k)); }));
     typeSel.value = hasOwn.call(TYPES, v.type) ? v.type : TYPE_ORDER[0];
     var typeHint = h("p", { "class": "ck-hint", id: pre + "type-hint" });
     fillTypeHint(typeHint, typeSel.value);
     typeSel.addEventListener("change", function () { fillTypeHint(typeHint, typeSel.value); });
+    var startIn = h("input", { type: "date", id: pre + "start", name: "start", placeholder: "YYYY-MM-DD", value: v.start || "" });
+    if (mode === "new") startIn.defaultValue = v.start || "";   /* "Clear form" goes back to today */
 
     var form = h("form", { "class": "ck-form", id: pre + "form", novalidate: true }, [
       h("div", { "class": "ck-form-grid" }, [
         field(pre, "name", ["Project name ", h("span", { "class": "ck-req" }, "(required)")],
-          h("input", { type: "text", id: pre + "name", name: "name", maxlength: "120", autocomplete: "off", required: true, placeholder: mode === "new" ? "e.g. Acme Lyon — AP refresh" : null, value: v.name || "" }), true),
-        field(pre, "customer", "Customer",
-          h("input", { type: "text", id: pre + "customer", name: "customer", maxlength: "120", autocomplete: "off", value: v.customer || "" })),
-        field(pre, "site", "Site",
-          h("input", { type: "text", id: pre + "site", name: "site", maxlength: "120", autocomplete: "off", value: v.site || "" })),
-        h("div", { "class": "ck-field" }, [h("label", { "for": pre + "type" }, "Delivery type"), typeSel, typeHint]),
+          textInput(pre, "name", v, { required: true, placeholder: mode === "new" ? "e.g. Acme Lyon — AP refresh" : null })),
+        h("div", { "class": "ck-field" }, [h("label", { "for": pre + "type" }, "Service"), typeSel, typeHint]),
+        field(pre, "customer", "Customer", textInput(pre, "customer", v)),
+        field(pre, "site", "Site", textInput(pre, "site", v)),
+        field(pre, "start", "Kick-off date", startIn,
+          { hint: "The Excel plan and Gantt start here." + (mode === "edit" ? " Leave empty to start from today." : "") }),
         field(pre, "target", ["Target migration date ", h("span", { "class": "ck-opt" }, "(optional)")],
-          h("input", { type: "date", id: pre + "target", name: "target", placeholder: "YYYY-MM-DD", value: v.target || "" }))
+          h("input", { type: "date", id: pre + "target", name: "target", placeholder: "YYYY-MM-DD", value: v.target || "" })),
+        h("fieldset", { "class": "ck-fieldset", "aria-describedby": pre + "people-hint" }, [
+          h("legend", null, ["People & order reference ", h("span", { "class": "ck-opt" }, "(optional)")]),
+          h("p", { "class": "ck-hint", id: pre + "people-hint" }, "Shown on the checklist, in the status update and in the Excel export."),
+          h("div", { "class": "ck-form-grid" }, [
+            field(pre, "dpm", "Your name (DPM)", textInput(pre, "dpm", v, { autocomplete: "name" })),
+            field(pre, "pm", "Project Manager", textInput(pre, "pm", v)),
+            field(pre, "sc", "Solution Consultant", textInput(pre, "sc", v)),
+            field(pre, "orderRef", "GOLD order ref", textInput(pre, "orderRef", v, { spellcheck: "false" }))
+          ])
+        ])
       ]),
       h("div", { "class": "ck-form-actions" }, mode === "edit"
         ? [
@@ -1020,6 +1232,7 @@
       form.addEventListener("reset", function () {
         setTimeout(function () {
           setErr(pre, "name", "");
+          setErr(pre, "start", "");
           setErr(pre, "target", "");
           fillTypeHint(typeHint, typeSel.value);
         }, 0);
@@ -1028,48 +1241,72 @@
     return form;
   }
   function readRaw(pre) {
-    function val(key) { var el = $(pre + key); return el ? String(el.value || "") : ""; }
-    return { name: val("name"), customer: val("customer"), site: val("site"), type: val("type"), target: val("target") };
+    var out = {};
+    FORM_KEYS.forEach(function (key) { var el = $(pre + key); out[key] = el ? String(el.value || "") : ""; });
+    return out;
   }
   function readForm(pre) {
-    return {
-      name: cleanLine(($(pre + "name") || {}).value, 120),
-      customer: cleanLine(($(pre + "customer") || {}).value, 120),
-      site: cleanLine(($(pre + "site") || {}).value, 120),
-      type: ($(pre + "type") || {}).value || "",
-      target: String(($(pre + "target") || {}).value || "").trim()
-    };
+    var out = {};
+    Object.keys(TEXT_FIELDS).forEach(function (key) { out[key] = cleanLine(($(pre + key) || {}).value, TEXT_FIELDS[key]); });
+    out.type = ($(pre + "type") || {}).value || "";
+    out.start = String(($(pre + "start") || {}).value || "").trim();
+    out.target = String(($(pre + "target") || {}).value || "").trim();
+    return out;
   }
   function setErr(pre, key, msg) {
     var input = $(pre + key), err = $(pre + key + "-err");
     if (!input || !err) return;
+    var base = input.getAttribute("data-desc") || "";
     err.textContent = msg;
     err.hidden = !msg;
-    if (msg) { input.setAttribute("aria-invalid", "true"); input.setAttribute("aria-describedby", err.id); }
-    else { input.removeAttribute("aria-invalid"); input.removeAttribute("aria-describedby"); }
+    if (msg) {
+      input.setAttribute("aria-invalid", "true");
+      input.setAttribute("aria-describedby", (err.id + " " + base).replace(/\s+$/, ""));
+    } else {
+      input.removeAttribute("aria-invalid");
+      if (base) input.setAttribute("aria-describedby", base);
+      else input.removeAttribute("aria-describedby");
+    }
+  }
+  /* a half-typed date reports value "" — treat it as an error, not as "no date" */
+  function dateFieldOk(pre, key, val) {
+    var el = $(pre + key);
+    var badInput = !!(el && el.validity && el.validity.badInput);
+    return !badInput && (!val || validDate(val));
   }
   function validate(pre) {
-    var v = readForm(pre), bad = null;
+    var v = readForm(pre), bad = [];
+    var DATE_MSG = "Use a real date in the format YYYY-MM-DD, or leave it empty.";
     setErr(pre, "name", v.name ? "" : "Give the project a name — for example the customer site or order.");
-    if (!v.name) bad = $(pre + "name");
-    var dateEl = $(pre + "target");
-    /* a half-typed date reports value "" — treat it as an error, not as "no date" */
-    var dateBad = !!(dateEl && dateEl.validity && dateEl.validity.badInput);
-    var dateOk = !dateBad && (!v.target || validDate(v.target));
-    setErr(pre, "target", dateOk ? "" : "Use a real date in the format YYYY-MM-DD, or leave it empty.");
-    if (!dateOk && !bad) bad = $(pre + "target");
+    if (!v.name) bad.push("name");
+    var startOk = dateFieldOk(pre, "start", v.start);
+    setErr(pre, "start", startOk ? "" : DATE_MSG);
+    if (!startOk) bad.push("start");
+    var targetOk = dateFieldOk(pre, "target", v.target), targetMsg = targetOk ? "" : DATE_MSG;
+    if (targetOk && startOk && v.start && v.target && v.target < v.start) {
+      targetOk = false;
+      targetMsg = "The target migration date is before the kick-off (" + fmtDate(parseDate(v.start)) + ") — pick a later date, or move the kick-off earlier.";
+    }
+    setErr(pre, "target", targetMsg);
+    if (!targetOk) bad.push("target");
     if (!hasOwn.call(TYPES, v.type)) v.type = TYPE_ORDER[0];
-    if (bad) { bad.focus(); return null; }
+    if (bad.length) { var el = $(pre + bad[0]); if (el) el.focus(); return null; }
     return v;
   }
 
   /* ---------- actions: projects ---------- */
   function createProject(v) {
     var ts = nowIso();
-    var p = { id: freshId(null), name: v.name, customer: v.customer || "", site: v.site || "", type: v.type, target: v.target || "", notes: "", created: ts, updated: ts, done: {}, collapsed: {} };
+    var p = {
+      id: freshId(null), name: v.name, customer: v.customer || "", site: v.site || "", type: v.type,
+      start: v.start || "", target: v.target || "",
+      dpm: v.dpm || "", pm: v.pm || "", sc: v.sc || "", orderRef: v.orderRef || "",
+      notes: "", created: ts, updated: ts, done: {}, collapsed: {}
+    };
     state.projects.push(p);
     state.activeId = p.id;
-    editing = false; editDraft = null; copyBoxText = null;
+    editing = false; editDraft = null; copyBoxText = null; xlsxErr = null;
+    newOpen = false;                       /* details are in — fold the form away */
     initOpenState();
     save();
     renderAll();
@@ -1082,30 +1319,26 @@
     var p = createProject(v);
     var form = $("ckn-form");
     if (form) form.reset();
-    announce("Created “" + p.name + "” — its checklist is open.");
+    announce("Project created — “" + p.name + "” is open below.");
     goTo($("ck-checklist-sec"), $("ck-proj-title"));
   }
-  function quickStart(k) {
-    var t = TYPES[k];
-    if (!t) return;
-    var p = createProject({ name: "New " + t.short + " delivery", customer: "", site: "", type: k, target: "" });
-    announce("Started “" + p.name + "”. Use Edit details to rename it and add the customer, site and date.");
-    goTo($("ck-checklist-sec"), $("ck-proj-title"));
-  }
+  /* expand the top form (optionally with a service picked) and put the cursor in the name */
   function openNewForm(typeKey) {
     var sel = $("ckn-type");
     if (sel && typeKey && hasOwn.call(TYPES, typeKey)) {
       sel.value = typeKey;
       fillTypeHint($("ckn-type-hint"), typeKey);
     }
+    setNewOpen(true);
     goTo($("ck-new-sec"), $("ckn-name"));
   }
+  function toggleNewForm() { setNewOpen(!newOpen); }
   function openProject(id) {
     var p = findProject(id);
     if (!p || !typeOf(p)) return;
     if (state.activeId !== id) {
       state.activeId = id;
-      editing = false; editDraft = null; copyBoxText = null;
+      editing = false; editDraft = null; copyBoxText = null; xlsxErr = null;
       initOpenState();
       save();
       renderList();
@@ -1118,7 +1351,7 @@
     if (!p || !typeOf(p)) return;
     if (state.activeId !== id) {
       state.activeId = id;
-      copyBoxText = null;
+      copyBoxText = null; xlsxErr = null;
       initOpenState();
       save();
     }
@@ -1147,7 +1380,9 @@
     if (typeChanged && hasTicks(p, p.type)) {
       if (!window.confirm("Switch “" + p.name + "” to the " + TYPES[v.type].title + " checklist?\n\nTicks on the current checklist are kept in the background and come back if you switch back.")) return;
     }
-    p.name = v.name; p.customer = v.customer; p.site = v.site; p.type = v.type; p.target = v.target;
+    p.name = v.name; p.customer = v.customer; p.site = v.site; p.type = v.type;
+    p.start = v.start; p.target = v.target;
+    p.dpm = v.dpm; p.pm = v.pm; p.sc = v.sc; p.orderRef = v.orderRef;
     touch(p);
     if (typeChanged) initOpenState();
     editing = false; editDraft = null; copyBoxText = null;
@@ -1159,13 +1394,14 @@
   function deleteProject(id) {
     var p = findProject(id);
     if (!p) return;
-    if (!window.confirm("Delete “" + p.name + "”?\n\nIts ticks and notes will be removed from this browser. This can't be undone — export a backup first if you might need it.")) return;
+    if (!window.confirm("Delete “" + p.name + "”?\n\nIts ticks and notes will be removed from this browser. This can't be undone — use Back up (JSON) first if you might need it.")) return;
     state.projects = state.projects.filter(function (q) { return q.id !== id; });
     if (state.activeId === id) {
       state.activeId = null;
-      editing = false; editDraft = null; copyBoxText = null;
+      editing = false; editDraft = null; copyBoxText = null; xlsxErr = null;
       initOpenState();
     }
+    if (!state.projects.length) newOpen = true;   /* nothing left: show the form again */
     save();
     renderAll();
     announce("Deleted “" + p.name + "”.");
@@ -1250,6 +1486,11 @@
     if (p.customer) L.push("Customer: " + p.customer);
     if (p.site) L.push("Site: " + p.site);
     L.push("Type: " + t.title);
+    if (p.orderRef) L.push("GOLD order: " + p.orderRef);
+    var team = [["DPM", p.dpm], ["PM", p.pm], ["SC", p.sc]].filter(function (r) { return !!r[1]; })
+      .map(function (r) { return r[0] + " " + r[1]; });
+    if (team.length) L.push("Team: " + team.join(" · "));
+    if (p.start) L.push("Kick-off: " + fmtDate(parseDate(p.start)));
     if (p.target) L.push("Target migration date: " + fmtDate(parseDate(p.target)) + " (" + relDays(p.target) + ")");
     L.push("Progress: " + s.pct + "% (" + s.done + " of " + s.total + " steps done)");
     L.push("");
@@ -1312,6 +1553,23 @@
     flushNotes();
     renderActive("ck-print-btn");
     try { window.print(); } catch (e) { announce("Printing isn't available in this browser."); }
+  }
+  /* Excel: checklist-export.js builds and downloads the workbook (needs xlsx-writer.js) */
+  function exportExcel() {
+    var p = activeProject();
+    if (!typeOf(p)) return;
+    flushNotes();
+    var api = window.KBChecklistExport, ok = false, msg = null;
+    if (!api || typeof api.download !== "function") {
+      msg = "Excel export is unavailable — try reloading the page.";
+    } else {
+      try { ok = api.download(JSON.parse(JSON.stringify(p))) !== false; }
+      catch (e) { ok = false; }
+      if (!ok) msg = "Sorry — the Excel file couldn't be created. Try reloading the page, or use Print instead.";
+    }
+    xlsxErr = msg ? { id: p.id, msg: msg } : null;
+    renderActive("ck-xlsx-btn");
+    announce(msg || "Excel file downloaded.");
   }
 
   /* ---------- backup: export + import ---------- */
@@ -1411,7 +1669,11 @@
     }
     if (state.activeId && !findProject(state.activeId)) state.activeId = null;
     pendingImport = null; importMsg = null;
-    editing = false; editDraft = null; copyBoxText = null;
+    editing = false; editDraft = null; copyBoxText = null; xlsxErr = null;
+    /* projects are back — fold the new-project form unless something is typed in it */
+    var nameEl = $("ckn-name");
+    if (state.projects.length && !(nameEl && nameEl.value)) newOpen = false;
+    else if (!state.projects.length) newOpen = true;
     initOpenState();
     save();
     renderAll();
@@ -1476,10 +1738,11 @@
   function buildNewForm() {
     var host = $("ck-new-host");
     if (!host) return;
-    host.appendChild(h("div", { "class": "ck-card" }, buildForm("new", { type: TYPE_ORDER[0] })));
+    host.appendChild(buildForm("new", { type: TYPE_ORDER[0], start: isoDay(new Date()) }));
   }
   function wireToolbar() {
-    var nb = $("ck-new-btn"), ex = $("ck-export"), ib = $("ck-import-btn"), fi = $("ck-import-file");
+    var nb = $("ck-new-btn"), ex = $("ck-export"), ib = $("ck-import-btn"), fi = $("ck-import-file"), nt = $("ck-new-toggle");
+    if (nt) nt.addEventListener("click", toggleNewForm);
     if (nb) nb.addEventListener("click", function () { openNewForm(); });
     if (ex) ex.addEventListener("click", exportBackup);
     if (ib && fi) ib.addEventListener("click", function () { fi.click(); });
@@ -1494,6 +1757,7 @@
     if (!hasOwn.call(TYPES, k)) return;
     var sel = $("ckn-type");
     if (sel) { sel.value = k; fillTypeHint($("ckn-type-hint"), k); }
+    setNewOpen(true);
     var go = function () { setTimeout(function () { openNewForm(k); }, 80); };
     if (document.readyState === "complete") go();
     else window.addEventListener("load", go);
@@ -1515,7 +1779,8 @@
       var pq = findProject(pendingNotes.id);
       if (pq) { pq.notes = pendingNotes.notes; touch(pq); }
     }
-    if (!activeProject()) { editing = false; editDraft = null; copyBoxText = null; }
+    if (!activeProject()) { editing = false; editDraft = null; copyBoxText = null; xlsxErr = null; }
+    if (!state.projects.length) newOpen = true;
     renderAll();
   }
 
@@ -1532,6 +1797,9 @@
     state = normaliseState(readStore());
     if (!state.activeId && state.projects.length === 1 && typeOf(state.projects[0])) state.activeId = state.projects[0].id;
     initOpenState();
+    newOpen = !state.projects.length;        /* first visit: form open; otherwise a compact bar */
+    var ns = $("ck-new-sec");
+    if (ns) ns.hidden = false;
     buildNewForm();
     buildTypeCards();
     wireToolbar();
