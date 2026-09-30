@@ -86,6 +86,7 @@
     "resources":          ["book", "list", "globe", "nodes"],
     "raci":               ["check", "list", "nodes", "key"],
     "checklist":          ["check", "list", "wifi", "globe"],
+    "hoto":               ["check", "list", "server", "book"],
     "templates":          ["list", "check", "book", "nodes"],
     "tools":              ["key", "server", "list", "nodes"],
     "whats-new":          ["list", "signal", "check", "book"],

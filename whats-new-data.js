@@ -36,6 +36,12 @@ window.KB_WHATS_NEW = [
 
   /* ── 30 Sep 2026 ─────────────────────────────────────────── */
   {
+    date: '2026-09-30', tag: 'New',
+    title: 'HOTO Pack Builder — check the pack is complete and export the LAN/WAN HOTO tracker to Excel',
+    desc: 'Pick a delivery-checklist project and the builder confirms the hand-over pack is complete — runbook, LLD, UAT sign-off, CMDB and DNAC updates, success notification, GOLD/SALTO closed — auto-ticking what you have already done on the checklist. Fill in the site / device tracker and export a HOTO pack workbook (summary, tracker and readiness) to send to the HOTO Manager.',
+    links: [{ href: 'hoto.html', label: 'Open the HOTO Pack Builder' }]
+  },
+  {
     date: '2026-09-30', tag: 'Improved',
     title: 'Device front panels rebuilt from the vendor datasheets',
     desc: 'Every Cisco, Palo Alto and Fortinet device panel is now drawn from the official hardware guide: the real port counts, types and speeds, uplink and module slots, management, console and USB ports, PSUs and fans — with two-row ports numbered the way the hardware is (odd on top, even below). Hover any port for its interface name, and each panel links to the datasheet it was built from.',

@@ -953,6 +953,7 @@
         h("button", { type: "button", "class": "ck-btn ck-btn-primary", id: "ck-xlsx-btn", "aria-describedby": showErr ? "ck-xlsx-err" : null, onclick: exportExcel }, [ico("⬇"), "Export to Excel"]),
         h("button", { type: "button", "class": "ck-btn", id: "ck-copy-btn", onclick: copyStatus }, [ico("📋"), "Copy status update"]),
         h("button", { type: "button", "class": "ck-btn", id: "ck-print-btn", onclick: doPrint }, [ico("🖨️"), "Print"]),
+        h("a", { "class": "ck-btn", id: "ck-hoto-btn", href: "hoto.html?project=" + encodeURIComponent(p.id), "aria-label": "Build the HOTO pack for " + p.name }, [ico("📦"), "HOTO pack →"]),
         h("button", { type: "button", "class": "ck-btn", id: "ck-edit-btn", "aria-expanded": String(editing), "aria-controls": editing ? "ck-edit-panel" : null, onclick: toggleEdit }, [ico("✏️"), "Edit details"]),
         h("button", { type: "button", "class": "ck-btn ck-btn-danger", id: "ck-del-btn", onclick: function () { deleteProject(p.id); } }, [ico("🗑️"), "Delete"])
       ]),

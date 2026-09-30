@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HOTO Pack Builder — DPM Knowledge Base</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="stylesheet" href="shared.css">
+<style>
+/* ── HOTO Pack Builder (page-scoped) ── */
+:root{--ho-accent:var(--orange-text);--ho-muted:#5F5F5F;--ho-line:#E6E6E6;--ho-soft:#FAFAFA;--ho-ok:#0B7A40;--ho-ok-pale:#EAF8F1;--ho-danger:#B42318;--ho-na:#6B6B6B;--ho-na-pale:#EFEFEF;}
+.content [hidden]{display:none !important;}
+.sr-only{position:absolute !important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
+.content :focus-visible{outline:3px solid #B34200;outline-offset:2px;}
+
+/* buttons (shared with checklist look) */
+.ho-btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:38px;padding:8px 15px;border-radius:9px;border:1.5px solid #D6D6D6;background:#fff;color:var(--black);font:600 13px/1.2 var(--font);cursor:pointer;text-decoration:none;transition:background .15s,border-color .15s,color .15s,box-shadow .15s;}
+.ho-btn:hover{border-color:var(--orange);color:var(--ho-accent);text-decoration:none;}
+.ho-btn:disabled{opacity:.5;cursor:not-allowed;}
+.ho-btn:disabled:hover{border-color:#D6D6D6;color:var(--black);}
+.ho-btn-primary{background:var(--orange-dark);border-color:var(--orange-dark);color:#fff;}
+.ho-btn-primary:hover{background:#A94000;border-color:#A94000;color:#fff;box-shadow:0 6px 18px rgba(204,78,0,0.25);}
+.ho-btn-danger:hover{border-color:var(--ho-danger);color:var(--ho-danger);}
+.ho-btn-sm{min-height:32px;padding:6px 11px;font-size:12.5px;border-radius:8px;}
+.ho-ico{font-size:14px;line-height:1;}
+
+/* cards */
+.ho-card{background:#fff;border:1px solid var(--ho-line);border-radius:14px;padding:20px;box-shadow:0 2px 14px rgba(0,0,0,0.04);min-width:0;}
+.ho-privacy{margin-bottom:26px;}
+
+/* project picker */
+.ho-pick{display:flex;flex-wrap:wrap;align-items:flex-end;gap:14px;}
+.ho-pick .ho-field{flex:1 1 280px;min-width:0;}
+.ho-field{display:flex;flex-direction:column;gap:6px;min-width:0;}
+.ho-field label{font-size:13px;font-weight:600;color:var(--black);}
+.ho-field select,.ho-field input{display:block;width:100%;min-width:0;max-width:100%;min-height:42px;padding:9px 12px;border:1.5px solid #8A8A8A;border-radius:10px;background:#fff;font:400 14px/1.3 var(--font);color:var(--black);transition:border-color .15s,box-shadow .15s;}
+.ho-field select:focus,.ho-field input:focus{outline:none;border-color:var(--orange-dark);box-shadow:0 0 0 3px rgba(255,98,0,0.2);}
+.ho-proj-meta{list-style:none;display:flex;flex-wrap:wrap;gap:6px 18px;margin:16px 0 0;padding:0;font-size:13px;color:var(--gray-dark);}
+.ho-proj-meta li{min-width:0;overflow-wrap:anywhere;}
+.ho-pk{font-size:10.5px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--ho-muted);margin-right:5px;}
+.ho-typechip{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;padding:3px 10px;border-radius:20px;border:1px solid;letter-spacing:.2px;}
+.ho-tc-lan{color:#1B5E94;background:#EEF5FF;border-color:#BDD6F5;}
+.ho-tc-wan{color:#5B21B6;background:#F3EEFF;border-color:#D4BAFF;}
+
+/* empty state */
+.ho-empty{text-align:center;border:1.5px dashed #E3C4AE;background:var(--orange-faint);border-radius:16px;padding:30px 20px;}
+.ho-empty-ic{font-size:34px;line-height:1;margin-bottom:10px;}
+.ho-empty-title{font-size:18px;font-weight:700;margin-bottom:6px;}
+.ho-empty-text{font-size:14px;color:var(--gray-dark);max-width:560px;margin:0 auto 18px;}
+
+/* readiness */
+.ho-ready-head{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;border-radius:12px;padding:12px 16px;margin-bottom:16px;font-size:15px;font-weight:700;}
+.ho-ready-head.is-ready{background:var(--ho-ok-pale);border:1px solid #9FE0C3;color:#0A5C3A;}
+.ho-ready-head.not-ready{background:var(--orange-faint);border:1px solid #F5D2B8;color:var(--orange-text);}
+.ho-out-list{margin:8px 0 0;padding-left:20px;font-size:13px;font-weight:500;color:var(--gray-dark);flex-basis:100%;}
+.ho-out-list li{margin:2px 0;overflow-wrap:anywhere;}
+.ho-fieldset{border:1px solid var(--ho-line);border-radius:12px;padding:8px 16px 12px;margin:0;background:#fff;min-width:0;}
+.ho-fieldset legend{padding:0 6px;font-size:13px;font-weight:700;color:var(--black);}
+.ho-items{list-style:none;margin:0;padding:0;}
+.ho-item{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:flex-start;padding:14px 4px;border-top:1px solid #EFEFEF;}
+.ho-item:first-child{border-top:0;}
+.ho-item-main{flex:1 1 260px;min-width:0;}
+.ho-item-label{font-size:14px;font-weight:600;color:var(--black);line-height:1.45;overflow-wrap:anywhere;}
+.ho-item-detail{font-size:12.5px;color:var(--gray-dark);line-height:1.5;margin-top:3px;overflow-wrap:anywhere;}
+.ho-from{display:inline-block;margin-top:6px;font-size:10.5px;font-weight:700;letter-spacing:.3px;text-transform:uppercase;color:var(--cisco-text);background:var(--cisco-pale);border:1px solid #A7DAF0;border-radius:20px;padding:2px 8px;}
+.ho-seg{display:inline-flex;flex-wrap:wrap;gap:6px;flex-shrink:0;}
+.ho-seg label{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;color:var(--gray-dark);border:1.5px solid #D6D6D6;border-radius:8px;padding:5px 10px;cursor:pointer;background:#fff;}
+.ho-seg input{position:absolute;opacity:0;width:1px;height:1px;}
+.ho-seg label:hover{border-color:var(--orange);}
+.ho-seg input:focus-visible+span{outline:3px solid #B34200;outline-offset:2px;border-radius:3px;}
+.ho-seg .is-done input:checked~span,.ho-seg label.sel-done{color:#0A5C3A;}
+.ho-seg label.sel-done{background:var(--ho-ok-pale);border-color:#9FE0C3;color:#0A5C3A;}
+.ho-seg label.sel-out{background:var(--orange-faint);border-color:#F3C6A5;color:var(--orange-text);}
+.ho-seg label.sel-na{background:var(--ho-na-pale);border-color:#CFCFCF;color:var(--ho-na);}
+
+/* tracker table */
+.ho-tablewrap{position:relative;overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--ho-line);border-radius:12px;}
+.ho-scrollhint{font-size:12px;color:var(--ho-muted);margin:0 0 8px;}
+.ho-table{border-collapse:collapse;font-size:12.5px;width:100%;}
+.ho-table th,.ho-table td{border:1px solid #ECECEC;padding:4px;vertical-align:top;}
+.ho-table thead th{background:var(--black);color:#fff;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;text-align:left;padding:8px 8px;white-space:nowrap;position:sticky;top:0;}
+.ho-table th.ho-th-rownum,.ho-table td.ho-td-rownum{background:var(--gray-faint);color:var(--gray-mid);font-family:var(--mono);font-size:11px;text-align:center;font-weight:600;white-space:nowrap;min-width:34px;}
+.ho-table thead th.ho-th-rownum{background:var(--black);color:#fff;}
+.ho-table td input,.ho-table td select{width:100%;min-width:130px;box-sizing:border-box;min-height:34px;padding:6px 8px;border:1px solid #CFCFCF;border-radius:6px;font:400 12.5px/1.3 var(--font);color:var(--black);background:#fff;}
+.ho-table td input[type="date"]{min-width:150px;-webkit-appearance:none;appearance:none;}
+.ho-table td input:focus,.ho-table td select:focus{outline:none;border-color:var(--orange-dark);box-shadow:0 0 0 2px rgba(255,98,0,0.2);}
+.ho-table td.ho-td-actions{white-space:nowrap;background:var(--ho-soft);}
+.ho-rowbtns{display:flex;gap:5px;}
+.ho-iconbtn{border:1px solid #D6D6D6;background:#fff;border-radius:7px;min-height:30px;min-width:32px;padding:4px 8px;font-size:13px;cursor:pointer;line-height:1;}
+.ho-iconbtn:hover{border-color:var(--orange);}
+.ho-iconbtn.ho-del:hover{border-color:var(--ho-danger);color:var(--ho-danger);}
+.ho-tbl-empty{padding:22px 16px;text-align:center;color:var(--ho-muted);font-size:13.5px;}
+.ho-tbl-toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:12px;}
+.ho-tbl-count{margin-left:auto;font-size:12.5px;color:var(--ho-muted);font-weight:600;}
+
+/* actions */
+.ho-actions{display:flex;flex-wrap:wrap;gap:10px;}
+.ho-copybox{margin-top:16px;border-top:1px solid var(--ho-line);padding-top:16px;}
+.ho-copybox label{display:block;font-size:13px;font-weight:600;margin-bottom:8px;}
+.ho-copybox textarea{display:block;width:100%;font:12.5px/1.6 var(--mono);border:1.5px solid #DADADA;border-radius:10px;padding:10px 12px;margin-bottom:10px;resize:vertical;background:var(--ho-soft);color:var(--black);}
+.ho-status{min-height:20px;margin-top:10px;font-size:13px;font-weight:600;}
+.ho-status.ok{color:var(--ho-ok);}
+.ho-status.err{color:var(--ho-danger);}
+.ho-hint{font-size:12.5px;color:var(--ho-muted);line-height:1.55;}
+.ho-hint a{color:var(--ho-accent);font-weight:600;}
+
+@media(max-width:600px){
+  .ho-card{padding:16px;}
+  .ho-item{gap:8px;}
+  .ho-seg{width:100%;}
+}
+@media(prefers-reduced-motion:reduce){.ho-btn,.ho-iconbtn{transition:none;}}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <a href="index.html" class="topnav-brand">
+    <div class="topnav-logo">DPM</div>
+    <div class="topnav-brand-text">Knowledge <span>Base</span></div>
+  </a>
+  <div class="topnav-links">
+    <a href="index.html"          class="nav-link">Home</a>
+    <a href="lan-wan-basics.html" class="nav-link">LAN / WAN</a>
+    <a href="ip-routing.html"     class="nav-link">IP Routing</a>
+    <a href="switching.html"      class="nav-link">Switching</a>
+    <a href="wireless.html"       class="nav-link">Wireless</a>
+    <a href="firewalls.html"      class="nav-link">Firewalls</a>
+    <a href="zscaler.html"        class="nav-link">Zscaler</a>
+    <a href="devices.html"        class="nav-link">Devices</a>
+    <a href="glossary.html"       class="nav-link">Glossary</a>
+  </div>
+  <div class="topnav-badge">New Hire Guide</div>
+</nav>
+
+<div class="breadcrumb" style="background:transparent;border:none;padding:0;"></div>
+
+<div class="page-hero dark">
+  <div class="hero-content">
+    <div class="hero-tag"><span aria-hidden="true">📦</span> DPM Tool</div>
+    <h1>HOTO Pack <span>Builder</span></h1>
+    <p class="hero-sub">Check the hand-over pack is complete — runbook, LLD, UAT sign-off, CMDB &amp; DNAC updates, success notification, GOLD/SALTO closed — then build the LAN or WAN HOTO tracker and export the pack to send to the HOTO Manager.</p>
+  </div>
+</div>
+
+<div class="content">
+
+  <noscript>
+    <div class="alert orange"><span class="alert-icon" aria-hidden="true">⚠️</span><p>The HOTO Pack Builder needs JavaScript. You can still follow the hand-over steps on the <a href="process-ap.html">AP</a>, <a href="process-wlc-switch.html">WLC &amp; Switch</a> and <a href="wan-process.html">WAN</a> process pages.</p></div>
+  </noscript>
+
+  <div class="alert green ho-privacy">
+    <span class="alert-icon" aria-hidden="true">🔒</span>
+    <p><strong>Private to you.</strong> Everything here is saved only in this browser on this device — nothing is sent anywhere. It reads your projects from the <a href="checklist.html">Delivery Checklist</a> (also stored only in this browser).</p>
+  </div>
+
+  <div class="alert orange" id="ho-storage-warn" role="status" hidden>
+    <span class="alert-icon" aria-hidden="true">⚠️</span>
+    <p id="ho-storage-msg"></p>
+  </div>
+
+  <!-- PROJECT PICKER -->
+  <div class="section" id="ho-pick-sec">
+    <div class="section-header">
+      <h2>Choose a project</h2>
+      <div class="divider"></div>
+      <p>Pick one of your delivery-checklist projects. The builder loads its service (LAN or WAN), and auto-ticks the readiness items you have already completed on the checklist.</p>
+    </div>
+    <div id="ho-pick-host"></div>
+  </div>
+
+  <!-- READINESS -->
+  <div class="section" id="ho-ready-sec" hidden>
+    <div class="section-header">
+      <h2>Is the pack complete?</h2>
+      <div class="divider"></div>
+      <p>Each item is <strong>Done</strong>, <strong>Outstanding</strong> or <strong>N/A</strong>. Items marked <em>from your checklist</em> tick automatically from the project's progress — you can still override them here.</p>
+    </div>
+    <div id="ho-ready-host"></div>
+  </div>
+
+  <!-- TRACKER -->
+  <div class="section" id="ho-track-sec" hidden>
+    <div class="section-header">
+      <h2>Site / device tracker</h2>
+      <div class="divider"></div>
+      <p id="ho-track-lead">Fill in one row per device (LAN) or per site / circuit (WAN). Add, duplicate or delete rows. Everything is saved only in this browser.</p>
+    </div>
+    <div id="ho-track-host"></div>
+  </div>
+
+  <!-- ACTIONS -->
+  <div class="section" id="ho-act-sec" hidden>
+    <div class="section-header">
+      <h2>Build &amp; hand over</h2>
+      <div class="divider"></div>
+      <p>Export the HOTO pack as an Excel workbook (summary, tracker and readiness), copy a short hand-over note, and open the email template for the HOTO Manager.</p>
+    </div>
+    <div class="ho-card">
+      <div class="ho-actions">
+        <button type="button" class="ho-btn ho-btn-primary" id="ho-export"><span class="ho-ico" aria-hidden="true">⬇</span> Export HOTO pack (Excel)</button>
+        <button type="button" class="ho-btn" id="ho-copy"><span class="ho-ico" aria-hidden="true">📋</span> Copy hand-over note</button>
+        <a class="ho-btn" id="ho-tmpl" href="templates.html#tmpl-hoto-handover"><span class="ho-ico" aria-hidden="true">✉️</span> HOTO email template</a>
+      </div>
+      <p class="ho-status" id="ho-status" role="status" aria-live="polite"></p>
+      <div id="ho-copybox-host"></div>
+      <p class="ho-hint" style="margin-top:12px;">The workbook has three sheets — <strong>HOTO Summary</strong>, <strong>HOTO Tracker</strong> and <strong>Readiness</strong>. Send it, with the HOTO document, to the HOTO Manager for sign-off.</p>
+    </div>
+  </div>
+
+</div>
+
+<div id="ho-live" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></div>
+
+<footer class="footer">
+  <p>DPM <span>Knowledge Base</span> &nbsp;·&nbsp; Onboarding Handbook Ed.&nbsp;1.3 &nbsp;·&nbsp; Internal Use Only</p>
+</footer>
+
+<script src="hoto-data.js"></script>
+<script src="xlsx-writer.js"></script>
+<script src="hoto-export.js"></script>
+<script>
+/* ═══════════════════════════════════════════════════════════
+   HOTO Pack Builder — checks the hand-over pack is complete for
+   a delivery-checklist project and exports the LAN / WAN HOTO
+   tracker to Excel. Projects are read (never written) from the
+   checklist store "dpmkb_checklists_v1"; this page's own data
+   (tracker rows + readiness overrides) lives only in this
+   browser under "dpmkb_hoto_v1". Data + columns: hoto-data.js
+   (window.KB_HOTO). Excel: xlsx-writer.js + hoto-export.js.
+═══════════════════════════════════════════════════════════ */
+(function () {
+  "use strict";
+
+  var DATA = window.KB_HOTO;
+  var CK_KEY = "dpmkb_checklists_v1";        /* read-only: the checklist projects */
+  var KEY = "dpmkb_hoto_v1";                 /* this tool's own store */
+  var MAX_ROWS = 500, MAX_CELL = 300;
+  var PID_RE = /^[A-Za-z0-9_-]{1,40}$/;
+  var DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
+  var STEP_RE = /^[a-z]{2,8}\.p\d{1,3}\.s\d{1,3}$/;
+  var hasOwn = Object.prototype.hasOwnProperty;
+
+  var storageOK = true;
+  var projects = [];
+  var activeId = null;
+  var store = { version: 1, byProject: {} };   /* this tool's data */
+  var copyBoxText = null;
+  var saveTimer = null;
+
+  /* ---------- tiny DOM helpers ---------- */
+  function $(id) { return document.getElementById(id); }
+  function h(tag, props, kids) {
+    var el = document.createElement(tag), deferred = [], k, v, i;
+    if (props) {
+      for (k in props) {
+        if (!hasOwn.call(props, k)) continue;
+        v = props[k];
+        if (v === null || v === undefined || v === false) continue;
+        if (k === "class") el.className = v;
+        else if (k === "value" || k === "checked" || k === "selected") deferred.push([k, v]);
+        else if (k.slice(0, 2) === "on" && typeof v === "function") el.addEventListener(k.slice(2), v);
+        else el.setAttribute(k, v === true ? "" : String(v));
+      }
+    }
+    add(el, kids);
+    for (i = 0; i < deferred.length; i++) el[deferred[i][0]] = deferred[i][1];
+    return el;
+  }
+  function add(el, kids) {
+    var i;
+    if (kids === null || kids === undefined || kids === false) return;
+    if (Object.prototype.toString.call(kids) === "[object Array]") { for (i = 0; i < kids.length; i++) add(el, kids[i]); return; }
+    if (typeof kids === "string" || typeof kids === "number") { el.appendChild(document.createTextNode(String(kids))); return; }
+    el.appendChild(kids);
+  }
+  function clear(el) { while (el && el.firstChild) el.removeChild(el.firstChild); }
+  function ico(e) { return h("span", { "class": "ho-ico", "aria-hidden": "true" }, e); }
+
+  /* ---------- text + date ---------- */
+  function cleanLine(v, max) {
+    if (typeof v !== "string") return "";
+    return v.replace(/[\u0000-\u001F\u007F]+/g, " ").replace(/\s+/g, " ").replace(/^\s+|\s+$/g, "").slice(0, max);
+  }
+  function validDate(s) {
+    if (typeof s !== "string" || !DATE_RE.test(s)) return false;
+    var p = s.split("-"), d = new Date(+p[0], +p[1] - 1, +p[2]);
+    return d.getFullYear() === +p[0] && d.getMonth() === +p[1] - 1 && d.getDate() === +p[2];
+  }
+  function fmtDate(s) {
+    if (!validDate(s)) return "";
+    var p = s.split("-"), d = new Date(+p[0], +p[1] - 1, +p[2]);
+    try { return d.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" }); }
+    catch (e) { return s; }
+  }
+
+  /* ---------- service + readiness resolution (mirrors hoto-export.js) ---------- */
+  function serviceKey(p) { return (p && p.type === "wan") ? "wan" : "lan"; }
+  function trackerOf(p) { return DATA.trackers[serviceKey(p)]; }
+  function readinessOf(p) { return DATA.readiness[serviceKey(p)] || []; }
+  function fullStepId(p, item) { return (item.stepId && p.type) ? (p.type + "." + item.stepId) : null; }
+  function autoDone(p, item) { var f = fullStepId(p, item); return !!(f && p.done && p.done[f]); }
+  function effStatus(p, item, checks) {
+    var ov = (checks && hasOwn.call(checks, item.id)) ? checks[item.id] : undefined;
+    if (ov === "done" || ov === "na" || ov === "") return ov;
+    return autoDone(p, item) ? "done" : "";
+  }
+
+  /* ---------- read the checklist projects (read-only) ---------- */
+  function sanitizeProject(src) {
+    if (!src || typeof src !== "object") return null;
+    var type = typeof src.type === "string" ? src.type : "";
+    if (type !== "ap" && type !== "wlc" && type !== "wan") return null;
+    var name = cleanLine(src.name, 120);
+    if (!name) return null;
+    var done = {};
+    if (src.done && typeof src.done === "object") {
+      var ks = Object.keys(src.done), i;
+      for (i = 0; i < ks.length && i < 3000; i++) { if (STEP_RE.test(ks[i]) && src.done[ks[i]]) done[ks[i]] = 1; }
+    }
+    return {
+      id: (typeof src.id === "string" && PID_RE.test(src.id)) ? src.id : "",
+      name: name,
+      type: type,
+      customer: cleanLine(src.customer, 120),
+      site: cleanLine(src.site, 120),
+      target: validDate(src.target) ? src.target : "",
+      start: validDate(src.start) ? src.start : "",
+      dpm: cleanLine(src.dpm, 80),
+      pm: cleanLine(src.pm, 80),
+      sc: cleanLine(src.sc, 80),
+      orderRef: cleanLine(src.orderRef, 60),
+      done: done
+    };
+  }
+  function readProjects() {
+    var raw = null, parsed = null, out = [];
+    try { raw = window.localStorage.getItem(CK_KEY); } catch (e) { return out; }
+    if (!raw) return out;
+    try { parsed = JSON.parse(raw); } catch (e) { return out; }
+    if (!parsed || !parsed.projects || Object.prototype.toString.call(parsed.projects) !== "[object Array]") return out;
+    var seen = {}, i, p;
+    for (i = 0; i < parsed.projects.length && out.length < MAX_ROWS; i++) {
+      p = sanitizeProject(parsed.projects[i]);
+      if (!p || !p.id || seen[p.id]) continue;
+      seen[p.id] = 1;
+      out.push(p);
+    }
+    return out;
+  }
+
+  /* ---------- this tool's own store ---------- */
+  function readStore() {
+    var raw = null, parsed = null;
+    try { raw = window.localStorage.getItem(KEY); } catch (e) { storageOK = false; return; }
+    if (!raw) return;
+    try { parsed = JSON.parse(raw); } catch (e) { return; }
+    if (parsed && parsed.byProject && typeof parsed.byProject === "object") {
+      store.byProject = parsed.byProject;
+    }
+  }
+  function save() {
+    try { window.localStorage.setItem(KEY, JSON.stringify(store)); }
+    catch (e) { if (storageOK) { storageOK = false; renderStorageNotice(); } }
+  }
+  function saveSoon() { clearTimeout(saveTimer); saveTimer = setTimeout(save, 350); }
+
+  function bucket(id) {
+    if (!store.byProject[id] || typeof store.byProject[id] !== "object") store.byProject[id] = { rows: [], checks: {} };
+    var b = store.byProject[id];
+    if (Object.prototype.toString.call(b.rows) !== "[object Array]") b.rows = [];
+    if (!b.checks || typeof b.checks !== "object") b.checks = {};
+    return b;
+  }
+  function findProject(id) { for (var i = 0; i < projects.length; i++) if (projects[i].id === id) return projects[i]; return null; }
+  function activeProject() { return activeId ? findProject(activeId) : null; }
+
+  /* ---------- storage notice ---------- */
+  function renderStorageNotice() {
+    var box = $("ho-storage-warn"), msg = $("ho-storage-msg");
+    if (!box || !msg) return;
+    if (storageOK) { box.hidden = true; return; }
+    msg.textContent = "This browser isn't letting the page save (for example a private window, blocked site data or full storage). The builder still works, but changes only last until you close this tab.";
+    box.hidden = false;
+  }
+
+  /* ---------- announce ---------- */
+  function announce(m) {
+    var live = $("ho-live");
+    if (live) { live.textContent = ""; setTimeout(function () { live.textContent = m; }, 50); }
+  }
+  function setStatus(msg, kind) {
+    var el = $("ho-status");
+    if (!el) return;
+    el.textContent = msg || "";
+    el.className = "ho-status" + (kind ? " " + kind : "");
+    if (msg) announce(msg);
+  }
+
+  /* ═══════════ PROJECT PICKER ═══════════ */
+  function renderPicker() {
+    var host = $("ho-pick-host");
+    if (!host) return;
+    clear(host);
+    if (!projects.length) {
+      host.appendChild(h("div", { "class": "ho-empty" }, [
+        h("div", { "class": "ho-empty-ic", "aria-hidden": "true" }, "🗂️"),
+        h("p", { "class": "ho-empty-title" }, "No projects yet"),
+        h("p", { "class": "ho-empty-text" }, "The HOTO Pack Builder works from a delivery-checklist project. Create one first — enter the customer, site, service and GOLD reference — then come back here to build its hand-over pack."),
+        h("a", { "class": "ho-btn ho-btn-primary", href: "checklist.html" }, "Go to the Delivery Checklist →")
+      ]));
+      return;
+    }
+    var opts = [h("option", { value: "" }, "— Select a project —")];
+    projects.slice().sort(function (a, b) {
+      var na = a.name.toLowerCase(), nb = b.name.toLowerCase();
+      return na < nb ? -1 : (na > nb ? 1 : 0);
+    }).forEach(function (p) {
+      var svc = serviceKey(p) === "wan" ? "WAN" : "LAN";
+      var extra = [p.customer, svc].filter(Boolean).join(" · ");
+      opts.push(h("option", { value: p.id, selected: p.id === activeId }, p.name + (extra ? "  (" + extra + ")" : "")));
+    });
+    var card = h("div", { "class": "ho-card" }, [
+      h("div", { "class": "ho-pick" }, [
+        h("div", { "class": "ho-field" }, [
+          h("label", { "for": "ho-proj-sel" }, "Project"),
+          h("select", { id: "ho-proj-sel", onchange: function (e) { selectProject(e.target.value); } }, opts)
+        ])
+      ]),
+      activeProject() ? projMeta(activeProject()) : h("p", { "class": "ho-hint", style: "margin-top:14px;" }, "Choose a project to load its readiness check and site / device tracker.")
+    ]);
+    host.appendChild(card);
+  }
+
+  function projMeta(p) {
+    var svc = serviceKey(p);
+    var tracker = trackerOf(p);
+    var chip = h("span", { "class": "ho-typechip ho-tc-" + svc }, [
+      h("span", { "aria-hidden": "true" }, svc === "wan" ? "🌐" : "🔌"),
+      (svc === "wan" ? "WAN" : "LAN") + " · " + tracker.rowNoun + " tracker"
+    ]);
+    var rows = [
+      ["Customer", p.customer || "—"],
+      ["Site", p.site || "—"],
+      ["GOLD ref", p.orderRef || "—"],
+      ["Migration date", p.target ? fmtDate(p.target) : "—"]
+    ];
+    return h("ul", { "class": "ho-proj-meta", role: "list", "aria-label": "Selected project details" },
+      [h("li", null, chip)].concat(rows.map(function (r) {
+        return h("li", null, [h("span", { "class": "ho-pk" }, r[0]), r[1]]);
+      })));
+  }
+
+  function selectProject(id) {
+    activeId = (id && findProject(id)) ? id : null;
+    if (activeId) bucket(activeId);
+    copyBoxText = null;
+    setStatus("");
+    renderPicker();
+    renderReadiness();
+    renderTracker();
+    updateSectionVisibility();
+    if (activeId) {
+      var p = activeProject();
+      announce("Loaded " + p.name + " (" + (serviceKey(p) === "wan" ? "WAN" : "LAN") + ").");
+    }
+  }
+
+  function updateSectionVisibility() {
+    var on = !!activeProject();
+    ["ho-ready-sec", "ho-track-sec", "ho-act-sec"].forEach(function (idv) { var s = $(idv); if (s) s.hidden = !on; });
+  }
+
+  /* ═══════════ READINESS ═══════════ */
+  function renderReadiness() {
+    var host = $("ho-ready-host");
+    if (!host) return;
+    clear(host);
+    var p = activeProject();
+    if (!p) return;
+    var items = readinessOf(p), b = bucket(p.id);
+
+    /* headline */
+    var outstanding = [], considered = 0, done = 0, i, s;
+    for (i = 0; i < items.length; i++) {
+      s = effStatus(p, items[i], b.checks);
+      if (s === "na") continue;
+      considered++;
+      if (s === "done") done++;
+      else outstanding.push(items[i].label);
+    }
+    var ready = outstanding.length === 0;
+    var headKids = [
+      h("span", { "aria-hidden": "true" }, ready ? "✅" : "⏳"),
+      h("span", null, ready ? "Ready for HOTO" : (outstanding.length + " item" + (outstanding.length === 1 ? "" : "s") + " outstanding")),
+      h("span", { style: "font-weight:600;font-size:13px;" }, done + " of " + considered + " done")
+    ];
+    if (!ready) {
+      headKids.push(h("ul", { "class": "ho-out-list" }, outstanding.map(function (t) { return h("li", null, t); })));
+    }
+    host.appendChild(h("div", { "class": "ho-ready-head " + (ready ? "is-ready" : "not-ready"), role: "status" }, headKids));
+
+    /* item list */
+    var list = h("ul", { "class": "ho-items" }, items.map(function (item) { return readinessRow(p, item, b); }));
+    host.appendChild(h("fieldset", { "class": "ho-fieldset" }, [
+      h("legend", null, "Pack completeness"),
+      list
+    ]));
+  }
+
+  function readinessRow(p, item, b) {
+    var cur = effStatus(p, item, b.checks);   /* "done" | "na" | "" */
+    var name = "ho-st-" + item.id;
+    var main = [
+      h("div", { "class": "ho-item-label" }, item.label),
+      item.detail ? h("div", { "class": "ho-item-detail" }, item.detail) : null
+    ];
+    if (item.stepId) main.push(h("span", { "class": "ho-from" }, "from your checklist"));
+
+    function seg(val, label, cls) {
+      var checked = cur === val;
+      var id = name + "-" + (val || "out");
+      return h("label", { "class": cls + (checked ? " sel-" + (val === "done" ? "done" : val === "na" ? "na" : "out") : ""), "for": id }, [
+        h("input", { type: "radio", name: name, id: id, value: val, checked: checked,
+          onchange: function () { setItemStatus(p, item, b, val); } }),
+        h("span", null, label)
+      ]);
+    }
+    var seg3 = h("div", { "class": "ho-seg", role: "group", "aria-label": "Status for: " + item.label }, [
+      seg("done", "Done"),
+      seg("", "Outstanding"),
+      seg("na", "N/A")
+    ]);
+    return h("li", { "class": "ho-item" }, [
+      h("div", { "class": "ho-item-main" }, main),
+      seg3
+    ]);
+  }
+
+  function setItemStatus(p, item, b, val) {
+    /* keep live auto-reflection: if the chosen value equals the checklist-derived
+       default (for a stepId item with no override), clear the override instead. */
+    if (item.stepId) {
+      var auto = autoDone(p, item) ? "done" : "";
+      if (val === auto) { if (hasOwn.call(b.checks, item.id)) delete b.checks[item.id]; }
+      else b.checks[item.id] = val;
+    } else {
+      if (val === "") delete b.checks[item.id];
+      else b.checks[item.id] = val;
+    }
+    saveSoon();
+    renderReadiness();
+    setStatus("");
+  }
+
+  /* ═══════════ TRACKER ═══════════ */
+  function renderTracker() {
+    var host = $("ho-track-host");
+    if (!host) return;
+    clear(host);
+    var p = activeProject();
+    if (!p) return;
+    var tracker = trackerOf(p), b = bucket(p.id), cols = tracker.columns;
+
+    var lead = $("ho-track-lead");
+    if (lead) lead.textContent = "Fill in one row per " + tracker.rowNoun + ". Add, duplicate or delete rows. Everything is saved only in this browser.";
+
+    host.appendChild(h("p", { "class": "ho-scrollhint" }, "The tracker has many columns — scroll it sideways to see them all →"));
+
+    if (!b.rows.length) {
+      host.appendChild(h("div", { "class": "ho-tablewrap" }, h("div", { "class": "ho-tbl-empty" }, "No " + tracker.rowNoun + "s yet. Use “Add " + tracker.rowNoun + "” below — the first row is pre-filled from the project where it makes sense.")));
+    } else {
+      host.appendChild(h("div", { "class": "ho-tablewrap" }, buildTable(p, tracker, b)));
+    }
+
+    host.appendChild(h("div", { "class": "ho-tbl-toolbar" }, [
+      h("button", { type: "button", "class": "ho-btn ho-btn-primary ho-btn-sm", onclick: function () { addRow(p, b); } }, [ico("＋"), "Add " + tracker.rowNoun]),
+      h("span", { "class": "ho-tbl-count" }, b.rows.length + " " + tracker.rowNoun + (b.rows.length === 1 ? "" : "s"))
+    ]));
+  }
+
+  function buildTable(p, tracker, b) {
+    var cols = tracker.columns;
+    var head = h("tr", null, [h("th", { scope: "col", "class": "ho-th-rownum" }, "#")]
+      .concat(cols.map(function (c) { return h("th", { scope: "col" }, c.label); }))
+      .concat([h("th", { scope: "col" }, "Row")]));
+    var body = b.rows.map(function (row, ri) {
+      var cells = [h("td", { "class": "ho-td-rownum" }, String(ri + 1))];
+      cols.forEach(function (col) { cells.push(h("td", null, cellInput(p, b, row, col, ri))); });
+      cells.push(h("td", { "class": "ho-td-actions" }, h("div", { "class": "ho-rowbtns" }, [
+        h("button", { type: "button", "class": "ho-iconbtn", title: "Duplicate row " + (ri + 1), "aria-label": "Duplicate row " + (ri + 1), onclick: function () { dupRow(p, b, ri); } }, "⧉"),
+        h("button", { type: "button", "class": "ho-iconbtn ho-del", title: "Delete row " + (ri + 1), "aria-label": "Delete row " + (ri + 1), onclick: function () { delRow(p, b, ri); } }, "🗑")
+      ])));
+      return h("tr", null, cells);
+    });
+    return h("table", { "class": "ho-table" }, [h("thead", null, head), h("tbody", null, body)]);
+  }
+
+  function cellInput(p, b, row, col, ri) {
+    var val = hasOwn.call(row, col.key) ? row[col.key] : "";
+    var lbl = col.label + " for row " + (ri + 1);
+    if (col.type === "select") {
+      var opts = [h("option", { value: "" }, "—")].concat((col.options || []).map(function (o) {
+        return h("option", { value: o, selected: val === o }, o);
+      }));
+      return h("select", { "aria-label": lbl, onchange: function (e) { row[col.key] = e.target.value; saveSoon(); } }, opts);
+    }
+    var type = col.type === "date" ? "date" : "text";
+    return h("input", { type: type, "aria-label": lbl, value: typeof val === "string" ? val : "",
+      oninput: function (e) { row[col.key] = e.target.value.slice(0, MAX_CELL); saveSoon(); } });
+  }
+
+  /* prefill obvious columns from the project (LAN + WAN) */
+  function prefillRow(p) {
+    var svc = serviceKey(p), row = {};
+    if (svc === "wan") {
+      if (p.orderRef) row.goldOrder = p.orderRef;
+      if (p.target) row.migrationDate = p.target;
+      if (p.site) row.site = p.site;
+    } else {
+      if (p.orderRef) row.goldRef = p.orderRef;
+      if (p.target) row.goLiveDate = p.target;
+      if (p.pm) row.projectManager = p.pm;
+      if (p.site) row.siteAddress = p.site;
+    }
+    return row;
+  }
+
+  function addRow(p, b) {
+    if (b.rows.length >= MAX_ROWS) { setStatus("You have reached the maximum of " + MAX_ROWS + " rows.", "err"); return; }
+    /* pre-fill only the very first row so later rows start blank */
+    b.rows.push(b.rows.length === 0 ? prefillRow(p) : {});
+    save();
+    renderTracker();
+    announce("Row " + b.rows.length + " added.");
+    /* focus the first field of the new row */
+    var host = $("ho-track-host");
+    var inputs = host ? host.querySelectorAll("tbody tr:last-child input, tbody tr:last-child select") : null;
+    if (inputs && inputs.length) { try { inputs[0].focus(); } catch (e) { /* ignore */ } }
+  }
+  function dupRow(p, b, ri) {
+    if (b.rows.length >= MAX_ROWS) { setStatus("You have reached the maximum of " + MAX_ROWS + " rows.", "err"); return; }
+    var src = b.rows[ri] || {}, copy = {}, k;
+    for (k in src) { if (hasOwn.call(src, k)) copy[k] = src[k]; }
+    b.rows.splice(ri + 1, 0, copy);
+    save();
+    renderTracker();
+    announce("Row " + (ri + 1) + " duplicated.");
+  }
+  function delRow(p, b, ri) {
+    var ok = true;
+    try { ok = window.confirm("Delete row " + (ri + 1) + " from the tracker? This cannot be undone."); } catch (e) { ok = true; }
+    if (!ok) return;
+    b.rows.splice(ri, 1);
+    save();
+    renderTracker();
+    announce("Row " + (ri + 1) + " deleted.");
+  }
+
+  /* ═══════════ ACTIONS ═══════════ */
+  function doExport() {
+    var p = activeProject();
+    if (!p) return;
+    var api = window.KBHotoExport;
+    if (!api || typeof api.download !== "function") {
+      setStatus("Sorry — the Excel builder didn't load, so the pack can't be exported. Reload the page and try again.", "err");
+      return;
+    }
+    var b = bucket(p.id);
+    var ok = false;
+    try { ok = api.download(p, b.rows, b.checks); } catch (e) { ok = false; }
+    if (ok) setStatus("Export started — check your downloads for the HOTO pack workbook.", "ok");
+    else setStatus("Sorry — the Excel file couldn't be created. Reload the page and try again.", "err");
+  }
+
+  function handoverNote(p) {
+    var svc = serviceKey(p) === "wan" ? "WAN" : "LAN";
+    var b = bucket(p.id), items = readinessOf(p);
+    var considered = 0, done = 0, out = [], i, s;
+    for (i = 0; i < items.length; i++) {
+      s = effStatus(p, items[i], b.checks);
+      if (s === "na") continue;
+      considered++;
+      if (s === "done") done++; else out.push(items[i].label);
+    }
+    var lines = [];
+    lines.push("Subject: HOTO — " + p.name + (p.orderRef ? " (GOLD " + p.orderRef + ")" : ""));
+    lines.push("");
+    lines.push("Hi,");
+    lines.push("");
+    lines.push("Please find the HOTO pack for the delivery below for your review and sign-off.");
+    lines.push("");
+    lines.push("Project: " + p.name);
+    if (p.customer) lines.push("Customer: " + p.customer);
+    if (p.site) lines.push("Site: " + p.site);
+    lines.push("Service: " + svc);
+    if (p.orderRef) lines.push("GOLD ref: " + p.orderRef);
+    if (p.target) lines.push("Migration date: " + fmtDate(p.target));
+    lines.push("");
+    lines.push("Readiness: " + done + " of " + considered + " items complete" + (out.length ? " — outstanding: " + out.join("; ") : " — all items complete."));
+    lines.push("");
+    lines.push("The HOTO pack (Excel) is attached, along with the HOTO document.");
+    lines.push("");
+    lines.push("Kind regards,");
+    return lines.join("\n");
+  }
+
+  function copyNote() {
+    var p = activeProject();
+    if (!p) return;
+    var text = handoverNote(p);
+    var done = function () { setStatus("Hand-over note copied to your clipboard.", "ok"); copyBoxText = null; renderCopyBox(); };
+    var fail = function () { copyBoxText = text; renderCopyBox(); setStatus("Your browser blocked copying — select the text shown and copy it.", "err"); };
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done, fail);
+        return;
+      }
+    } catch (e) { /* fall through */ }
+    fail();
+  }
+
+  function renderCopyBox() {
+    var host = $("ho-copybox-host");
+    if (!host) return;
+    clear(host);
+    if (copyBoxText === null) return;
+    host.appendChild(h("div", { "class": "ho-copybox" }, [
+      h("label", { "for": "ho-copy-ta" }, "Select the text below and copy it (Ctrl+C, or ⌘C on a Mac):"),
+      h("textarea", { id: "ho-copy-ta", rows: "12", readonly: true, value: copyBoxText }),
+      h("button", { type: "button", "class": "ho-btn ho-btn-sm", onclick: function () { copyBoxText = null; renderCopyBox(); } }, "Close")
+    ]));
+    var ta = $("ho-copy-ta");
+    if (ta) { try { ta.focus(); ta.select(); } catch (e) { /* ignore */ } }
+  }
+
+  /* ---------- deep link: hoto.html?project=<id> ---------- */
+  function deepLink() {
+    var m = /[?&]project=([A-Za-z0-9_-]+)/.exec(location.search || "");
+    if (!m) return;
+    if (findProject(m[1])) selectProject(m[1]);
+  }
+
+  /* ---------- boot ---------- */
+  function init() {
+    if (!DATA || !DATA.trackers || !DATA.readiness) {
+      var host = $("ho-pick-host");
+      if (host) host.appendChild(h("div", { "class": "alert orange" }, [
+        h("span", { "class": "alert-icon", "aria-hidden": "true" }, "⚠️"),
+        h("p", null, "The HOTO data (hoto-data.js) didn't load, so the builder can't be shown. Refresh the page — if it keeps happening, let the Onboarding squad know.")
+      ]));
+      return;
+    }
+    readStore();
+    projects = readProjects();
+    renderStorageNotice();
+    renderPicker();
+    renderReadiness();
+    renderTracker();
+    updateSectionVisibility();
+    deepLink();
+
+    var ex = $("ho-export"); if (ex) ex.addEventListener("click", doExport);
+    var cp = $("ho-copy"); if (cp) cp.addEventListener("click", copyNote);
+    window.addEventListener("pagehide", function () { clearTimeout(saveTimer); save(); });
+  }
+
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
+  else init();
+})();
+</script>
+<script src="shared.js"></script>
+</body>
+</html>
