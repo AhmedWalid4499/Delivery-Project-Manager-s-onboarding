@@ -34,6 +34,14 @@
 ═══════════════════════════════════════════════════════════ */
 window.KB_WHATS_NEW = [
 
+  /* ── 6 Oct 2026 ──────────────────────────────────────────── */
+  {
+    date: '2026-10-06', tag: 'New',
+    title: 'Ask the DPM Assistant',
+    desc: 'A built-in AI chat on every page (bring your own Anthropic API key) that explains anything on the site in plain language. Open it from the round button in the bottom-right corner, add your key once (it stays in your browser), and ask about the page you are on or any networking or delivery term. Answers stream in and are formatted like ChatGPT or Claude.',
+    links: []
+  },
+
   /* ── 30 Sep 2026 ─────────────────────────────────────────── */
   {
     date: '2026-09-30', tag: 'New',

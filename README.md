@@ -155,9 +155,10 @@ All pages sit in the repository root. The build script only indexes root-level `
 | File | Purpose |
 |---|---|
 | `shared.css` | All shared styles and the design tokens (`:root`). |
-| `shared.js` | The last script on every page. It loads `search.js` and `kb-ui.js`, and holds small helpers used by `wireless.html` (vendor tabs, port tooltips). It also contains a `NAV_HTML` template that **no page uses** (see [Editing a page](#editing-a-page)). |
+| `shared.js` | The last script on every page. It loads `search.js`, `kb-ui.js` and `assistant.js`, and holds small helpers used by `wireless.html` (vendor tabs, port tooltips). It also contains a `NAV_HTML` template that **no page uses** (see [Editing a page](#editing-a-page)). |
 | `kb-ui.js` | Experience layer added to every page: hero search button, themed hero background icons (`PAGE_ICONS`), heading anchors, the "On this page" contents box, reading progress bar, back-to-top button, table wrappers, code copy buttons, mobile menu, reveal-on-scroll, and the "Updated … · What's new" stamp. |
 | `search.js` | Site search: a "Search" pill in the nav, and an overlay opened with Ctrl K or any `[data-kb-open]` / `[data-kbq]` element. Reads `search-index.json`. |
+| `assistant.js` | AI assistant: a floating "Ask the DPM Assistant" button (bottom-right) on every page that opens a chat. Each user brings their own Anthropic API key; answers stream in and render as Markdown. See [AI assistant](#ai-assistant-assistantjs). |
 | `panel-data.js` | `window.KB_PANELS`: the front/rear port inventory of every device drawn on `cisco.html`, `paloalto.html` and `fortinet.html`, taken from the vendor data sheet or hardware installation guide cited in each entry. The header comment explains how to add or edit a device and the numbering rules (odd ports on the top row, even below, in groups of 12). |
 | `panels.js` | `window.KBPanels`: on DOM ready it draws every `<div class="port-diagram-wrap" data-panel="<id>">` from `panel-data.js` as a realistic front/rear panel (Front/Rear tabs, grouped two-row port grids, SFP/QSFP cages, module slots, PSUs, fans, legend, source link and confidence note), injecting its own scoped CSS once. Load `panel-data.js` then `panels.js` before `shared.js`. |
 | `search-index.json` | **Generated.** Full text of every page, plus every glossary term. |
@@ -261,7 +262,7 @@ The rules:
 
 ### Browser caching of scripts
 
-`shared.js` loads `search.js?v=5` and `kb-ui.js?v=10`. **When you change `search.js` or `kb-ui.js`, increase that number in `shared.js`** so that browsers fetch the new copy. Other files are not versioned. If an edit doesn't show up, do a hard refresh (Ctrl F5).
+`shared.js` loads `search.js?v=5`, `kb-ui.js?v=10` and `assistant.js?v=1`. **When you change `search.js`, `kb-ui.js` or `assistant.js`, increase that number in `shared.js`** so that browsers fetch the new copy. Other files are not versioned. If an edit doesn't show up, do a hard refresh (Ctrl F5).
 
 ### Before you push
 
@@ -442,6 +443,18 @@ The `updated` value is set like this:
 
 If the file is missing, both features hide themselves quietly. **Don't edit it by hand.** It is regenerated on every push.
 
+### AI assistant (`assistant.js`)
+
+`assistant.js` adds a floating **"Ask the DPM Assistant"** button in the bottom-right corner of every page (bootstrapped by `shared.js`, after `kb-ui.js`, so there are no per-page edits). It opens a chat panel that can explain anything on the site — networking, the delivery process, the tools — in plain language. The current page's title, path and main readable text are sent as context with each question, so the assistant can help the reader understand what they are looking at. Answers **stream in** and render as Markdown (headings, bold, lists, inline code, fenced code blocks with a copy button), like ChatGPT or Claude.
+
+**Bring your own key.** The assistant has no shared or built-in key — the repository is public, so none can be committed. Each reader opens the panel, enters **their own personal Anthropic API key** and, optionally, a **workspace id (workid)**, and picks a model. All of this is stored only in their own browser (see [Browser storage](#browser-storage)); nothing is sent anywhere except directly from their browser to Anthropic.
+
+- **How a request is made.** It calls `POST https://api.anthropic.com/v1/messages` with `x-api-key`, `anthropic-version: 2023-06-01` and, crucially, **`anthropic-dangerous-direct-browser-access: true`** — without that last header the browser blocks the call with a CORS error. The optional **workid** is sent as `metadata.user_id` on each request to tag usage. The endpoint can be overridden under **Advanced**, defaulting to the address above.
+- **Models offered.** Claude Opus 5.5 (`claude-opus-5-5`, default, most capable), Claude Sonnet 5 (`claude-sonnet-5`, balanced) and Claude Haiku 4.5 (`claude-haiku-4-5`, fastest).
+- **Security caveats.** The key is stored in `localStorage` (`dpmkb_assistant_cfg`) **in plain text**, where any script on the same origin — and anyone with access to the browser — can read it. The panel's settings make this clear and offer a **Clear key** button. Readers should use their own personal key, never a shared or production one. Because the repository is public, never hard-code a key, a workspace id or an endpoint in `assistant.js`.
+- **To change the persona or the models.** Edit `assistant.js`: `PERSONA` is the system prompt that sets how the assistant answers (plain-language, British English, no invented Orange-internal specifics); `MODELS` / `DEFAULT_MODEL` are the models in the settings dropdown. The Markdown renderer is a small, dependency-free function in the same file that escapes all model output before formatting and only turns `http(s)` URLs into links. After editing, bump `assistant.js?v=` in `shared.js` (see [Browser caching of scripts](#browser-caching-of-scripts)).
+- **No libraries, ES5-friendly.** Like the other scripts it uses no frameworks and is written to pass the Chakra ES5 check, although it relies on the real browser for `fetch` streaming, `AbortController` and `TextDecoder`.
+
 ---
 
 ## Live editors (squads and glossary)
@@ -619,6 +632,9 @@ Everything the site stores lives only in the viewer's own browser (per device an
 | `dpmkb_tpl_panel` | `templates.html` | Whether the template fields panel is `open` or `closed`. |
 | `dpmkb_tpl_probe` | `templates.html` | A test value, written and removed at once. |
 | `dpmkb_gh_token` | `squad-data.js`, `glossary-data.js` | The GitHub token for the live editors, in plain text (see [Security recommendations](#security-recommendations)). |
+| `dpmkb_assistant_cfg` | `assistant.js` | The AI assistant's config: the reader's Anthropic API key (plain text), workspace id, chosen model and endpoint (see [AI assistant](#ai-assistant-assistantjs)). |
+| `dpmkb_assistant_thread` | `assistant.js` | The current assistant conversation (the last ~24 messages), so the chat continues as the reader moves between pages. Cleared by "New chat". |
+| `dpmkb_assistant_seen` | `assistant.js` | A flag that the reader has opened the assistant once (hides the welcome dot). |
 | `dpmkb_pending_adds` | `squad-data.js` | Squad members added from this browser, shown straight away. They are never cleared automatically. |
 | `dpmkb_pending_glossary` | `glossary-data.js` | Glossary terms added from this browser. They are never cleared automatically. |
 

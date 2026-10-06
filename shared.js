@@ -142,3 +142,18 @@ document.addEventListener('DOMContentLoaded', function () {
   s.defer = true;
   document.head.appendChild(s);
 })();
+
+/* ── BOOTSTRAP AI ASSISTANT ─────────────────────────────────
+   Loads assistant.js on every page (it injects the floating
+   "Ask the DPM Assistant" button + chat panel, bottom-right).
+   Kept as a separate file so the assistant can be updated
+   independently. Loaded after kb-ui.js.
+─────────────────────────────────────────────────────────── */
+(function () {
+  if (document.getElementById('kb-assistant-js')) return;
+  var s = document.createElement('script');
+  s.id = 'kb-assistant-js';
+  s.src = 'assistant.js?v=1';
+  s.defer = true;
+  document.head.appendChild(s);
+})();
