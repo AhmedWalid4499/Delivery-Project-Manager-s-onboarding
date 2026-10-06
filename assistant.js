@@ -390,8 +390,8 @@
           '</div>' +
           '<div class="kba-field">' +
             '<label for="kba-workid">Workspace ID (workid)</label>' +
-            '<input id="kba-workid" type="text" autocomplete="off" spellcheck="false" placeholder="optional" value="' + esc(cfg.workid) + '">' +
-            '<p class="kba-help">Sent with each request to tag usage; leave blank if you do not have one.</p>' +
+            '<input id="kba-workid" type="text" autocomplete="off" spellcheck="false" placeholder="wrkspc_… (required if your key is not workspace-scoped)" value="' + esc(cfg.workid) + '">' +
+            '<p class="kba-help">Sent as the anthropic-workspace-id header. Required when your API key is not tied to a workspace; leave blank only if your key is already workspace-scoped.</p>' +
           '</div>' +
           '<div class="kba-field">' +
             '<label for="kba-model">Model</label>' +
@@ -615,14 +615,16 @@
       messages: threadToMessages(),
       stream: true
     };
-    if (cfg.workid && cfg.workid.replace(/\s+/g, "")) body.metadata = { user_id: cfg.workid };
-
     var headers = {
       "content-type": "application/json",
       "x-api-key": cfg.apiKey,
       "anthropic-version": "2023-06-01",
       "anthropic-dangerous-direct-browser-access": "true"
     };
+    // A key that is not scoped to a workspace must identify the workspace via
+    // this header; a workspace-scoped key ignores it. Sent only when set.
+    var wid = cfg.workid && cfg.workid.replace(/\s+/g, "");
+    if (wid) headers["anthropic-workspace-id"] = wid;
 
     var opts = { method: "POST", headers: headers, body: JSON.stringify(body) };
     if (controller) opts.signal = controller.signal;
