@@ -56,7 +56,7 @@
     { id: "claude-sonnet-5", label: "Claude Sonnet 5 (balanced)" },
     { id: "claude-haiku-4-5", label: "Claude Haiku 4.5 (fastest)" }
   ];
-  var PERSONA = "You are the DPM Assistant, a helpful AI built into the Orange Business DPM Knowledge Base, an onboarding site for Delivery Project Managers (DPMs). Help DPMs UNDERSTAND technical networking and delivery concepts in clear, plain language: define jargon, use short paragraphs, concrete examples and step-by-step explanations when useful, and Markdown formatting (headings, bold, lists, inline code, fenced code blocks). Be accurate and concise; if you are unsure or the site does not cover it, say so. Use British English. Do NOT invent Orange-internal specifics (people, tools, URLs, figures) that are not in the provided page context.";
+  var PERSONA = "You are the DPM Assistant, a helpful AI built into the Orange Business DPM Knowledge Base, an onboarding site for Delivery Project Managers (DPMs). Help DPMs UNDERSTAND technical networking and delivery concepts in clear, plain language: define jargon, use short paragraphs, concrete examples and step-by-step explanations when useful, and Markdown formatting (headings, bold, lists, tables, inline code, fenced code blocks). Use GitHub-flavoured Markdown tables when comparing things. Be accurate and concise; use British English.\n\nUSING THE KNOWLEDGE BASE. When a \"RELEVANT KNOWLEDGE BASE PAGES\" section is provided below, answer PRIMARILY from those pages and the current page. When you rely on a page, cite it inline with a Markdown link using its path, for example [Wireless](wireless.html) or [Switching](switching.html). Only link to pages that appear in the provided list or current page context — do NOT invent pages, links, people, tools, URLs or figures that are not provided. If the Knowledge Base does not cover the question, say so briefly and then give general networking help, making clear it is general guidance.";
 
   /* panel size clamps + text-size steps */
   var MIN_W = 320, MIN_H = 380, CAP_W = 900, CAP_H = 1000;
@@ -348,17 +348,35 @@
     if (/^https?:\/\//i.test(u)) return u;
     return "";
   }
+  /* for Markdown [text](url): allow http(s) OR a bare site-relative link
+     (e.g. wireless.html, switching.html#stp, #anchor) but reject anything
+     with a scheme (javascript:, data:, mailto:…) or a protocol-relative // */
+  function safeLinkUrl(u) {
+    u = String(u == null ? "" : u).replace(/^\s+|\s+$/g, "");
+    if (!u) return "";
+    if (/^https?:\/\//i.test(u)) return u.replace(/\s+/g, "");
+    if (/[\u0000- ]/.test(u)) return "";          /* no spaces / control chars */
+    if (/^\/\//.test(u)) return "";                     /* protocol-relative */
+    if (/^[a-z][a-z0-9+.\-]*:/i.test(u)) return "";     /* any URI scheme */
+    if (/^#[\w\-]+$/.test(u)) return u;                 /* same-page anchor */
+    /* a relative page link ending in .html, optionally with #frag or ?query */
+    if (/^[\w./\-]+\.html([#?][\w.\-/=&%#]*)?$/i.test(u)) return u;
+    return "";
+  }
   function inline(raw) {
     var s = esc(raw);
     var tokens = [];
     function stash(htmlStr) { tokens.push(htmlStr); return "\u0000" + (tokens.length - 1) + "\u0000"; }
     /* inline code first, so its contents are not further formatted */
     s = s.replace(/`([^`]+)`/g, function (m, p1) { return stash("<code>" + p1 + "</code>"); });
-    /* markdown links [text](url) */
+    /* markdown links [text](url) — http(s) open in a new tab; site-relative
+       .html links (KB citations) open in the same tab */
     s = s.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, function (m, txt, url) {
-      var safe = safeUrl(url);
+      var safe = safeLinkUrl(url);
       if (!safe) return m;
-      return stash('<a href="' + esc(safe) + '" target="_blank" rel="noopener noreferrer">' + txt + "</a>");
+      var ext = /^https?:\/\//i.test(safe);
+      var attrs = ext ? ' target="_blank" rel="noopener noreferrer"' : "";
+      return stash('<a href="' + esc(safe) + '"' + attrs + ">" + txt + "</a>");
     });
     /* bare URLs (http/https only) */
     s = s.replace(/(^|[\s(])(https?:\/\/[^\s<]+)/g, function (m, pre, url) {
@@ -381,6 +399,51 @@
     return '<div class="kba-codewrap">' + langLabel +
       '<div class="code-block"><pre>' + esc(code) + "</pre></div>" +
       '<button type="button" class="kba-copy" aria-label="Copy code">Copy</button></div>';
+  }
+  /* ---- GitHub-flavoured pipe tables ---- */
+  function splitRow(line) {
+    var s = String(line == null ? "" : line);
+    s = s.replace(/^\s*\|/, "").replace(/\|\s*$/, "");
+    var cells = s.split("|");
+    var out = [];
+    for (var i = 0; i < cells.length; i++) out.push(cells[i].replace(/^\s+|\s+$/g, ""));
+    return out;
+  }
+  function looksLikeRow(line) { return String(line == null ? "" : line).indexOf("|") >= 0; }
+  /* a delimiter row: has a pipe and every cell is like ---, :--, --:, :-: */
+  function isDelimRow(line) {
+    if (String(line == null ? "" : line).indexOf("|") < 0) return false;
+    var cells = splitRow(line);
+    if (!cells.length) return false;
+    for (var i = 0; i < cells.length; i++) if (!/^:?-+:?$/.test(cells[i])) return false;
+    return true;
+  }
+  function colAligns(delimCells) {
+    var a = [];
+    for (var i = 0; i < delimCells.length; i++) {
+      var c = delimCells[i];
+      var left = c.charAt(0) === ":";
+      var right = c.charAt(c.length - 1) === ":";
+      a.push((left && right) ? "center" : right ? "right" : left ? "left" : "");
+    }
+    return a;
+  }
+  function tableHTML(header, al, rows) {
+    function alStyle(i) { return (al[i]) ? ' style="text-align:' + al[i] + '"' : ""; }
+    var h = '<div class="kba-tablewrap"><table class="kba-table"><thead><tr>';
+    for (var i = 0; i < header.length; i++) h += "<th" + alStyle(i) + ">" + inline(header[i]) + "</th>";
+    h += "</tr></thead><tbody>";
+    for (var r = 0; r < rows.length; r++) {
+      h += "<tr>";
+      var cells = rows[r];
+      for (var c = 0; c < header.length; c++) {
+        var val = c < cells.length ? cells[c] : "";
+        h += "<td" + alStyle(c) + ">" + inline(val) + "</td>";
+      }
+      h += "</tr>";
+    }
+    h += "</tbody></table></div>";
+    return h;
   }
   function mdToHtml(text) {
     text = String(text == null ? "" : text).replace(/\r\n?/g, "\n");
@@ -428,9 +491,34 @@
         html.push("<blockquote>" + inline(q.join(" ")) + "</blockquote>");
         continue;
       }
-      /* unordered list */
+      /* GFM table: a header row immediately followed by a delimiter row.
+         Only renders when a VALID delimiter row follows — a lone "| a | b |"
+         (or a half-streamed table) falls through and renders literally. */
+      if (looksLikeRow(line) && !/^\s*$/.test(line) && i + 1 < lines.length && isDelimRow(lines[i + 1])) {
+        flushPara(); closeList();
+        var header = splitRow(line);
+        var al = colAligns(splitRow(lines[i + 1]));
+        i += 2;
+        var trows = [];
+        while (i < lines.length && looksLikeRow(lines[i]) && !/^\s*$/.test(lines[i]) && !/^\s*```/.test(lines[i])) {
+          trows.push(splitRow(lines[i]));
+          i++;
+        }
+        html.push(tableHTML(header, al, trows));
+        continue;
+      }
+      /* unordered list (incl. GFM task list items [ ] / [x]) */
       var ul = /^\s*[-*]\s+(.*)$/.exec(line);
-      if (ul) { flushPara(); openList("ul"); html.push("<li>" + inline(ul[1]) + "</li>"); i++; continue; }
+      if (ul) {
+        flushPara(); openList("ul");
+        var task = /^\[([ xX])\]\s+(.*)$/.exec(ul[1]);
+        if (task) {
+          html.push('<li class="kba-task"><input type="checkbox" disabled' + (task[1].toLowerCase() === "x" ? " checked" : "") + "> " + inline(task[2]) + "</li>");
+        } else {
+          html.push("<li>" + inline(ul[1]) + "</li>");
+        }
+        i++; continue;
+      }
       /* ordered list */
       var ol = /^\s*\d+[.)]\s+(.*)$/.exec(line);
       if (ol) { flushPara(); openList("ol"); html.push("<li>" + inline(ol[1]) + "</li>"); i++; continue; }
@@ -455,11 +543,133 @@
     );
     for (var j = 0; j < junk.length; j++) { if (junk[j].parentNode) junk[j].parentNode.removeChild(junk[j]); }
     var txt = (clone.textContent || "").replace(/\s+/g, " ").replace(/\u0000/g, "").trim();
-    if (txt.length > 6000) txt = txt.slice(0, 6000);
+    /* kept a bit smaller now that retrieved KB pages share the system prompt */
+    if (txt.length > 4000) txt = txt.slice(0, 4000);
     return txt;
   }
-  function buildSystem() {
+
+  /* ---------- knowledge-base retrieval (search the whole site) ----------
+     Fetches search-index.json ONCE and caches it. For each user message we
+     score the index the same way site search does and add the most relevant
+     pages to the system prompt, so the assistant can answer from (and cite)
+     the whole Knowledge Base, not just the current page. All defensive: if
+     the index can't be loaded, we fall back silently to current-page-only
+     context, exactly as before. */
+  var kbIndex = null;         /* array of entries, or null if unavailable */
+  var kbIndexState = 0;       /* 0 = not started, 1 = loading, 2 = settled */
+  var kbIndexCbs = [];
+  var lastRetrieved = [];     /* pages retrieved for the current answer (for the chips) */
+
+  function flushKbIndex() {
+    var f = kbIndexCbs; kbIndexCbs = [];
+    for (var i = 0; i < f.length; i++) { try { f[i](); } catch (e) { /* ignore */ } }
+  }
+  function ensureKbIndex(cb) {
+    if (kbIndexState === 2) { if (cb) cb(); return; }
+    if (cb) kbIndexCbs.push(cb);
+    if (kbIndexState === 1) return;
+    kbIndexState = 1;
+    try {
+      window.fetch("search-index.json", { cache: "no-cache" })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (d) { kbIndex = (d && typeof d.length === "number") ? d : null; kbIndexState = 2; flushKbIndex(); })
+        ["catch"](function () { kbIndex = null; kbIndexState = 2; flushKbIndex(); });
+    } catch (e) { kbIndex = null; kbIndexState = 2; flushKbIndex(); }
+  }
+
+  function kbTokenize(q) {
+    var m = String(q == null ? "" : q).toLowerCase().match(/[a-z0-9]+/g) || [];
+    var out = [];
+    for (var i = 0; i < m.length; i++) if (m[i].length >= 2) out.push(m[i]);
+    return out;
+  }
+  /* same idea as search.js score(): title weighted high, then headings, then body */
+  function kbScore(e, toks, raw) {
+    var title = (e.t || "").toLowerCase();
+    var heads = (e.h || []).join(" ").toLowerCase();
+    var text = (e.x || "").toLowerCase();
+    var s = 0;
+    if (raw.length >= 2) {
+      if (title === raw) s += 500;
+      else if (title.indexOf(raw) >= 0) s += 180;
+      if (heads.indexOf(raw) >= 0) s += 45;
+      if (text.indexOf(raw) >= 0) s += 25;
+    }
+    for (var i = 0; i < toks.length; i++) {
+      var t = toks[i], ti = title.indexOf(t);
+      if (ti >= 0) { s += 55; if (ti === 0) s += 25; }
+      if (heads.indexOf(t) >= 0) s += 18;
+      var p = text.indexOf(t);
+      if (p >= 0) { var c = 0, f = 0; while ((f = text.indexOf(t, f)) >= 0 && c < 8) { c++; f += t.length; } s += Math.min(c, 8) * 4; }
+    }
+    return s;
+  }
+  function currentPageFile() {
+    var p = (location.pathname || "").split("/").pop();
+    return (p || "index.html").toLowerCase();
+  }
+  /* pull the most relevant ~1200-1500 chars of a page's body, preferring the
+     text around the first matching token (else the start) */
+  function kbExcerpt(e, toks, budget) {
+    var text = String(e.x || "").replace(/\s+/g, " ").replace(/^\s+|\s+$/g, "");
+    if (!text) return "";
+    var span = 1400;
+    if (span > budget) span = budget;
+    if (span < 300) span = 300;
+    if (e.c === "Glossary") return text.length > span ? text.slice(0, span) : text;
+    var low = text.toLowerCase(), pos = -1;
+    for (var i = 0; i < toks.length; i++) { var p = low.indexOf(toks[i]); if (p >= 0 && (pos < 0 || p < pos)) pos = p; }
+    var start = 0;
+    if (pos > 200) start = pos - 200;
+    var out = text.slice(start, start + span);
+    if (start > 0) out = "… " + out;
+    if (start + span < text.length) out = out + " …";
+    return out.replace(/^\s+|\s+$/g, "");
+  }
+  /* top ~3-4 distinct pages for a question, excluding the current page,
+     with at most one glossary entry and a modest total context budget */
+  function kbRetrieve(query) {
+    if (!kbIndex) return [];
+    var toks = kbTokenize(query);
+    if (!toks.length) return [];
+    var raw = String(query == null ? "" : query).toLowerCase().replace(/^\s+|\s+$/g, "");
+    var here = currentPageFile();
+    var scored = [];
+    for (var i = 0; i < kbIndex.length; i++) {
+      var e = kbIndex[i];
+      if (!e || !e.u) continue;
+      var sc = kbScore(e, toks, raw);
+      if (sc > 0) scored.push([sc, e]);
+    }
+    scored.sort(function (a, b) { return b[0] - a[0]; });
+    var out = [], seen = {}, glossUsed = false, budget = 5000;
+    for (var j = 0; j < scored.length && out.length < 4; j++) {
+      var ent = scored[j][1];
+      var url = String(ent.u || "");
+      var pageKey = url.split("#")[0].toLowerCase();
+      if (!pageKey || pageKey === here) continue;
+      var isGloss = ent.c === "Glossary";
+      if (isGloss) { if (glossUsed) continue; glossUsed = true; }
+      else { if (seen[pageKey]) continue; seen[pageKey] = 1; }
+      var ex = kbExcerpt(ent, toks, budget);
+      if (!ex) continue;
+      budget -= ex.length;
+      out.push({ t: ent.t || url, u: url, c: ent.c || "", x: ex });
+      if (budget <= 400) break;
+    }
+    return out;
+  }
+
+  function buildSystem(userText) {
     var s = PERSONA;
+    var pages = kbRetrieve(userText);
+    lastRetrieved = pages;
+    if (pages.length) {
+      s += "\n\nRELEVANT KNOWLEDGE BASE PAGES (use these to answer; cite the ones you rely on):";
+      for (var i = 0; i < pages.length; i++) {
+        s += "\n\n[" + (i + 1) + "] " + (pages[i].t || "") + "  (link: " + pages[i].u + ")\n" + pages[i].x;
+      }
+    }
     s += "\n\nCURRENT PAGE CONTEXT\nTitle: " + (document.title || "") + "\nPath: " + (location.pathname || "") +
       "\n\nMain readable text of the page the reader is on:\n" + pageContext();
     return s;
@@ -484,6 +694,7 @@
   var open = false, streaming = false, controller = null, rafPending = false;
   var assistantBubble = null, assistantText = "";
   var lastFocus = null, resizing = false;
+  var pendingAsk = "";   /* a question waiting for a key to be saved (set by KBAssistant.ask) */
 
   /* ---------- SVG glyphs ---------- */
   var ICON_CHAT = '<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path><line x1="8.5" y1="11" x2="8.51" y2="11"></line><line x1="12" y1="11" x2="12.01" y2="11"></line><line x1="15.5" y1="11" x2="15.51" y2="11"></line></svg>';
@@ -916,6 +1127,13 @@
 
     renderThread();
     setStreaming(streaming);
+    /* a question that was waiting for the key to be saved: drop it into the
+       composer now that there is one (the reader presses Send themselves) */
+    if (pendingAsk && inputEl) {
+      inputEl.value = pendingAsk;
+      pendingAsk = "";
+      autoGrow();
+    }
     focusSoon(inputEl);
   }
 
@@ -1204,43 +1422,50 @@
 
     controller = (typeof AbortController !== "undefined") ? new AbortController() : null;
 
-    var body = {
-      model: cfg.model || DEFAULT_MODEL,
-      max_tokens: 4096,
-      system: buildSystem(),
-      messages: requestMessages(),
-      stream: true
-    };
-    var headers = {
-      "content-type": "application/json",
-      "x-api-key": cfg.apiKey,
-      "anthropic-version": "2023-06-01",
-      "anthropic-dangerous-direct-browser-access": "true"
-    };
-    // A key that is not scoped to a workspace must identify the workspace via
-    // this header; a workspace-scoped key ignores it. Sent only when set.
-    var wid = cfg.workid && cfg.workid.replace(/\s+/g, "");
-    if (wid) headers["anthropic-workspace-id"] = wid;
+    /* make sure the KB index is loaded (once) so retrieval can run against
+       this question; if it can't be loaded, buildSystem() falls back to the
+       current-page context on its own */
+    ensureKbIndex(function () {
+      /* if the reader hit Stop before the request started, the aborted
+         controller signal makes fetch reject immediately -> finishErr */
+      var body = {
+        model: cfg.model || DEFAULT_MODEL,
+        max_tokens: 4096,
+        system: buildSystem(text),
+        messages: requestMessages(),
+        stream: true
+      };
+      var headers = {
+        "content-type": "application/json",
+        "x-api-key": cfg.apiKey,
+        "anthropic-version": "2023-06-01",
+        "anthropic-dangerous-direct-browser-access": "true"
+      };
+      // A key that is not scoped to a workspace must identify the workspace via
+      // this header; a workspace-scoped key ignores it. Sent only when set.
+      var wid = cfg.workid && cfg.workid.replace(/\s+/g, "");
+      if (wid) headers["anthropic-workspace-id"] = wid;
 
-    var opts = { method: "POST", headers: headers, body: JSON.stringify(body) };
-    if (controller) opts.signal = controller.signal;
+      var opts = { method: "POST", headers: headers, body: JSON.stringify(body) };
+      if (controller) opts.signal = controller.signal;
 
-    window.fetch(cfg.endpoint || DEFAULT_ENDPOINT, opts)
-      .then(function (resp) {
-        if (!resp.ok) {
-          return resp.text().then(function (t) {
-            var msg;
-            try { var j = JSON.parse(t); msg = friendly(resp.status, j && j.error); }
-            catch (e) { msg = friendly(resp.status, null); }
-            throw { handled: true, message: msg };
-          });
-        }
-        if (resp.body && resp.body.getReader) return pump(resp.body.getReader());
-        /* fallback: no streaming support */
-        return resp.text().then(function (t) { parseSSE(t); });
-      })
-      .then(function () { finishOk(); })
-      ["catch"](function (err) { finishErr(err); });
+      window.fetch(cfg.endpoint || DEFAULT_ENDPOINT, opts)
+        .then(function (resp) {
+          if (!resp.ok) {
+            return resp.text().then(function (t) {
+              var msg;
+              try { var j = JSON.parse(t); msg = friendly(resp.status, j && j.error); }
+              catch (e) { msg = friendly(resp.status, null); }
+              throw { handled: true, message: msg };
+            });
+          }
+          if (resp.body && resp.body.getReader) return pump(resp.body.getReader());
+          /* fallback: no streaming support */
+          return resp.text().then(function (t) { parseSSE(t); });
+        })
+        .then(function () { finishOk(); })
+        ["catch"](function (err) { finishErr(err); });
+    });
   }
 
   function pump(reader) {
@@ -1293,11 +1518,28 @@
     /* message_start / content_block_start / message_delta / message_stop / ping: ignore */
   }
 
+  /* a small "Pages searched" row of chips under a completed answer (only
+     when pages were retrieved); escaped + keyboard-accessible links */
+  function pagesSearchedHTML(pages) {
+    if (!pages || !pages.length) return "";
+    var h = '<div class="kba-sources"><span class="kba-sources-label">Pages searched</span>';
+    var n = 0;
+    for (var i = 0; i < pages.length; i++) {
+      var href = safeLinkUrl(pages[i].u);
+      if (!href) continue;
+      h += '<a class="kba-source-chip" href="' + esc(href) + '">' + esc(pages[i].t || href) + "</a>";
+      n++;
+    }
+    h += "</div>";
+    return n ? h : "";
+  }
   function finishOk() {
     setStreaming(false);
     renderAssistant(false);
     var chat = activeChat();
     if (assistantText) {
+      var chips = pagesSearchedHTML(lastRetrieved);
+      if (chips && assistantBubble) { try { assistantBubble.insertAdjacentHTML("beforeend", chips); } catch (e) { /* ignore */ } }
       if (chat) {
         chat.messages.push({ role: "assistant", content: assistantText });
         chat.updated = Date.now();
@@ -1443,6 +1685,24 @@
       "@keyframes kba-bounce{0%,80%,100%{transform:scale(.6);opacity:.5;}40%{transform:scale(1);opacity:1;}}",
       ".kba-error{color:var(--fort-text,#B5231A);background:var(--fort-pale,#FFF0EF);border:1px solid #F3C9C5;border-radius:8px;padding:8px 10px;margin:8px 0 0;font-size:.93em;}",
       ".kba-dim{color:var(--gray-mid,#666);font-size:.93em;font-style:italic;}",
+      /* GFM tables: site .data-table look, scrollable so wide tables never overflow */
+      ".kba-tablewrap{max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;margin:8px 0;border:1px solid #E2E2E2;border-radius:8px;}",
+      ".kba-table{border-collapse:collapse;width:100%;background:#fff;font-size:.95em;}",
+      ".kba-table th{background:var(--black,#1A1A1A);color:#fff;padding:8px 11px;text-align:left;font-weight:700;font-size:.92em;white-space:nowrap;}",
+      ".kba-table td{padding:7px 11px;border-top:1px solid #F0F0F0;border-right:1px solid #F3F3F3;vertical-align:top;}",
+      ".kba-table td:last-child{border-right:none;}",
+      ".kba-table tbody tr:nth-child(even) td{background:#FAFAFA;}",
+      ".kba-table td:first-child{font-weight:600;color:var(--gray-dark,#3D3D3D);}",
+      ".kba-table p{margin:0;}",
+      /* GFM task list items */
+      ".kba-bubble li.kba-task{list-style:none;margin-left:-20px;}",
+      ".kba-bubble li.kba-task input{margin-right:8px;vertical-align:middle;accent-color:var(--orange,#FF6200);}",
+      /* "Pages searched" chips under an answer */
+      ".kba-sources{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:10px;padding-top:9px;border-top:1px dashed #E0E0E0;}",
+      ".kba-sources-label{font-size:.8em;font-weight:700;color:var(--gray-mid,#666);text-transform:uppercase;letter-spacing:.4px;}",
+      ".kba-source-chip{display:inline-block;font-size:.82em;font-weight:600;color:var(--orange-text,#B34200);background:var(--orange-faint,#FFF8F3);border:1px solid #F6DFCB;border-radius:20px;padding:3px 10px;text-decoration:none;}",
+      ".kba-source-chip:hover{background:var(--orange-pale,#FFF0E6);border-color:var(--orange,#FF6200);}",
+      ".kba-source-chip:focus-visible{outline:2px solid var(--focus-ring,#B34200);outline-offset:1px;}",
       /* footer / input */
       ".kba-footer{flex-shrink:0;display:flex;align-items:flex-end;gap:8px;padding:12px 14px;border-top:1px solid #ECECEC;background:#fff;}",
       ".kba-input{flex:1;min-width:0;resize:none;border:1.5px solid #DADADA;border-radius:12px;padding:10px 12px;font-family:var(--font,sans-serif);font-size:13.5px;line-height:1.5;color:var(--black,#1A1A1A);max-height:120px;overflow-y:auto;background:#fff;}",
@@ -1528,6 +1788,65 @@
     document.head.appendChild(s);
   }
 
+  /* ---------- public API: let the search box (and deep links) talk to us ----------
+     window.KBAssistant.open()       opens/focuses the assistant
+     window.KBAssistant.ask(text)    opens it and submits `text` as a question */
+  function apiOpen() {
+    if (mode === "page") {
+      if (hasKey()) { if (view !== "chat") showChat(); } else showSettings();
+      focusSoon(inputEl);
+      return;
+    }
+    if (!open) openPanel();
+    else if (!hasKey()) showSettings();
+    else if (view !== "chat") showChat();
+  }
+  function apiAsk(text) {
+    text = String(text == null ? "" : text).replace(/\s+/g, " ").replace(/^\s+|\s+$/g, "");
+    if (text.length > 2000) text = text.slice(0, 2000);
+    if (!text) { apiOpen(); return; }
+    apiOpen();
+    ensureActiveChat();
+    /* defer one tick so the chat view DOM (composer) exists after apiOpen() */
+    setTimeout(function () {
+      if (!hasKey()) { pendingAsk = text; showSettings(); return; }
+      if (view !== "chat") showChat();
+      if (!inputEl) return;
+      inputEl.value = text;
+      autoGrow();
+      if (!streaming) send();
+    }, 0);
+  }
+  function stripAskParam(search) {
+    if (!search) return "";
+    var parts = search.replace(/^\?/, "").split("&"), keep = [];
+    for (var i = 0; i < parts.length; i++) {
+      if (!parts[i]) continue;
+      var k = parts[i].split("=")[0];
+      if (k === "q" || k === "ask") continue;
+      keep.push(parts[i]);
+    }
+    return keep.length ? "?" + keep.join("&") : "";
+  }
+  /* read ?q= / ?ask= once on load, ask it, then strip it from the URL so a
+     refresh doesn't resend */
+  function consumeAskParam() {
+    try {
+      var search = location.search || "";
+      var m = /[?&](?:q|ask)=([^&]*)/.exec(search);
+      if (!m) return;
+      var q = "";
+      try { q = decodeURIComponent(m[1].replace(/\+/g, " ")); } catch (e) { q = m[1]; }
+      q = String(q).replace(/^\s+|\s+$/g, "");
+      try {
+        if (window.history && history.replaceState) {
+          history.replaceState(null, "", location.pathname + stripAskParam(search) + (location.hash || ""));
+        }
+      } catch (e2) { /* ignore */ }
+      if (q) setTimeout(function () { apiAsk(q); }, 0);
+    } catch (e) { /* ignore */ }
+  }
+
   /* ---------- init ---------- */
   function isPageMode() {
     var b = document.body;
@@ -1547,6 +1866,11 @@
       injectCSS();
       if (isPageMode()) buildPage();
       else build();
+      /* expose the API as soon as we are initialised, warm the KB index, and
+         honour a ?q= / ?ask= deep link (especially on assistant.html) */
+      window.KBAssistant = { open: apiOpen, ask: apiAsk };
+      ensureKbIndex();
+      consumeAskParam();
     } catch (e) { /* never break the page */ }
   }
   ready(init);

@@ -37,6 +37,12 @@ window.KB_WHATS_NEW = [
   /* ── 6 Oct 2026 ──────────────────────────────────────────── */
   {
     date: '2026-10-06', tag: 'Improved',
+    title: 'The assistant now searches the Knowledge Base, and you can ask it from search',
+    desc: 'The AI assistant now searches the Knowledge Base and cites the pages it uses, you can ask it straight from the search box (press Ctrl K, type your question and pick “Ask the DPM Assistant”), and its answers render tables, code and lists properly. Behind the scenes it reads the same search index as site search, so its answers are grounded in the site and link to the pages they draw on.',
+    links: [{ href: 'assistant.html', label: 'Open the assistant' }]
+  },
+  {
+    date: '2026-10-06', tag: 'Improved',
     title: 'A bigger, easier-to-read assistant — with saved chats and a full chat window',
     desc: 'The AI assistant can now be resized and its text enlarged, keeps multiple saved chats, and opens in a full chat window. Drag the top-left corner of the panel to make it bigger or smaller, or hit maximize; bump the text size with A-/A+; and keep as many separate conversations as you like — switch, rename or delete them from the Chats list. Open assistant.html for a full-window, two-pane version. Everything is saved only in this browser on this device.',
     links: [{ href: 'assistant.html', label: 'Open the full chat window' }]

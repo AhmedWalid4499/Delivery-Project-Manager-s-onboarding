@@ -44,7 +44,7 @@
     fetch("search-index.json?cb=" + Date.now())
       .then(function (r) { return r.ok ? r.json() : []; })
       .then(function (d) { INDEX = d || []; LOADED = true; flush(); })
-      .catch(function () { INDEX = []; LOADED = true; flush(); });
+      ["catch"](function () { INDEX = []; LOADED = true; flush(); });
   }
   function flush() { var f = cbs; cbs = []; f.forEach(function (fn) { fn(); }); }
 
@@ -160,35 +160,80 @@
   }
   function setExpanded(on) { if (inp) inp.setAttribute("aria-expanded", on ? "true" : "false"); }
 
+  /* the first row on any non-empty query: hand the question to the AI assistant.
+     Its href is a working fallback (assistant.html?q=…) if the assistant JS
+     hasn't loaded yet; otherwise activateRow() calls window.KBAssistant.ask. */
+  function askRowHTML(q, idx) {
+    var fallback = "assistant.html?q=" + encodeURIComponent(q);
+    return '<a class="kbso-row kbso-ask" id="kbso-opt-' + idx + '" role="option" aria-selected="false" tabindex="-1" href="' + esc(fallback) + '" data-ask="1">' +
+        '<span class="kbso-ic kbso-ask-ic" aria-hidden="true">✨</span>' +
+        '<span class="kbso-main">' +
+          '<span class="kbso-t"><span class="kbso-tt">Ask the DPM Assistant about “' + esc(q) + '”</span><span class="kbso-cat kbso-ask-cat">Assistant</span></span>' +
+          '<span class="kbso-s">Get an AI answer that searches the Knowledge Base and cites the pages it uses.</span>' +
+        '</span>' +
+      '</a>';
+  }
+  function activateRow(row) {
+    if (!row) return;
+    if (row.getAttribute("data-ask") === "1") {
+      var q = (inp.value || "").replace(/^\s+|\s+$/g, "");
+      close();
+      if (window.KBAssistant && typeof window.KBAssistant.ask === "function") window.KBAssistant.ask(q);
+      else location.href = "assistant.html?q=" + encodeURIComponent(q);
+      return;
+    }
+    location.href = row.getAttribute("href");
+  }
+
   function render(q) {
     curToks = tokenize(q);
     inp.removeAttribute("aria-activedescendant");
     if (!q.trim()) {
-      res.innerHTML = '<div class="kbso-empty" role="presentation">Type to search the whole knowledge base — networking, vendors, the delivery process, the DPM team, and every glossary term.</div>';
+      res.innerHTML = '<div class="kbso-empty" role="presentation">Type to search the whole knowledge base — networking, vendors, the delivery process, the DPM team, and every glossary term. Or ask the DPM Assistant.</div>';
       rows = []; active = -1; setExpanded(false); say(""); return;
     }
-    if (!LOADED) { res.innerHTML = '<div class="kbso-empty" role="presentation">Loading search…</div>'; setExpanded(false); say("Loading search…"); return; }
-    var list = run(q);
-    if (!list.length) { res.innerHTML = '<div class="kbso-empty" role="presentation">No matches for “' + esc(q) + '”. Try a different word.</div>'; rows = []; active = -1; setExpanded(false); say("No matches for “" + q + "”"); return; }
-    var html = "";
-    for (var i = 0; i < list.length; i++) {
-      var e = list[i], m = CAT[e.c] || CAT.Page;
-      html +=
-        '<a class="kbso-row' + (i === 0 ? " on" : "") + '" id="kbso-opt-' + i + '" role="option" aria-selected="' + (i === 0 ? "true" : "false") + '" tabindex="-1" href="' + esc(e.u) + '" data-i="' + i + '">' +
-          '<span class="kbso-ic" aria-hidden="true" style="background:' + m.c + '22;color:' + m.c + '">' + m.i + '</span>' +
-          '<span class="kbso-main">' +
-            '<span class="kbso-t"><span class="kbso-tt">' + hl(e.t, curToks) + '</span><span class="kbso-cat" style="color:' + m.t + '">' + esc(e.c) + '</span></span>' +
-            '<span class="kbso-s">' + hl(snip(e, curToks), curToks) + '</span>' +
-          '</span>' +
-        '</a>';
+    /* the AI hand-off row is always first on a non-empty query */
+    var html = askRowHTML(q, 0);
+    var list = LOADED ? run(q) : [];
+    var sayMsg;
+    if (!LOADED) {
+      html += '<div class="kbso-empty" role="presentation">Searching pages…</div>';
+      sayMsg = "Searching pages. You can also ask the DPM Assistant.";
+    } else if (!list.length) {
+      html += '<div class="kbso-empty" role="presentation">No page matches for “' + esc(q) + '”. Try a different word, or ask the DPM Assistant above.</div>';
+      sayMsg = "No page matches for " + q + ". You can ask the DPM Assistant above. Press Enter.";
+    } else {
+      for (var i = 0; i < list.length; i++) {
+        var e = list[i], m = CAT[e.c] || CAT.Page, idx = i + 1;
+        html +=
+          '<a class="kbso-row" id="kbso-opt-' + idx + '" role="option" aria-selected="false" tabindex="-1" href="' + esc(e.u) + '" data-i="' + idx + '">' +
+            '<span class="kbso-ic" aria-hidden="true" style="background:' + m.c + '22;color:' + m.c + '">' + m.i + '</span>' +
+            '<span class="kbso-main">' +
+              '<span class="kbso-t"><span class="kbso-tt">' + hl(e.t, curToks) + '</span><span class="kbso-cat" style="color:' + m.t + '">' + esc(e.c) + '</span></span>' +
+              '<span class="kbso-s">' + hl(snip(e, curToks), curToks) + '</span>' +
+            '</span>' +
+          '</a>';
+      }
+      sayMsg = list.length + (list.length === 1 ? " result" : " results") + ", plus Ask the DPM Assistant. Use up and down arrows to review, Enter to open.";
     }
     res.innerHTML = html;
     rows = [].slice.call(res.querySelectorAll(".kbso-row"));
-    active = rows.length ? 0 : -1;
-    rows.forEach(function (r, i) { r.addEventListener("mouseenter", function () { setActive(i); }); });
-    setExpanded(true);
-    if (rows[0]) inp.setAttribute("aria-activedescendant", rows[0].id);
-    say(list.length + (list.length === 1 ? " result" : " results") + ". Use up and down arrows to review, Enter to open.");
+    /* default selection: the top PAGE result when there is one (so Enter still
+       opens the best page, as before), otherwise the Ask row */
+    active = rows.length ? (list.length ? 1 : 0) : -1;
+    rows.forEach(function (r, i) {
+      r.addEventListener("mouseenter", function () { setActive(i); });
+      if (r.getAttribute("data-ask") === "1") {
+        r.addEventListener("click", function (ev) { ev.preventDefault(); activateRow(r); });
+      }
+    });
+    setExpanded(rows.length > 0);
+    if (rows[active]) {
+      rows[active].classList.add("on");
+      rows[active].setAttribute("aria-selected", "true");
+      inp.setAttribute("aria-activedescendant", rows[active].id);
+    }
+    say(sayMsg);
   }
 
   function setActive(i) {
@@ -200,7 +245,7 @@
   function onKey(e) {
     if (e.key === "ArrowDown") { e.preventDefault(); setActive(active + 1); }
     else if (e.key === "ArrowUp") { e.preventDefault(); setActive(active - 1); }
-    else if (e.key === "Enter") { e.preventDefault(); if (rows[active]) location.href = rows[active].getAttribute("href"); }
+    else if (e.key === "Enter") { e.preventDefault(); if (rows[active]) activateRow(rows[active]); }
     else if (e.key === "Escape") { e.preventDefault(); close(); }
   }
 
@@ -313,6 +358,12 @@
       ".kbso-row{display:flex;gap:12px;padding:11px 16px;border-bottom:1px solid #F4F4F4;text-decoration:none;align-items:flex-start;}",
       ".kbso-row:last-child{border-bottom:none;}",
       ".kbso-row.on{background:#FFE8D6;box-shadow:inset 3px 0 0 #B34200;}",
+      /* AI hand-off row: a distinct look, still an option in the listbox */
+      ".kbso-ask{background:linear-gradient(90deg,#FFF6EE,#FFFFFF);}",
+      ".kbso-ask.on{background:#FFE8D6;box-shadow:inset 3px 0 0 #B34200;}",
+      ".kbso-ask-ic{background:rgba(255,98,0,0.14) !important;color:#B34200 !important;font-size:15px;}",
+      ".kbso-ask .kbso-tt{color:#8A3300;}",
+      ".kbso-ask-cat{color:#B34200 !important;}",
       ".kbso-row:focus-visible{outline:3px solid #B34200;outline-offset:-3px;}",
       ".kbso-ic{flex-shrink:0;width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;margin-top:1px;}",
       ".kbso-main{min-width:0;flex:1;}",

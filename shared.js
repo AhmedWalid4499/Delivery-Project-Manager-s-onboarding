@@ -124,7 +124,7 @@ document.addEventListener('DOMContentLoaded', function () {
   if (document.getElementById('kb-search-js')) return;
   var s = document.createElement('script');
   s.id = 'kb-search-js';
-  s.src = 'search.js?v=5';
+  s.src = 'search.js?v=6';
   s.defer = true;
   document.head.appendChild(s);
 })();
@@ -153,7 +153,7 @@ document.addEventListener('DOMContentLoaded', function () {
   if (document.getElementById('kb-assistant-js')) return;
   var s = document.createElement('script');
   s.id = 'kb-assistant-js';
-  s.src = 'assistant.js?v=3';
+  s.src = 'assistant.js?v=4';
   s.defer = true;
   document.head.appendChild(s);
 })();
