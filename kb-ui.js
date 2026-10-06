@@ -90,7 +90,8 @@
     "templates":          ["list", "check", "book", "nodes"],
     "tools":              ["key", "server", "list", "nodes"],
     "whats-new":          ["list", "signal", "check", "book"],
-    "org-chart":          ["nodes", "globe", "list", "book"]
+    "org-chart":          ["nodes", "globe", "list", "book"],
+    "assistant":          ["book", "list", "nodes", "check"]
   };
   function heroDecor() {
     var page = (location.pathname.split("/").pop() || "index.html").replace(".html", "");

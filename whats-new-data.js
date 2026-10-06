@@ -36,6 +36,13 @@ window.KB_WHATS_NEW = [
 
   /* ── 6 Oct 2026 ──────────────────────────────────────────── */
   {
+    date: '2026-10-06', tag: 'Improved',
+    title: 'A bigger, easier-to-read assistant — with saved chats and a full chat window',
+    desc: 'The AI assistant can now be resized and its text enlarged, keeps multiple saved chats, and opens in a full chat window. Drag the top-left corner of the panel to make it bigger or smaller, or hit maximize; bump the text size with A-/A+; and keep as many separate conversations as you like — switch, rename or delete them from the Chats list. Open assistant.html for a full-window, two-pane version. Everything is saved only in this browser on this device.',
+    links: [{ href: 'assistant.html', label: 'Open the full chat window' }]
+  },
+
+  {
     date: '2026-10-06', tag: 'New',
     title: 'Ask the DPM Assistant',
     desc: 'A built-in AI chat on every page (bring your own Anthropic API key) that explains anything on the site in plain language. Open it from the round button in the bottom-right corner, add your key once (it stays in your browser), and ask about the page you are on or any networking or delivery term. Answers stream in and are formatted like ChatGPT or Claude.',

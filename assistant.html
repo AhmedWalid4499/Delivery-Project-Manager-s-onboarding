@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Assistant — DPM Knowledge Base</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="stylesheet" href="shared.css">
+<style>
+/* The full-window chat app itself is styled by assistant.js (injected CSS).
+   This page only sets the scaffold and a little breathing room around it. */
+.kba-page-intro { font-size:13.5px; color:var(--gray-mid); line-height:1.6; margin:0 0 16px; max-width:820px; }
+.kba-page-intro code { font-family:var(--mono); font-size:12px; background:var(--gray-faint); border:1px solid #E6E6E6; border-radius:5px; padding:1px 6px; color:var(--black); }
+#kb-assistant-page { min-width:0; }
+/* If scripts are blocked, say so rather than showing an empty frame. */
+.kba-noscript { font-size:14px; color:var(--gray-dark); background:var(--orange-faint); border:1px solid var(--orange-pale); border-radius:12px; padding:16px 18px; }
+</style>
+</head>
+<body data-kb-assistant="page">
+
+<nav class="topnav">
+  <a href="index.html" class="topnav-brand">
+    <div class="topnav-logo">DPM</div>
+    <div class="topnav-brand-text">Knowledge <span>Base</span></div>
+  </a>
+  <div class="topnav-links">
+    <a href="index.html"          class="nav-link">Home</a>
+    <a href="lan-wan-basics.html" class="nav-link">LAN / WAN</a>
+    <a href="ip-routing.html"     class="nav-link">IP Routing</a>
+    <a href="switching.html"      class="nav-link">Switching</a>
+    <a href="wireless.html"       class="nav-link">Wireless</a>
+    <a href="firewalls.html"      class="nav-link">Firewalls</a>
+    <a href="zscaler.html"        class="nav-link">Zscaler</a>
+    <a href="devices.html"        class="nav-link">Devices</a>
+    <a href="glossary.html"       class="nav-link">Glossary</a>
+  </div>
+  <div class="topnav-badge">New Hire Guide</div>
+</nav>
+
+<div class="breadcrumb" style="background:transparent;border:none;padding:0;"></div>
+
+<div class="page-hero dark">
+  <div class="hero-content">
+    <div class="hero-tag"><span aria-hidden="true">🤖</span> AI Assistant</div>
+    <h1>Ask Claude, <span>in a full window</span></h1>
+    <p class="hero-sub">The DPM Assistant with room to breathe — a two-pane chat window with your saved conversations down the side. Bring your own Anthropic API key; everything stays in this browser.</p>
+  </div>
+</div>
+
+<div class="content-wide">
+
+  <p class="kba-page-intro">
+    This is the same assistant as the <strong>Ask the DPM Assistant</strong> button in the corner of every page — it shares your key, settings and saved chats. Your conversations are stored only in this browser on this device (under <code>dpmkb_assistant_chats</code>); they are not synced or shared. Pick a chat on the left, or start a new one.
+  </p>
+
+  <div id="kb-assistant-page">
+    <noscript>
+      <div class="kba-noscript">The AI assistant needs JavaScript. Enable it, or use the Knowledge Base search (Ctrl K) to find what you need.</div>
+    </noscript>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <p>DPM <span>Knowledge Base</span> &nbsp;·&nbsp; Onboarding Handbook Ed.&nbsp;1.3 &nbsp;·&nbsp; Internal Use Only</p>
+</footer>
+<script src="shared.js"></script>
+</body>
+</html>
