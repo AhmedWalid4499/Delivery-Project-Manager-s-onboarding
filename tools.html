@@ -62,26 +62,34 @@
   <div class="hero-content">
     <div class="hero-tag"><span aria-hidden="true">🚀</span> Launchpad</div>
     <h1>Your tools, <span>one click</span> away</h1>
-    <p class="hero-sub">Every system a DPM uses on a delivery — from the GOLD order to the HOTO paperwork — in one place. Set your own links once and this browser remembers them.</p>
+    <p class="hero-sub">Every system a DPM uses on a delivery — from the GOLD order to the HOTO paperwork — and what each one is for.</p>
   </div>
 </div>
 
 <div class="content">
 
-  <!-- LAUNCHER -->
+  <!-- TOOLS -->
   <div class="section">
     <div class="section-header">
-      <h2>Launch a tool</h2>
+      <h2>The tools you'll use</h2>
       <div class="divider"></div>
-      <p>Grouped the same way as the handbook's Tools &amp; Systems section. A tool marked <strong>No link yet</strong> has no team default — select <strong>⚙ Set my links</strong> and paste the address you use.</p>
+      <p>Grouped the same way as the handbook's Tools &amp; Systems section. Open each from your own bookmarks or the intranet — the internal addresses aren't published here.</p>
     </div>
-    <div class="launch-wrap" data-kb-launcher="full">
-      <noscript>
-        <div class="alert orange" style="margin-bottom:0;">
-          <span class="alert-icon" aria-hidden="true">⚠️</span>
-          <p>The launcher needs JavaScript. The full list of tools and what each one is for is in the <a href="index.html#tools">Tools &amp; Systems</a> section of the home page.</p>
-        </div>
-      </noscript>
+    <p class="tbl-sub">Core delivery tools</p>
+    <div class="grid-3" style="margin-bottom:24px;">
+      <div class="card"><div class="card-icon" aria-hidden="true" style="background:var(--orange-pale);">📦</div><h3>GOLD</h3><p>Order management — where the customer order lives. You track it and close the GOLD order at the end of delivery.</p></div>
+      <div class="card"><div class="card-icon" aria-hidden="true" style="background:var(--cisco-pale);">🎫</div><h3>ServiceNow (SNOW)</h3><p>Change requests and CMDB updates (the record of what's installed) — change control around migration windows.</p></div>
+      <div class="card"><div class="card-icon" aria-hidden="true" style="background:var(--orange-pale);">🛠️</div><h3>MACHX</h3><p>Raise and manage TIM / VPO work orders that get engineering &amp; staging done. An AP job needs one raise; a Switch/WLC job needs two.</p></div>
+      <div class="card"><div class="card-icon" aria-hidden="true" style="background:var(--green-pale);">👷</div><h3>FLIP</h3><p>Book Field Engineers to attend site — used on Switch/WLC deliveries where hardware is handled on-site.</p></div>
+      <div class="card"><div class="card-icon" aria-hidden="true" style="background:var(--cisco-pale);">📡</div><h3>DNAC / Catalyst Center</h3><p>Cisco's network management platform. After migration you send the DNAC update so the new devices are managed and monitored.</p></div>
+      <div class="card"><div class="card-icon" aria-hidden="true" style="background:var(--orange-pale);">🧾</div><h3>SALTO</h3><p>The second order system — closed post-migration alongside GOLD.</p></div>
+      <div class="card"><div class="card-icon" aria-hidden="true" style="background:var(--purple-pale);">📁</div><h3>SharePoint</h3><p>Where delivery documents live — upload the HOTO document, runbook and LLD (Low-Level Design) for each project.</p></div>
+    </div>
+    <p class="tbl-sub">Reporting, time &amp; automation</p>
+    <div class="grid-3">
+      <div class="card"><div class="card-icon" aria-hidden="true" style="background:var(--gray-faint);">⏱️</div><h3>Oracle PRIME</h3><p>Time entry — logging your hours against projects.</p></div>
+      <div class="card"><div class="card-icon" aria-hidden="true" style="background:var(--gray-faint);">📊</div><h3>Power BI</h3><p>Dashboards and reporting on delivery status and KPIs.</p></div>
+      <div class="card"><div class="card-icon" aria-hidden="true" style="background:var(--gray-faint);">🤖</div><h3>Power Automate / Office Scripts</h3><p>Automating repetitive steps (reminders, data prep) — much of it built by the Automation squad.</p></div>
     </div>
   </div>
 
@@ -106,68 +114,11 @@
     </div>
   </div>
 
-  <!-- PRIVACY -->
-  <div class="section">
-    <div class="section-header">
-      <h2>Your links stay in this browser</h2>
-      <div class="divider"></div>
-      <p>Links you set are saved only in this browser.</p>
-    </div>
-    <ul class="pv-list">
-      <li><span class="pv-ic" aria-hidden="true">🔒</span>They're kept in this browser's local storage on this device (under the name <code>dpmkb_tool_links</code>). They are never sent to a server, never shared with teammates and never added to the site's repository.</li>
-      <li><span class="pv-ic" aria-hidden="true">💻</span>Another browser or computer, a private window, or clearing your browsing data means setting them again. If the browser blocks storage, the launcher tells you and keeps your links only until you leave the page.</li>
-      <li><span class="pv-ic" aria-hidden="true">🚫</span>Paste the plain address of the tool only — never a link with a password, token or session ID in it. Links with a username or password in them are refused.</li>
-      <li><span class="pv-ic" aria-hidden="true">↩️</span>To remove them: <strong>⚙ Set my links</strong>, then <strong>Reset</strong> on one tool or <strong>Clear all my links</strong>.</li>
-    </ul>
-  </div>
-
-  <!-- MAINTAINERS -->
-  <div class="section">
-    <div class="section-header">
-      <h2>For maintainers</h2>
-      <div class="divider"></div>
-      <p>How the launcher is put together, for whoever looks after the Knowledge Base.</p>
-    </div>
-    <div class="mt-body">
-      <h3>Set a team default link</h3>
-      <p>Team defaults are the links everyone sees until they set their own. They live in the <code>TOOLS</code> list at the top of <code>launcher.js</code> — one entry per tool, and its <code>url</code> field is the team default:</p>
-      <div class="code-block"><pre><span class="cmt">// launcher.js — the TOOLS list at the top of the file</span>
-{
-  id: <span class="val">"gold"</span>, name: <span class="val">"GOLD"</span>, emoji: <span class="val">"📦"</span>, group: <span class="val">"Delivery"</span>,
-  purpose: <span class="val">"Order management — where the customer order lives. …"</span>,
-  url: <span class="val">""</span>   <span class="cmt">// team default — leave "" for internal tools</span>
-}</pre></div>
-      <ol>
-        <li>Open <code>launcher.js</code> and find the tool in <code>TOOLS</code>.</li>
-        <li>Put the full address in <code>url</code>, starting with <code>https://</code>. Anything that isn't http or https is ignored.</li>
-        <li>Commit the change. A viewer's own link still overrides the team default.</li>
-      </ol>
-
-      <div class="alert orange">
-        <span class="alert-icon" aria-hidden="true">⚠️</span>
-        <p><strong>This repository is public.</strong> Anything written in <code>launcher.js</code> can be read by anyone on the internet, so internal addresses (GOLD, ServiceNow, MACHX, FLIP, DNAC, SALTO, SharePoint, PRIME) are deliberately left empty. Only Power BI and Power Automate have team defaults, because their public sign-in pages are safe to publish. Fill in internal defaults only once the site is hosted privately — until then, each DPM sets their own links.</p>
-      </div>
-
-      <h3>Add or change a tool</h3>
-      <p>Add an entry to <code>TOOLS</code> with a unique lowercase <code>id</code>, a <code>name</code>, a one-line <code>purpose</code>, an <code>emoji</code> and a <code>group</code> — either <code>"Delivery"</code> or <code>"Reporting, time &amp; automation"</code>. An optional <code>short</code> name is used on the compact chips. Keep the purposes in step with the Tools &amp; Systems section on the home page.</p>
-
-      <h3>Put the launcher on another page</h3>
-      <p>Add a placeholder where it should appear, and load <code>launcher.js</code> before <code>shared.js</code>:</p>
-      <div class="code-block"><pre>&lt;div data-kb-launcher=<span class="val">"compact"</span>&gt;&lt;/div&gt;   <span class="cmt">&lt;!-- one row of chips --&gt;</span>
-&lt;div data-kb-launcher=<span class="val">"full"</span>&gt;&lt;/div&gt;      <span class="cmt">&lt;!-- grouped cards + Set my links --&gt;</span>
-
-&lt;script src=<span class="val">"launcher.js"</span>&gt;&lt;/script&gt;
-&lt;script src=<span class="val">"shared.js"</span>&gt;&lt;/script&gt;</pre></div>
-      <p style="margin-bottom:0;">In compact mode, a tool without a link shows a muted <strong>Add link</strong> chip that opens <code>tools.html#edit</code>, which starts this page in edit mode.</p>
-    </div>
-  </div>
-
 </div>
 
 <footer class="footer">
   <p>DPM <span>Knowledge Base</span> &nbsp;·&nbsp; Onboarding Handbook Ed.&nbsp;1.3 &nbsp;·&nbsp; Internal Use Only</p>
 </footer>
-<script src="launcher.js"></script>
 <script src="shared.js"></script>
 </body>
 </html>

@@ -390,7 +390,11 @@
   function addStamp(hero, file, meta) {
     var pages = meta && meta.pages;
     if (!pages || typeof pages !== "object" || !Object.prototype.hasOwnProperty.call(pages, file)) return;
-    var info = pages[file], iso = info && typeof info.updated === "string" ? info.updated.trim() : "";
+    /* Show the site's latest update date (the build date) on every page, not
+       each page's own git date, so the whole site reads as updated together. */
+    var info = pages[file];
+    var gen = meta && typeof meta.generated === "string" ? meta.generated.trim() : "";
+    var iso = gen || (info && typeof info.updated === "string" ? info.updated.trim() : "");
     var dt = localDate(iso);
     if (!dt || hero.querySelector(".kb-updated")) return;
     var p = el("p", "kb-updated");
