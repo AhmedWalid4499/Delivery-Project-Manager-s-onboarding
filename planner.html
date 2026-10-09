@@ -83,6 +83,7 @@
 .pl-in-act{min-width:220px;}
 .pl-in-owner{min-width:120px;}
 .pl-in-notes{min-width:150px;}
+.pl-start-ro{font-size:12.5px;color:var(--gray-dark);white-space:nowrap;}
 .pl-in-days{width:66px;min-width:66px;text-align:center;}
 .pl-in-date{width:140px;min-width:130px;}
 .pl-in-status{min-width:118px;font-weight:600;}
@@ -352,6 +353,9 @@
   function rollToWorkday(d) { d = new Date(d.getFullYear(), d.getMonth(), d.getDate()); while (isWeekend(d)) d = addDays(d, 1); return d; }
   function nextWorkday(d) { var x = addDays(d, 1); while (isWeekend(x)) x = addDays(x, 1); return x; }
   function addWorkdays(d, n) { var x = rollToWorkday(d); while (n > 0) { x = addDays(x, 1); if (!isWeekend(x)) n--; } return x; }
+  function rollBackToWorkday(d) { d = new Date(d.getFullYear(), d.getMonth(), d.getDate()); while (isWeekend(d)) d = addDays(d, -1); return d; }
+  function prevWorkday(d) { var x = addDays(d, -1); while (isWeekend(x)) x = addDays(x, -1); return x; }
+  function addWorkdaysBack(d, n) { var x = rollBackToWorkday(d); while (n > 0) { x = addDays(x, -1); if (!isWeekend(x)) n--; } return x; }
   function mondayOnOrBefore(d) { return addDays(d, -((d.getDay() + 6) % 7)); }
   function dayDiff(a, b) { return Math.round((Date.UTC(b.getFullYear(), b.getMonth(), b.getDate()) - Date.UTC(a.getFullYear(), a.getMonth(), a.getDate())) / 86400000); }
   function fmtDate(d) { return d.getDate() + " " + MONTHS[d.getMonth()] + " " + d.getFullYear(); }
@@ -510,41 +514,52 @@
   }
 
   /* ---------- scheduler ---------- */
-  /* Working days Mon–Fri, no holidays. Activities run sequentially by
-     default: #1 starts on the plan start (rolled to a working day); each
-     next activity starts the next working day after the previous End.
-     End = addWorkdays(Start, max(workDays,1)-1); 0 work days = a milestone
-     on its Start. Any Start may be overridden (then End recomputes). */
+  /* Working days Mon–Fri, no holidays. Status drives the dates: see schedule(). */
   function schedule() {
-    var start = parseDate(plan.start) || todayDate();
-    var out = [], i, a, s, e, cursor = null;
+    /* Status-driven: the plan start (default today) is the "as of" line.
+       Remaining steps (In progress / Not started) schedule FORWARD from it,
+       chained in working days, so the last one's End is the earliest
+       migration date. Done steps are placed in the PAST (backward from the
+       as-of line) so the chart shows history; they add no future time.
+       N/A steps get no bar and shift nothing. */
+    var asOf = rollToWorkday(parseDate(plan.start) || todayDate());
+    var out = new Array(plan.activities.length), i, a, s, e;
+    /* forward: remaining, in order */
+    var cursor = null;
     for (i = 0; i < plan.activities.length; i++) {
       a = plan.activities[i];
-      if (a.startMode !== "auto" && parseDate(a.startMode)) {
-        s = rollToWorkday(parseDate(a.startMode));
-      } else if (cursor) {
-        s = nextWorkday(cursor);
-      } else {
-        s = rollToWorkday(start);
-      }
-      var wd = a.workDays;
-      e = (wd <= 0) ? s : addWorkdays(s, wd - 1);
+      if (a.status === "Done") continue;
+      if (a.status === "N/A") { out[i] = { start: asOf, end: asOf, na: true }; continue; }
+      s = cursor ? nextWorkday(cursor) : asOf;
+      e = (a.workDays <= 0) ? s : addWorkdays(s, a.workDays - 1);
+      out[i] = { start: s, end: e, done: false };
       cursor = e;
-      out.push({ start: s, end: e });
+    }
+    /* backward: done, in reverse order, ending the day before the as-of line */
+    var dcur = prevWorkday(asOf);
+    for (i = plan.activities.length - 1; i >= 0; i--) {
+      a = plan.activities[i];
+      if (a.status !== "Done") continue;
+      e = dcur;
+      s = (a.workDays <= 0) ? e : addWorkdaysBack(e, a.workDays - 1);
+      out[i] = { start: s, end: e, done: true };
+      dcur = prevWorkday(s);
     }
     return out;
   }
   function summarise(derived) {
-    var applicable = 0, done = 0, inProg = 0, last = null, i, a;
+    /* go-live = when the REMAINING work finishes (null if nothing is left). */
+    var applicable = 0, done = 0, inProg = 0, last = null, remaining = 0, i, a;
     for (i = 0; i < plan.activities.length; i++) {
       a = plan.activities[i];
       if (a.status === "N/A") continue;
       applicable++;
-      if (a.status === "Done") done++;
-      else if (a.status === "In progress") inProg++;
+      if (a.status === "Done") { done++; continue; }
+      if (a.status === "In progress") inProg++;
+      remaining++;
       if (!last || derived[i].end > last) last = derived[i].end;
     }
-    return { applicable: applicable, done: done, inProgress: inProg, pct: applicable ? Math.round(done / applicable * 100) : 100, goLive: last };
+    return { applicable: applicable, done: done, inProgress: inProg, remaining: remaining, pct: applicable ? Math.round(done / applicable * 100) : 100, goLive: last };
   }
 
   /* ---------- announcements ---------- */
@@ -595,7 +610,7 @@
     add(grid, field("pl-f-service", "Service", svcSel, "Pick one to seed the activity table below from its process template.", "opt", false));
 
     var startIn = h("input", { id: "pl-f-start", type: "date", value: plan.start, "aria-describedby": "pl-f-start-hint", onchange: function () { var v = this.value; plan.start = (v && parseDate(v)) ? v : plan.start; this.value = plan.start; save(); recompute(); } });
-    add(grid, field("pl-f-start", "Plan start date", startIn, "The Gantt and dates count forward from here, in working days (Mon–Fri).", "opt", false));
+    add(grid, field("pl-f-start", "Planning from (today)", startIn, "Remaining steps are scheduled forward from here, in working days (Mon–Fri); steps marked Done are shown before this date.", "opt", false));
 
     var targetIn = h("input", { id: "pl-f-target", type: "date", value: plan.target, onchange: function () { var v = this.value; plan.target = (v && parseDate(v)) ? v : ""; this.value = plan.target; save(); recompute(); } });
     add(grid, field("pl-f-target", "Target / go-live date", targetIn, "Optional. The estimate turns red if the plan finishes after this.", "opt", false));
@@ -727,14 +742,7 @@
     var daysIn = h("input", { "class": "pl-in pl-in-days", type: "number", min: "0", step: "1", value: String(a.workDays), "aria-label": "Activity " + num + " work days", oninput: function () { var n = parseInt(this.value, 10); a.workDays = (isNaN(n) || n < 0) ? 0 : (n > MAX_WD ? MAX_WD : n); save(); recompute(); } });
     var statusSel = h("select", { "class": "pl-in pl-in-status", "aria-label": "Activity " + num + " status", "data-status": a.status, onchange: function () { a.status = normStatus(this.value); this.setAttribute("data-status", a.status); save(); recompute(); } },
       STATUSES.map(function (s) { return h("option", { value: s, selected: s === a.status }, s); }));
-    var startIn = h("input", { "class": "pl-in pl-in-date", type: "date", "aria-label": "Activity " + num + " start date (leave as auto to chain from the previous activity)", value: (a.startMode !== "auto" && parseDate(a.startMode)) ? a.startMode : "", onchange: function () {
-      var v = this.value;
-      a.startMode = (v && parseDate(v)) ? v : "auto";
-      save(); recompute();
-    } });
-    var resetBtn = h("button", { type: "button", "class": "pl-resetbtn pl-noprint", title: "Reset to auto (chain from the previous activity)", "aria-label": "Reset activity " + num + " start to automatic", onclick: function () { a.startMode = "auto"; save(); recompute(); } }, "↺");
-    var autoTag = h("span", { "class": "pl-auto-tag" }, "");
-    var startCell = h("div", { "class": "pl-start-cell" }, [startIn, autoTag, resetBtn]);
+    var startSpan = h("span", { "class": "pl-start-ro" }, "");
     var endSpan = h("span", { "class": "pl-end" }, "");
     var notesIn = h("input", { "class": "pl-in pl-in-notes", type: "text", value: a.notes, "aria-label": "Activity " + num + " notes", maxlength: "2000", oninput: function () { a.notes = this.value.slice(0, 2000); save(); } });
 
@@ -751,12 +759,12 @@
       h("td", null, ownIn),
       h("td", { "class": "c" }, daysIn),
       h("td", { "class": "c" }, statusSel),
-      h("td", null, startCell),
+      h("td", null, startSpan),
       h("td", null, endSpan),
       h("td", null, notesIn),
       h("td", { "class": "c pl-noprint" }, rowbtns)
     ]);
-    rowRefs.push({ startInput: startIn, endSpan: endSpan, autoTag: autoTag, resetBtn: resetBtn, statusSel: statusSel, tr: tr });
+    rowRefs.push({ startSpan: startSpan, endSpan: endSpan, statusSel: statusSel, tr: tr });
     return tr;
   }
 
@@ -782,19 +790,14 @@
   /* ---------- recompute: dates, estimate, gantt ---------- */
   function recompute() {
     var derived = schedule();
-    // update each row's Start (auto rows) and End display
+    // update each row's computed Start + End display (both read-only)
     for (var i = 0; i < plan.activities.length && i < rowRefs.length; i++) {
       var a = plan.activities[i], d = derived[i], ref = rowRefs[i];
-      if (a.startMode === "auto") {
-        if (ref.startInput.value) ref.startInput.value = "";
-        ref.autoTag.textContent = "auto · " + fmtShort(d.start);
-        if (ref.resetBtn) ref.resetBtn.style.display = "none";
-      } else {
-        ref.autoTag.textContent = "";
-        if (ref.resetBtn) ref.resetBtn.style.display = "";
-      }
+      ref.startSpan.textContent = (a.status === "N/A") ? "—" : fmtShort(d.start);
       clear(ref.endSpan);
-      if (a.workDays <= 0) {
+      if (a.status === "N/A") {
+        ref.endSpan.appendChild(h("span", null, "—"));
+      } else if (a.workDays <= 0) {
         ref.endSpan.appendChild(h("span", { "class": "pl-end-d" }, fmtShort(d.end)));
         ref.endSpan.appendChild(h("span", null, "milestone"));
       } else {
@@ -816,13 +819,18 @@
     var target = parseDate(plan.target);
     var late = sum.goLive && target && sum.goLive > target;
     var complete = sum.applicable > 0 && sum.done === sum.applicable;
+    var ready = sum.applicable > 0 && sum.remaining === 0;
 
     var goBlock = h("div", { "class": "pl-est-block" }, [
-      h("div", { "class": "pl-est-lbl" }, "Estimated go-live"),
-      h("div", { "class": "pl-est-val " + (sum.goLive ? (late ? "pl-late" : "pl-go") : "") }, sum.goLive ? fmtDate(sum.goLive) : "—"),
-      h("div", { "class": "pl-est-sub" }, sum.goLive
-        ? (target ? (late ? ("⚠ " + Math.abs(dayDiff(sum.goLive, target)) + " day(s) after the target of " + fmtShort(target)) : "On or before the target of " + fmtShort(target)) : "Latest finish across all activities")
-        : "Add activities to see an estimate")
+      h("div", { "class": "pl-est-lbl" }, "Earliest migration date"),
+      h("div", { "class": "pl-est-val " + (ready ? "pl-go" : (sum.goLive ? (late ? "pl-late" : "pl-go") : "")) }, ready ? "Ready now" : (sum.goLive ? fmtDate(sum.goLive) : "—")),
+      h("div", { "class": "pl-est-sub" }, ready
+        ? "All steps done — ready to migrate"
+        : (sum.goLive
+          ? (target
+            ? (late ? ("⚠ " + Math.abs(dayDiff(sum.goLive, target)) + " day(s) after the target of " + fmtShort(target)) : "On or before the target of " + fmtShort(target))
+            : ("When the remaining " + sum.remaining + (sum.remaining === 1 ? " step" : " steps") + " finish, counting working days from today"))
+          : "Mark your steps to see the date"))
     ]);
     var progBlock = h("div", { "class": "pl-est-block pl-est-prog" }, [
       h("div", { "class": "pl-est-lbl" }, "Progress"),
