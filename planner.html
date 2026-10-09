@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Delivery Planner — DPM Knowledge Base</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="stylesheet" href="shared.css">
+<style>
+/* ── Delivery planner (page-scoped) ── */
+:root{--pl-accent:var(--orange-text);--pl-muted:#5F5F5F;--pl-line:#E6E6E6;--pl-soft:#FAFAFA;
+  --pl-done:#00A86B;--pl-done-fill:#D6F2E4;--pl-done-ink:#0A7A4A;
+  --pl-prog:#E69500;--pl-prog-fill:#FFE8C2;--pl-prog-ink:#8A5A00;
+  --pl-todo:#C2C2C2;--pl-todo-fill:#ECECEC;--pl-todo-ink:#5F5F5F;
+  --pl-na:#BDBDBD;--pl-weekend:#F2F2F2;--pl-today:#FFF3E6;--pl-danger:#B42318;}
+.content [hidden]{display:none !important;}
+.sr-only{position:absolute !important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
+.content :focus-visible{outline:3px solid #B34200;outline-offset:2px;}
+
+/* privacy + hints */
+.pl-privacy{margin-bottom:26px;}
+.pl-hint{font-size:12.5px;color:var(--pl-muted);line-height:1.55;}
+.pl-hint a{color:var(--pl-accent);font-weight:600;}
+
+/* buttons (shared look with the checklist tool) */
+.pl-btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:38px;padding:8px 15px;border-radius:9px;border:1.5px solid #D6D6D6;background:#fff;color:var(--black);font:600 13px/1.2 var(--font);cursor:pointer;text-decoration:none;transition:background .15s,border-color .15s,color .15s,box-shadow .15s;}
+.pl-btn:hover{border-color:var(--orange);color:var(--pl-accent);text-decoration:none;}
+.pl-btn:disabled{opacity:.5;cursor:not-allowed;}
+.pl-btn:disabled:hover{border-color:#D6D6D6;color:var(--black);}
+.pl-btn-primary{background:var(--orange-dark);border-color:var(--orange-dark);color:#fff;}
+.pl-btn-primary:hover{background:#A94000;border-color:#A94000;color:#fff;box-shadow:0 6px 18px rgba(204,78,0,0.25);}
+.pl-btn-danger:hover{border-color:var(--pl-danger);color:var(--pl-danger);}
+.pl-btn-sm{min-height:32px;padding:6px 11px;font-size:12.5px;border-radius:8px;}
+.pl-ico{font-size:14px;line-height:1;}
+
+/* cards */
+.pl-card{background:#fff;border:1px solid var(--pl-line);border-radius:14px;padding:20px;box-shadow:0 2px 14px rgba(0,0,0,0.04);min-width:0;margin-bottom:22px;}
+.pl-card-title{font-size:16px;font-weight:700;margin:0 0 4px;}
+.pl-card-lead{font-size:13px;color:var(--pl-muted);margin:0 0 16px;line-height:1.55;}
+
+/* detail form */
+.pl-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px 18px;}
+.pl-field{min-width:0;display:flex;flex-direction:column;gap:6px;}
+.pl-field.pl-wide{grid-column:1 / -1;}
+.pl-field label{font-size:13px;font-weight:600;color:var(--black);}
+.pl-req,.pl-opt{font-weight:500;color:var(--pl-muted);font-size:12px;}
+.pl-field input,.pl-field select{display:block;width:100%;min-width:0;max-width:100%;min-height:42px;padding:9px 12px;border:1.5px solid #8A8A8A;border-radius:10px;background:#fff;font:400 14px/1.3 var(--font);color:var(--black);transition:border-color .15s,box-shadow .15s;}
+.pl-field input:focus,.pl-field select:focus{outline:none;border-color:var(--orange-dark);box-shadow:0 0 0 3px rgba(255,98,0,0.2);}
+.pl-field input[type="date"]{-webkit-appearance:none;appearance:none;text-align:left;}
+.pl-field .pl-hint{margin:0;}
+.pl-loadrow{display:flex;flex-wrap:wrap;align-items:flex-end;gap:12px;margin-top:16px;padding-top:16px;border-top:1px solid var(--pl-line);}
+.pl-loadrow .pl-field{flex:1 1 260px;}
+
+/* estimate band */
+.pl-estimate{display:flex;flex-wrap:wrap;gap:16px 26px;align-items:center;background:var(--orange-faint);border:1px solid #F5D2B8;border-radius:12px;padding:16px 18px;margin-bottom:20px;}
+.pl-est-block{min-width:0;}
+.pl-est-lbl{font-size:10.5px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--pl-muted);}
+.pl-est-val{font-size:24px;font-weight:700;line-height:1.15;color:var(--black);margin-top:2px;}
+.pl-est-val.pl-go{color:var(--pl-done-ink);}
+.pl-est-val.pl-late{color:var(--pl-danger);}
+.pl-est-sub{font-size:12px;color:var(--pl-muted);margin-top:2px;}
+.pl-est-prog{flex:1 1 200px;min-width:160px;}
+.pl-bar{height:10px;background:#EFEFEF;border-radius:6px;overflow:hidden;margin-top:6px;}
+.pl-bar>span{display:block;height:100%;background:linear-gradient(90deg,#FF8C42,#FF6200);border-radius:inherit;}
+.pl-bar.is-complete>span{background:linear-gradient(90deg,#2FBF7F,#0B7A40);}
+
+/* activity table */
+.pl-tbar{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:14px;}
+.pl-tbar-group{display:flex;flex-wrap:wrap;align-items:center;gap:8px;}
+.pl-toggle{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;color:var(--gray-dark);cursor:pointer;user-select:none;}
+.pl-toggle input{width:16px;height:16px;accent-color:var(--orange-dark);}
+.pl-seedsel{min-height:34px;padding:5px 10px;border:1.5px solid #8A8A8A;border-radius:8px;font:600 12.5px/1.2 var(--font);background:#fff;color:var(--black);}
+.pl-tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%;min-width:0;border:1px solid var(--pl-line);border-radius:12px;}
+.pl-table{width:100%;border-collapse:collapse;min-width:860px;font-size:13px;}
+.pl-table thead th{background:var(--black);color:#fff;padding:9px 8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;text-align:left;white-space:nowrap;position:sticky;top:0;}
+.pl-table thead th.c{text-align:center;}
+.pl-table tbody td{padding:6px 7px;border-bottom:1px solid #F0F0F0;vertical-align:middle;}
+.pl-table tbody tr:last-child td{border-bottom:none;}
+.pl-table tbody tr.is-na{background:#FBFBFB;}
+.pl-td-num{text-align:center;font-family:var(--mono);font-size:12px;color:var(--pl-muted);font-weight:600;width:34px;}
+.pl-in{width:100%;min-width:0;box-sizing:border-box;min-height:34px;padding:6px 9px;border:1.5px solid #CFCFCF;border-radius:8px;font:400 13px/1.3 var(--font);color:var(--black);background:#fff;}
+.pl-in:focus{outline:none;border-color:var(--orange-dark);box-shadow:0 0 0 2px rgba(255,98,0,0.18);}
+.pl-in-act{min-width:220px;}
+.pl-in-owner{min-width:120px;}
+.pl-in-notes{min-width:150px;}
+.pl-in-days{width:66px;min-width:66px;text-align:center;}
+.pl-in-date{width:140px;min-width:130px;}
+.pl-in-status{min-width:118px;font-weight:600;}
+.pl-end{display:inline-flex;flex-direction:column;gap:1px;white-space:nowrap;font-size:12.5px;color:var(--gray-dark);}
+.pl-end .pl-end-d{font-weight:600;}
+.pl-start-cell{display:flex;align-items:center;gap:4px;}
+.pl-auto-tag{font-size:10px;font-weight:700;letter-spacing:.3px;text-transform:uppercase;color:var(--pl-muted);}
+.pl-resetbtn{border:none;background:none;color:var(--pl-accent);cursor:pointer;font-size:14px;line-height:1;padding:3px;border-radius:5px;}
+.pl-resetbtn:hover{background:var(--orange-faint);}
+.pl-rowbtns{display:flex;gap:2px;white-space:nowrap;}
+.pl-rowbtn{border:1px solid #D6D6D6;background:#fff;border-radius:6px;width:28px;height:28px;cursor:pointer;color:var(--gray-dark);font-size:13px;line-height:1;display:inline-flex;align-items:center;justify-content:center;}
+.pl-rowbtn:hover{border-color:var(--orange);color:var(--pl-accent);}
+.pl-rowbtn:disabled{opacity:.35;cursor:not-allowed;}
+.pl-rowbtn.pl-del:hover{border-color:var(--pl-danger);color:var(--pl-danger);}
+.pl-addrow{margin-top:14px;}
+.pl-empty{padding:26px 18px;text-align:center;color:var(--pl-muted);font-size:14px;border:1.5px dashed #DADADA;border-radius:12px;background:var(--pl-soft);}
+
+/* status pill colouring on the select */
+.pl-in-status[data-status="Done"]{border-color:var(--pl-done);background:var(--pl-done-fill);color:var(--pl-done-ink);}
+.pl-in-status[data-status="In progress"]{border-color:var(--pl-prog);background:var(--pl-prog-fill);color:var(--pl-prog-ink);}
+.pl-in-status[data-status="Not started"]{border-color:#C6C6C6;background:#F4F4F4;color:var(--pl-todo-ink);}
+.pl-in-status[data-status="N/A"]{border-color:#C6C6C6;background:#F0F0F0;color:var(--pl-muted);font-style:italic;}
+
+/* gantt */
+.pl-gantt-head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;}
+.pl-gantt-note{font-size:12px;color:var(--pl-muted);}
+.pl-ganttwrap{overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%;min-width:0;border:1px solid var(--pl-line);border-radius:12px;}
+.pl-gantt{border-collapse:collapse;font-size:11px;}
+.pl-gantt th,.pl-gantt td{border-right:1px solid #EFEFEF;}
+.pl-g-task{position:sticky;left:0;z-index:2;background:#fff;text-align:left;padding:5px 10px;min-width:210px;max-width:260px;border-right:2px solid #E0E0E0;}
+.pl-gantt thead .pl-g-task{background:var(--black);color:#fff;}
+.pl-g-month{background:#2E2E2E;color:#fff;font-weight:700;font-size:9.5px;padding:3px 4px;text-align:left;white-space:nowrap;min-width:20px;}
+.pl-g-day{background:#3D3D3D;color:#E6E6E6;font-weight:600;text-align:center;padding:3px 0;width:20px;min-width:20px;font-size:9.5px;}
+.pl-g-day.is-weekend{color:#9A9A9A;background:#333;}
+.pl-g-day.is-today{background:var(--orange);color:#fff;}
+.pl-g-cell{width:20px;min-width:20px;height:26px;padding:0;border-bottom:1px solid #F0F0F0;}
+.pl-g-cell.is-weekend{background:var(--pl-weekend);}
+.pl-g-cell.is-today{box-shadow:inset 1px 0 0 var(--orange),inset -1px 0 0 var(--orange);}
+.pl-g-cell.is-today.is-weekend{background:var(--pl-today);}
+.pl-g-bar{width:100%;height:14px;}
+.pl-g-row-task{font-size:12px;color:var(--black);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.pl-g-row-sub{font-size:10.5px;color:var(--pl-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.pl-bar-Done{background:var(--pl-done);}
+.pl-bar-InProgress{background:var(--pl-prog);}
+.pl-bar-NotStarted{background:var(--pl-todo);}
+.pl-bar-NA{background:repeating-linear-gradient(45deg,#EDEDED,#EDEDED 3px,#C7C7C7 3px,#C7C7C7 6px);}
+.pl-glegend{display:flex;flex-wrap:wrap;gap:10px 16px;margin-top:12px;font-size:12px;color:var(--gray-dark);}
+.pl-glegend span{display:inline-flex;align-items:center;gap:6px;}
+.pl-sw{width:14px;height:14px;border-radius:3px;flex-shrink:0;border:1px solid rgba(0,0,0,0.08);}
+.pl-sw-today{background:var(--pl-today);box-shadow:inset 1px 0 0 var(--orange),inset -1px 0 0 var(--orange);}
+.pl-sw-weekend{background:var(--pl-weekend);}
+.pl-sw-na{background:repeating-linear-gradient(45deg,#EDEDED,#EDEDED 3px,#C7C7C7 3px,#C7C7C7 6px);}
+
+/* actions + copy box */
+.pl-actions{display:flex;flex-wrap:wrap;gap:10px;}
+.pl-copybox{margin-top:16px;border-top:1px solid var(--pl-line);padding-top:16px;}
+.pl-copybox label{display:block;font-size:13px;font-weight:600;margin-bottom:8px;}
+.pl-copybox textarea{display:block;width:100%;box-sizing:border-box;font:12.5px/1.6 var(--mono);border:1.5px solid #DADADA;border-radius:10px;padding:10px 12px;margin-bottom:10px;resize:vertical;background:var(--pl-soft);color:var(--black);}
+.pl-feedback{min-height:18px;margin-top:10px;font-size:13px;}
+.pl-feedback.ok{color:var(--pl-done-ink);font-weight:600;}
+.pl-feedback.err{color:var(--pl-danger);font-weight:600;}
+
+/* toast */
+.pl-toast{position:fixed;left:50%;bottom:24px;z-index:300;max-width:calc(100% - 32px);background:#1A1A1A;color:#fff;font-size:13.5px;line-height:1.45;padding:11px 18px;border-radius:10px;box-shadow:0 12px 34px rgba(0,0,0,0.3);opacity:0;visibility:hidden;transform:translate(-50%,12px);transition:opacity .2s,transform .2s,visibility .2s;pointer-events:none;}
+@media(min-width:600px){.pl-toast{max-width:520px;}}
+.pl-toast.show{opacity:1;visibility:visible;transform:translate(-50%,0);}
+
+@media(max-width:640px){.pl-form-grid{grid-template-columns:1fr;}}
+@media(max-width:600px){
+  .pl-card{padding:16px;}
+  .pl-est-val{font-size:20px;}
+}
+@media(prefers-reduced-motion:reduce){.pl-bar>span,.pl-toast,.pl-btn,.pl-quickbtn{transition:none;}}
+
+/* print — header + table + gantt only */
+@media print{
+  @page{margin:12mm;size:landscape;}
+  html,body{background:#fff !important;}
+  .topnav,.page-hero,.breadcrumb,.footer,.kb-toc,.kb-progress,.kb-top,.kb-navmenu,.kb-hamburger,.pl-toast,.pl-privacy,.pl-noprint,#pl-details-sec>.section-header,#pl-table-sec .pl-tbar,.pl-addrow,.pl-rowbtns,.pl-actions{display:none !important;}
+  .content{max-width:none !important;padding:0 !important;margin:0 !important;}
+  .section{margin:0 0 10px !important;}
+  .kb-reveal{opacity:1 !important;transform:none !important;}
+  .pl-card{box-shadow:none !important;border:none !important;padding:0 !important;}
+  .pl-tablewrap,.pl-ganttwrap{overflow:visible !important;border:1px solid #ccc !important;}
+  .pl-in,.pl-seedsel{border:none !important;background:transparent !important;padding:2px 4px !important;}
+  .pl-end,.pl-g-task,.pl-g-day,.pl-g-month,.pl-g-cell,.pl-g-bar,.pl-bar,.pl-bar>span{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  a{color:inherit !important;text-decoration:none !important;}
+}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <a href="index.html" class="topnav-brand">
+    <div class="topnav-logo">DPM</div>
+    <div class="topnav-brand-text">Knowledge <span>Base</span></div>
+  </a>
+  <div class="topnav-links">
+    <a href="index.html"          class="nav-link">Home</a>
+    <a href="lan-wan-basics.html" class="nav-link">LAN / WAN</a>
+    <a href="ip-routing.html"     class="nav-link">IP Routing</a>
+    <a href="switching.html"      class="nav-link">Switching</a>
+    <a href="wireless.html"       class="nav-link">Wireless</a>
+    <a href="firewalls.html"      class="nav-link">Firewalls</a>
+    <a href="zscaler.html"        class="nav-link">Zscaler</a>
+    <a href="devices.html"        class="nav-link">Devices</a>
+    <a href="glossary.html"       class="nav-link">Glossary</a>
+  </div>
+  <div class="topnav-badge">New Hire Guide</div>
+</nav>
+
+<div class="breadcrumb" style="background:transparent;border:none;padding:0;"></div>
+
+<div class="page-hero dark">
+  <div class="hero-content">
+    <div class="hero-tag"><span aria-hidden="true">🗓️</span> DPM Tool</div>
+    <h1>Delivery <span>Planner</span></h1>
+    <p class="hero-sub">Enter a site's details and where each activity is up to, and the planner estimates the dates and the go-live, draws a live Gantt chart, and exports a shareable Excel plan for the customer — all in working days, all in your browser.</p>
+  </div>
+</div>
+
+<div class="content">
+
+  <noscript>
+    <div class="alert orange"><span class="alert-icon" aria-hidden="true">⚠️</span><p>The Delivery Planner needs JavaScript. With it off you can still follow the <a href="process-ap.html">AP</a>, <a href="process-wlc-switch.html">WLC &amp; Switch</a> and <a href="wan-process.html">WAN</a> process pages, or use the <a href="checklist.html">Delivery Checklist</a>.</p></div>
+  </noscript>
+
+  <div class="alert green pl-privacy">
+    <span class="alert-icon" aria-hidden="true">🔒</span>
+    <p><strong>Saved only in this browser.</strong> This plan is kept on this device only (<code>dpmkb_planner_v1</code>) — nothing is sent anywhere. Export the Excel to share it with the customer.</p>
+  </div>
+
+  <!-- PLAN DETAILS -->
+  <div class="section" id="pl-details-sec">
+    <div class="section-header">
+      <h2>Plan details</h2>
+      <div class="divider"></div>
+      <p>Describe the site and when the plan starts. The Gantt and the dates count forward from the start, in working days (Mon–Fri).</p>
+    </div>
+    <div class="pl-card" id="pl-details-card"></div>
+  </div>
+
+  <!-- ACTIVITIES + ESTIMATE + GANTT -->
+  <div class="section" id="pl-table-sec">
+    <div class="section-header">
+      <h2>Activities &amp; dates</h2>
+      <div class="divider"></div>
+      <p>Seed the activities from a service template, then edit freely. Mark each one Done, In progress or Not started — the dates, the go-live estimate and the Gantt update as you type.</p>
+    </div>
+    <div id="pl-estimate"></div>
+    <div class="pl-card" id="pl-table-card"></div>
+  </div>
+
+  <!-- GANTT -->
+  <div class="section" id="pl-gantt-sec">
+    <div class="section-header">
+      <h2>Gantt preview</h2>
+      <div class="divider"></div>
+      <p>A day-by-day view of the plan. Bars are coloured by status; weekends are shaded and today is marked. It scrolls sideways — the Excel export looks the same.</p>
+    </div>
+    <div class="pl-card" id="pl-gantt-card"></div>
+  </div>
+
+  <!-- ACTIONS -->
+  <div class="section" id="pl-actions-sec">
+    <div class="section-header">
+      <h2>Share &amp; export</h2>
+      <div class="divider"></div>
+      <p>Export a customer-ready Excel, print or save a clean copy, or copy a short plain-text summary for an email or Teams post.</p>
+    </div>
+    <div class="pl-card" id="pl-actions-card"></div>
+  </div>
+
+</div>
+
+<div id="pl-live" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></div>
+<div id="pl-toast" class="pl-toast" aria-hidden="true"></div>
+
+<footer class="footer">
+  <p>DPM <span>Knowledge Base</span> &nbsp;·&nbsp; Onboarding Handbook Ed.&nbsp;1.3 &nbsp;·&nbsp; Internal Use Only</p>
+</footer>
+
+<script src="checklist-data.js"></script>
+<script src="xlsx-writer.js"></script>
+<script src="planner-export.js"></script>
+<script>
+/* ═══════════════════════════════════════════════════════════
+   Delivery Planner — enter a site's activities and statuses,
+   estimate the dates and go-live in working days, draw a live
+   Gantt, and export a ZABOK-style Excel to share with the
+   customer. The plan lives only in this browser
+   (localStorage "dpmkb_planner_v1"). Templates come from
+   checklist-data.js (window.KB_CHECKLISTS); the Excel export
+   is planner-export.js (window.KBPlannerExport) — both optional,
+   the page degrades gracefully without them.
+═══════════════════════════════════════════════════════════ */
+(function () {
+  "use strict";
+
+  var DATA = window.KB_CHECKLISTS;
+  var TYPES = (DATA && DATA.types) || {};
+  var KEY = "dpmkb_planner_v1";
+  var CHECKLIST_KEY = "dpmkb_checklists_v1";
+  var MAX_ACTS = 200;
+  var STATUSES = ["Done", "In progress", "Not started", "N/A"];
+  var DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
+  var MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  var DAY_LETTERS = ["S", "M", "T", "W", "T", "F", "S"];
+  var MAX_DAY_COLS = 120;
+  var MAX_GANTT_COLS = 540;   // hard cap on timeline columns (guards pathological far-future dates)
+  var MAX_WD = 1000;          // cap per-activity work days (~4 years) so the scheduler can't run away
+  var SERVICE_OPTS = [
+    { v: "", label: "Custom / blank" },
+    { v: "ap", label: "LAN — AP" },
+    { v: "wlc", label: "LAN — WLC & Switch" },
+    { v: "wan", label: "WAN" }
+  ];
+  var SERVICE_LABEL = { ap: "LAN — AP", wlc: "LAN — WLC & Switch", wan: "WAN" };
+  var hasOwn = Object.prototype.hasOwnProperty;
+  var reduceMotion = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+
+  var storageOK = true;
+  var plan = null;
+  var copyBoxText = null;
+  var toastTimer = null;
+
+  /* ---------- DOM helpers ---------- */
+  function $(id) { return document.getElementById(id); }
+  function h(tag, props, kids) {
+    var el = document.createElement(tag), deferred = [], k, v, i;
+    if (props) {
+      for (k in props) {
+        if (!hasOwn.call(props, k)) continue;
+        v = props[k];
+        if (v === null || v === undefined || v === false) continue;
+        if (k === "class") el.className = v;
+        else if (k === "value" || k === "checked" || k === "selected") deferred.push([k, v]);
+        else if (k.slice(0, 2) === "on" && typeof v === "function") el.addEventListener(k.slice(2), v);
+        else el.setAttribute(k, v === true ? "" : String(v));
+      }
+    }
+    add(el, kids);
+    for (i = 0; i < deferred.length; i++) el[deferred[i][0]] = deferred[i][1];
+    return el;
+  }
+  function add(el, kids) {
+    var i;
+    if (kids === null || kids === undefined || kids === false) return;
+    if (Array.isArray(kids)) { for (i = 0; i < kids.length; i++) add(el, kids[i]); return; }
+    if (typeof kids === "string" || typeof kids === "number") { el.appendChild(document.createTextNode(String(kids))); return; }
+    el.appendChild(kids);
+  }
+  function clear(el) { while (el && el.firstChild) el.removeChild(el.firstChild); }
+  function ico(e) { return h("span", { "class": "pl-ico", "aria-hidden": "true" }, e); }
+
+  /* ---------- text + date helpers ---------- */
+  function cleanLine(v, max) {
+    if (typeof v !== "string") return "";
+    return v.replace(/[\u0000-\u001F\u007F]+/g, " ").replace(/\s+/g, " ").replace(/^\s+|\s+$/g, "").slice(0, max);
+  }
+  function pad2(n) { return (n < 10 ? "0" : "") + n; }
+  function parseDate(s) { if (!DATE_RE.test(s)) return null; var p = s.split("-"), d = new Date(+p[0], +p[1] - 1, +p[2]); return (d.getFullYear() === +p[0] && d.getMonth() === +p[1] - 1 && d.getDate() === +p[2]) ? d : null; }
+  function isoDay(d) { return d.getFullYear() + "-" + pad2(d.getMonth() + 1) + "-" + pad2(d.getDate()); }
+  function todayDate() { var n = new Date(); return new Date(n.getFullYear(), n.getMonth(), n.getDate()); }
+  function addDays(d, n) { return new Date(d.getFullYear(), d.getMonth(), d.getDate() + n); }
+  function isWeekend(d) { var w = d.getDay(); return w === 0 || w === 6; }
+  function rollToWorkday(d) { d = new Date(d.getFullYear(), d.getMonth(), d.getDate()); while (isWeekend(d)) d = addDays(d, 1); return d; }
+  function nextWorkday(d) { var x = addDays(d, 1); while (isWeekend(x)) x = addDays(x, 1); return x; }
+  function addWorkdays(d, n) { var x = rollToWorkday(d); while (n > 0) { x = addDays(x, 1); if (!isWeekend(x)) n--; } return x; }
+  function mondayOnOrBefore(d) { return addDays(d, -((d.getDay() + 6) % 7)); }
+  function dayDiff(a, b) { return Math.round((Date.UTC(b.getFullYear(), b.getMonth(), b.getDate()) - Date.UTC(a.getFullYear(), a.getMonth(), a.getDate())) / 86400000); }
+  function fmtDate(d) { return d.getDate() + " " + MONTHS[d.getMonth()] + " " + d.getFullYear(); }
+  function fmtShort(d) { return d.getDate() + " " + MONTHS[d.getMonth()]; }
+
+  /* ---------- storage ---------- */
+  function readStore() {
+    var raw = null;
+    try { raw = window.localStorage.getItem(KEY); } catch (e) { storageOK = false; return null; }
+    if (!raw) return null;
+    try { return JSON.parse(raw); } catch (e) { return null; }
+  }
+  function save() {
+    try { window.localStorage.setItem(KEY, JSON.stringify(plan)); }
+    catch (e) { storageOK = false; }
+  }
+
+  /* ---------- plan model ---------- */
+  function blankActivity() {
+    return { id: newId(), activity: "", owner: "", workDays: 1, status: "Not started", startMode: "auto", notes: "" };
+  }
+  function newId() { return "a" + Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
+  function freshPlan() {
+    return {
+      version: 1, title: "", address: "", dpm: "", service: "",
+      start: isoDay(todayDate()), target: "", detailed: false,
+      activities: [blankActivity(), blankActivity(), blankActivity()]
+    };
+  }
+  function normStatus(s) {
+    s = cleanLine(s, 20);
+    for (var i = 0; i < STATUSES.length; i++) if (s.toLowerCase() === STATUSES[i].toLowerCase()) return STATUSES[i];
+    return "Not started";
+  }
+  function sanitizeActivity(src) {
+    if (!src || typeof src !== "object") return null;
+    var wd = (typeof src.workDays === "number" && isFinite(src.workDays)) ? Math.max(0, Math.round(src.workDays)) : parseInt(src.workDays, 10);
+    if (isNaN(wd) || wd < 0) wd = 1;
+    if (wd > MAX_WD) wd = MAX_WD;
+    var mode = "auto";
+    if (typeof src.startMode === "string" && DATE_RE.test(src.startMode) && parseDate(src.startMode)) mode = src.startMode;
+    return {
+      id: (typeof src.id === "string" && src.id) ? src.id : newId(),
+      activity: cleanLine(src.activity, 300),
+      owner: cleanLine(src.owner, 120),
+      workDays: wd,
+      status: normStatus(src.status),
+      startMode: mode,
+      notes: (typeof src.notes === "string") ? src.notes.replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, "").slice(0, 2000) : ""
+    };
+  }
+  function sanitizePlan(obj) {
+    if (!obj || typeof obj !== "object") return null;
+    var service = (typeof obj.service === "string" && hasOwn.call(TYPES, obj.service)) ? obj.service : "";
+    var p = {
+      version: 1,
+      title: cleanLine(obj.title, 140),
+      address: cleanLine(obj.address, 200),
+      dpm: cleanLine(obj.dpm, 100),
+      service: service,
+      start: (typeof obj.start === "string" && parseDate(obj.start)) ? obj.start : isoDay(todayDate()),
+      target: (typeof obj.target === "string" && parseDate(obj.target)) ? obj.target : "",
+      detailed: !!obj.detailed,
+      activities: []
+    };
+    if (Array.isArray(obj.activities)) {
+      for (var i = 0; i < obj.activities.length && p.activities.length < MAX_ACTS; i++) {
+        var a = sanitizeActivity(obj.activities[i]);
+        if (a) p.activities.push(a);
+      }
+    }
+    return p;
+  }
+
+  /* ---------- templates ---------- */
+  function stepDays(s) { var pl = s && s.plan; return (pl && typeof pl.days === "number" && isFinite(pl.days)) ? Math.max(0, Math.floor(pl.days)) : 1; }
+  function primaryOwner(ph) {
+    var tally = {}, best = "", bestN = 0, i, own, key;
+    for (i = 0; i < ph.steps.length; i++) {
+      own = ph.steps[i].owner || ph.steps[i].team || "";
+      key = own.split("·")[0].replace(/^\s+|\s+$/g, "");
+      if (!key) continue;
+      tally[key] = (tally[key] || 0) + 1;
+      if (tally[key] > bestN) { bestN = tally[key]; best = key; }
+    }
+    return best || "DPM";
+  }
+  function buildTemplate(typeKey, detailed, project) {
+    var t = TYPES[typeKey];
+    if (!t) return [];
+    var acts = [], pi, j, ph, step, sum;
+    for (pi = 0; pi < t.phases.length; pi++) {
+      ph = t.phases[pi];
+      if (detailed) {
+        for (j = 0; j < ph.steps.length; j++) {
+          step = ph.steps[j];
+          acts.push({
+            id: newId(), activity: step.text || "", owner: step.team || step.owner || "",
+            workDays: stepDays(step), status: "Not started", startMode: "auto", notes: "",
+            _done: project ? !!(project.done && project.done[step.id]) : false
+          });
+        }
+      } else {
+        sum = 0;
+        var allDone = ph.steps.length > 0;
+        for (j = 0; j < ph.steps.length; j++) {
+          sum += stepDays(ph.steps[j]);
+          if (!(project && project.done && project.done[ph.steps[j].id])) allDone = false;
+        }
+        acts.push({
+          id: newId(), activity: ph.name || ("Phase " + (pi + 1)), owner: primaryOwner(ph),
+          workDays: Math.max(1, sum), status: "Not started", startMode: "auto", notes: "",
+          _done: project ? allDone : false
+        });
+      }
+    }
+    if (project) {
+      var firstOpen = false;
+      for (var i = 0; i < acts.length; i++) {
+        if (acts[i]._done) acts[i].status = "Done";
+        else if (!firstOpen) { acts[i].status = "In progress"; firstOpen = true; }
+        else acts[i].status = "Not started";
+      }
+    }
+    for (var m = 0; m < acts.length; m++) delete acts[m]._done;
+    return acts;
+  }
+
+  /* ---------- load from a saved checklist project ---------- */
+  function readChecklistProjects() {
+    var raw = null;
+    try { raw = window.localStorage.getItem(CHECKLIST_KEY); } catch (e) { return []; }
+    if (!raw) return [];
+    var obj;
+    try { obj = JSON.parse(raw); } catch (e) { return []; }
+    if (!obj || !Array.isArray(obj.projects)) return [];
+    var out = [], i, p;
+    for (i = 0; i < obj.projects.length; i++) {
+      p = obj.projects[i];
+      if (p && typeof p === "object" && typeof p.id === "string" && typeof p.type === "string" && hasOwn.call(TYPES, p.type)) {
+        out.push(p);
+      }
+    }
+    return out;
+  }
+  function loadFromProject(proj) {
+    if (!proj) return;
+    plan.title = cleanLine(proj.name, 140) || plan.title;
+    plan.address = cleanLine(proj.site, 200) || plan.address;
+    plan.dpm = cleanLine(proj.dpm, 100) || plan.dpm;
+    plan.service = hasOwn.call(TYPES, proj.type) ? proj.type : plan.service;
+    if (typeof proj.start === "string" && parseDate(proj.start)) plan.start = proj.start;
+    if (typeof proj.target === "string" && parseDate(proj.target)) plan.target = proj.target;
+    plan.activities = buildTemplate(plan.service, plan.detailed, proj);
+    if (!plan.activities.length) plan.activities = [blankActivity()];
+  }
+
+  /* ---------- scheduler ---------- */
+  /* Working days Mon–Fri, no holidays. Activities run sequentially by
+     default: #1 starts on the plan start (rolled to a working day); each
+     next activity starts the next working day after the previous End.
+     End = addWorkdays(Start, max(workDays,1)-1); 0 work days = a milestone
+     on its Start. Any Start may be overridden (then End recomputes). */
+  function schedule() {
+    var start = parseDate(plan.start) || todayDate();
+    var out = [], i, a, s, e, cursor = null;
+    for (i = 0; i < plan.activities.length; i++) {
+      a = plan.activities[i];
+      if (a.startMode !== "auto" && parseDate(a.startMode)) {
+        s = rollToWorkday(parseDate(a.startMode));
+      } else if (cursor) {
+        s = nextWorkday(cursor);
+      } else {
+        s = rollToWorkday(start);
+      }
+      var wd = a.workDays;
+      e = (wd <= 0) ? s : addWorkdays(s, wd - 1);
+      cursor = e;
+      out.push({ start: s, end: e });
+    }
+    return out;
+  }
+  function summarise(derived) {
+    var applicable = 0, done = 0, inProg = 0, last = null, i, a;
+    for (i = 0; i < plan.activities.length; i++) {
+      a = plan.activities[i];
+      if (a.status === "N/A") continue;
+      applicable++;
+      if (a.status === "Done") done++;
+      else if (a.status === "In progress") inProg++;
+      if (!last || derived[i].end > last) last = derived[i].end;
+    }
+    return { applicable: applicable, done: done, inProgress: inProg, pct: applicable ? Math.round(done / applicable * 100) : 100, goLive: last };
+  }
+
+  /* ---------- announcements ---------- */
+  function announce(msg) {
+    var live = $("pl-live"), toast = $("pl-toast");
+    if (live) { live.textContent = ""; setTimeout(function () { live.textContent = msg; }, 60); }
+    if (toast) {
+      toast.textContent = msg;
+      toast.classList.add("show");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(function () { toast.classList.remove("show"); }, 3200);
+    }
+  }
+
+  /* ---------- rendering: the whole app ---------- */
+  var rowRefs = [];   // per activity: { startInput, endSpan, autoTag, resetBtn, tr }
+  function renderAll() {
+    renderDetails();
+    renderTable();
+    recompute();
+    renderActions();
+  }
+
+  function field(id, labelText, control, hintText, reqOpt, wide) {
+    return h("div", { "class": "pl-field" + (wide ? " pl-wide" : "") }, [
+      h("label", { "for": id }, [labelText, reqOpt ? h("span", { "class": reqOpt === "req" ? "pl-req" : "pl-opt" }, reqOpt === "req" ? " *" : " (optional)") : null]),
+      control,
+      hintText ? h("p", { "class": "pl-hint", id: id + "-hint" }, hintText) : null
+    ]);
+  }
+
+  function renderDetails() {
+    var host = $("pl-details-card");
+    clear(host);
+    var grid = h("div", { "class": "pl-form-grid" });
+
+    var titleIn = h("input", { id: "pl-f-title", type: "text", maxlength: "140", value: plan.title, "aria-describedby": "pl-f-title-hint", placeholder: "e.g. Acme HQ — WLC migration", oninput: function () { plan.title = cleanLine(this.value, 140); save(); renderActions(); } });
+    add(grid, field("pl-f-title", "Plan title / site name", titleIn, "Shown as the big title on the plan and in the file name.", "req", false));
+
+    var addrIn = h("input", { id: "pl-f-addr", type: "text", maxlength: "200", value: plan.address, placeholder: "Street, town, country", oninput: function () { plan.address = cleanLine(this.value, 200); save(); } });
+    add(grid, field("pl-f-addr", "Site address", addrIn, null, "opt", false));
+
+    var dpmIn = h("input", { id: "pl-f-dpm", type: "text", maxlength: "100", value: plan.dpm, placeholder: "Your name", oninput: function () { plan.dpm = cleanLine(this.value, 100); save(); } });
+    add(grid, field("pl-f-dpm", "DPM name", dpmIn, null, "opt", false));
+
+    var svcSel = h("select", { id: "pl-f-service", onchange: function () { onServiceChange(this.value); } },
+      SERVICE_OPTS.map(function (o) { return h("option", { value: o.v, selected: o.v === plan.service }, o.label); }));
+    add(grid, field("pl-f-service", "Service", svcSel, "Pick one to seed the activity table below from its process template.", "opt", false));
+
+    var startIn = h("input", { id: "pl-f-start", type: "date", value: plan.start, "aria-describedby": "pl-f-start-hint", onchange: function () { var v = this.value; plan.start = (v && parseDate(v)) ? v : plan.start; this.value = plan.start; save(); recompute(); } });
+    add(grid, field("pl-f-start", "Plan start date", startIn, "The Gantt and dates count forward from here, in working days (Mon–Fri).", "opt", false));
+
+    var targetIn = h("input", { id: "pl-f-target", type: "date", value: plan.target, onchange: function () { var v = this.value; plan.target = (v && parseDate(v)) ? v : ""; this.value = plan.target; save(); recompute(); } });
+    add(grid, field("pl-f-target", "Target / go-live date", targetIn, "Optional. The estimate turns red if the plan finishes after this.", "opt", false));
+
+    host.appendChild(grid);
+
+    // load-from-project (only when there are saved checklist projects)
+    var projects = readChecklistProjects();
+    if (projects.length) {
+      var sel = h("select", { id: "pl-f-loadproj", "aria-label": "Saved checklist project to load" }, [h("option", { value: "" }, "Choose a saved project…")].concat(projects.map(function (p) {
+        var t = TYPES[p.type], lbl = (p.name || "Untitled") + " · " + (t ? t.short : p.type);
+        return h("option", { value: p.id }, lbl);
+      })));
+      var loadRow = h("div", { "class": "pl-loadrow pl-noprint" }, [
+        field("pl-f-loadproj", "Load from a saved checklist project", sel, "Prefills the details and seeds the activities, with each one's status set from your ticks.", "opt", true),
+        h("button", { type: "button", "class": "pl-btn", onclick: function () {
+          var id = sel.value, i, found = null;
+          for (i = 0; i < projects.length; i++) if (projects[i].id === id) found = projects[i];
+          if (!found) { announce("Pick a saved project first."); return; }
+          loadFromProject(found);
+          save();
+          renderAll();
+          announce("Loaded “" + (found.name || "project") + "” — details and activities filled in.");
+        } }, "Load project")
+      ]);
+      host.appendChild(loadRow);
+    }
+  }
+
+  function onServiceChange(v) {
+    var typeKey = hasOwn.call(TYPES, v) ? v : "";
+    plan.service = typeKey;
+    // seed only if the table is empty or all rows are blank; otherwise ask
+    var hasContent = false, i;
+    for (i = 0; i < plan.activities.length; i++) { if (plan.activities[i].activity) { hasContent = true; break; } }
+    if (typeKey) {
+      if (!hasContent || window.confirm("Replace the current activities with the " + SERVICE_LABEL[typeKey] + " template?")) {
+        plan.activities = buildTemplate(typeKey, plan.detailed, null);
+        if (!plan.activities.length) plan.activities = [blankActivity()];
+        announce("Seeded the " + SERVICE_LABEL[typeKey] + " template.");
+      }
+    }
+    save();
+    renderAll();
+  }
+
+  /* ---------- the activity table ---------- */
+  function renderTable() {
+    var host = $("pl-table-card");
+    clear(host);
+
+    var detailToggle = h("label", { "class": "pl-toggle", title: "Condensed = one row per phase; Detailed = one row per step" }, [
+      h("input", { type: "checkbox", id: "pl-detailed", checked: plan.detailed, onchange: function () { onDetailedChange(this.checked); } }),
+      "Detailed (per step)"
+    ]);
+    var seedSel = h("select", { "class": "pl-seedsel", id: "pl-seed", "aria-label": "Seed activities from a service template" }, [h("option", { value: "" }, "Service template…")].concat(SERVICE_OPTS.filter(function (o) { return o.v; }).map(function (o) {
+      return h("option", { value: o.v }, o.label);
+    })));
+    var seedBtn = h("button", { type: "button", "class": "pl-btn pl-btn-sm", onclick: function () {
+      var v = seedSel.value;
+      if (!v) { announce("Pick a service to seed from."); return; }
+      var hasContent = false, i;
+      for (i = 0; i < plan.activities.length; i++) { if (plan.activities[i].activity) { hasContent = true; break; } }
+      if (hasContent && !window.confirm("Replace the current activities with the " + SERVICE_LABEL[v] + " template?")) return;
+      plan.service = v;
+      plan.activities = buildTemplate(v, plan.detailed, null);
+      if (!plan.activities.length) plan.activities = [blankActivity()];
+      save();
+      renderAll();
+      announce("Seeded the " + SERVICE_LABEL[v] + " template.");
+    } }, "Seed");
+
+    var tbar = h("div", { "class": "pl-tbar pl-noprint" }, [
+      h("div", { "class": "pl-tbar-group" }, [seedSel, seedBtn]),
+      h("div", { "class": "pl-tbar-group" }, [detailToggle])
+    ]);
+    host.appendChild(tbar);
+
+    if (!plan.activities.length) {
+      host.appendChild(h("div", { "class": "pl-empty" }, "No activities yet. Seed a service template above, or add a row."));
+    } else {
+      host.appendChild(buildTable());
+    }
+
+    host.appendChild(h("div", { "class": "pl-addrow pl-noprint" }, [
+      h("button", { type: "button", "class": "pl-btn pl-btn-sm", onclick: function () { plan.activities.push(blankActivity()); save(); renderAll(); announce("Row added."); } }, [ico("＋"), "Add activity"])
+    ]));
+  }
+
+  function onDetailedChange(detailed) {
+    detailed = !!detailed;
+    if (plan.service && hasOwn.call(TYPES, plan.service)) {
+      if (window.confirm("Re-seed the table from the " + SERVICE_LABEL[plan.service] + " template at the " + (detailed ? "detailed (per step)" : "condensed (per phase)") + " level? This replaces the current rows.")) {
+        plan.detailed = detailed;
+        plan.activities = buildTemplate(plan.service, detailed, null);
+        if (!plan.activities.length) plan.activities = [blankActivity()];
+      }
+      // else: keep the previous level (the checkbox re-renders to match plan.detailed)
+    } else {
+      plan.detailed = detailed;   // no template to re-seed; just remember the preference
+    }
+    save();
+    renderAll();
+  }
+
+  function buildTable() {
+    rowRefs = [];
+    var thead = h("thead", null, h("tr", null, [
+      h("th", { scope: "col", "class": "c" }, "#"),
+      h("th", { scope: "col" }, "Activity"),
+      h("th", { scope: "col" }, "Owner"),
+      h("th", { scope: "col", "class": "c" }, "Work days"),
+      h("th", { scope: "col", "class": "c" }, "Status"),
+      h("th", { scope: "col" }, "Start"),
+      h("th", { scope: "col" }, "End"),
+      h("th", { scope: "col" }, "Notes"),
+      h("th", { scope: "col", "class": "c pl-noprint" }, "Row")
+    ]));
+    var tbody = h("tbody");
+    plan.activities.forEach(function (a, idx) { tbody.appendChild(buildRow(a, idx)); });
+    var table = h("table", { "class": "pl-table" }, [thead, tbody]);
+    return h("div", { "class": "pl-tablewrap" }, table);
+  }
+
+  function buildRow(a, idx) {
+    var num = idx + 1;
+    var actIn = h("input", { "class": "pl-in pl-in-act", type: "text", value: a.activity, "aria-label": "Activity " + num + " name", maxlength: "300", oninput: function () { a.activity = cleanLine(this.value, 300); save(); recompute(); } });
+    var ownIn = h("input", { "class": "pl-in pl-in-owner", type: "text", value: a.owner, "aria-label": "Activity " + num + " owner", maxlength: "120", oninput: function () { a.owner = cleanLine(this.value, 120); save(); updateGantt(); } });
+    var daysIn = h("input", { "class": "pl-in pl-in-days", type: "number", min: "0", step: "1", value: String(a.workDays), "aria-label": "Activity " + num + " work days", oninput: function () { var n = parseInt(this.value, 10); a.workDays = (isNaN(n) || n < 0) ? 0 : (n > MAX_WD ? MAX_WD : n); save(); recompute(); } });
+    var statusSel = h("select", { "class": "pl-in pl-in-status", "aria-label": "Activity " + num + " status", "data-status": a.status, onchange: function () { a.status = normStatus(this.value); this.setAttribute("data-status", a.status); save(); recompute(); } },
+      STATUSES.map(function (s) { return h("option", { value: s, selected: s === a.status }, s); }));
+    var startIn = h("input", { "class": "pl-in pl-in-date", type: "date", "aria-label": "Activity " + num + " start date (leave as auto to chain from the previous activity)", value: (a.startMode !== "auto" && parseDate(a.startMode)) ? a.startMode : "", onchange: function () {
+      var v = this.value;
+      a.startMode = (v && parseDate(v)) ? v : "auto";
+      save(); recompute();
+    } });
+    var resetBtn = h("button", { type: "button", "class": "pl-resetbtn pl-noprint", title: "Reset to auto (chain from the previous activity)", "aria-label": "Reset activity " + num + " start to automatic", onclick: function () { a.startMode = "auto"; save(); recompute(); } }, "↺");
+    var autoTag = h("span", { "class": "pl-auto-tag" }, "");
+    var startCell = h("div", { "class": "pl-start-cell" }, [startIn, autoTag, resetBtn]);
+    var endSpan = h("span", { "class": "pl-end" }, "");
+    var notesIn = h("input", { "class": "pl-in pl-in-notes", type: "text", value: a.notes, "aria-label": "Activity " + num + " notes", maxlength: "2000", oninput: function () { a.notes = this.value.slice(0, 2000); save(); } });
+
+    var rowbtns = h("div", { "class": "pl-rowbtns pl-noprint" }, [
+      h("button", { type: "button", "class": "pl-rowbtn", title: "Move up", "aria-label": "Move activity " + num + " up", disabled: idx === 0, onclick: function () { moveRow(idx, -1); } }, "↑"),
+      h("button", { type: "button", "class": "pl-rowbtn", title: "Move down", "aria-label": "Move activity " + num + " down", disabled: idx === plan.activities.length - 1, onclick: function () { moveRow(idx, 1); } }, "↓"),
+      h("button", { type: "button", "class": "pl-rowbtn", title: "Duplicate", "aria-label": "Duplicate activity " + num, onclick: function () { duplicateRow(idx); } }, "⧉"),
+      h("button", { type: "button", "class": "pl-rowbtn pl-del", title: "Delete", "aria-label": "Delete activity " + num, onclick: function () { deleteRow(idx); } }, "✕")
+    ]);
+
+    var tr = h("tr", { "class": a.status === "N/A" ? "is-na" : null }, [
+      h("td", { "class": "pl-td-num" }, num),
+      h("td", null, actIn),
+      h("td", null, ownIn),
+      h("td", { "class": "c" }, daysIn),
+      h("td", { "class": "c" }, statusSel),
+      h("td", null, startCell),
+      h("td", null, endSpan),
+      h("td", null, notesIn),
+      h("td", { "class": "c pl-noprint" }, rowbtns)
+    ]);
+    rowRefs.push({ startInput: startIn, endSpan: endSpan, autoTag: autoTag, resetBtn: resetBtn, statusSel: statusSel, tr: tr });
+    return tr;
+  }
+
+  function moveRow(idx, dir) {
+    var j = idx + dir;
+    if (j < 0 || j >= plan.activities.length) return;
+    var tmp = plan.activities[idx]; plan.activities[idx] = plan.activities[j]; plan.activities[j] = tmp;
+    save(); renderAll(); announce("Row moved.");
+  }
+  function duplicateRow(idx) {
+    var a = plan.activities[idx], copy = sanitizeActivity(a);
+    copy.id = newId();
+    plan.activities.splice(idx + 1, 0, copy);
+    save(); renderAll(); announce("Row duplicated.");
+  }
+  function deleteRow(idx) {
+    var a = plan.activities[idx];
+    if (a.activity && !window.confirm("Delete activity “" + a.activity + "”?")) return;
+    plan.activities.splice(idx, 1);
+    save(); renderAll(); announce("Row deleted.");
+  }
+
+  /* ---------- recompute: dates, estimate, gantt ---------- */
+  function recompute() {
+    var derived = schedule();
+    // update each row's Start (auto rows) and End display
+    for (var i = 0; i < plan.activities.length && i < rowRefs.length; i++) {
+      var a = plan.activities[i], d = derived[i], ref = rowRefs[i];
+      if (a.startMode === "auto") {
+        if (ref.startInput.value) ref.startInput.value = "";
+        ref.autoTag.textContent = "auto · " + fmtShort(d.start);
+        if (ref.resetBtn) ref.resetBtn.style.display = "none";
+      } else {
+        ref.autoTag.textContent = "";
+        if (ref.resetBtn) ref.resetBtn.style.display = "";
+      }
+      clear(ref.endSpan);
+      if (a.workDays <= 0) {
+        ref.endSpan.appendChild(h("span", { "class": "pl-end-d" }, fmtShort(d.end)));
+        ref.endSpan.appendChild(h("span", null, "milestone"));
+      } else {
+        ref.endSpan.appendChild(h("span", { "class": "pl-end-d" }, fmtShort(d.end)));
+        ref.endSpan.appendChild(h("span", null, a.workDays + (a.workDays === 1 ? " day" : " days")));
+      }
+      if (ref.tr) ref.tr.className = (a.status === "N/A") ? "is-na" : "";
+    }
+    renderEstimate(derived);
+    renderGantt(derived);
+  }
+  // lighter: only the gantt row labels (owner) changed
+  function updateGantt() { renderGantt(schedule()); }
+
+  function renderEstimate(derived) {
+    var host = $("pl-estimate");
+    clear(host);
+    var sum = summarise(derived);
+    var target = parseDate(plan.target);
+    var late = sum.goLive && target && sum.goLive > target;
+    var complete = sum.applicable > 0 && sum.done === sum.applicable;
+
+    var goBlock = h("div", { "class": "pl-est-block" }, [
+      h("div", { "class": "pl-est-lbl" }, "Estimated go-live"),
+      h("div", { "class": "pl-est-val " + (sum.goLive ? (late ? "pl-late" : "pl-go") : "") }, sum.goLive ? fmtDate(sum.goLive) : "—"),
+      h("div", { "class": "pl-est-sub" }, sum.goLive
+        ? (target ? (late ? ("⚠ " + Math.abs(dayDiff(sum.goLive, target)) + " day(s) after the target of " + fmtShort(target)) : "On or before the target of " + fmtShort(target)) : "Latest finish across all activities")
+        : "Add activities to see an estimate")
+    ]);
+    var progBlock = h("div", { "class": "pl-est-block pl-est-prog" }, [
+      h("div", { "class": "pl-est-lbl" }, "Progress"),
+      h("div", { "class": "pl-est-val" }, sum.pct + "%"),
+      h("div", { "class": "pl-bar" + (complete ? " is-complete" : ""), role: "progressbar", "aria-valuemin": "0", "aria-valuemax": "100", "aria-valuenow": String(sum.pct), "aria-label": "Progress" }, h("span", { style: "width:" + sum.pct + "%" })),
+      h("div", { "class": "pl-est-sub" }, sum.done + " of " + sum.applicable + (sum.applicable === 1 ? " activity" : " activities") + " done" + (sum.inProgress ? " · " + sum.inProgress + " in progress" : ""))
+    ]);
+    host.appendChild(h("div", { "class": "pl-estimate" }, [goBlock, progBlock]));
+  }
+
+  /* ---------- gantt ---------- */
+  function statusBarClass(s) {
+    if (s === "Done") return "pl-bar-Done";
+    if (s === "In progress") return "pl-bar-InProgress";
+    if (s === "N/A") return "pl-bar-NA";
+    return "pl-bar-NotStarted";
+  }
+  function renderGantt(derived) {
+    var host = $("pl-gantt-card");
+    clear(host);
+    if (!plan.activities.length) { host.appendChild(h("div", { "class": "pl-empty" }, "Add activities to see the Gantt chart.")); return; }
+
+    var start = parseDate(plan.start) || todayDate();
+    var first = mondayOnOrBefore(start), last = start, i;
+    for (i = 0; i < plan.activities.length; i++) {
+      if (plan.activities[i].status === "N/A") continue;
+      if (derived[i].end > last) last = derived[i].end;
+      if (derived[i].start > last) last = derived[i].start;
+    }
+    var target = parseDate(plan.target), now = todayDate();
+    if (target && target > last) last = target;
+    if (now > last) last = now;
+    last = addDays(last, 3);
+    last = addDays(last, (7 - last.getDay()) % 7);
+    var nDays = dayDiff(first, last) + 1;
+    var weekly = nDays > MAX_DAY_COLS;
+    var step = weekly ? 7 : 1;
+    var nCols = weekly ? Math.ceil(nDays / 7) : nDays;
+    if (nCols > MAX_GANTT_COLS) nCols = MAX_GANTT_COLS;
+    var colDate = [];
+    for (i = 0; i < nCols; i++) colDate.push(addDays(first, i * step));
+
+    function colWeekend(k) { return !weekly && isWeekend(colDate[k]); }
+    function colToday(k) { var a = colDate[k]; return weekly ? (now >= a && now <= addDays(a, 6)) : dayDiff(a, now) === 0; }
+    function covered(k, s, e) { var a = colDate[k], b = weekly ? addDays(a, 6) : a; return e >= a && s <= b; }
+
+    // head
+    var monthTr = h("tr", null, [h("th", { scope: "col", "class": "pl-g-task", rowspan: "2" }, "Activity")]);
+    var dayTr = h("tr");
+    var prevMonth = -1;
+    for (i = 0; i < nCols; i++) {
+      var d = colDate[i];
+      var showMonth = (i === 0) || d.getMonth() !== prevMonth;
+      monthTr.appendChild(h("th", { "class": "pl-g-month", scope: "col" }, showMonth ? (MONTHS[d.getMonth()] + " ’" + String(d.getFullYear()).slice(2)) : ""));
+      prevMonth = d.getMonth();
+      var dcls = "pl-g-day" + (colWeekend(i) ? " is-weekend" : "") + (colToday(i) ? " is-today" : "");
+      dayTr.appendChild(h("th", { "class": dcls, scope: "col", title: fmtDate(d) }, weekly ? String(d.getDate()) : (DAY_LETTERS[d.getDay()] + String(d.getDate()))));
+    }
+    var thead = h("thead", null, [monthTr, dayTr]);
+
+    var tbody = h("tbody");
+    plan.activities.forEach(function (a, idx) {
+      var dd = derived[idx];
+      var cells = [h("th", { scope: "row", "class": "pl-g-task" }, [
+        h("div", { "class": "pl-g-row-task", title: (idx + 1) + ". " + a.activity }, (idx + 1) + ". " + (a.activity || "(untitled)")),
+        h("div", { "class": "pl-g-row-sub" }, [a.owner || "", a.owner && a.status ? " · " : "", a.status].join(""))
+      ])];
+      var bar = statusBarClass(a.status);
+      for (var k = 0; k < nCols; k++) {
+        var cls = "pl-g-cell" + (colWeekend(k) ? " is-weekend" : "") + (colToday(k) ? " is-today" : "");
+        var isBar = covered(k, dd.start, dd.end);
+        cells.push(h("td", { "class": cls, title: isBar ? (a.activity + " — " + fmtShort(dd.start) + " to " + fmtShort(dd.end)) : null },
+          isBar ? h("div", { "class": "pl-g-bar " + bar }) : null));
+      }
+      tbody.appendChild(h("tr", null, cells));
+    });
+
+    var table = h("table", { "class": "pl-gantt" }, [thead, tbody]);
+    host.appendChild(h("div", { "class": "pl-ganttwrap" }, table));
+    host.appendChild(h("div", { "class": "pl-glegend" }, [
+      leg("pl-bar-Done", "Done"), leg("pl-bar-InProgress", "In progress"), leg("pl-bar-NotStarted", "Not started"),
+      h("span", null, [h("span", { "class": "pl-sw pl-sw-na", "aria-hidden": "true" }), "N/A"]),
+      h("span", null, [h("span", { "class": "pl-sw pl-sw-today", "aria-hidden": "true" }), "Today"]),
+      weekly ? null : h("span", null, [h("span", { "class": "pl-sw pl-sw-weekend", "aria-hidden": "true" }), "Weekend"]),
+      weekly ? h("span", { "class": "pl-gantt-note" }, "One column per week (long plan).") : null
+    ]));
+  }
+  function leg(barCls, label) { return h("span", null, [h("span", { "class": "pl-sw " + barCls, "aria-hidden": "true" }), label]); }
+
+  /* ---------- actions ---------- */
+  function renderActions() {
+    var host = $("pl-actions-card");
+    clear(host);
+    var hasXlsx = window.KBPlannerExport && typeof window.KBPlannerExport.download === "function";
+    var validTitle = !!plan.title;
+
+    var actions = h("div", { "class": "pl-actions pl-noprint" }, [
+      h("button", { type: "button", "class": "pl-btn pl-btn-primary", id: "pl-export", onclick: exportExcel }, [ico("⬇"), "Export to Excel"]),
+      h("button", { type: "button", "class": "pl-btn", id: "pl-print", onclick: function () { window.print(); } }, [ico("🖨️"), "Print / share"]),
+      h("button", { type: "button", "class": "pl-btn", id: "pl-copy", onclick: copySummary }, [ico("📋"), "Copy summary"]),
+      h("button", { type: "button", "class": "pl-btn pl-btn-danger", id: "pl-new", onclick: newPlan }, [ico("🗑️"), "New plan"])
+    ]);
+    host.appendChild(actions);
+
+    var note;
+    if (!hasXlsx) note = "The Excel export needs this page's scripts; reload the page if the button does nothing.";
+    else if (!validTitle) note = "Add a plan title above and the Excel is named after it.";
+    else note = "“Export to Excel” downloads a customer-ready sheet with the header, the activity table and a coloured Gantt — the same layout you see above. Saved only in this browser; nothing is sent anywhere.";
+    host.appendChild(h("p", { "class": "pl-hint pl-noprint", id: "pl-actions-hint", style: "margin-top:12px;" }, note));
+    host.appendChild(h("div", { "class": "pl-feedback pl-noprint", id: "pl-feedback", role: "status", "aria-live": "polite" }, ""));
+    if (copyBoxText !== null) host.appendChild(copyBox());
+  }
+
+  function feedback(msg, kind) {
+    var el = $("pl-feedback");
+    if (el) { el.textContent = msg; el.className = "pl-feedback pl-noprint" + (kind ? " " + kind : ""); }
+    announce(msg);
+  }
+
+  function buildExportPlan(derived) {
+    return {
+      title: plan.title || "Delivery plan",
+      address: plan.address,
+      dpm: plan.dpm,
+      service: plan.service ? SERVICE_LABEL[plan.service] : "",
+      start: plan.start,
+      target: plan.target,
+      activities: plan.activities.map(function (a, i) {
+        return { n: i + 1, activity: a.activity, owner: a.owner, workDays: a.workDays, status: a.status, start: derived[i].start, end: derived[i].end, notes: a.notes };
+      }),
+      today: new Date()
+    };
+  }
+
+  function exportExcel() {
+    var api = window.KBPlannerExport;
+    if (!api || typeof api.download !== "function") { feedback("The Excel export is unavailable — try reloading the page.", "err"); return; }
+    if (!plan.title) { feedback("Add a plan title first (top of the page).", "err"); var t = $("pl-f-title"); if (t) t.focus(); return; }
+    var hasAct = false, i;
+    for (i = 0; i < plan.activities.length; i++) if (plan.activities[i].activity) { hasAct = true; break; }
+    if (!hasAct) { feedback("Add at least one activity before exporting.", "err"); return; }
+    try {
+      var ok = api.download(buildExportPlan(schedule()));
+      feedback(ok ? "Excel plan downloaded." : "Couldn't create the Excel file — please try again.", ok ? "ok" : "err");
+    } catch (e) {
+      feedback("Couldn't create the Excel file — please try again.", "err");
+      if (window.console && window.console.error) window.console.error(e);
+    }
+  }
+
+  function summaryText() {
+    var derived = schedule(), sum = summarise(derived);
+    var lines = [];
+    lines.push(plan.title || "Delivery plan");
+    if (plan.address) lines.push("Site: " + plan.address);
+    if (plan.service) lines.push("Service: " + SERVICE_LABEL[plan.service]);
+    if (plan.dpm) lines.push("DPM: " + plan.dpm);
+    lines.push("Plan start: " + (parseDate(plan.start) ? fmtDate(parseDate(plan.start)) : "—"));
+    lines.push("Estimated go-live: " + (sum.goLive ? fmtDate(sum.goLive) : "—") + (plan.target ? " (target " + fmtDate(parseDate(plan.target)) + ")" : ""));
+    lines.push("Progress: " + sum.done + " of " + sum.applicable + " activities done (" + sum.pct + "%)" + (sum.inProgress ? ", " + sum.inProgress + " in progress" : ""));
+    var next = [];
+    for (var i = 0; i < plan.activities.length && next.length < 3; i++) {
+      var a = plan.activities[i];
+      if (a.status === "Done" || a.status === "N/A") continue;
+      next.push("  - " + a.activity + (a.owner ? " (" + a.owner + ")" : "") + " · " + fmtShort(derived[i].start) + "–" + fmtShort(derived[i].end) + " · " + a.status);
+    }
+    if (next.length) { lines.push(""); lines.push("Next up:"); lines = lines.concat(next); }
+    lines.push("");
+    lines.push("Working days Mon–Fri. Indicative plan from the DPM Knowledge Base.");
+    return lines.join("\n");
+  }
+  function copySummary() {
+    var txt = summaryText();
+    function fallback() { copyBoxText = txt; renderActions(); var ta = $("pl-copy-ta"); if (ta) { ta.focus(); ta.select(); } feedback("Select the text below and copy it (Ctrl+C).", ""); }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(txt).then(function () { copyBoxText = null; feedback("Summary copied to clipboard.", "ok"); renderActions(); }, fallback);
+    } else { fallback(); }
+  }
+  function copyBox() {
+    return h("div", { "class": "pl-copybox pl-noprint" }, [
+      h("label", { "for": "pl-copy-ta" }, "Copying was blocked — select this text and copy it (Ctrl+C, or ⌘C):"),
+      h("textarea", { id: "pl-copy-ta", rows: "10", readonly: true, value: copyBoxText }),
+      h("button", { type: "button", "class": "pl-btn pl-btn-sm", onclick: function () { copyBoxText = null; renderActions(); } }, "Close")
+    ]);
+  }
+
+  function newPlan() {
+    if (!window.confirm("Start a new plan? This clears the current one from this browser.")) return;
+    plan = freshPlan();
+    save();
+    renderAll();
+    announce("Started a new plan.");
+    var t = $("pl-f-title"); if (t) t.focus();
+  }
+
+  /* ---------- init ---------- */
+  function getParam(name) {
+    try {
+      var m = new RegExp("[?&]" + name + "=([^&]*)").exec(location.search);
+      return m ? decodeURIComponent(m[1].replace(/\+/g, " ")) : null;
+    } catch (e) { return null; }
+  }
+  function init() {
+    if (!DATA || !DATA.types) { /* templates unavailable, still works custom */ TYPES = TYPES || {}; }
+    var stored = sanitizePlan(readStore());
+    plan = stored || freshPlan();
+
+    // ?project=<id> loads that checklist project (prefill + seed)
+    var pid = getParam("project");
+    if (pid) {
+      var projects = readChecklistProjects(), i, found = null;
+      for (i = 0; i < projects.length; i++) if (projects[i].id === pid) found = projects[i];
+      if (found) {
+        if (!stored) plan = freshPlan();
+        loadFromProject(found);
+        save();
+        announce("Loaded the project from your checklist.");
+      }
+      try { if (history.replaceState) history.replaceState(null, "", location.pathname); } catch (e) { /* ignore */ }
+    }
+
+    renderAll();
+    if (!storageOK) feedback("This browser isn't saving changes (private window or blocked storage). The planner still works, but it won't be here next time — export the Excel to keep it.", "err");
+  }
+
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
+  else init();
+})();
+</script>
+<script src="shared.js"></script>
+</body>
+</html>

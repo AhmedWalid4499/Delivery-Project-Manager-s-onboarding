@@ -137,6 +137,7 @@ All pages sit in the repository root. The build script only indexes root-level `
 | File | Purpose | Search category |
 |---|---|---|
 | `checklist.html` + `checklist-data.js` | Delivery checklist: tick AP, WLC & Switch or WAN steps per project, copy a status update, export or import a backup. | Tools |
+| `planner.html` + `planner-export.js` | Delivery Planner: enter a site's activities and statuses, estimate the dates and go-live in working days, draw a live Gantt, and export a ZABOK-style Excel to share with the customer. | Tools |
 | `templates.html` + `templates-data.js` | Email and meeting-invite starter drafts for each process step, filled in from one form. | Tools |
 | `tools.html` + `launcher.js` | Tool launcher: one-click links to GOLD, ServiceNow, MACHX, FLIP, and more. `launcher.js` also draws the compact toolkit row on `index.html`. | Tools |
 | `option43.html` | Option 43 calculator: builds the DHCP Option 43 hex string with a byte-by-byte breakdown. | Reference |
@@ -355,6 +356,19 @@ Other things to know:
 
 - **Deep links:** `checklist.html?type=ap`, `?type=wlc` or `?type=wan`. The process pages link to these.
 - **Where progress is saved:** only in the viewer's browser (`dpmkb_checklists_v1`). Users move it between devices with **Export backup** / **Import backup**, which produces a `dpm-checklists-backup-YYYY-MM-DD.json` file.
+
+### Delivery Planner (`planner.html` / `planner-export.js`)
+
+`planner.html` is a standalone tool for building a customer-facing site plan with a Gantt chart. It doesn't need a checklist project, but it can seed itself from one.
+
+- **Inputs (Plan details):** plan title / site name (the only required field), site address, DPM name, Service (`LAN — AP`, `LAN — WLC & Switch`, `WAN`, or `Custom / blank`), plan start date (defaults to today), and an optional target / go-live date. When saved checklist projects exist, a **"Load from a saved checklist project"** picker reads `dpmkb_checklists_v1`, prefills the details and seeds the activities, setting each activity's status from the project's ticks. Opening `planner.html?project=<id>` loads that project straight away (the checklist's active-project toolbar links here).
+- **Activity table.** One row per activity: `#` (auto), Activity, Owner, Work days (≥ 0), Status (`Done` / `In progress` / `Not started` / `N/A`), Start (a date — `auto` by default, overridable), End (computed, read-only), Notes. Rows can be added, duplicated, deleted, and moved up/down.
+- **Service templates.** The **Seed** control and the **Detailed (per step)** toggle fill the table from `window.KB_CHECKLISTS` (`checklist-data.js`):
+  - **Condensed (default):** one row per phase — Activity = phase name, Work days = the sum of that phase's `step.plan.days`, Owner = the most common step owner. This is the customer-facing default.
+  - **Detailed:** one row per checklist step — Activity = `step.text`, Work days = `step.plan.days`, Owner = `step.team`.
+- **The estimator (working days).** Working days are Monday–Friday, no holidays. By default activities run sequentially: activity 1 starts on the plan start (rolled to a working day); each next activity starts the next working day after the previous End. `End = addWorkdays(Start, max(workDays, 1) − 1)`; a 0-work-day row is a milestone on its Start. Overriding a Start models parallel work or a gap (its End then recomputes from Work days). The **estimated go-live** is the latest End across applicable activities (it turns red if it is after the target date), and **progress** is done ÷ applicable activities (N/A rows are excluded from both). The Gantt caps at ~120 day-columns, then switches to one column per week.
+- **ZABOK-style export.** `planner-export.js` (`window.KBPlannerExport`) depends on `xlsx-writer.js` (`KBXlsx`). `buildWorkbook(plan)` returns the bytes and `download(plan)` saves `Delivery-Plan_<slug>_<YYYY-MM-DD>.xlsx`. It is one sheet: a header block (title, site, progress, today, DPM), a per-day date band, the activity table with real Excel dates, coloured Gantt bars by status (Done = green, In progress = amber, Not started = grey, N/A = hatched), weekend shading, a today marker and a legend — landscape, fit to one page wide, with the left columns and header frozen. Like the other data files it is plain ES5 (passes the Chakra check).
+- **Where it is saved.** Only in the viewer's browser, under `dpmkb_planner_v1` (one current plan). Nothing is sent anywhere; the Excel export is how a plan is shared.
 
 ### Email templates (`templates-data.js`)
 
@@ -635,6 +649,7 @@ Everything the site stores lives only in the viewer's own browser (per device an
 |---|---|---|
 | `dpmkb_checklists_v1` | `checklist.html` | The viewer's checklist projects: names, ticked steps and notes. |
 | `dpmkb_checklists_v1_unreadable` | `checklist.html` | A copy of checklist data that couldn't be read, kept so it can be recovered. |
+| `dpmkb_planner_v1` | `planner.html` | The current Delivery Planner plan: site details, activities, statuses and dates. |
 | `dpmkb_tool_links` | `launcher.js` | The viewer's own links for each tool. |
 | `dpmkb_probe` | `launcher.js` | A test value, written and removed at once to check that storage works. |
 | `dpmkb_tpl_fields` | `templates.html` | Values typed into the template form (names, dates, references). |

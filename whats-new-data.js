@@ -34,6 +34,14 @@
 ═══════════════════════════════════════════════════════════ */
 window.KB_WHATS_NEW = [
 
+  /* ── 9 Oct 2026 ──────────────────────────────────────────── */
+  {
+    date: '2026-10-09', tag: 'New',
+    title: 'Delivery Planner — enter where a site is up to and get an instant dated plan with a Gantt chart',
+    desc: 'A new planner builds a shareable site plan in seconds. Enter the site details, pick a service to seed the activities (condensed per phase, or detailed per step), and mark each one Done, In progress or Not started. It estimates the Start and End dates in working days, the go-live date and the progress, and draws a live Gantt — then exports a customer-ready Excel that looks the same. Load a saved checklist project to prefill it and set each activity’s status from your ticks. Everything stays in this browser.',
+    links: [{ href: 'planner.html', label: 'Open the Delivery Planner' }]
+  },
+
   /* ── 6 Oct 2026 ──────────────────────────────────────────── */
   {
     date: '2026-10-06', tag: 'Improved',

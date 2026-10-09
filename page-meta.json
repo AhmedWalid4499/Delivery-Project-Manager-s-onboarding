@@ -1,9 +1,9 @@
 {
-  "generated": "2026-10-06",
+  "generated": "2026-10-09",
   "pages": {
     "assistant.html": {"title": "AI Assistant", "updated": "2026-10-06"},
     "automation-squad.html": {"title": "Automation Squad", "updated": "2026-09-30"},
-    "checklist.html": {"title": "Delivery Checklist", "updated": "2026-09-30"},
+    "checklist.html": {"title": "Delivery Checklist", "updated": "2026-10-09"},
     "cisco.html": {"title": "Cisco Devices", "updated": "2026-09-30"},
     "devices.html": {"title": "Device Guides", "updated": "2026-09-30"},
     "firewalls.html": {"title": "Firewalls & Security", "updated": "2026-09-30"},
@@ -11,7 +11,7 @@
     "glossary.html": {"title": "Glossary", "updated": "2026-09-30"},
     "hiring-squad.html": {"title": "Hiring Squad", "updated": "2026-09-30"},
     "hoto.html": {"title": "HOTO Pack Builder", "updated": "2026-09-30"},
-    "index.html": {"title": "DPM Knowledge Base", "updated": "2026-10-06"},
+    "index.html": {"title": "DPM Knowledge Base", "updated": "2026-10-09"},
     "ip-routing.html": {"title": "IP Routing", "updated": "2026-09-30"},
     "karim-elzarka.html": {"title": "Karim El Zarka", "updated": "2026-09-30"},
     "lan-process.html": {"title": "LAN Process", "updated": "2026-09-30"},
@@ -24,6 +24,7 @@
     "org-chart.html": {"title": "Org Chart", "updated": "2026-09-30"},
     "paloalto.html": {"title": "Palo Alto Networks", "updated": "2026-09-30"},
     "peter-sabet.html": {"title": "Peter Sabet", "updated": "2026-09-30"},
+    "planner.html": {"title": "Delivery Planner", "updated": "2026-10-09"},
     "presales-squad.html": {"title": "Pre-Sales Squad", "updated": "2026-09-30"},
     "process-ap.html": {"title": "AP Migration Process", "updated": "2026-09-30"},
     "process-wlc-switch.html": {"title": "WLC & Switch Migration Process", "updated": "2026-09-30"},

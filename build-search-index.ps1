@@ -90,7 +90,7 @@ function Get-Category([string]$name) {
   if ($name -match '^(lan-wan-basics|ip-routing|switching|wireless|firewalls|zscaler)\.html$') { return 'Networking' }
   if ($name -match '^(cisco|paloalto|fortinet|devices)\.html$') { return 'Vendors' }
   if ($name -match '^(lan-process|process-ap|process-wlc-switch|wan-process)\.html$') { return 'Process' }
-  if ($name -match '^(checklist|templates|tools|hoto|assistant)\.html$') { return 'Tools' }
+  if ($name -match '^(checklist|planner|templates|tools|hoto|assistant)\.html$') { return 'Tools' }
   if ($name -match '^(glossary|option43|resources|raci|whats-new)\.html$') { return 'Reference' }
   if ($name -match '^(karim-elzarka|mona-tantawy|peter-sabet|maryam-etry|org-chart)\.html$') { return 'Team' }
   if ($name -match '-squad\.html$') { return 'Squads' }

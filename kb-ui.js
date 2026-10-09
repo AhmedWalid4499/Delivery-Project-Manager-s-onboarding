@@ -86,6 +86,7 @@
     "resources":          ["book", "list", "globe", "nodes"],
     "raci":               ["check", "list", "nodes", "key"],
     "checklist":          ["check", "list", "wifi", "globe"],
+    "planner":            ["check", "route", "list", "nodes"],
     "hoto":               ["check", "list", "server", "book"],
     "templates":          ["list", "check", "book", "nodes"],
     "tools":              ["key", "server", "list", "nodes"],
