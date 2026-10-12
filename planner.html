@@ -201,7 +201,7 @@
   <div class="hero-content">
     <div class="hero-tag"><span aria-hidden="true">🗓️</span> DPM Tool</div>
     <h1>Delivery <span>Planner</span></h1>
-    <p class="hero-sub">Enter a site's details and where each activity is up to, and the planner estimates the dates and the go-live, draws a live Gantt chart, and exports a shareable Excel plan for the customer — all in working days, all in your browser.</p>
+    <p class="hero-sub">Enter a site's details and where each activity is up to, and the planner estimates the dates and the go-live, draws a live Gantt chart, and exports a shareable, editable Excel plan for the customer — change a status or a date in the file and it re-plans itself. All in working days, all in your browser.</p>
   </div>
 </div>
 
@@ -242,7 +242,7 @@
     <div class="section-header">
       <h2>Gantt preview</h2>
       <div class="divider"></div>
-      <p>A day-by-day view of the plan. Bars are coloured by status; weekends are shaded and today is marked. It scrolls sideways — the Excel export looks the same.</p>
+      <p>A day-by-day view of the plan. Bars are coloured by status; weekends are shaded and today is marked. It scrolls sideways — the Excel export draws the same Gantt, but live: its bars move when you edit the plan.</p>
     </div>
     <div class="pl-card" id="pl-gantt-card"></div>
   </div>
@@ -516,34 +516,37 @@
   /* ---------- scheduler ---------- */
   /* Working days Mon–Fri, no holidays. Status drives the dates: see schedule(). */
   function schedule() {
-    /* Status-driven: the plan start (default today) is the "as of" line.
-       Remaining steps (In progress / Not started) schedule FORWARD from it,
-       chained in working days, so the last one's End is the earliest
-       migration date. Done steps are placed in the PAST (backward from the
-       as-of line) so the chart shows history; they add no future time.
-       N/A steps get no bar and shift nothing. */
+    /* Status-driven, and identical to the live formulas in the Excel export
+       (planner-export.js) so the screen and the downloaded file always agree.
+       The plan start (default today) is the "as of" line.
+         remaining step i starts  = asOf advanced by Σ work-days of remaining
+                                     steps above it; its End is +workDays-1.
+         done step i ends          = the working day before asOf, minus Σ
+                                     work-days of Done steps below it.
+       A 0-day step is a milestone: it consumes no working day and shifts
+       nothing. N/A steps get no bar and shift nothing. */
     var asOf = rollToWorkday(parseDate(plan.start) || todayDate());
     var out = new Array(plan.activities.length), i, a, s, e;
     /* forward: remaining, in order */
-    var cursor = null;
+    var cum = 0;
     for (i = 0; i < plan.activities.length; i++) {
       a = plan.activities[i];
       if (a.status === "Done") continue;
       if (a.status === "N/A") { out[i] = { start: asOf, end: asOf, na: true }; continue; }
-      s = cursor ? nextWorkday(cursor) : asOf;
+      s = addWorkdays(asOf, cum);
       e = (a.workDays <= 0) ? s : addWorkdays(s, a.workDays - 1);
       out[i] = { start: s, end: e, done: false };
-      cursor = e;
+      cum += a.workDays;
     }
-    /* backward: done, in reverse order, ending the day before the as-of line */
-    var dcur = prevWorkday(asOf);
+    /* backward: done, each ending before the as-of line */
+    var doneAfter = 0;
     for (i = plan.activities.length - 1; i >= 0; i--) {
       a = plan.activities[i];
       if (a.status !== "Done") continue;
-      e = dcur;
-      s = (a.workDays <= 0) ? e : addWorkdaysBack(e, a.workDays - 1);
+      e = addWorkdaysBack(asOf, 1 + doneAfter);
+      s = (a.workDays <= 1) ? e : addWorkdaysBack(e, a.workDays - 1);
       out[i] = { start: s, end: e, done: true };
-      dcur = prevWorkday(s);
+      doneAfter += a.workDays;
     }
     return out;
   }
@@ -901,7 +904,7 @@
       var bar = statusBarClass(a.status);
       for (var k = 0; k < nCols; k++) {
         var cls = "pl-g-cell" + (colWeekend(k) ? " is-weekend" : "") + (colToday(k) ? " is-today" : "");
-        var isBar = covered(k, dd.start, dd.end);
+        var isBar = a.status !== "N/A" && covered(k, dd.start, dd.end);
         cells.push(h("td", { "class": cls, title: isBar ? (a.activity + " — " + fmtShort(dd.start) + " to " + fmtShort(dd.end)) : null },
           isBar ? h("div", { "class": "pl-g-bar " + bar }) : null));
       }
@@ -938,7 +941,7 @@
     var note;
     if (!hasXlsx) note = "The Excel export needs this page's scripts; reload the page if the button does nothing.";
     else if (!validTitle) note = "Add a plan title above and the Excel is named after it.";
-    else note = "“Export to Excel” downloads a customer-ready sheet with the header, the activity table and a coloured Gantt — the same layout you see above. Saved only in this browser; nothing is sent anywhere.";
+    else note = "“Export to Excel” downloads a live, customer-ready workbook — an Overview, an editable Plan sheet (status dropdowns, working-day date formulas), a coloured Gantt that follows it, and the RACI. Change a status or the start date in Excel and the dates, progress and Gantt all recalculate. Saved only in this browser; nothing is sent anywhere.";
     host.appendChild(h("p", { "class": "pl-hint pl-noprint", id: "pl-actions-hint", style: "margin-top:12px;" }, note));
     host.appendChild(h("div", { "class": "pl-feedback pl-noprint", id: "pl-feedback", role: "status", "aria-live": "polite" }, ""));
     if (copyBoxText !== null) host.appendChild(copyBox());
@@ -950,7 +953,9 @@
     announce(msg);
   }
 
-  function buildExportPlan(derived) {
+  function buildExportPlan() {
+    // the export recomputes the dates itself (as live Excel formulas), so we
+    // only pass the raw inputs — title, meta, and each activity's days + status.
     return {
       title: plan.title || "Delivery plan",
       address: plan.address,
@@ -959,7 +964,7 @@
       start: plan.start,
       target: plan.target,
       activities: plan.activities.map(function (a, i) {
-        return { n: i + 1, activity: a.activity, owner: a.owner, workDays: a.workDays, status: a.status, start: derived[i].start, end: derived[i].end, notes: a.notes };
+        return { n: i + 1, activity: a.activity, owner: a.owner, workDays: a.workDays, status: a.status, notes: a.notes };
       }),
       today: new Date()
     };
@@ -973,7 +978,7 @@
     for (i = 0; i < plan.activities.length; i++) if (plan.activities[i].activity) { hasAct = true; break; }
     if (!hasAct) { feedback("Add at least one activity before exporting.", "err"); return; }
     try {
-      var ok = api.download(buildExportPlan(schedule()));
+      var ok = api.download(buildExportPlan());
       feedback(ok ? "Excel plan downloaded." : "Couldn't create the Excel file — please try again.", ok ? "ok" : "err");
     } catch (e) {
       feedback("Couldn't create the Excel file — please try again.", "err");

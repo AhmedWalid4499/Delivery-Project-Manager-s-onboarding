@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-09",
+  "generated": "2026-10-12",
   "pages": {
     "assistant.html": {"title": "AI Assistant", "updated": "2026-10-06"},
     "automation-squad.html": {"title": "Automation Squad", "updated": "2026-09-30"},
@@ -24,7 +24,7 @@
     "org-chart.html": {"title": "Org Chart", "updated": "2026-09-30"},
     "paloalto.html": {"title": "Palo Alto Networks", "updated": "2026-09-30"},
     "peter-sabet.html": {"title": "Peter Sabet", "updated": "2026-09-30"},
-    "planner.html": {"title": "Delivery Planner", "updated": "2026-10-09"},
+    "planner.html": {"title": "Delivery Planner", "updated": "2026-10-12"},
     "presales-squad.html": {"title": "Pre-Sales Squad", "updated": "2026-09-30"},
     "process-ap.html": {"title": "AP Migration Process", "updated": "2026-09-30"},
     "process-wlc-switch.html": {"title": "WLC & Switch Migration Process", "updated": "2026-09-30"},

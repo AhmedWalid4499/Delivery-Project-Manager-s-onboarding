@@ -34,6 +34,14 @@
 ═══════════════════════════════════════════════════════════ */
 window.KB_WHATS_NEW = [
 
+  /* ── 12 Oct 2026 ─────────────────────────────────────────── */
+  {
+    date: '2026-10-12', tag: 'Improved',
+    title: 'The Delivery Planner now exports a live, interactive Excel plan',
+    desc: 'The planner’s Excel download is now a working model, not a flat picture — the same kind of file as the Delivery Checklist tracker. It has four sheets: an Overview, an editable Plan, a coloured Gantt and the RACI. Every activity on the Plan sheet has a Status dropdown, and its Start and End are working-day formulas, so changing a status, a day count or the “Planning from” date re-plans every date, the progress and the Gantt by itself. The earliest migration date is a live figure that moves earlier as you mark steps Done and reads “Ready now” once nothing is left — and the dates on screen and in the file now always agree.',
+    links: [{ href: 'planner.html', label: 'Open the Delivery Planner' }]
+  },
+
   /* ── 9 Oct 2026 ──────────────────────────────────────────── */
   {
     date: '2026-10-09', tag: 'New',
